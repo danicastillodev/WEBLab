@@ -3,7 +3,10 @@
     "allow": [
       "Bash(docker compose exec:*)",
       "Bash(docker compose run:*)",
-      "Bash(php artisan:*)"
+      "Bash(php artisan:*)",
+      "Bash(ls /Users/danielcastillo/Documents/projects/laboratorio/.env*)",
+      "Bash(docker compose up:*)",
+      "Bash(docker compose:*)"
     ]
   }
 }

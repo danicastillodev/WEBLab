@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>NETLab – Diagrama de Clases</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f0f4f8;
+      color: #1a202c;
+      padding: 32px;
+    }
+    h1 {
+      text-align: center;
+      font-size: 1.8rem;
+      color: #2b4c7e;
+      margin-bottom: 4px;
+    }
+    h2.subtitle {
+      text-align: center;
+      font-size: 1rem;
+      color: #4a6fa5;
+      margin-bottom: 32px;
+      font-weight: normal;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .class-card {
+      background: #ffffff;
+      border: 2px solid #2b4c7e;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .class-card.highlight {
+      border-color: #c0392b;
+    }
+    .class-header {
+      background: #2b4c7e;
+      color: #ffffff;
+      padding: 10px 14px;
+      font-weight: bold;
+      font-size: 1rem;
+      letter-spacing: 0.5px;
+    }
+    .class-card.highlight .class-header {
+      background: #c0392b;
+    }
+    .class-body {
+      padding: 10px 14px;
+    }
+    .attr {
+      font-size: 0.82rem;
+      padding: 3px 0;
+      border-bottom: 1px dashed #e2e8f0;
+      color: #2d3748;
+    }
+    .attr:last-child { border-bottom: none; }
+    .attr span.plus { color: #2b4c7e; font-weight: bold; margin-right: 4px; }
+    .relations-section {
+      margin-top: 40px;
+    }
+    .relations-section h3 {
+      font-size: 1.2rem;
+      color: #2b4c7e;
+      margin-bottom: 16px;
+      border-bottom: 2px solid #2b4c7e;
+      padding-bottom: 6px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    th {
+      background: #2b4c7e;
+      color: #fff;
+      padding: 10px 14px;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+    td {
+      padding: 9px 14px;
+      font-size: 0.85rem;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:nth-child(even) td { background: #f7fafc; }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: bold;
+    }
+    .badge.one  { background: #ebf8ff; color: #2b6cb0; }
+    .badge.many { background: #fff5f5; color: #c53030; }
+    .badge.comp { background: #f0fff4; color: #276749; }
+    .badge.assoc{ background: #fffff0; color: #975a16; }
+  </style>
+</head>
+<body>
+
+  <h1>NETLab</h1>
+  <h2 class="subtitle">Sistema de Gestión de Diagnósticos Clínicos — Diagrama de Clases</h2>
+
+  <div class="grid">
+
+    <!-- HistoriaClinica -->
+    <div class="class-card highlight">
+      <div class="class-header">HistoriaClinica</div>
+      <div class="class-body">
+        <div class="attr"><span class="plus">+</span>Analisis()</div>
+        <div class="attr"><span class="plus">+</span>Entrevista()</div>
+        <div class="attr"><span class="plus">+</span>FechaAnual()</div>
+        <div class="attr"><span class="plus">+</span>Fecha(Muestra)()</div>
+        <div class="attr"><span class="plus">+</span>NotasAdicionales()</div>
+        <div class="attr"><span class="plus">+</span>Especie()</div>
+        <div class="attr"><span class="plus">+</span>Raza()</div>
+        <div class="attr"><span class="plus">+</span>Sexo()</div>
+        <div class="attr"><span class="plus">+</span>Edad()</div>
+        <div class="attr"><span class="plus">+</span>TipoEdad()</div>
+        <div class="attr"><span class="plus">+</span>CantAnimalesExplotacion()</div>
+        <div class="attr"><span class="plus">+</span>CantAnimalesMuertos()</div>
+        <div class="attr"><span class="plus">+</span>CantAnimalesZootecnica()</div>
+        <div class="attr"><span class="plus">+</span>FuncionZootecnica()</div>
+        <div class="attr"><span class="plus">+</span>Propietario()</div>
+        <div class="attr"><span class="plus">+</span>Explotacion()</div>
+      </div>
+    </div>
+
+    <!-- Encuesta -->
+    <div class="class-card">
+      <div class="class-header">Encuesta</div>
+      <div class="class-body">
+        <div class="attr"><span class="plus">+</span>HistoriaClinica()</div>
+        <div class="attr"><span class="plus">+</span>FechaComenzoBrote()</div>
+        <div class="attr"><span class="plus">+</span>HayAntecedentes()</div>
+        <div class="attr"><span class="plus">+</span>SignosManifestados()</div>
+        <div class="attr"><span class="plus">+</span>HayBrotesAlrededores()</div>
+        <div class="attr"><span class="plus">+</span>SePresentaEnGrupos()</div>
+        <div class="attr"><span class="plus">+</span>HallazgosNecropsiasAnteriores()</div>
+        <div class="attr"><span class="plus">+</span>SiAnimalesRecientementeAdquisicion()</div>
+        <div class="attr"><span class="plus">+</span>AnimalesRecientementeAdquisicion()</div>
+        <div class="attr"><span class="plus">+</span>AntibioticosAplicados()</div>
+        <div class="attr"><span class="plus">+</span>VacunasAplicadas()</div>
+        <div class="attr"><span class="plus">+</span>VitaminasMineralesAplicados()</div>
+        <div class="attr"><span class="plus">+</span>Temperatura()</div>
+        <div class="attr"><span class="plus">+</span>MedicamentoDesparasita()</div>
+        <div class="attr"><span class="plus">+</span>ApetitoAnimalConsumoAgua()</div>
+        <div class="attr"><span class="plus">+</span>AlimentosConsumidos()</div>
+        <div class="attr"><span class="plus">+</span>LugarProvienAgua()</div>
+        <div class="attr"><span class="plus">+</span>LugarAlojamiento()</div>
+        <div class="attr"><span class="plus">+</span>EspeciesContacto()</div>
+        <div class="attr"><span class="plus">+</span>Informacion()</div>
+      </div>
+    </div>
+
+    <!-- FuncionZootecnica -->
+    <div class="class-card">
+      <div class="class-header">FuncionZootecnica</div>
+      <div class="class-body">
+        <div class="attr" style="color:#718096;font-style:italic;">(sin atributos adicionales)</div>
+      </div>
+    </div>
+
+    <!-- Explotacion -->
+    <div class="class-card">
+      <div class="class-header">Explotacion</div>
+      <div class="class-body">
+        <div class="attr"><span class="plus">+</span>Explotacion()</div>
+        <div class="attr"><span class="plus">+</span>Direccion()</div>
+        <div class="attr"><span class="plus">+</span>Municipio()</div>
+        <div class="attr"><span class="plus">+</span>Estado()</div>
+        <div class="attr"><span class="plus">+</span>Lote()</div>
+        <div class="attr"><span class="plus">+</span>Caseta()</div>
+        <div class="attr"><span class="plus">+</span>Parvada()</div>
+      </div>
+    </div>
+
+    <!-- Propietario -->
+    <div class="class-card">
+      <div class="class-header">Propietario</div>
+      <div class="class-body">
+        <div class="attr"><span class="plus">+</span>Propietario()</div>
+        <div class="attr"><span class="plus">+</span>Direccion()</div>
+        <div class="attr"><span class="plus">+</span>Municipio()</div>
+        <div class="attr"><span class="plus">+</span>Estado()</div>
+        <div class="attr"><span class="plus">+</span>Telefono()</div>
+      </div>
+    </div>
+
+    <!-- Analisis -->
+    <div class="class-card highlight">
+      <div class="class-header">Analisis</div>
+      <div class="class-body">
+        <div class="attr"><span class="plus">+</span>MuestrasAsociadas()</div>
+        <div class="attr"><span class="plus">+</span>Interno()</div>
+        <div class="attr"><span class="plus">+</span>Servicio()</div>
+        <div class="attr"><span class="plus">+</span>Diagnostico()</div>
+        <div class="attr"><span class="plus">+</span>HistoriaClinica()</div>
+        <div class="attr"><span class="plus">+</span>Pendiente()</div>
+      </div>
+    </div>
+
+    <!-- AnalisisMuestras -->
+    <div class="class-card">
+      <div class="class-header">AnalisisMuestras</div>
+      <div class="class-body">
+        <div class="attr"><span class="plus">+</span>Analisis()</div>
+        <div class="attr"><span class="plus">+</span>Id()</div>
+        <div class="attr"><span class="plus">+</span>Notas()</div>
+        <div class="attr"><span class="plus">+</span>Cantidad()</div>
+        <div class="attr"><span class="plus">+</span>PorFacturar()</div>
+        <div class="attr"><span class="plus">+</span>Tipo()</div>
+      </div>
+    </div>
+
+    <!-- Especie -->
+    <div class="class-card">
+      <div class="class-header">Especie</div>
+      <div class="class-body">
+        <div class="attr"><span class="plus">+</span>Nombre()</div>
+      </div>
+    </div>
+
+    <!-- Raza -->
+    <div class="class-card">
+      <div class="class-header">Raza</div>
+      <div class="class-body">
+        <div class="attr"><span class="plus">+</span>Especie()</div>
+        <div class="attr"><span class="plus">+</span>Raza()</div>
+      </div>
+    </div>
+
+    <!-- TipoMuestra -->
+    <div class="class-card">
+      <div class="class-header">TipoMuestra</div>
+      <div class="class-body">
+        <div class="attr"><span class="plus">+</span>TipoMuestra()</div>
+        <div class="attr"><span class="plus">+</span>TipoMuestral()</div>
+      </div>
+    </div>
+
+    <!-- Categoria -->
+    <div class="class-card">
+      <div class="class-header">Categoria</div>
+      <div class="class-body">
+        <div class="attr" style="color:#718096;font-style:italic;">(sin atributos adicionales)</div>
+      </div>
+    </div>
+
+    <!-- Metodo -->
+    <div class="class-card">
+      <div class="class-header">Metodo</div>
+      <div class="class-body">
+        <div class="attr" style="color:#718096;font-style:italic;">(sin atributos adicionales)</div>
+      </div>
+    </div>
+
+    <!-- Servicio -->
+    <div class="class-card highlight">
+      <div class="class-header">Servicio</div>
+      <div class="class-body">
+        <div class="attr"><span class="plus">+</span>Clave()</div>
+        <div class="attr"><span class="plus">+</span>Siglas()</div>
+        <div class="attr"><span class="plus">+</span>Descripcion()</div>
+        <div class="attr"><span class="plus">+</span>Categoria()</div>
+        <div class="attr"><span class="plus">+</span>Independiente()</div>
+        <div class="attr"><span class="plus">+</span>Compuesto()</div>
+        <div class="attr"><span class="plus">+</span>MVZAprobado()</div>
+        <div class="attr"><span class="plus">+</span>Normas()</div>
+        <div class="attr"><span class="plus">+</span>NormasMuestrasRelacionadas()</div>
+        <div class="attr"><span class="plus">+</span>TiposMuestrasRelacionados()</div>
+        <div class="attr"><span class="plus">+</span>TiposMuestras()</div>
+        <div class="attr"><span class="plus">+</span>Referencias()</div>
+        <div class="attr"><span class="plus">+</span>Status()</div>
+        <div class="attr"><span class="plus">+</span>Area()</div>
+        <div class="attr"><span class="plus">+</span>Metodo()</div>
+      </div>
+    </div>
+
+    <!-- Norma -->
+    <div class="class-card">
+      <div class="class-header">Norma</div>
+      <div class="class-body">
+        <div class="attr"><span class="plus">+</span>Nombre()</div>
+        <div class="attr"><span class="plus">+</span>Descripcion()</div>
+      </div>
+    </div>
+
+    <!-- Area -->
+    <div class="class-card">
+      <div class="class-header">Area</div>
+      <div class="class-body">
+        <div class="attr"><span class="plus">+</span>Nombre()</div>
+      </div>
+    </div>
+
+    <!-- MVZAprobado -->
+    <div class="class-card">
+      <div class="class-header">MVZAprobado</div>
+      <div class="class-body">
+        <div class="attr"><span class="plus">+</span>Nombre()</div>
+      </div>
+    </div>
+
+    <!-- Diagnostico -->
+    <div class="class-card highlight">
+      <div class="class-header">Diagnostico</div>
+      <div class="class-body">
+        <div class="attr"><span class="plus">+</span>Id()</div>
+        <div class="attr"><span class="plus">+</span>FechaEmision()</div>
+        <div class="attr"><span class="plus">+</span>Status()</div>
+        <div class="attr"><span class="plus">+</span>FechaRealizacion()</div>
+        <div class="attr"><span class="plus">+</span>ResultadoMuestrasAnalizadas()</div>
+        <div class="attr"><span class="plus">+</span>Resultado()</div>
+        <div class="attr"><span class="plus">+</span>Observaciones()</div>
+        <div class="attr"><span class="plus">+</span>Analisis()</div>
+      </div>
+    </div>
+
+  </div><!-- /grid -->
+
+  <!-- Relations table -->
+  <div class="relations-section">
+    <h3>Relaciones entre Clases</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Clase origen</th>
+          <th>Relación</th>
+          <th>Clase destino</th>
+          <th>Cardinalidad</th>
+          <th>Tipo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>HistoriaClinica</td>
+          <td>tiene</td>
+          <td>Analisis</td>
+          <td><span class="badge one">1</span></td>
+          <td><span class="badge assoc">Asociación</span></td>
+        </tr>
+        <tr>
+          <td>Encuesta</td>
+          <td>se consulta →</td>
+          <td>FuncionZootecnica</td>
+          <td><span class="badge one">1</span></td>
+          <td><span class="badge assoc">Asociación</span></td>
+        </tr>
+        <tr>
+          <td>FuncionZootecnica</td>
+          <td>se efectúa →</td>
+          <td>Explotacion</td>
+          <td><span class="badge one">1</span></td>
+          <td><span class="badge assoc">Asociación</span></td>
+        </tr>
+        <tr>
+          <td>Explotacion</td>
+          <td>posee →</td>
+          <td>Propietario</td>
+          <td><span class="badge one">1</span></td>
+          <td><span class="badge assoc">Asociación</span></td>
+        </tr>
+        <tr>
+          <td>Explotacion</td>
+          <td>proviene de</td>
+          <td>HistoriaClinica</td>
+          <td><span class="badge one">1</span></td>
+          <td><span class="badge assoc">Asociación</span></td>
+        </tr>
+        <tr>
+          <td>Propietario</td>
+          <td>corresponde →</td>
+          <td>Diagnostico</td>
+          <td><span class="badge one">1</span></td>
+          <td><span class="badge assoc">Asociación</span></td>
+        </tr>
+        <tr>
+          <td>Analisis</td>
+          <td>contiene (composición)</td>
+          <td>AnalisisMuestras</td>
+          <td><span class="badge many">*</span></td>
+          <td><span class="badge comp">Composición</span></td>
+        </tr>
+        <tr>
+          <td>Analisis</td>
+          <td>se compone →</td>
+          <td>AnalisisMuestras</td>
+          <td><span class="badge one">1</span></td>
+          <td><span class="badge comp">Composición</span></td>
+        </tr>
+        <tr>
+          <td>AnalisisMuestras</td>
+          <td>proviene de →</td>
+          <td>Especie</td>
+          <td><span class="badge one">1</span></td>
+          <td><span class="badge assoc">Asociación</span></td>
+        </tr>
+        <tr>
+          <td>Especie</td>
+          <td>es →</td>
+          <td>TipoMuestra</td>
+          <td><span class="badge one">1</span></td>
+          <td><span class="badge assoc">Asociación</span></td>
+        </tr>
+        <tr>
+          <td>Raza</td>
+          <td>compuesta por →</td>
+          <td>Especie</td>
+          <td><span class="badge one">1</span></td>
+          <td><span class="badge assoc">Asociación</span></td>
+        </tr>
+        <tr>
+          <td>Categoria</td>
+          <td>compuesta por →</td>
+          <td>Metodo</td>
+          <td><span class="badge many">*</span></td>
+          <td><span class="badge assoc">Asociación</span></td>
+        </tr>
+        <tr>
+          <td>Categoria</td>
+          <td>corresponde →</td>
+          <td>Servicio</td>
+          <td><span class="badge one">1</span></td>
+          <td><span class="badge assoc">Asociación</span></td>
+        </tr>
+        <tr>
+          <td>Metodo</td>
+          <td>aplica →</td>
+          <td>Categoria</td>
+          <td><span class="badge one">1</span></td>
+          <td><span class="badge assoc">Asociación</span></td>
+        </tr>
+        <tr>
+          <td>Norma</td>
+          <td>cumple →</td>
+          <td>Servicio</td>
+          <td><span class="badge many">0..*</span></td>
+          <td><span class="badge assoc">Asociación</span></td>
+        </tr>
+        <tr>
+          <td>MVZAprobado</td>
+          <td>aprueba →</td>
+          <td>Servicio</td>
+          <td><span class="badge one">1</span></td>
+          <td><span class="badge assoc">Asociación</span></td>
+        </tr>
+        <tr>
+          <td>MVZAprobado</td>
+          <td>se efectúa →</td>
+          <td>Area</td>
+          <td><span class="badge one">1</span></td>
+          <td><span class="badge assoc">Asociación</span></td>
+        </tr>
+        <tr>
+          <td>Diagnostico</td>
+          <td>se emite →</td>
+          <td>Analisis</td>
+          <td><span class="badge one">1</span></td>
+          <td><span class="badge assoc">Asociación</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p style="text-align:center;margin-top:32px;font-size:0.75rem;color:#a0aec0;">
+    NETLab · Sistema de Gestión de Diagnósticos Clínicos · Diagrama de Clases
+  </p>
+</body>
+</html>

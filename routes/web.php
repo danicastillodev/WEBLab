@@ -35,12 +35,16 @@ Route::middleware('auth')->group(function () {
     Route::resource('estados', EstadosController::class)->except(['show']);
     Route::resource('propietarios', PropietariosController::class)->except(['show']);
     Route::resource('municipios', MunicipiosController::class)->except(['show']);
-    Route::get('/especies', [EspeciesController::class, 'index'])->name('especies.index');
-    Route::get('/razas', [RazasController::class, 'index'])->name('razas.index');
+    Route::resource('especies', EspeciesController::class)->except(['show']);
+    Route::resource('razas', RazasController::class)->except(['show']);
     Route::resource('pruebas', PruebasController::class)->except(['show']);
 
     Route::post('historias-clinicas/propietario', [HistoriasClinicasController::class, 'storePropietario'])->name('historias-clinicas.store-propietario');
     Route::post('historias-clinicas/direccion', [HistoriasClinicasController::class, 'storeDireccion'])->name('historias-clinicas.store-direccion');
+    Route::post('historias-clinicas/especie', [HistoriasClinicasController::class, 'storeEspecie'])->name('historias-clinicas.store-especie');
+    Route::post('historias-clinicas/raza', [HistoriasClinicasController::class, 'storeRaza'])->name('historias-clinicas.store-raza');
+    Route::post('historias-clinicas/tipo-muestra', [HistoriasClinicasController::class, 'storeTipoMuestra'])->name('historias-clinicas.store-tipo-muestra');
+    Route::post('historias-clinicas/prueba', [HistoriasClinicasController::class, 'storePrueba'])->name('historias-clinicas.store-prueba');
     Route::resource('historias-clinicas', HistoriasClinicasController::class)->except(['show']);
 });
 

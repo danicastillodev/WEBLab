@@ -9,6 +9,7 @@ import { useState } from 'react';
 
 const selectClass = 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500';
 const EDAD_UNIDADES = ['Dias', 'Meses', 'Años', 'NR', 'NA'];
+const MUESTRA_VACIA = { prueba_id: '', cantidad: 1, tipo_muestra_id: '', notas: '' };
 
 function formatDireccion(dir) {
     return `${dir.calle} ${dir.numero_exterior}, ${dir.colonia}, ${dir.municipio?.nombre ?? ''}`;
@@ -28,29 +29,50 @@ function Modal({ title, onClose, children }) {
     );
 }
 
-export default function Create({ propietarios: initPropietarios, direcciones: initDirecciones, especies, razas, estados, municipios }) {
+export default function Create({ propietarios: initPropietarios, direcciones: initDirecciones, especies: initEspecies, razas: initRazas, estados, municipios, pruebas: initPruebas, tipos_muestra: initTiposMuestra }) {
     const [propietarios, setPropietarios] = useState(initPropietarios);
     const [direcciones, setDirecciones]   = useState(initDirecciones);
+    const [especies, setEspecies]         = useState(initEspecies);
+    const [razas, setRazas]               = useState(initRazas);
+    const [tiposMuestra, setTiposMuestra] = useState(initTiposMuestra);
+    const [pruebas, setPruebas]           = useState(initPruebas);
 
     /* ── Main form ── */
     const { data, setData, post, processing, errors } = useForm({
         propietario_id:  '',
         direccion_id:    '',
-        fecha_recepcion: '',
+        fecha_recepcion: new Date().toISOString().slice(0, 10),
+        fecha_muestra:   '',
         especie_id:      '',
         raza_id:         '',
-        edad_unidad:     '',
-        edad_valor:      '',
-        cantidad:        '',
+        sexo:                   '',
+        edad_unidad:            '',
+        edad_valor:             '',
+        animales_explotacion:   '',
+        animales_muertos:       '',
+        animales_enfermos:      '',
+        notas_adicionales:      '',
+        muestras:        [{ ...MUESTRA_VACIA }],
     });
 
     const direccionesPropietario = direcciones.filter(
         (d) => String(d.propietario_id) === String(data.propietario_id),
     );
-    const edadConValor = data.edad_unidad && !['NR', 'NA'].includes(data.edad_unidad);
+    const razasFiltradas = razas.filter(
+        (r) => String(r.especie_id) === String(data.especie_id),
+    );
 
     function onPropietarioChange(id) {
         setData((prev) => ({ ...prev, propietario_id: id, direccion_id: '' }));
+    }
+
+    function onEspecieChange(id) {
+        setData((prev) => ({
+            ...prev,
+            especie_id: id,
+            raza_id: '',
+            muestras: prev.muestras.map(() => ({ ...MUESTRA_VACIA })),
+        }));
     }
 
     function onEdadUnidadChange(val) {
@@ -59,6 +81,22 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
             edad_unidad: val,
             edad_valor: ['NR', 'NA'].includes(val) ? '' : prev.edad_valor,
         }));
+    }
+
+    /* ── Muestras helpers ── */
+    function addMuestra() {
+        setData('muestras', [...data.muestras, { ...MUESTRA_VACIA }]);
+    }
+
+    function removeMuestra(index) {
+        setData('muestras', data.muestras.filter((_, i) => i !== index));
+    }
+
+    function updateMuestra(index, field, value) {
+        const patch = { [field]: value };
+        if (field === 'prueba_id') patch.tipo_muestra_id = '';
+        const updated = data.muestras.map((m, i) => i === index ? { ...m, ...patch } : m);
+        setData('muestras', updated);
     }
 
     function submit(e) {
@@ -94,8 +132,127 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
         }
     }
 
+    /* ── Prueba (análisis) modal ── */
+    const [showPruebaModal, setShowPruebaModal] = useState(false);
+    const [pruebaModalIdx, setPruebaModalIdx]   = useState(0);
+    const [pruebaForm, setPruebaForm]           = useState({ clave: '', nombre: '' });
+    const [pruebaErrors, setPruebaErrors]       = useState({});
+    const [pruebaSaving, setPruebaSaving]       = useState(false);
+
+    function openPruebaModal(muestraIndex) {
+        setPruebaModalIdx(muestraIndex);
+        setPruebaForm({ clave: '', nombre: '' });
+        setPruebaErrors({});
+        setShowPruebaModal(true);
+    }
+
+    async function submitPrueba(e) {
+        e.preventDefault();
+        setPruebaSaving(true);
+        setPruebaErrors({});
+        try {
+            const payload = { ...pruebaForm, especie_id: data.especie_id };
+            const { data: nueva } = await axios.post(route('historias-clinicas.store-prueba'), payload);
+            setPruebas((prev) => [...prev, nueva].sort((a, b) => a.nombre.localeCompare(b.nombre)));
+            updateMuestra(pruebaModalIdx, 'prueba_id', String(nueva.id));
+            setShowPruebaModal(false);
+        } catch (err) {
+            if (err.response?.status === 422) setPruebaErrors(err.response.data.errors);
+        } finally {
+            setPruebaSaving(false);
+        }
+    }
+
+    /* ── Especie modal ── */
+    const [showEspModal, setShowEspModal] = useState(false);
+    const [espForm, setEspForm]           = useState({ nombre: '' });
+    const [espErrors, setEspErrors]       = useState({});
+    const [espSaving, setEspSaving]       = useState(false);
+
+    function openEspModal() {
+        setEspForm({ nombre: '' });
+        setEspErrors({});
+        setShowEspModal(true);
+    }
+
+    async function submitEspecie(e) {
+        e.preventDefault();
+        setEspSaving(true);
+        setEspErrors({});
+        try {
+            const { data: nueva } = await axios.post(route('historias-clinicas.store-especie'), espForm);
+            setEspecies((prev) => [...prev, nueva].sort((a, b) => a.nombre.localeCompare(b.nombre)));
+            setData((prev) => ({ ...prev, especie_id: String(nueva.id), raza_id: '' }));
+            setShowEspModal(false);
+        } catch (err) {
+            if (err.response?.status === 422) setEspErrors(err.response.data.errors);
+        } finally {
+            setEspSaving(false);
+        }
+    }
+
+    /* ── Raza modal ── */
+    const [showRazaModal, setShowRazaModal] = useState(false);
+    const [razaForm, setRazaForm]           = useState({ nombre: '' });
+    const [razaErrors, setRazaErrors]       = useState({});
+    const [razaSaving, setRazaSaving]       = useState(false);
+
+    function openRazaModal() {
+        setRazaForm({ nombre: '' });
+        setRazaErrors({});
+        setShowRazaModal(true);
+    }
+
+    async function submitRaza(e) {
+        e.preventDefault();
+        setRazaSaving(true);
+        setRazaErrors({});
+        try {
+            const payload = { nombre: razaForm.nombre, especie_id: data.especie_id };
+            const { data: nueva } = await axios.post(route('historias-clinicas.store-raza'), payload);
+            setRazas((prev) => [...prev, nueva].sort((a, b) => a.nombre.localeCompare(b.nombre)));
+            setData((prev) => ({ ...prev, raza_id: String(nueva.id) }));
+            setShowRazaModal(false);
+        } catch (err) {
+            if (err.response?.status === 422) setRazaErrors(err.response.data.errors);
+        } finally {
+            setRazaSaving(false);
+        }
+    }
+
+    /* ── Tipo de muestra modal ── */
+    const [showTipoModal, setShowTipoModal]   = useState(false);
+    const [tipoModalCtx, setTipoModalCtx]     = useState({ prueba_id: '', muestraIndex: 0 });
+    const [tipoForm, setTipoForm]             = useState({ nombre: '' });
+    const [tipoErrors, setTipoErrors]         = useState({});
+    const [tipoSaving, setTipoSaving]         = useState(false);
+
+    function openTipoModal(muestraIndex, prueba_id) {
+        setTipoModalCtx({ prueba_id, muestraIndex });
+        setTipoForm({ nombre: '' });
+        setTipoErrors({});
+        setShowTipoModal(true);
+    }
+
+    async function submitTipoMuestra(e) {
+        e.preventDefault();
+        setTipoSaving(true);
+        setTipoErrors({});
+        try {
+            const payload = { nombre: tipoForm.nombre, prueba_id: tipoModalCtx.prueba_id };
+            const { data: nuevo } = await axios.post(route('historias-clinicas.store-tipo-muestra'), payload);
+            setTiposMuestra((prev) => [...prev, nuevo].sort((a, b) => a.nombre.localeCompare(b.nombre)));
+            updateMuestra(tipoModalCtx.muestraIndex, 'tipo_muestra_id', String(nuevo.id));
+            setShowTipoModal(false);
+        } catch (err) {
+            if (err.response?.status === 422) setTipoErrors(err.response.data.errors);
+        } finally {
+            setTipoSaving(false);
+        }
+    }
+
     /* ── Dirección modal ── */
-    const jalisco     = estados.find((e) => e.nombre === 'Jalisco');
+    const jalisco       = estados.find((e) => e.nombre === 'Jalisco');
     const estadoDefault = jalisco ? String(jalisco.id) : '';
 
     const [showDirModal, setShowDirModal] = useState(false);
@@ -143,6 +300,103 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
             }
         >
             <Head title="Nueva historia clínica" />
+
+            {/* ── Tipo de muestra modal ── */}
+            {showTipoModal && (
+                <Modal title="Nuevo tipo de muestra" onClose={() => setShowTipoModal(false)}>
+                    <form onSubmit={submitTipoMuestra} className="space-y-4">
+                        <div>
+                            <InputLabel value="Nombre" />
+                            <TextInput
+                                value={tipoForm.nombre}
+                                onChange={(e) => setTipoForm({ nombre: e.target.value })}
+                                className="mt-1 block w-full"
+                                autoFocus
+                            />
+                            {tipoErrors.nombre && <p className="mt-1 text-sm text-red-600">{tipoErrors.nombre[0]}</p>}
+                        </div>
+                        <div className="flex justify-end gap-3 pt-2">
+                            <button type="button" onClick={() => setShowTipoModal(false)} className="text-sm text-gray-600 hover:text-gray-900">Cancelar</button>
+                            <PrimaryButton disabled={tipoSaving}>Guardar</PrimaryButton>
+                        </div>
+                    </form>
+                </Modal>
+            )}
+
+            {/* ── Prueba modal ── */}
+            {showPruebaModal && (
+                <Modal title="Nuevo análisis" onClose={() => setShowPruebaModal(false)}>
+                    <form onSubmit={submitPrueba} className="space-y-4">
+                        <div>
+                            <InputLabel value="Clave" />
+                            <TextInput
+                                value={pruebaForm.clave}
+                                onChange={(e) => setPruebaForm((p) => ({ ...p, clave: e.target.value }))}
+                                className="mt-1 block w-full"
+                                autoFocus
+                            />
+                            {pruebaErrors.clave && <p className="mt-1 text-sm text-red-600">{pruebaErrors.clave[0]}</p>}
+                        </div>
+                        <div>
+                            <InputLabel value="Nombre" />
+                            <TextInput
+                                value={pruebaForm.nombre}
+                                onChange={(e) => setPruebaForm((p) => ({ ...p, nombre: e.target.value }))}
+                                className="mt-1 block w-full"
+                            />
+                            {pruebaErrors.nombre && <p className="mt-1 text-sm text-red-600">{pruebaErrors.nombre[0]}</p>}
+                        </div>
+                        <div className="flex justify-end gap-3 pt-2">
+                            <button type="button" onClick={() => setShowPruebaModal(false)} className="text-sm text-gray-600 hover:text-gray-900">Cancelar</button>
+                            <PrimaryButton disabled={pruebaSaving}>Guardar</PrimaryButton>
+                        </div>
+                    </form>
+                </Modal>
+            )}
+
+            {/* ── Especie modal ── */}
+            {showEspModal && (
+                <Modal title="Nueva especie" onClose={() => setShowEspModal(false)}>
+                    <form onSubmit={submitEspecie} className="space-y-4">
+                        <div>
+                            <InputLabel value="Nombre" />
+                            <TextInput
+                                value={espForm.nombre}
+                                onChange={(e) => setEspForm({ nombre: e.target.value })}
+                                className="mt-1 block w-full"
+                                autoFocus
+                            />
+                            {espErrors.nombre && <p className="mt-1 text-sm text-red-600">{espErrors.nombre[0]}</p>}
+                        </div>
+                        <div className="flex justify-end gap-3 pt-2">
+                            <button type="button" onClick={() => setShowEspModal(false)} className="text-sm text-gray-600 hover:text-gray-900">Cancelar</button>
+                            <PrimaryButton disabled={espSaving}>Guardar</PrimaryButton>
+                        </div>
+                    </form>
+                </Modal>
+            )}
+
+            {/* ── Raza modal ── */}
+            {showRazaModal && (
+                <Modal title="Nueva raza" onClose={() => setShowRazaModal(false)}>
+                    <form onSubmit={submitRaza} className="space-y-4">
+                        <div>
+                            <InputLabel value="Nombre" />
+                            <TextInput
+                                value={razaForm.nombre}
+                                onChange={(e) => setRazaForm({ nombre: e.target.value })}
+                                className="mt-1 block w-full"
+                                autoFocus
+                            />
+                            {razaErrors.nombre && <p className="mt-1 text-sm text-red-600">{razaErrors.nombre[0]}</p>}
+                        </div>
+                        <div className="flex justify-end gap-3 pt-2">
+                            <button type="button" onClick={() => setShowRazaModal(false)} className="text-sm text-gray-600 hover:text-gray-900">Cancelar</button>
+                            <PrimaryButton disabled={razaSaving}>Guardar</PrimaryButton>
+                        </div>
+                    </form>
+                </Modal>
+            )}
 
             {/* ── Propietario modal ── */}
             {showPropModal && (
@@ -279,6 +533,312 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
                     <div className="overflow-hidden bg-white p-6 shadow-sm sm:rounded-lg">
                         <form onSubmit={submit} className="space-y-6">
 
+                            {/* Fecha de recepción */}
+                            <div>
+                                <InputLabel htmlFor="fecha_recepcion" value="Fecha de recepción" />
+                                <TextInput
+                                    id="fecha_recepcion"
+                                    type="date"
+                                    value={data.fecha_recepcion}
+                                    onChange={(e) => setData('fecha_recepcion', e.target.value)}
+                                    className="mt-1 block w-full"
+                                />
+                                <InputError message={errors.fecha_recepcion} className="mt-2" />
+                            </div>
+
+                            {/* ── Detalles de Muestras ── */}
+                            <div>
+                                <h3 className="text-base font-semibold text-gray-800 border-b border-gray-200 pb-2">
+                                    Detalles de Muestras
+                                </h3>
+                            </div>
+
+                            {/* Fecha de muestra */}
+                            <div>
+                                <InputLabel htmlFor="fecha_muestra" value="Fecha de muestra" />
+                                <TextInput
+                                    id="fecha_muestra"
+                                    type="date"
+                                    value={data.fecha_muestra}
+                                    onChange={(e) => setData('fecha_muestra', e.target.value)}
+                                    className="mt-1 block w-full"
+                                />
+                                <InputError message={errors.fecha_muestra} className="mt-2" />
+                            </div>
+
+                            {/* Especie */}
+                            <div>
+                                <div className="flex items-center justify-between">
+                                    <InputLabel htmlFor="especie_id" value="Especie" />
+                                    <button type="button" onClick={openEspModal} className="text-xs text-indigo-600 hover:text-indigo-900">+ Nueva especie</button>
+                                </div>
+                                <select
+                                    id="especie_id"
+                                    value={data.especie_id}
+                                    onChange={(e) => onEspecieChange(e.target.value)}
+                                    className={selectClass}
+                                >
+                                    <option value="">— Selecciona una especie —</option>
+                                    {especies.map((e) => (
+                                        <option key={e.id} value={e.id}>{e.nombre}</option>
+                                    ))}
+                                </select>
+                                <InputError message={errors.especie_id} className="mt-2" />
+                            </div>
+
+                            {/* Raza */}
+                            <div>
+                                <div className="flex items-center justify-between">
+                                    <InputLabel htmlFor="raza_id" value="Raza" />
+                                    <button
+                                        type="button"
+                                        onClick={openRazaModal}
+                                        disabled={!data.especie_id}
+                                        className="text-xs text-indigo-600 hover:text-indigo-900 disabled:cursor-not-allowed disabled:opacity-40"
+                                    >
+                                        + Nueva raza
+                                    </button>
+                                </div>
+                                <select
+                                    id="raza_id"
+                                    value={data.raza_id}
+                                    onChange={(e) => setData('raza_id', e.target.value)}
+                                    disabled={!data.especie_id}
+                                    className={selectClass}
+                                >
+                                    <option value="">— Selecciona una raza —</option>
+                                    {razasFiltradas.map((r) => (
+                                        <option key={r.id} value={r.id}>{r.nombre}</option>
+                                    ))}
+                                </select>
+                                <InputError message={errors.raza_id} className="mt-2" />
+                            </div>
+
+                            {/* Muestras */}
+                            <div className="space-y-3">
+                                {data.muestras.map((muestra, index) => (
+                                    <div key={index} className="rounded-lg border border-gray-200 bg-gray-50 p-4 space-y-3">
+                                        <div className="flex items-center justify-between">
+                                            <span className="text-sm font-medium text-gray-700">Muestra {index + 1}</span>
+                                            {data.muestras.length > 1 && (
+                                                <button
+                                                    type="button"
+                                                    onClick={() => removeMuestra(index)}
+                                                    className="text-xs text-red-500 hover:text-red-700"
+                                                >
+                                                    Eliminar
+                                                </button>
+                                            )}
+                                        </div>
+
+                                        {/* Análisis solicitado */}
+                                        <div>
+                                            <div className="flex items-center justify-between">
+                                                <InputLabel value="Análisis solicitado" />
+                                                <button
+                                                    type="button"
+                                                    onClick={() => openPruebaModal(index)}
+                                                    disabled={!data.especie_id}
+                                                    className="text-xs text-indigo-600 hover:text-indigo-900 disabled:cursor-not-allowed disabled:opacity-40"
+                                                >
+                                                    + Nuevo análisis
+                                                </button>
+                                            </div>
+                                            <select
+                                                value={muestra.prueba_id}
+                                                onChange={(e) => updateMuestra(index, 'prueba_id', e.target.value)}
+                                                disabled={!data.especie_id}
+                                                className={selectClass}
+                                            >
+                                                <option value="">— Selecciona un análisis —</option>
+                                                {pruebas
+                                                    .filter((p) => String(p.especie_id) === String(data.especie_id))
+                                                    .map((p) => (
+                                                        <option key={p.id} value={p.id}>{p.clave} – {p.nombre}</option>
+                                                    ))
+                                                }
+                                            </select>
+                                            {errors[`muestras.${index}.prueba_id`] && (
+                                                <p className="mt-1 text-sm text-red-600">{errors[`muestras.${index}.prueba_id`]}</p>
+                                            )}
+                                        </div>
+
+                                        <div className="grid grid-cols-2 gap-3">
+                                            {/* Cantidad */}
+                                            <div>
+                                                <InputLabel value="Cantidad" />
+                                                <TextInput
+                                                    type="number"
+                                                    min="1"
+                                                    value={muestra.cantidad}
+                                                    onChange={(e) => updateMuestra(index, 'cantidad', e.target.value)}
+                                                    className="mt-1 block w-full"
+                                                />
+                                                {errors[`muestras.${index}.cantidad`] && (
+                                                    <p className="mt-1 text-sm text-red-600">{errors[`muestras.${index}.cantidad`]}</p>
+                                                )}
+                                            </div>
+
+                                            {/* Tipo de muestra */}
+                                            <div>
+                                                <div className="flex items-center justify-between">
+                                                    <InputLabel value="Tipo de muestra" />
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => openTipoModal(index, muestra.prueba_id)}
+                                                        disabled={!muestra.prueba_id}
+                                                        className="text-xs text-indigo-600 hover:text-indigo-900 disabled:cursor-not-allowed disabled:opacity-40"
+                                                    >
+                                                        + Nuevo tipo
+                                                    </button>
+                                                </div>
+                                                <select
+                                                    value={muestra.tipo_muestra_id}
+                                                    onChange={(e) => updateMuestra(index, 'tipo_muestra_id', e.target.value)}
+                                                    disabled={!muestra.prueba_id}
+                                                    className={selectClass}
+                                                >
+                                                    <option value="">— Selecciona —</option>
+                                                    {tiposMuestra
+                                                        .filter((t) => String(t.prueba_id) === String(muestra.prueba_id))
+                                                        .map((t) => (
+                                                            <option key={t.id} value={t.id}>{t.nombre}</option>
+                                                        ))
+                                                    }
+                                                </select>
+                                                {errors[`muestras.${index}.tipo_muestra_id`] && (
+                                                    <p className="mt-1 text-sm text-red-600">{errors[`muestras.${index}.tipo_muestra_id`]}</p>
+                                                )}
+                                            </div>
+                                        </div>
+
+                                        {/* Notas */}
+                                        <div>
+                                            <InputLabel value="Notas" />
+                                            <textarea
+                                                value={muestra.notas}
+                                                onChange={(e) => updateMuestra(index, 'notas', e.target.value)}
+                                                rows={2}
+                                                placeholder="Opcional"
+                                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm"
+                                            />
+                                            {errors[`muestras.${index}.notas`] && (
+                                                <p className="mt-1 text-sm text-red-600">{errors[`muestras.${index}.notas`]}</p>
+                                            )}
+                                        </div>
+                                    </div>
+                                ))}
+
+                                <button
+                                    type="button"
+                                    onClick={addMuestra}
+                                    className="text-sm text-indigo-600 hover:text-indigo-900"
+                                >
+                                    + Agregar muestra
+                                </button>
+                                {errors.muestras && (
+                                    <p className="mt-1 text-sm text-red-600">{errors.muestras}</p>
+                                )}
+                            </div>
+
+                            {/* Sexo / Edad / Tiempo */}
+                            <div className="grid grid-cols-3 gap-3">
+                                <div>
+                                    <InputLabel htmlFor="sexo" value="Sexo" />
+                                    <select
+                                        id="sexo"
+                                        value={data.sexo}
+                                        onChange={(e) => setData('sexo', e.target.value)}
+                                        className={selectClass}
+                                    >
+                                        <option value="">— Selecciona —</option>
+                                        <option value="Macho">Macho</option>
+                                        <option value="Hembra">Hembra</option>
+                                        <option value="Castrado">Castrado</option>
+                                        <option value="NR">NR</option>
+                                    </select>
+                                    <InputError message={errors.sexo} className="mt-2" />
+                                </div>
+                                <div>
+                                    <InputLabel htmlFor="edad_valor" value="Edad" />
+                                    <TextInput
+                                        id="edad_valor"
+                                        type="number"
+                                        min="0"
+                                        value={data.edad_valor}
+                                        onChange={(e) => setData('edad_valor', e.target.value)}
+                                        disabled={['NR', 'NA'].includes(data.edad_unidad)}
+                                        className="mt-1 block w-full disabled:opacity-50"
+                                        placeholder="Valor"
+                                    />
+                                    <InputError message={errors.edad_valor} className="mt-2" />
+                                </div>
+                                <div>
+                                    <InputLabel htmlFor="edad_unidad" value="Tiempo" />
+                                    <select
+                                        id="edad_unidad"
+                                        value={data.edad_unidad}
+                                        onChange={(e) => onEdadUnidadChange(e.target.value)}
+                                        className={selectClass}
+                                    >
+                                        <option value="">— Unidad —</option>
+                                        {EDAD_UNIDADES.map((u) => (
+                                            <option key={u} value={u}>{u}</option>
+                                        ))}
+                                    </select>
+                                    <InputError message={errors.edad_unidad} className="mt-2" />
+                                </div>
+                            </div>
+
+                            {/* ── Animales ── */}
+                            <div>
+                                <h3 className="text-base font-semibold text-gray-800 border-b border-gray-200 pb-2">
+                                    Animales
+                                </h3>
+                            </div>
+
+                            <div className="grid grid-cols-3 gap-3">
+                                <div>
+                                    <InputLabel htmlFor="animales_explotacion" value="En la explotación" />
+                                    <TextInput
+                                        id="animales_explotacion"
+                                        type="number"
+                                        min="0"
+                                        value={data.animales_explotacion}
+                                        onChange={(e) => setData('animales_explotacion', e.target.value)}
+                                        className="mt-1 block w-full"
+                                        placeholder="—"
+                                    />
+                                    <InputError message={errors.animales_explotacion} className="mt-2" />
+                                </div>
+                                <div>
+                                    <InputLabel htmlFor="animales_muertos" value="Muertos" />
+                                    <TextInput
+                                        id="animales_muertos"
+                                        type="number"
+                                        min="0"
+                                        value={data.animales_muertos}
+                                        onChange={(e) => setData('animales_muertos', e.target.value)}
+                                        className="mt-1 block w-full"
+                                        placeholder="—"
+                                    />
+                                    <InputError message={errors.animales_muertos} className="mt-2" />
+                                </div>
+                                <div>
+                                    <InputLabel htmlFor="animales_enfermos" value="Enfermos" />
+                                    <TextInput
+                                        id="animales_enfermos"
+                                        type="number"
+                                        min="0"
+                                        value={data.animales_enfermos}
+                                        onChange={(e) => setData('animales_enfermos', e.target.value)}
+                                        className="mt-1 block w-full"
+                                        placeholder="—"
+                                    />
+                                    <InputError message={errors.animales_enfermos} className="mt-2" />
+                                </div>
+                            </div>
+
                             {/* Propietario */}
                             <div>
                                 <div className="flex items-center justify-between">
@@ -327,94 +887,19 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
                                 <InputError message={errors.direccion_id} className="mt-2" />
                             </div>
 
-                            {/* Fecha de recepción */}
+                            {/* Notas adicionales */}
                             <div>
-                                <InputLabel htmlFor="fecha_recepcion" value="Fecha de recepción" />
-                                <TextInput
-                                    id="fecha_recepcion"
-                                    type="date"
-                                    value={data.fecha_recepcion}
-                                    onChange={(e) => setData('fecha_recepcion', e.target.value)}
-                                    className="mt-1 block w-full"
+                                <InputLabel htmlFor="notas_adicionales" value="Notas adicionales" />
+                                <textarea
+                                    id="notas_adicionales"
+                                    value={data.notas_adicionales}
+                                    onChange={(e) => setData('notas_adicionales', e.target.value)}
+                                    maxLength={512}
+                                    rows={4}
+                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm"
                                 />
-                                <InputError message={errors.fecha_recepcion} className="mt-2" />
-                            </div>
-
-                            {/* Especie */}
-                            <div>
-                                <InputLabel htmlFor="especie_id" value="Especie" />
-                                <select
-                                    id="especie_id"
-                                    value={data.especie_id}
-                                    onChange={(e) => setData('especie_id', e.target.value)}
-                                    className={selectClass}
-                                >
-                                    <option value="">— Selecciona una especie —</option>
-                                    {especies.map((e) => (
-                                        <option key={e.id} value={e.id}>{e.nombre}</option>
-                                    ))}
-                                </select>
-                                <InputError message={errors.especie_id} className="mt-2" />
-                            </div>
-
-                            {/* Raza */}
-                            <div>
-                                <InputLabel htmlFor="raza_id" value="Raza" />
-                                <select
-                                    id="raza_id"
-                                    value={data.raza_id}
-                                    onChange={(e) => setData('raza_id', e.target.value)}
-                                    className={selectClass}
-                                >
-                                    <option value="">— Selecciona una raza —</option>
-                                    {razas.map((r) => (
-                                        <option key={r.id} value={r.id}>{r.nombre}</option>
-                                    ))}
-                                </select>
-                                <InputError message={errors.raza_id} className="mt-2" />
-                            </div>
-
-                            {/* Edad */}
-                            <div>
-                                <InputLabel value="Edad" />
-                                <div className="mt-1 flex gap-3">
-                                    <select
-                                        value={data.edad_unidad}
-                                        onChange={(e) => onEdadUnidadChange(e.target.value)}
-                                        className="block w-40 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                                    >
-                                        <option value="">— Unidad —</option>
-                                        {EDAD_UNIDADES.map((u) => (
-                                            <option key={u} value={u}>{u}</option>
-                                        ))}
-                                    </select>
-                                    {edadConValor && (
-                                        <TextInput
-                                            type="number"
-                                            min="0"
-                                            value={data.edad_valor}
-                                            onChange={(e) => setData('edad_valor', e.target.value)}
-                                            className="block w-28"
-                                            placeholder="Valor"
-                                        />
-                                    )}
-                                </div>
-                                <InputError message={errors.edad_unidad} className="mt-2" />
-                                <InputError message={errors.edad_valor} className="mt-1" />
-                            </div>
-
-                            {/* Cantidad */}
-                            <div>
-                                <InputLabel htmlFor="cantidad" value="Cantidad" />
-                                <TextInput
-                                    id="cantidad"
-                                    type="number"
-                                    min="1"
-                                    value={data.cantidad}
-                                    onChange={(e) => setData('cantidad', e.target.value)}
-                                    className="mt-1 block w-full"
-                                />
-                                <InputError message={errors.cantidad} className="mt-2" />
+                                <div className="mt-1 text-right text-xs text-gray-400">{data.notas_adicionales.length}/512</div>
+                                <InputError message={errors.notas_adicionales} className="mt-1" />
                             </div>
 
                             <div className="flex items-center gap-4">
