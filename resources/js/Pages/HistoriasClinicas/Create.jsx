@@ -1,4 +1,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import DatePickerInput from '@/Components/DatePickerInput';
+import EstadoBadge from '@/Components/EstadoBadge';
+import FieldActions from '@/Components/FieldActions';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -15,6 +18,14 @@ function formatDireccion(dir) {
     return `${dir.calle} ${dir.numero_exterior}, ${dir.colonia}, ${dir.municipio?.nombre ?? ''}`;
 }
 
+const porNombre = (a, b) => a.nombre.localeCompare(b.nombre);
+
+/** Sustituye un registro editado dentro de su lista local. */
+const reemplazar = (lista, item) => lista.map((x) => (x.id === item.id ? item : x));
+
+/** Quita un registro eliminado de su lista local. */
+const quitar = (lista, id) => lista.filter((x) => x.id !== id);
+
 function Modal({ title, onClose, children }) {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
@@ -29,19 +40,22 @@ function Modal({ title, onClose, children }) {
     );
 }
 
-export default function Create({ propietarios: initPropietarios, direcciones: initDirecciones, especies: initEspecies, razas: initRazas, estados, municipios, pruebas: initPruebas, tipos_muestra: initTiposMuestra }) {
-    const [propietarios, setPropietarios] = useState(initPropietarios);
-    const [direcciones, setDirecciones]   = useState(initDirecciones);
-    const [especies, setEspecies]         = useState(initEspecies);
-    const [razas, setRazas]               = useState(initRazas);
-    const [tiposMuestra, setTiposMuestra] = useState(initTiposMuestra);
-    const [pruebas, setPruebas]           = useState(initPruebas);
+export default function Create({ propietarios: initPropietarios, direcciones: initDirecciones, explotaciones: initExplotaciones, especies: initEspecies, razas: initRazas, estados, municipios, pruebas: initPruebas, tipos_muestra: initTiposMuestra, funciones_zootecnicas: initFunciones, preguntas = [] }) {
+    const [propietarios, setPropietarios]   = useState(initPropietarios);
+    const [direcciones, setDirecciones]     = useState(initDirecciones);
+    const [explotaciones, setExplotaciones] = useState(initExplotaciones);
+    const [especies, setEspecies]           = useState(initEspecies);
+    const [razas, setRazas]                 = useState(initRazas);
+    const [tiposMuestra, setTiposMuestra]   = useState(initTiposMuestra);
+    const [pruebas, setPruebas]             = useState(initPruebas);
+    const [funciones, setFunciones]         = useState(initFunciones);
 
     /* ── Main form ── */
     const { data, setData, post, processing, errors } = useForm({
         propietario_id:  '',
         direccion_id:    '',
-        fecha_recepcion: new Date().toISOString().slice(0, 10),
+        explotacion_id:  '',
+        fecha_recepcion: new Date().toLocaleDateString('sv').replace(/-/g, '/'),
         fecha_muestra:   '',
         especie_id:      '',
         raza_id:         '',
@@ -51,19 +65,32 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
         animales_explotacion:   '',
         animales_muertos:       '',
         animales_enfermos:      '',
+        funcion_zootecnica_id:  '',
         notas_adicionales:      '',
         muestras:        [{ ...MUESTRA_VACIA }],
+        // { [pregunta_id]: respuesta } — se envía junto con la historia.
+        respuestas:      {},
     });
 
     const direccionesPropietario = direcciones.filter(
         (d) => String(d.propietario_id) === String(data.propietario_id),
     );
+    const explotacionesPropietario = explotaciones.filter(
+        (e) => String(e.propietario_id) === String(data.propietario_id),
+    );
     const razasFiltradas = razas.filter(
         (r) => String(r.especie_id) === String(data.especie_id),
     );
+    const funcionesFiltradas = funciones.filter(
+        (f) => String(f.especie_id) === String(data.especie_id),
+    );
+
+    // Registros seleccionados dentro de cada muestra (para editar/eliminar en línea).
+    const pruebaPorId = (id) => pruebas.find((p) => String(p.id) === String(id));
+    const tipoPorId   = (id) => tiposMuestra.find((t) => String(t.id) === String(id));
 
     function onPropietarioChange(id) {
-        setData((prev) => ({ ...prev, propietario_id: id, direccion_id: '' }));
+        setData((prev) => ({ ...prev, propietario_id: id, direccion_id: '', explotacion_id: '' }));
     }
 
     function onEspecieChange(id) {
@@ -71,6 +98,7 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
             ...prev,
             especie_id: id,
             raza_id: '',
+            funcion_zootecnica_id: '',
             muestras: prev.muestras.map(() => ({ ...MUESTRA_VACIA })),
         }));
     }
@@ -104,14 +132,49 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
         post(route('historias-clinicas.store'));
     }
 
+    /* ── Eliminación de registros de catálogo ── */
+    const [errorEliminar, setErrorEliminar] = useState('');
+
+    /**
+     * Pide confirmación y elimina. El backend responde 409 con el motivo cuando
+     * el registro sigue referenciado.
+     */
+    async function eliminarRegistro(routeName, id, confirmacion, alEliminar) {
+        if (!window.confirm(confirmacion)) return;
+        setErrorEliminar('');
+        try {
+            await axios.delete(route(routeName, id));
+            alEliminar();
+        } catch (err) {
+            setErrorEliminar(err.response?.data?.message ?? 'No se pudo eliminar el registro.');
+        }
+    }
+
+    /* ── Cuestionario modal ── */
+    const [showCuestionario, setShowCuestionario] = useState(false);
+
+    const respuestasContestadas = preguntas.filter(
+        (p) => String(data.respuestas[p.id] ?? '').trim() !== '',
+    ).length;
+
+    function setRespuesta(preguntaId, valor) {
+        setData('respuestas', { ...data.respuestas, [preguntaId]: valor });
+    }
+
     /* ── Propietario modal ── */
     const [showPropModal, setShowPropModal] = useState(false);
-    const [propForm, setPropForm]           = useState({ nombre: '', apellidos: '', curp: '', rfc: '' });
+    const [propEditId, setPropEditId]       = useState(null);
+    const [propForm, setPropForm]           = useState({ nombre: '', apellidos: '', curp: '', rfc: '', telefono: '' });
     const [propErrors, setPropErrors]       = useState({});
     const [propSaving, setPropSaving]       = useState(false);
 
-    function openPropModal() {
-        setPropForm({ nombre: '', apellidos: '', curp: '', rfc: '' });
+    const propietarioSel = propietarios.find((p) => String(p.id) === String(data.propietario_id));
+
+    function openPropModal(propietario = null) {
+        setPropEditId(propietario?.id ?? null);
+        setPropForm(propietario
+            ? { nombre: propietario.nombre, apellidos: propietario.apellidos, curp: propietario.curp ?? '', rfc: propietario.rfc ?? '', telefono: propietario.telefono ?? '' }
+            : { nombre: '', apellidos: '', curp: '', rfc: '', telefono: '' });
         setPropErrors({});
         setShowPropModal(true);
     }
@@ -121,9 +184,14 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
         setPropSaving(true);
         setPropErrors({});
         try {
-            const { data: nuevo } = await axios.post(route('historias-clinicas.store-propietario'), propForm);
-            setPropietarios((prev) => [...prev, nuevo].sort((a, b) => a.apellidos.localeCompare(b.apellidos)));
-            setData((prev) => ({ ...prev, propietario_id: String(nuevo.id), direccion_id: '' }));
+            if (propEditId) {
+                const { data: editado } = await axios.patch(route('historias-clinicas.update-propietario', propEditId), propForm);
+                setPropietarios((prev) => reemplazar(prev, editado));
+            } else {
+                const { data: nuevo } = await axios.post(route('historias-clinicas.store-propietario'), propForm);
+                setPropietarios((prev) => [...prev, nuevo].sort((a, b) => a.apellidos.localeCompare(b.apellidos)));
+                setData((prev) => ({ ...prev, propietario_id: String(nuevo.id), direccion_id: '' }));
+            }
             setShowPropModal(false);
         } catch (err) {
             if (err.response?.status === 422) setPropErrors(err.response.data.errors);
@@ -132,16 +200,32 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
         }
     }
 
+    function eliminarPropietario() {
+        eliminarRegistro(
+            'historias-clinicas.destroy-propietario',
+            data.propietario_id,
+            `¿Eliminar al propietario "${propietarioSel?.nombre} ${propietarioSel?.apellidos}"? Esta acción no se puede deshacer.`,
+            () => {
+                const id = Number(data.propietario_id);
+                setPropietarios((prev) => quitar(prev, id));
+                setDirecciones((prev) => prev.filter((d) => Number(d.propietario_id) !== id));
+                setData((prev) => ({ ...prev, propietario_id: '', direccion_id: '' }));
+            },
+        );
+    }
+
     /* ── Prueba (análisis) modal ── */
     const [showPruebaModal, setShowPruebaModal] = useState(false);
     const [pruebaModalIdx, setPruebaModalIdx]   = useState(0);
-    const [pruebaForm, setPruebaForm]           = useState({ clave: '', nombre: '' });
+    const [pruebaEditId, setPruebaEditId]       = useState(null);
+    const [pruebaForm, setPruebaForm]           = useState({ nombre: '' });
     const [pruebaErrors, setPruebaErrors]       = useState({});
     const [pruebaSaving, setPruebaSaving]       = useState(false);
 
-    function openPruebaModal(muestraIndex) {
+    function openPruebaModal(muestraIndex, prueba = null) {
         setPruebaModalIdx(muestraIndex);
-        setPruebaForm({ clave: '', nombre: '' });
+        setPruebaEditId(prueba?.id ?? null);
+        setPruebaForm({ nombre: prueba?.nombre ?? '' });
         setPruebaErrors({});
         setShowPruebaModal(true);
     }
@@ -151,10 +235,15 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
         setPruebaSaving(true);
         setPruebaErrors({});
         try {
-            const payload = { ...pruebaForm, especie_id: data.especie_id };
-            const { data: nueva } = await axios.post(route('historias-clinicas.store-prueba'), payload);
-            setPruebas((prev) => [...prev, nueva].sort((a, b) => a.nombre.localeCompare(b.nombre)));
-            updateMuestra(pruebaModalIdx, 'prueba_id', String(nueva.id));
+            if (pruebaEditId) {
+                const { data: editada } = await axios.patch(route('historias-clinicas.update-prueba', pruebaEditId), pruebaForm);
+                setPruebas((prev) => reemplazar(prev, editada).sort(porNombre));
+            } else {
+                const payload = { ...pruebaForm, especie_id: data.especie_id };
+                const { data: nueva } = await axios.post(route('historias-clinicas.store-prueba'), payload);
+                setPruebas((prev) => [...prev, nueva].sort(porNombre));
+                updateMuestra(pruebaModalIdx, 'prueba_id', String(nueva.id));
+            }
             setShowPruebaModal(false);
         } catch (err) {
             if (err.response?.status === 422) setPruebaErrors(err.response.data.errors);
@@ -163,14 +252,31 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
         }
     }
 
+    function eliminarPrueba(muestraIndex, prueba) {
+        eliminarRegistro(
+            'historias-clinicas.destroy-prueba',
+            prueba.id,
+            `¿Eliminar el análisis "${prueba.nombre}"? También se eliminarán sus tipos de muestra.`,
+            () => {
+                setPruebas((prev) => quitar(prev, prueba.id));
+                setTiposMuestra((prev) => prev.filter((t) => Number(t.prueba_id) !== Number(prueba.id)));
+                updateMuestra(muestraIndex, 'prueba_id', '');
+            },
+        );
+    }
+
     /* ── Especie modal ── */
     const [showEspModal, setShowEspModal] = useState(false);
+    const [espEditId, setEspEditId]       = useState(null);
     const [espForm, setEspForm]           = useState({ nombre: '' });
     const [espErrors, setEspErrors]       = useState({});
     const [espSaving, setEspSaving]       = useState(false);
 
-    function openEspModal() {
-        setEspForm({ nombre: '' });
+    const especieSel = especies.find((e) => String(e.id) === String(data.especie_id));
+
+    function openEspModal(especie = null) {
+        setEspEditId(especie?.id ?? null);
+        setEspForm({ nombre: especie?.nombre ?? '' });
         setEspErrors({});
         setShowEspModal(true);
     }
@@ -180,9 +286,14 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
         setEspSaving(true);
         setEspErrors({});
         try {
-            const { data: nueva } = await axios.post(route('historias-clinicas.store-especie'), espForm);
-            setEspecies((prev) => [...prev, nueva].sort((a, b) => a.nombre.localeCompare(b.nombre)));
-            setData((prev) => ({ ...prev, especie_id: String(nueva.id), raza_id: '' }));
+            if (espEditId) {
+                const { data: editada } = await axios.patch(route('historias-clinicas.update-especie', espEditId), espForm);
+                setEspecies((prev) => reemplazar(prev, editada).sort(porNombre));
+            } else {
+                const { data: nueva } = await axios.post(route('historias-clinicas.store-especie'), espForm);
+                setEspecies((prev) => [...prev, nueva].sort(porNombre));
+                setData((prev) => ({ ...prev, especie_id: String(nueva.id), raza_id: '' }));
+            }
             setShowEspModal(false);
         } catch (err) {
             if (err.response?.status === 422) setEspErrors(err.response.data.errors);
@@ -191,14 +302,30 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
         }
     }
 
+    function eliminarEspecie() {
+        eliminarRegistro(
+            'historias-clinicas.destroy-especie',
+            data.especie_id,
+            `¿Eliminar la especie "${especieSel?.nombre}"? Esta acción no se puede deshacer.`,
+            () => {
+                setEspecies((prev) => quitar(prev, Number(data.especie_id)));
+                onEspecieChange('');
+            },
+        );
+    }
+
     /* ── Raza modal ── */
     const [showRazaModal, setShowRazaModal] = useState(false);
+    const [razaEditId, setRazaEditId]       = useState(null);
     const [razaForm, setRazaForm]           = useState({ nombre: '' });
     const [razaErrors, setRazaErrors]       = useState({});
     const [razaSaving, setRazaSaving]       = useState(false);
 
-    function openRazaModal() {
-        setRazaForm({ nombre: '' });
+    const razaSel = razas.find((r) => String(r.id) === String(data.raza_id));
+
+    function openRazaModal(raza = null) {
+        setRazaEditId(raza?.id ?? null);
+        setRazaForm({ nombre: raza?.nombre ?? '' });
         setRazaErrors({});
         setShowRazaModal(true);
     }
@@ -208,10 +335,15 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
         setRazaSaving(true);
         setRazaErrors({});
         try {
-            const payload = { nombre: razaForm.nombre, especie_id: data.especie_id };
-            const { data: nueva } = await axios.post(route('historias-clinicas.store-raza'), payload);
-            setRazas((prev) => [...prev, nueva].sort((a, b) => a.nombre.localeCompare(b.nombre)));
-            setData((prev) => ({ ...prev, raza_id: String(nueva.id) }));
+            if (razaEditId) {
+                const { data: editada } = await axios.patch(route('historias-clinicas.update-raza', razaEditId), razaForm);
+                setRazas((prev) => reemplazar(prev, editada).sort(porNombre));
+            } else {
+                const payload = { nombre: razaForm.nombre, especie_id: data.especie_id };
+                const { data: nueva } = await axios.post(route('historias-clinicas.store-raza'), payload);
+                setRazas((prev) => [...prev, nueva].sort(porNombre));
+                setData((prev) => ({ ...prev, raza_id: String(nueva.id) }));
+            }
             setShowRazaModal(false);
         } catch (err) {
             if (err.response?.status === 422) setRazaErrors(err.response.data.errors);
@@ -220,16 +352,80 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
         }
     }
 
+    function eliminarRaza() {
+        eliminarRegistro(
+            'historias-clinicas.destroy-raza',
+            data.raza_id,
+            `¿Eliminar la raza "${razaSel?.nombre}"? Esta acción no se puede deshacer.`,
+            () => {
+                setRazas((prev) => quitar(prev, Number(data.raza_id)));
+                setData((prev) => ({ ...prev, raza_id: '' }));
+            },
+        );
+    }
+
+    /* ── Función zootécnica modal ── */
+    const [showFuncModal, setShowFuncModal] = useState(false);
+    const [funcEditId, setFuncEditId]       = useState(null);
+    const [funcForm, setFuncForm]           = useState({ nombre: '' });
+    const [funcErrors, setFuncErrors]       = useState({});
+    const [funcSaving, setFuncSaving]       = useState(false);
+
+    const funcionSel = funciones.find((f) => String(f.id) === String(data.funcion_zootecnica_id));
+
+    function openFuncModal(funcion = null) {
+        setFuncEditId(funcion?.id ?? null);
+        setFuncForm({ nombre: funcion?.nombre ?? '' });
+        setFuncErrors({});
+        setShowFuncModal(true);
+    }
+
+    async function submitFuncion(e) {
+        e.preventDefault();
+        setFuncSaving(true);
+        setFuncErrors({});
+        try {
+            if (funcEditId) {
+                const { data: editada } = await axios.patch(route('historias-clinicas.update-funcion-zootecnica', funcEditId), funcForm);
+                setFunciones((prev) => reemplazar(prev, editada).sort(porNombre));
+            } else {
+                const payload = { ...funcForm, especie_id: data.especie_id };
+                const { data: nueva } = await axios.post(route('historias-clinicas.store-funcion-zootecnica'), payload);
+                setFunciones((prev) => [...prev, nueva].sort(porNombre));
+                setData((prev) => ({ ...prev, funcion_zootecnica_id: String(nueva.id) }));
+            }
+            setShowFuncModal(false);
+        } catch (err) {
+            if (err.response?.status === 422) setFuncErrors(err.response.data.errors);
+        } finally {
+            setFuncSaving(false);
+        }
+    }
+
+    function eliminarFuncion() {
+        eliminarRegistro(
+            'historias-clinicas.destroy-funcion-zootecnica',
+            data.funcion_zootecnica_id,
+            `¿Eliminar la función zootécnica "${funcionSel?.nombre}"? Esta acción no se puede deshacer.`,
+            () => {
+                setFunciones((prev) => quitar(prev, Number(data.funcion_zootecnica_id)));
+                setData((prev) => ({ ...prev, funcion_zootecnica_id: '' }));
+            },
+        );
+    }
+
     /* ── Tipo de muestra modal ── */
     const [showTipoModal, setShowTipoModal]   = useState(false);
     const [tipoModalCtx, setTipoModalCtx]     = useState({ prueba_id: '', muestraIndex: 0 });
+    const [tipoEditId, setTipoEditId]         = useState(null);
     const [tipoForm, setTipoForm]             = useState({ nombre: '' });
     const [tipoErrors, setTipoErrors]         = useState({});
     const [tipoSaving, setTipoSaving]         = useState(false);
 
-    function openTipoModal(muestraIndex, prueba_id) {
+    function openTipoModal(muestraIndex, prueba_id, tipo = null) {
         setTipoModalCtx({ prueba_id, muestraIndex });
-        setTipoForm({ nombre: '' });
+        setTipoEditId(tipo?.id ?? null);
+        setTipoForm({ nombre: tipo?.nombre ?? '' });
         setTipoErrors({});
         setShowTipoModal(true);
     }
@@ -239,10 +435,15 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
         setTipoSaving(true);
         setTipoErrors({});
         try {
-            const payload = { nombre: tipoForm.nombre, prueba_id: tipoModalCtx.prueba_id };
-            const { data: nuevo } = await axios.post(route('historias-clinicas.store-tipo-muestra'), payload);
-            setTiposMuestra((prev) => [...prev, nuevo].sort((a, b) => a.nombre.localeCompare(b.nombre)));
-            updateMuestra(tipoModalCtx.muestraIndex, 'tipo_muestra_id', String(nuevo.id));
+            if (tipoEditId) {
+                const { data: editado } = await axios.patch(route('historias-clinicas.update-tipo-muestra', tipoEditId), tipoForm);
+                setTiposMuestra((prev) => reemplazar(prev, editado).sort(porNombre));
+            } else {
+                const payload = { nombre: tipoForm.nombre, prueba_id: tipoModalCtx.prueba_id };
+                const { data: nuevo } = await axios.post(route('historias-clinicas.store-tipo-muestra'), payload);
+                setTiposMuestra((prev) => [...prev, nuevo].sort(porNombre));
+                updateMuestra(tipoModalCtx.muestraIndex, 'tipo_muestra_id', String(nuevo.id));
+            }
             setShowTipoModal(false);
         } catch (err) {
             if (err.response?.status === 422) setTipoErrors(err.response.data.errors);
@@ -251,21 +452,52 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
         }
     }
 
+    function eliminarTipoMuestra(muestraIndex, tipo) {
+        eliminarRegistro(
+            'historias-clinicas.destroy-tipo-muestra',
+            tipo.id,
+            `¿Eliminar el tipo de muestra "${tipo.nombre}"? Esta acción no se puede deshacer.`,
+            () => {
+                setTiposMuestra((prev) => quitar(prev, tipo.id));
+                updateMuestra(muestraIndex, 'tipo_muestra_id', '');
+            },
+        );
+    }
+
     /* ── Dirección modal ── */
     const jalisco       = estados.find((e) => e.nombre === 'Jalisco');
     const estadoDefault = jalisco ? String(jalisco.id) : '';
 
+    const DIR_VACIA = { calle: '', numero_exterior: '', numero_interior: '', colonia: '', estado_id: estadoDefault, municipio_id: '', codigo_postal: '', caseta: '', lote: '', parvada: '' };
+
     const [showDirModal, setShowDirModal] = useState(false);
-    const [dirForm, setDirForm]           = useState({ calle: '', numero_exterior: '', numero_interior: '', colonia: '', estado_id: estadoDefault, municipio_id: '', codigo_postal: '' });
+    const [dirEditId, setDirEditId]       = useState(null);
+    const [dirForm, setDirForm]           = useState(DIR_VACIA);
     const [dirErrors, setDirErrors]       = useState({});
     const [dirSaving, setDirSaving]       = useState(false);
+
+    const direccionSel = direcciones.find((d) => String(d.id) === String(data.direccion_id));
 
     const municipiosFiltrados = municipios.filter(
         (m) => String(m.estado_id) === String(dirForm.estado_id),
     );
 
-    function openDirModal() {
-        setDirForm({ calle: '', numero_exterior: '', numero_interior: '', colonia: '', estado_id: estadoDefault, municipio_id: '', codigo_postal: '' });
+    function openDirModal(direccion = null) {
+        setDirEditId(direccion?.id ?? null);
+        setDirForm(direccion
+            ? {
+                calle:           direccion.calle ?? '',
+                numero_exterior: direccion.numero_exterior ?? '',
+                numero_interior: direccion.numero_interior ?? '',
+                colonia:         direccion.colonia ?? '',
+                estado_id:       direccion.municipio?.estado_id ? String(direccion.municipio.estado_id) : estadoDefault,
+                municipio_id:    direccion.municipio_id ? String(direccion.municipio_id) : '',
+                codigo_postal:   direccion.codigo_postal ?? '',
+                caseta:          direccion.caseta ?? '',
+                lote:            direccion.lote ?? '',
+                parvada:         direccion.parvada ?? '',
+            }
+            : DIR_VACIA);
         setDirErrors({});
         setShowDirModal(true);
     }
@@ -279,16 +511,103 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
         setDirSaving(true);
         setDirErrors({});
         try {
-            const payload = { ...dirForm, propietario_id: data.propietario_id };
-            const { data: nueva } = await axios.post(route('historias-clinicas.store-direccion'), payload);
-            setDirecciones((prev) => [...prev, nueva]);
-            setData((prev) => ({ ...prev, direccion_id: String(nueva.id) }));
+            if (dirEditId) {
+                const { data: editada } = await axios.patch(route('historias-clinicas.update-direccion', dirEditId), dirForm);
+                setDirecciones((prev) => reemplazar(prev, editada));
+            } else {
+                const payload = { ...dirForm, propietario_id: data.propietario_id };
+                const { data: nueva } = await axios.post(route('historias-clinicas.store-direccion'), payload);
+                setDirecciones((prev) => [...prev, nueva]);
+                setData((prev) => ({ ...prev, direccion_id: String(nueva.id) }));
+            }
             setShowDirModal(false);
         } catch (err) {
             if (err.response?.status === 422) setDirErrors(err.response.data.errors);
         } finally {
             setDirSaving(false);
         }
+    }
+
+    function eliminarDireccion() {
+        eliminarRegistro(
+            'historias-clinicas.destroy-direccion',
+            data.direccion_id,
+            `¿Eliminar la dirección "${direccionSel ? formatDireccion(direccionSel) : ''}"? Esta acción no se puede deshacer.`,
+            () => {
+                setDirecciones((prev) => quitar(prev, Number(data.direccion_id)));
+                setData((prev) => ({ ...prev, direccion_id: '' }));
+            },
+        );
+    }
+
+    /* ── Explotación modal ── */
+    const EXPL_VACIA = { nombre: '', direccion: '', estado_id: estadoDefault, municipio_id: '', caseta: '', lote: '', parvada: '' };
+
+    const [showExplModal, setShowExplModal] = useState(false);
+    const [explEditId, setExplEditId]       = useState(null);
+    const [explForm, setExplForm]           = useState(EXPL_VACIA);
+    const [explErrors, setExplErrors]       = useState({});
+    const [explSaving, setExplSaving]       = useState(false);
+
+    const explotacionSel = explotaciones.find((e) => String(e.id) === String(data.explotacion_id));
+
+    const municipiosFiltradosExpl = municipios.filter(
+        (m) => String(m.estado_id) === String(explForm.estado_id),
+    );
+
+    function openExplModal(expl = null) {
+        setExplEditId(expl?.id ?? null);
+        setExplForm(expl
+            ? {
+                nombre:       expl.nombre ?? '',
+                direccion:    expl.direccion ?? '',
+                estado_id:    expl.estado_id ? String(expl.estado_id) : estadoDefault,
+                municipio_id: expl.municipio_id ? String(expl.municipio_id) : '',
+                caseta:       expl.caseta ?? '',
+                lote:         expl.lote ?? '',
+                parvada:      expl.parvada ?? '',
+            }
+            : EXPL_VACIA);
+        setExplErrors({});
+        setShowExplModal(true);
+    }
+
+    function onExplEstadoChange(val) {
+        setExplForm((prev) => ({ ...prev, estado_id: val, municipio_id: '' }));
+    }
+
+    async function submitExplotacion(e) {
+        e.preventDefault();
+        setExplSaving(true);
+        setExplErrors({});
+        try {
+            if (explEditId) {
+                const { data: editada } = await axios.patch(route('historias-clinicas.update-explotacion', explEditId), explForm);
+                setExplotaciones((prev) => reemplazar(prev, editada));
+            } else {
+                const payload = { ...explForm, propietario_id: data.propietario_id };
+                const { data: nueva } = await axios.post(route('historias-clinicas.store-explotacion'), payload);
+                setExplotaciones((prev) => [...prev, nueva]);
+                setData((prev) => ({ ...prev, explotacion_id: String(nueva.id) }));
+            }
+            setShowExplModal(false);
+        } catch (err) {
+            if (err.response?.status === 422) setExplErrors(err.response.data.errors);
+        } finally {
+            setExplSaving(false);
+        }
+    }
+
+    function eliminarExplotacion() {
+        eliminarRegistro(
+            'historias-clinicas.destroy-explotacion',
+            data.explotacion_id,
+            `¿Eliminar la explotación "${explotacionSel?.nombre ?? ''}"? Esta acción no se puede deshacer.`,
+            () => {
+                setExplotaciones((prev) => quitar(prev, Number(data.explotacion_id)));
+                setData((prev) => ({ ...prev, explotacion_id: '' }));
+            },
+        );
     }
 
     return (
@@ -301,9 +620,31 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
         >
             <Head title="Nueva historia clínica" />
 
+            {/* ── Función zootécnica modal ── */}
+            {showFuncModal && (
+                <Modal title={funcEditId ? 'Editar función zootécnica' : 'Nueva función zootécnica'} onClose={() => setShowFuncModal(false)}>
+                    <form onSubmit={submitFuncion} className="space-y-4">
+                        <div>
+                            <InputLabel value="Nombre" />
+                            <TextInput
+                                value={funcForm.nombre}
+                                onChange={(e) => setFuncForm({ nombre: e.target.value })}
+                                className="mt-1 block w-full"
+                                autoFocus
+                            />
+                            {funcErrors.nombre && <p className="mt-1 text-sm text-red-600">{funcErrors.nombre[0]}</p>}
+                        </div>
+                        <div className="flex justify-end gap-3 pt-2">
+                            <button type="button" onClick={() => setShowFuncModal(false)} className="text-sm text-gray-600 hover:text-gray-900">Cancelar</button>
+                            <PrimaryButton disabled={funcSaving}>Guardar</PrimaryButton>
+                        </div>
+                    </form>
+                </Modal>
+            )}
+
             {/* ── Tipo de muestra modal ── */}
             {showTipoModal && (
-                <Modal title="Nuevo tipo de muestra" onClose={() => setShowTipoModal(false)}>
+                <Modal title={tipoEditId ? 'Editar tipo de muestra' : 'Nuevo tipo de muestra'} onClose={() => setShowTipoModal(false)}>
                     <form onSubmit={submitTipoMuestra} className="space-y-4">
                         <div>
                             <InputLabel value="Nombre" />
@@ -325,24 +666,15 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
 
             {/* ── Prueba modal ── */}
             {showPruebaModal && (
-                <Modal title="Nuevo análisis" onClose={() => setShowPruebaModal(false)}>
+                <Modal title={pruebaEditId ? 'Editar análisis' : 'Nuevo análisis'} onClose={() => setShowPruebaModal(false)}>
                     <form onSubmit={submitPrueba} className="space-y-4">
-                        <div>
-                            <InputLabel value="Clave" />
-                            <TextInput
-                                value={pruebaForm.clave}
-                                onChange={(e) => setPruebaForm((p) => ({ ...p, clave: e.target.value }))}
-                                className="mt-1 block w-full"
-                                autoFocus
-                            />
-                            {pruebaErrors.clave && <p className="mt-1 text-sm text-red-600">{pruebaErrors.clave[0]}</p>}
-                        </div>
                         <div>
                             <InputLabel value="Nombre" />
                             <TextInput
                                 value={pruebaForm.nombre}
                                 onChange={(e) => setPruebaForm((p) => ({ ...p, nombre: e.target.value }))}
                                 className="mt-1 block w-full"
+                                autoFocus
                             />
                             {pruebaErrors.nombre && <p className="mt-1 text-sm text-red-600">{pruebaErrors.nombre[0]}</p>}
                         </div>
@@ -356,7 +688,7 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
 
             {/* ── Especie modal ── */}
             {showEspModal && (
-                <Modal title="Nueva especie" onClose={() => setShowEspModal(false)}>
+                <Modal title={espEditId ? 'Editar especie' : 'Nueva especie'} onClose={() => setShowEspModal(false)}>
                     <form onSubmit={submitEspecie} className="space-y-4">
                         <div>
                             <InputLabel value="Nombre" />
@@ -378,7 +710,7 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
 
             {/* ── Raza modal ── */}
             {showRazaModal && (
-                <Modal title="Nueva raza" onClose={() => setShowRazaModal(false)}>
+                <Modal title={razaEditId ? 'Editar raza' : 'Nueva raza'} onClose={() => setShowRazaModal(false)}>
                     <form onSubmit={submitRaza} className="space-y-4">
                         <div>
                             <InputLabel value="Nombre" />
@@ -398,9 +730,68 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
                 </Modal>
             )}
 
+            {/* ── Cuestionario modal ── */}
+            {showCuestionario && (
+                <Modal title="Cuestionario" onClose={() => setShowCuestionario(false)}>
+                    {preguntas.length === 0 ? (
+                        <p className="text-sm text-gray-500">
+                            No hay preguntas activas. Se administran en Historias Clínicas → Cuestionario.
+                        </p>
+                    ) : (
+                        <div className="max-h-[60vh] space-y-4 overflow-y-auto pr-1">
+                            {preguntas.map((pregunta) => (
+                                <div key={pregunta.id}>
+                                    <InputLabel value={pregunta.texto} />
+                                    {pregunta.tipo === 'si_no' ? (
+                                        <select
+                                            value={data.respuestas[pregunta.id] ?? ''}
+                                            onChange={(e) => setRespuesta(pregunta.id, e.target.value)}
+                                            className={selectClass}
+                                        >
+                                            <option value="">— Sin respuesta —</option>
+                                            <option value="Sí">Sí</option>
+                                            <option value="No">No</option>
+                                        </select>
+                                    ) : pregunta.tipo === 'numero' ? (
+                                        <TextInput
+                                            type="number"
+                                            min="0"
+                                            step="any"
+                                            value={data.respuestas[pregunta.id] ?? ''}
+                                            onChange={(e) => setRespuesta(pregunta.id, e.target.value)}
+                                            className="mt-1 block w-full"
+                                        />
+                                    ) : (
+                                        <textarea
+                                            value={data.respuestas[pregunta.id] ?? ''}
+                                            onChange={(e) => setRespuesta(pregunta.id, e.target.value)}
+                                            rows={2}
+                                            maxLength={2000}
+                                            className="mt-1 block w-full rounded-md border-gray-300 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                        />
+                                    )}
+                                    {errors[`respuestas.${pregunta.id}`] && (
+                                        <p className="mt-1 text-sm text-red-600">{errors[`respuestas.${pregunta.id}`]}</p>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                    <div className="flex justify-end gap-3 pt-4">
+                        <button
+                            type="button"
+                            onClick={() => setShowCuestionario(false)}
+                            className="rounded-md bg-brand px-4 py-2 text-sm text-white hover:bg-brand-hover"
+                        >
+                            Listo
+                        </button>
+                    </div>
+                </Modal>
+            )}
+
             {/* ── Propietario modal ── */}
             {showPropModal && (
-                <Modal title="Nuevo propietario" onClose={() => setShowPropModal(false)}>
+                <Modal title={propEditId ? 'Editar propietario' : 'Nuevo propietario'} onClose={() => setShowPropModal(false)}>
                     <form onSubmit={submitPropietario} className="space-y-4">
                         <div>
                             <InputLabel value="Nombre" />
@@ -422,12 +813,25 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
                             {propErrors.apellidos && <p className="mt-1 text-sm text-red-600">{propErrors.apellidos[0]}</p>}
                         </div>
                         <div>
+                            <InputLabel value="Teléfono" />
+                            <TextInput
+                                value={propForm.telefono}
+                                onChange={(e) => setPropForm((p) => ({ ...p, telefono: e.target.value.replace(/\D/g, '') }))}
+                                className="mt-1 block w-full"
+                                inputMode="numeric"
+                                maxLength={10}
+                                placeholder="Opcional — 10 dígitos"
+                            />
+                            {propErrors.telefono && <p className="mt-1 text-sm text-red-600">{propErrors.telefono[0]}</p>}
+                        </div>
+                        <div>
                             <InputLabel value="CURP" />
                             <TextInput
                                 value={propForm.curp}
                                 onChange={(e) => setPropForm((p) => ({ ...p, curp: e.target.value.toUpperCase() }))}
                                 className="mt-1 block w-full font-mono uppercase"
                                 maxLength={18}
+                                placeholder="Opcional"
                             />
                             {propErrors.curp && <p className="mt-1 text-sm text-red-600">{propErrors.curp[0]}</p>}
                         </div>
@@ -438,6 +842,7 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
                                 onChange={(e) => setPropForm((p) => ({ ...p, rfc: e.target.value.toUpperCase() }))}
                                 className="mt-1 block w-full font-mono uppercase"
                                 maxLength={13}
+                                placeholder="Opcional"
                             />
                             {propErrors.rfc && <p className="mt-1 text-sm text-red-600">{propErrors.rfc[0]}</p>}
                         </div>
@@ -451,7 +856,7 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
 
             {/* ── Dirección modal ── */}
             {showDirModal && (
-                <Modal title="Nueva dirección" onClose={() => setShowDirModal(false)}>
+                <Modal title={dirEditId ? 'Editar dirección' : 'Nueva dirección'} onClose={() => setShowDirModal(false)}>
                     <form onSubmit={submitDireccion} className="space-y-4">
                         <div>
                             <InputLabel value="Calle" />
@@ -520,9 +925,129 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
                             />
                             {dirErrors.codigo_postal && <p className="mt-1 text-sm text-red-600">{dirErrors.codigo_postal[0]}</p>}
                         </div>
+                        <div className="grid grid-cols-3 gap-3">
+                            <div>
+                                <InputLabel value="Caseta" />
+                                <TextInput
+                                    value={dirForm.caseta}
+                                    onChange={(e) => setDirForm((p) => ({ ...p, caseta: e.target.value }))}
+                                    className="mt-1 block w-full"
+                                    maxLength={50}
+                                    placeholder="Opcional"
+                                />
+                                {dirErrors.caseta && <p className="mt-1 text-sm text-red-600">{dirErrors.caseta[0]}</p>}
+                            </div>
+                            <div>
+                                <InputLabel value="Lote" />
+                                <TextInput
+                                    value={dirForm.lote}
+                                    onChange={(e) => setDirForm((p) => ({ ...p, lote: e.target.value }))}
+                                    className="mt-1 block w-full"
+                                    maxLength={50}
+                                    placeholder="Opcional"
+                                />
+                                {dirErrors.lote && <p className="mt-1 text-sm text-red-600">{dirErrors.lote[0]}</p>}
+                            </div>
+                            <div>
+                                <InputLabel value="Parvada" />
+                                <TextInput
+                                    value={dirForm.parvada}
+                                    onChange={(e) => setDirForm((p) => ({ ...p, parvada: e.target.value }))}
+                                    className="mt-1 block w-full"
+                                    maxLength={50}
+                                    placeholder="Opcional"
+                                />
+                                {dirErrors.parvada && <p className="mt-1 text-sm text-red-600">{dirErrors.parvada[0]}</p>}
+                            </div>
+                        </div>
                         <div className="flex justify-end gap-3 pt-2">
                             <button type="button" onClick={() => setShowDirModal(false)} className="text-sm text-gray-600 hover:text-gray-900">Cancelar</button>
                             <PrimaryButton disabled={dirSaving}>Guardar</PrimaryButton>
+                        </div>
+                    </form>
+                </Modal>
+            )}
+
+            {/* ── Modal: Explotación ── */}
+            {showExplModal && (
+                <Modal title={explEditId ? 'Editar explotación' : 'Nueva explotación'} onClose={() => setShowExplModal(false)}>
+                    <form onSubmit={submitExplotacion} className="space-y-4">
+                        <div>
+                            <InputLabel value="Nombre" />
+                            <TextInput
+                                value={explForm.nombre}
+                                onChange={(e) => setExplForm((p) => ({ ...p, nombre: e.target.value }))}
+                                className="mt-1 block w-full"
+                                autoFocus
+                            />
+                            {explErrors.nombre && <p className="mt-1 text-sm text-red-600">{explErrors.nombre[0]}</p>}
+                        </div>
+                        <div>
+                            <InputLabel value="Dirección" />
+                            <TextInput
+                                value={explForm.direccion}
+                                onChange={(e) => setExplForm((p) => ({ ...p, direccion: e.target.value }))}
+                                className="mt-1 block w-full"
+                                placeholder="Opcional"
+                            />
+                            {explErrors.direccion && <p className="mt-1 text-sm text-red-600">{explErrors.direccion[0]}</p>}
+                        </div>
+                        <div className="grid grid-cols-2 gap-3">
+                            <div>
+                                <InputLabel value="Estado" />
+                                <select value={explForm.estado_id} onChange={(e) => onExplEstadoChange(e.target.value)} className={selectClass}>
+                                    <option value="">— Selecciona —</option>
+                                    {estados.map((e) => <option key={e.id} value={e.id}>{e.nombre}</option>)}
+                                </select>
+                                {explErrors.estado_id && <p className="mt-1 text-sm text-red-600">{explErrors.estado_id[0]}</p>}
+                            </div>
+                            <div>
+                                <InputLabel value="Municipio" />
+                                <select value={explForm.municipio_id} onChange={(e) => setExplForm((p) => ({ ...p, municipio_id: e.target.value }))} disabled={!explForm.estado_id} className={selectClass}>
+                                    <option value="">— Selecciona —</option>
+                                    {municipiosFiltradosExpl.map((m) => <option key={m.id} value={m.id}>{m.nombre}</option>)}
+                                </select>
+                                {explErrors.municipio_id && <p className="mt-1 text-sm text-red-600">{explErrors.municipio_id[0]}</p>}
+                            </div>
+                        </div>
+                        <div className="grid grid-cols-3 gap-3">
+                            <div>
+                                <InputLabel value="Caseta" />
+                                <TextInput
+                                    value={explForm.caseta}
+                                    onChange={(e) => setExplForm((p) => ({ ...p, caseta: e.target.value }))}
+                                    className="mt-1 block w-full"
+                                    maxLength={50}
+                                    placeholder="Opcional"
+                                />
+                                {explErrors.caseta && <p className="mt-1 text-sm text-red-600">{explErrors.caseta[0]}</p>}
+                            </div>
+                            <div>
+                                <InputLabel value="Lote" />
+                                <TextInput
+                                    value={explForm.lote}
+                                    onChange={(e) => setExplForm((p) => ({ ...p, lote: e.target.value }))}
+                                    className="mt-1 block w-full"
+                                    maxLength={50}
+                                    placeholder="Opcional"
+                                />
+                                {explErrors.lote && <p className="mt-1 text-sm text-red-600">{explErrors.lote[0]}</p>}
+                            </div>
+                            <div>
+                                <InputLabel value="Parvada" />
+                                <TextInput
+                                    value={explForm.parvada}
+                                    onChange={(e) => setExplForm((p) => ({ ...p, parvada: e.target.value }))}
+                                    className="mt-1 block w-full"
+                                    maxLength={50}
+                                    placeholder="Opcional"
+                                />
+                                {explErrors.parvada && <p className="mt-1 text-sm text-red-600">{explErrors.parvada[0]}</p>}
+                            </div>
+                        </div>
+                        <div className="flex justify-end gap-3 pt-2">
+                            <button type="button" onClick={() => setShowExplModal(false)} className="text-sm text-gray-600 hover:text-gray-900">Cancelar</button>
+                            <PrimaryButton disabled={explSaving}>Guardar</PrimaryButton>
                         </div>
                     </form>
                 </Modal>
@@ -532,16 +1057,28 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
                 <div className="mx-auto max-w-2xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden bg-white p-6 shadow-sm sm:rounded-lg">
                         <form onSubmit={submit} className="space-y-6">
+                            {errorEliminar && (
+                                <div className="flex items-start justify-between gap-3 rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+                                    <span>{errorEliminar}</span>
+                                    <button
+                                        type="button"
+                                        onClick={() => setErrorEliminar('')}
+                                        className="text-red-400 hover:text-red-600"
+                                    >
+                                        ✕
+                                    </button>
+                                </div>
+                            )}
 
                             {/* Fecha de recepción */}
                             <div>
                                 <InputLabel htmlFor="fecha_recepcion" value="Fecha de recepción" />
                                 <TextInput
                                     id="fecha_recepcion"
-                                    type="date"
+                                    type="text"
                                     value={data.fecha_recepcion}
-                                    onChange={(e) => setData('fecha_recepcion', e.target.value)}
-                                    className="mt-1 block w-full"
+                                    readOnly
+                                    className="mt-1 block w-full bg-gray-100 cursor-not-allowed"
                                 />
                                 <InputError message={errors.fecha_recepcion} className="mt-2" />
                             </div>
@@ -555,12 +1092,12 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
 
                             {/* Fecha de muestra */}
                             <div>
-                                <InputLabel htmlFor="fecha_muestra" value="Fecha de muestra" />
-                                <TextInput
+                                <InputLabel htmlFor="fecha_muestra" value="Fecha de muestra" required />
+                                <DatePickerInput
                                     id="fecha_muestra"
-                                    type="date"
                                     value={data.fecha_muestra}
-                                    onChange={(e) => setData('fecha_muestra', e.target.value)}
+                                    onChange={(v) => setData('fecha_muestra', v)}
+                                    maxDate={new Date()}
                                     className="mt-1 block w-full"
                                 />
                                 <InputError message={errors.fecha_muestra} className="mt-2" />
@@ -570,7 +1107,13 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
                             <div>
                                 <div className="flex items-center justify-between">
                                     <InputLabel htmlFor="especie_id" value="Especie" />
-                                    <button type="button" onClick={openEspModal} className="text-xs text-indigo-600 hover:text-indigo-900">+ Nueva especie</button>
+                                    <FieldActions
+                                        etiqueta="especie"
+                                        seleccionado={!!data.especie_id}
+                                        onAdd={() => openEspModal()}
+                                        onEdit={() => openEspModal(especieSel)}
+                                        onDelete={eliminarEspecie}
+                                    />
                                 </div>
                                 <select
                                     id="especie_id"
@@ -590,14 +1133,14 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
                             <div>
                                 <div className="flex items-center justify-between">
                                     <InputLabel htmlFor="raza_id" value="Raza" />
-                                    <button
-                                        type="button"
-                                        onClick={openRazaModal}
+                                    <FieldActions
+                                        etiqueta="raza"
                                         disabled={!data.especie_id}
-                                        className="text-xs text-indigo-600 hover:text-indigo-900 disabled:cursor-not-allowed disabled:opacity-40"
-                                    >
-                                        + Nueva raza
-                                    </button>
+                                        seleccionado={!!data.raza_id}
+                                        onAdd={() => openRazaModal()}
+                                        onEdit={() => openRazaModal(razaSel)}
+                                        onDelete={eliminarRaza}
+                                    />
                                 </div>
                                 <select
                                     id="raza_id"
@@ -619,7 +1162,7 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
                                 {data.muestras.map((muestra, index) => (
                                     <div key={index} className="rounded-lg border border-gray-200 bg-gray-50 p-4 space-y-3">
                                         <div className="flex items-center justify-between">
-                                            <span className="text-sm font-medium text-gray-700">Muestra {index + 1}</span>
+                                            <span className="text-sm font-medium text-gray-700">Servicio de Análisis {index + 1}</span>
                                             {data.muestras.length > 1 && (
                                                 <button
                                                     type="button"
@@ -635,14 +1178,14 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
                                         <div>
                                             <div className="flex items-center justify-between">
                                                 <InputLabel value="Análisis solicitado" />
-                                                <button
-                                                    type="button"
-                                                    onClick={() => openPruebaModal(index)}
+                                                <FieldActions
+                                                    etiqueta="análisis"
                                                     disabled={!data.especie_id}
-                                                    className="text-xs text-indigo-600 hover:text-indigo-900 disabled:cursor-not-allowed disabled:opacity-40"
-                                                >
-                                                    + Nuevo análisis
-                                                </button>
+                                                    seleccionado={!!muestra.prueba_id}
+                                                    onAdd={() => openPruebaModal(index)}
+                                                    onEdit={() => openPruebaModal(index, pruebaPorId(muestra.prueba_id))}
+                                                    onDelete={() => eliminarPrueba(index, pruebaPorId(muestra.prueba_id))}
+                                                />
                                             </div>
                                             <select
                                                 value={muestra.prueba_id}
@@ -654,7 +1197,7 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
                                                 {pruebas
                                                     .filter((p) => String(p.especie_id) === String(data.especie_id))
                                                     .map((p) => (
-                                                        <option key={p.id} value={p.id}>{p.clave} – {p.nombre}</option>
+                                                        <option key={p.id} value={p.id}>{p.nombre}</option>
                                                     ))
                                                 }
                                             </select>
@@ -683,14 +1226,14 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
                                             <div>
                                                 <div className="flex items-center justify-between">
                                                     <InputLabel value="Tipo de muestra" />
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => openTipoModal(index, muestra.prueba_id)}
+                                                    <FieldActions
+                                                        etiqueta="tipo de muestra"
                                                         disabled={!muestra.prueba_id}
-                                                        className="text-xs text-indigo-600 hover:text-indigo-900 disabled:cursor-not-allowed disabled:opacity-40"
-                                                    >
-                                                        + Nuevo tipo
-                                                    </button>
+                                                        seleccionado={!!muestra.tipo_muestra_id}
+                                                        onAdd={() => openTipoModal(index, muestra.prueba_id)}
+                                                        onEdit={() => openTipoModal(index, muestra.prueba_id, tipoPorId(muestra.tipo_muestra_id))}
+                                                        onDelete={() => eliminarTipoMuestra(index, tipoPorId(muestra.tipo_muestra_id))}
+                                                    />
                                                 </div>
                                                 <select
                                                     value={muestra.tipo_muestra_id}
@@ -734,7 +1277,7 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
                                     onClick={addMuestra}
                                     className="text-sm text-indigo-600 hover:text-indigo-900"
                                 >
-                                    + Agregar muestra
+                                    + Agregar Servicio de análisis
                                 </button>
                                 {errors.muestras && (
                                     <p className="mt-1 text-sm text-red-600">{errors.muestras}</p>
@@ -752,10 +1295,10 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
                                         className={selectClass}
                                     >
                                         <option value="">— Selecciona —</option>
-                                        <option value="Macho">Macho</option>
                                         <option value="Hembra">Hembra</option>
-                                        <option value="Castrado">Castrado</option>
-                                        <option value="NR">NR</option>
+                                        <option value="Macho">Macho</option>
+                                        <option value="Ambos">Ambos</option>
+                                        <option value="NA">NA</option>
                                     </select>
                                     <InputError message={errors.sexo} className="mt-2" />
                                 </div>
@@ -839,11 +1382,52 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
                                 </div>
                             </div>
 
+                            {/* Función Zootécnica */}
+                            <div>
+                                <div className="flex items-center justify-between">
+                                    <InputLabel htmlFor="funcion_zootecnica_id" value="Función Zootécnica" required />
+                                    <FieldActions
+                                        etiqueta="función zootécnica"
+                                        disabled={!data.especie_id}
+                                        seleccionado={!!data.funcion_zootecnica_id}
+                                        onAdd={() => openFuncModal()}
+                                        onEdit={() => openFuncModal(funcionSel)}
+                                        onDelete={eliminarFuncion}
+                                    />
+                                </div>
+                                <select
+                                    id="funcion_zootecnica_id"
+                                    value={data.funcion_zootecnica_id}
+                                    onChange={(e) => setData('funcion_zootecnica_id', e.target.value)}
+                                    disabled={!data.especie_id}
+                                    className={selectClass}
+                                >
+                                    <option value="">— Selecciona —</option>
+                                    {funcionesFiltradas.map((f) => (
+                                        <option key={f.id} value={f.id}>{f.nombre}</option>
+                                    ))}
+                                </select>
+                                <InputError message={errors.funcion_zootecnica_id} className="mt-2" />
+                            </div>
+
+                            {/* ── Datos del propietario ── */}
+                            <div>
+                                <h3 className="text-base font-semibold text-gray-800 border-b border-gray-200 pb-2">
+                                    Datos del propietario
+                                </h3>
+                            </div>
+
                             {/* Propietario */}
                             <div>
                                 <div className="flex items-center justify-between">
                                     <InputLabel htmlFor="propietario_id" value="Propietario" />
-                                    <button type="button" onClick={openPropModal} className="text-xs text-indigo-600 hover:text-indigo-900">+ Nuevo propietario</button>
+                                    <FieldActions
+                                        etiqueta="propietario"
+                                        seleccionado={!!data.propietario_id}
+                                        onAdd={() => openPropModal()}
+                                        onEdit={() => openPropModal(propietarioSel)}
+                                        onDelete={eliminarPropietario}
+                                    />
                                 </div>
                                 <select
                                     id="propietario_id"
@@ -853,7 +1437,7 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
                                 >
                                     <option value="">— Selecciona un propietario —</option>
                                     {propietarios.map((p) => (
-                                        <option key={p.id} value={p.id}>{p.apellidos}, {p.nombre}</option>
+                                        <option key={p.id} value={p.id}>{p.nombre} {p.apellidos}{p.curp ? ` - ${p.curp}` : ''}</option>
                                     ))}
                                 </select>
                                 <InputError message={errors.propietario_id} className="mt-2" />
@@ -863,14 +1447,14 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
                             <div>
                                 <div className="flex items-center justify-between">
                                     <InputLabel htmlFor="direccion_id" value="Dirección" />
-                                    <button
-                                        type="button"
-                                        onClick={openDirModal}
+                                    <FieldActions
+                                        etiqueta="dirección"
                                         disabled={!data.propietario_id}
-                                        className="text-xs text-indigo-600 hover:text-indigo-900 disabled:cursor-not-allowed disabled:opacity-40"
-                                    >
-                                        + Nueva dirección
-                                    </button>
+                                        seleccionado={!!data.direccion_id}
+                                        onAdd={() => openDirModal()}
+                                        onEdit={() => openDirModal(direccionSel)}
+                                        onDelete={eliminarDireccion}
+                                    />
                                 </div>
                                 <select
                                     id="direccion_id"
@@ -885,6 +1469,33 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
                                     ))}
                                 </select>
                                 <InputError message={errors.direccion_id} className="mt-2" />
+                            </div>
+
+                            <div>
+                                <div className="flex items-center justify-between">
+                                    <InputLabel htmlFor="explotacion_id" value="Explotación" required />
+                                    <FieldActions
+                                        etiqueta="explotación"
+                                        disabled={!data.propietario_id}
+                                        seleccionado={!!data.explotacion_id}
+                                        onAdd={() => openExplModal()}
+                                        onEdit={() => openExplModal(explotacionSel)}
+                                        onDelete={eliminarExplotacion}
+                                    />
+                                </div>
+                                <select
+                                    id="explotacion_id"
+                                    value={data.explotacion_id}
+                                    onChange={(e) => setData('explotacion_id', e.target.value)}
+                                    disabled={!data.propietario_id}
+                                    className={selectClass}
+                                >
+                                    <option value="">— Selecciona una explotación —</option>
+                                    {explotacionesPropietario.map((e) => (
+                                        <option key={e.id} value={e.id}>{e.nombre}</option>
+                                    ))}
+                                </select>
+                                <InputError message={errors.explotacion_id} className="mt-2" />
                             </div>
 
                             {/* Notas adicionales */}
@@ -902,11 +1513,28 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
                                 <InputError message={errors.notas_adicionales} className="mt-1" />
                             </div>
 
+                            <div>
+                                <button
+                                    type="button"
+                                    onClick={() => setShowCuestionario(true)}
+                                    className="rounded-md border border-indigo-200 px-4 py-2 text-sm text-indigo-700 transition hover:bg-indigo-50"
+                                >
+                                    Cuestionario
+                                    {preguntas.length > 0 && (
+                                        <span className="ml-2 text-xs text-indigo-500">
+                                            {respuestasContestadas}/{preguntas.length}
+                                        </span>
+                                    )}
+                                </button>
+                            </div>
+
                             <div className="flex items-center gap-4">
                                 <PrimaryButton disabled={processing}>Crear</PrimaryButton>
                                 <Link href={route('historias-clinicas.index')} className="text-sm text-gray-600 hover:text-gray-900">
                                     Cancelar
                                 </Link>
+                                {/* Toda historia nueva nace pendiente; el sistema la mueve después. */}
+                                <EstadoBadge estado="pendiente" className="ml-auto" />
                             </div>
                         </form>
                     </div>

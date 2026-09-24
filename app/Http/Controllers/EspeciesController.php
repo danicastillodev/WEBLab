@@ -43,7 +43,7 @@ class EspeciesController extends Controller
     public function update(Request $request, Especie $especie): RedirectResponse
     {
         $validated = $request->validate([
-            'nombre' => ['required', 'string', 'max:100', 'unique:especies,nombre,' . $especie->id],
+            'nombre' => ['required', 'string', 'max:100', 'unique:especies,nombre,'.$especie->id],
         ]);
 
         $especie->update($validated);

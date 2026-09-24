@@ -1,4 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import EstadoBadge from '@/Components/EstadoBadge';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -16,7 +17,7 @@ export default function Edit({ historia, propietarios, direcciones, especies, ra
     const { data, setData, patch, processing, errors } = useForm({
         propietario_id:  String(historia.propietario_id),
         direccion_id:    String(historia.direccion_id),
-        fecha_recepcion: historia.fecha_recepcion,
+        fecha_recepcion: historia.fecha_recepcion?.replace(/-/g, '/') ?? '',
         especie_id:      String(historia.especie_id),
         raza_id:         String(historia.raza_id),
         edad_unidad:     historia.edad_unidad,
@@ -74,7 +75,7 @@ export default function Edit({ historia, propietarios, direcciones, especies, ra
                                     <option value="">— Selecciona un propietario —</option>
                                     {propietarios.map((p) => (
                                         <option key={p.id} value={p.id}>
-                                            {p.apellidos}, {p.nombre}
+                                            {p.nombre} {p.apellidos}{p.curp ? ` - ${p.curp}` : ''}
                                         </option>
                                     ))}
                                 </select>
@@ -106,10 +107,10 @@ export default function Edit({ historia, propietarios, direcciones, especies, ra
                                 <InputLabel htmlFor="fecha_recepcion" value="Fecha de recepción" />
                                 <TextInput
                                     id="fecha_recepcion"
-                                    type="date"
+                                    type="text"
                                     value={data.fecha_recepcion}
-                                    onChange={(e) => setData('fecha_recepcion', e.target.value)}
-                                    className="mt-1 block w-full"
+                                    readOnly
+                                    className="mt-1 block w-full bg-gray-100 cursor-not-allowed"
                                 />
                                 <InputError message={errors.fecha_recepcion} className="mt-2" />
                             </div>
@@ -199,6 +200,7 @@ export default function Edit({ historia, propietarios, direcciones, especies, ra
                                 >
                                     Cancelar
                                 </Link>
+                                <EstadoBadge estado={historia.estado} className="ml-auto" />
                             </div>
                         </form>
                     </div>

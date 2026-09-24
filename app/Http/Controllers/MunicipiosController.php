@@ -6,6 +6,7 @@ use App\Models\Estado;
 use App\Models\Municipio;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -30,13 +31,13 @@ class MunicipiosController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'nombre'    => ['required', 'string', 'max:150'],
+            'nombre' => ['required', 'string', 'max:150'],
             'estado_id' => ['required', 'integer', 'exists:estados,id'],
         ]);
 
         $request->validate([
             'nombre' => [
-                \Illuminate\Validation\Rule::unique('municipios')->where('estado_id', $validated['estado_id']),
+                Rule::unique('municipios')->where('estado_id', $validated['estado_id']),
             ],
         ], ['nombre.unique' => 'Ya existe ese municipio en el estado seleccionado.']);
 
@@ -49,20 +50,20 @@ class MunicipiosController extends Controller
     {
         return Inertia::render('Catalogos/Municipios/Edit', [
             'municipio' => $municipio->load('estado'),
-            'estados'   => Estado::orderBy('nombre')->get(['id', 'nombre']),
+            'estados' => Estado::orderBy('nombre')->get(['id', 'nombre']),
         ]);
     }
 
     public function update(Request $request, Municipio $municipio): RedirectResponse
     {
         $validated = $request->validate([
-            'nombre'    => ['required', 'string', 'max:150'],
+            'nombre' => ['required', 'string', 'max:150'],
             'estado_id' => ['required', 'integer', 'exists:estados,id'],
         ]);
 
         $request->validate([
             'nombre' => [
-                \Illuminate\Validation\Rule::unique('municipios')->where('estado_id', $validated['estado_id'])->ignore($municipio->id),
+                Rule::unique('municipios')->where('estado_id', $validated['estado_id'])->ignore($municipio->id),
             ],
         ], ['nombre.unique' => 'Ya existe ese municipio en el estado seleccionado.']);
 

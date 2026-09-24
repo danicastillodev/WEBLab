@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Prueba extends Model
 {
-    protected $fillable = ['clave', 'nombre', 'especie_id'];
+    protected $fillable = ['nombre', 'especie_id'];
 
     public function especie(): BelongsTo
     {

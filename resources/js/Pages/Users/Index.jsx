@@ -41,24 +41,37 @@ export default function Index({ users }) {
                             <thead className="bg-gray-50">
                                 <tr>
                                     <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Nombre</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Usuario</th>
                                     <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Correo electrónico</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Rol</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Área</th>
                                     <th className="px-6 py-3" />
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-200 bg-white">
                                 {users.data.length === 0 && (
                                     <tr>
-                                        <td colSpan={4} className="px-6 py-4 text-center text-sm text-gray-500">
+                                        <td colSpan={5} className="px-6 py-4 text-center text-sm text-gray-500">
                                             Aún no hay usuarios.
                                         </td>
                                     </tr>
                                 )}
                                 {users.data.map((user) => (
                                     <tr key={user.id}>
-                                        <td className="px-6 py-4 text-sm font-medium text-gray-900">{user.name}</td>
+                                        <td className="px-6 py-4 text-sm font-medium text-gray-900">
+                                            {user.name}
+                                            {user.es_admin ? (
+                                                <span className="ml-2 rounded-full bg-indigo-100 px-2 py-0.5 text-xs font-medium text-indigo-700">
+                                                    Administrador
+                                                </span>
+                                            ) : null}
+                                        </td>
+                                        <td className="px-6 py-4 text-sm text-gray-500">{user.username}</td>
                                         <td className="px-6 py-4 text-sm text-gray-500">{user.email}</td>
-                                        <td className="px-6 py-4 text-sm text-gray-500">{user.roles?.[0]?.name ?? '—'}</td>
+                                        <td className="px-6 py-4 text-sm text-gray-500">
+                                            {user.areas?.length
+                                                ? user.areas.map((a) => a.nombre).join(', ')
+                                                : '—'}
+                                        </td>
                                         <td className="px-6 py-4 text-right text-sm">
                                             <Link
                                                 href={route('users.edit', user.id)}

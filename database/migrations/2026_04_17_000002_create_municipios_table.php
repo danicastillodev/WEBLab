@@ -20,12 +20,12 @@ return new class extends Migration
 
         $jalisco = DB::table('estados')->where('clave', 'JAL')->first();
 
-        if (!$jalisco) {
+        if (! $jalisco) {
             return;
         }
 
         $now = now();
-        $id  = $jalisco->id;
+        $id = $jalisco->id;
 
         $municipios = [
             'Acatic', 'Acatlán de Juárez', 'Ahualulco de Mercado', 'Amacueca', 'Amatitán',
@@ -55,9 +55,9 @@ return new class extends Migration
             'Zapotitlán de Vadillo', 'Zapotlán del Rey', 'Zapotlanejo', 'San Ignacio Cerro Gordo',
         ];
 
-        $rows = array_map(fn($nombre) => [
-            'estado_id'  => $id,
-            'nombre'     => $nombre,
+        $rows = array_map(fn ($nombre) => [
+            'estado_id' => $id,
+            'nombre' => $nombre,
             'created_at' => $now,
             'updated_at' => $now,
         ], $municipios);

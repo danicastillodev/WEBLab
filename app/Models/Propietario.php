@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Propietario extends Model
 {
-    protected $fillable = ['nombre', 'apellidos', 'curp', 'rfc'];
+    protected $fillable = ['nombre', 'apellidos', 'curp', 'rfc', 'telefono'];
 
     public function direcciones(): HasMany
     {

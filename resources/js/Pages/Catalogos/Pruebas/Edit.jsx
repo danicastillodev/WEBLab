@@ -10,7 +10,6 @@ const selectClass = 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focu
 export default function Edit({ prueba, especies }) {
     const { data, setData, patch, processing, errors } = useForm({
         especie_id: prueba.especie_id ? String(prueba.especie_id) : '',
-        clave:      prueba.clave,
         nombre:     prueba.nombre,
     });
 
@@ -50,21 +49,10 @@ export default function Edit({ prueba, especies }) {
                             </div>
 
                             <div>
-                                <InputLabel htmlFor="clave" value="Clave" />
-                                <TextInput
-                                    id="clave"
-                                    value={data.clave}
-                                    onChange={(e) => setData('clave', e.target.value)}
-                                    className="mt-1 block w-full"
-                                    autoFocus
-                                />
-                                <InputError message={errors.clave} className="mt-2" />
-                            </div>
-
-                            <div>
                                 <InputLabel htmlFor="nombre" value="Nombre" />
                                 <TextInput
                                     id="nombre"
+                                    autoFocus
                                     value={data.nombre}
                                     onChange={(e) => setData('nombre', e.target.value)}
                                     className="mt-1 block w-full"

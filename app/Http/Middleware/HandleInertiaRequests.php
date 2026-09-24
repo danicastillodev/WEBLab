@@ -29,10 +29,20 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $user = $request->user();
+
         return [
             ...parent::share($request),
             'auth' => [
-                'user' => $request->user(),
+                'user' => $user,
+                // Matriz usada por el sidebar para ocultar los módulos a los
+                // que el usuario no tiene acceso de lectura.
+                'permisos' => $user?->matrizDePermisos() ?? [],
+            ],
+            'flash' => [
+                'success' => session('success'),
+                'numero_caso' => session('numero_caso'),
+                'historia_id' => session('historia_id'),
             ],
         ];
     }

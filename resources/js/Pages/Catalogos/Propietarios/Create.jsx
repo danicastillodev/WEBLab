@@ -19,6 +19,9 @@ export default function Create({ estados, municipios }) {
         estado_id: estadoDefault,
         municipio_id: '',
         codigo_postal: '',
+        caseta: '',
+        lote: '',
+        parvada: '',
     };
 
     const { data, setData, post, processing, errors } = useForm({
@@ -26,6 +29,7 @@ export default function Create({ estados, municipios }) {
         apellidos: '',
         curp: '',
         rfc: '',
+        telefono: '',
         direcciones: [{ ...direccionVacia }],
     });
 
@@ -93,6 +97,20 @@ export default function Create({ estados, municipios }) {
                             </div>
 
                             <div>
+                                <InputLabel htmlFor="telefono" value="Teléfono" />
+                                <TextInput
+                                    id="telefono"
+                                    value={data.telefono}
+                                    onChange={(e) => setData('telefono', e.target.value.replace(/\D/g, ''))}
+                                    className="mt-1 block w-full"
+                                    inputMode="numeric"
+                                    maxLength={10}
+                                    placeholder="Opcional — 10 dígitos"
+                                />
+                                <InputError message={errors.telefono} className="mt-2" />
+                            </div>
+
+                            <div>
                                 <InputLabel htmlFor="curp" value="CURP" />
                                 <TextInput
                                     id="curp"
@@ -100,6 +118,7 @@ export default function Create({ estados, municipios }) {
                                     onChange={(e) => setData('curp', e.target.value.toUpperCase())}
                                     className="mt-1 block w-full font-mono uppercase"
                                     maxLength={18}
+                                    placeholder="Opcional"
                                 />
                                 <InputError message={errors.curp} className="mt-2" />
                             </div>
@@ -112,6 +131,7 @@ export default function Create({ estados, municipios }) {
                                     onChange={(e) => setData('rfc', e.target.value.toUpperCase())}
                                     className="mt-1 block w-full font-mono uppercase"
                                     maxLength={13}
+                                    placeholder="Opcional"
                                 />
                                 <InputError message={errors.rfc} className="mt-2" />
                             </div>
@@ -240,6 +260,42 @@ export default function Create({ estados, municipios }) {
                                                             maxLength={10}
                                                         />
                                                         <InputError message={errors[`direcciones.${index}.codigo_postal`]} className="mt-1" />
+                                                    </div>
+
+                                                    <div className="grid grid-cols-3 gap-3">
+                                                        <div>
+                                                            <InputLabel value="Caseta" />
+                                                            <TextInput
+                                                                value={dir.caseta}
+                                                                onChange={(e) => updateDireccion(index, 'caseta', e.target.value)}
+                                                                className="mt-1 block w-full"
+                                                                maxLength={50}
+                                                                placeholder="Opcional"
+                                                            />
+                                                            <InputError message={errors[`direcciones.${index}.caseta`]} className="mt-1" />
+                                                        </div>
+                                                        <div>
+                                                            <InputLabel value="Lote" />
+                                                            <TextInput
+                                                                value={dir.lote}
+                                                                onChange={(e) => updateDireccion(index, 'lote', e.target.value)}
+                                                                className="mt-1 block w-full"
+                                                                maxLength={50}
+                                                                placeholder="Opcional"
+                                                            />
+                                                            <InputError message={errors[`direcciones.${index}.lote`]} className="mt-1" />
+                                                        </div>
+                                                        <div>
+                                                            <InputLabel value="Parvada" />
+                                                            <TextInput
+                                                                value={dir.parvada}
+                                                                onChange={(e) => updateDireccion(index, 'parvada', e.target.value)}
+                                                                className="mt-1 block w-full"
+                                                                maxLength={50}
+                                                                placeholder="Opcional"
+                                                            />
+                                                            <InputError message={errors[`direcciones.${index}.parvada`]} className="mt-1" />
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

@@ -16,8 +16,8 @@ return new class extends Migration
         });
 
         $now = now();
-        DB::table('razas')->insert(array_map(fn($nombre) => [
-            'nombre'     => $nombre,
+        DB::table('razas')->insert(array_map(fn ($nombre) => [
+            'nombre' => $nombre,
             'created_at' => $now,
             'updated_at' => $now,
         ], [

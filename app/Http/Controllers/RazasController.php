@@ -28,7 +28,7 @@ class RazasController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'nombre'     => ['required', 'string', 'max:100', 'unique:razas'],
+            'nombre' => ['required', 'string', 'max:100', 'unique:razas'],
             'especie_id' => ['nullable', 'integer', 'exists:especies,id'],
         ]);
 
@@ -40,7 +40,7 @@ class RazasController extends Controller
     public function edit(Raza $raza): Response
     {
         return Inertia::render('Catalogos/Razas/Edit', [
-            'raza'    => $raza,
+            'raza' => $raza,
             'especies' => Especie::orderBy('nombre')->get(['id', 'nombre']),
         ]);
     }
@@ -48,7 +48,7 @@ class RazasController extends Controller
     public function update(Request $request, Raza $raza): RedirectResponse
     {
         $validated = $request->validate([
-            'nombre'     => ['required', 'string', 'max:100', 'unique:razas,nombre,' . $raza->id],
+            'nombre' => ['required', 'string', 'max:100', 'unique:razas,nombre,'.$raza->id],
             'especie_id' => ['nullable', 'integer', 'exists:especies,id'],
         ]);
 

@@ -38,7 +38,6 @@ export default function Index({ pruebas }) {
                         <table className="min-w-full divide-y divide-gray-200">
                             <thead className="bg-gray-50">
                                 <tr>
-                                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Clave</th>
                                     <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Nombre</th>
                                     <th className="px-6 py-3" />
                                 </tr>
@@ -46,15 +45,14 @@ export default function Index({ pruebas }) {
                             <tbody className="divide-y divide-gray-200 bg-white">
                                 {pruebas.data.length === 0 && (
                                     <tr>
-                                        <td colSpan={3} className="px-6 py-4 text-center text-sm text-gray-500">
+                                        <td colSpan={2} className="px-6 py-4 text-center text-sm text-gray-500">
                                             Aún no hay pruebas.
                                         </td>
                                     </tr>
                                 )}
                                 {pruebas.data.map((prueba) => (
                                     <tr key={prueba.id}>
-                                        <td className="px-6 py-4 text-sm font-medium text-gray-900">{prueba.clave}</td>
-                                        <td className="px-6 py-4 text-sm text-gray-500">{prueba.nombre}</td>
+                                        <td className="px-6 py-4 text-sm font-medium text-gray-900">{prueba.nombre}</td>
                                         <td className="px-6 py-4 text-right text-sm">
                                             <Link
                                                 href={route('pruebas.edit', prueba.id)}

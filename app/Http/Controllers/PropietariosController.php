@@ -25,7 +25,7 @@ class PropietariosController extends Controller
     public function create(): Response
     {
         return Inertia::render('Catalogos/Propietarios/Create', [
-            'estados'    => Estado::orderBy('nombre')->get(['id', 'nombre']),
+            'estados' => Estado::orderBy('nombre')->get(['id', 'nombre']),
             'municipios' => Municipio::orderBy('nombre')->get(['id', 'nombre', 'estado_id']),
         ]);
     }
@@ -33,32 +33,38 @@ class PropietariosController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'nombre'                          => ['required', 'string', 'max:150'],
-            'apellidos'                       => ['required', 'string', 'max:150'],
-            'curp'                            => ['required', 'string', 'size:18', 'unique:propietarios,curp'],
-            'rfc'                             => ['required', 'string', 'min:12', 'max:13', 'unique:propietarios,rfc'],
-            'direcciones'                     => ['required', 'array', 'min:1'],
-            'direcciones.*.calle'             => ['required', 'string', 'max:200'],
-            'direcciones.*.numero_exterior'   => ['required', 'string', 'max:20'],
-            'direcciones.*.numero_interior'   => ['nullable', 'string', 'max:20'],
-            'direcciones.*.colonia'           => ['required', 'string', 'max:150'],
-            'direcciones.*.estado_id'         => ['required', 'integer', 'exists:estados,id'],
-            'direcciones.*.municipio_id'      => ['required', 'integer', 'exists:municipios,id'],
-            'direcciones.*.codigo_postal'     => ['required', 'string', 'max:10'],
+            'nombre' => ['required', 'string', 'max:150'],
+            'apellidos' => ['required', 'string', 'max:150'],
+            'curp' => ['nullable', 'string', 'size:18', 'unique:propietarios,curp'],
+            'rfc' => ['nullable', 'string', 'min:12', 'max:13', 'unique:propietarios,rfc'],
+            'telefono' => ['nullable', 'digits:10'],
+            'direcciones' => ['required', 'array', 'min:1'],
+            'direcciones.*.calle' => ['required', 'string', 'max:200'],
+            'direcciones.*.numero_exterior' => ['required', 'string', 'max:20'],
+            'direcciones.*.numero_interior' => ['nullable', 'string', 'max:20'],
+            'direcciones.*.colonia' => ['required', 'string', 'max:150'],
+            'direcciones.*.estado_id' => ['required', 'integer', 'exists:estados,id'],
+            'direcciones.*.municipio_id' => ['required', 'integer', 'exists:municipios,id'],
+            'direcciones.*.codigo_postal' => ['required', 'string', 'max:10'],
+            'direcciones.*.caseta' => ['nullable', 'string', 'max:50'],
+            'direcciones.*.lote' => ['nullable', 'string', 'max:50'],
+            'direcciones.*.parvada' => ['nullable', 'string', 'max:50'],
         ], [
-            'curp.size'               => 'La CURP debe tener exactamente 18 caracteres.',
-            'curp.unique'             => 'Ya existe un propietario con esa CURP.',
-            'rfc.min'                 => 'El RFC debe tener al menos 12 caracteres.',
-            'rfc.max'                 => 'El RFC no puede tener más de 13 caracteres.',
-            'rfc.unique'              => 'Ya existe un propietario con ese RFC.',
-            'direcciones.min'         => 'Se requiere al menos una dirección.',
+            'curp.size' => 'La CURP debe tener exactamente 18 caracteres.',
+            'curp.unique' => 'Ya existe un propietario con esa CURP.',
+            'rfc.min' => 'El RFC debe tener al menos 12 caracteres.',
+            'rfc.max' => 'El RFC no puede tener más de 13 caracteres.',
+            'rfc.unique' => 'Ya existe un propietario con ese RFC.',
+            'telefono.digits' => 'El teléfono debe tener exactamente 10 dígitos.',
+            'direcciones.min' => 'Se requiere al menos una dirección.',
         ]);
 
         $propietario = Propietario::create([
-            'nombre'    => $validated['nombre'],
+            'nombre' => $validated['nombre'],
             'apellidos' => $validated['apellidos'],
-            'curp'      => strtoupper($validated['curp']),
-            'rfc'       => strtoupper($validated['rfc']),
+            'curp' => isset($validated['curp']) ? strtoupper($validated['curp']) : null,
+            'rfc' => isset($validated['rfc']) ? strtoupper($validated['rfc']) : null,
+            'telefono' => $validated['telefono'] ?? null,
         ]);
 
         foreach ($validated['direcciones'] as $dir) {
@@ -72,40 +78,46 @@ class PropietariosController extends Controller
     {
         return Inertia::render('Catalogos/Propietarios/Edit', [
             'propietario' => $propietario->load('direcciones'),
-            'estados'     => Estado::orderBy('nombre')->get(['id', 'nombre']),
-            'municipios'  => Municipio::orderBy('nombre')->get(['id', 'nombre', 'estado_id']),
+            'estados' => Estado::orderBy('nombre')->get(['id', 'nombre']),
+            'municipios' => Municipio::orderBy('nombre')->get(['id', 'nombre', 'estado_id']),
         ]);
     }
 
     public function update(Request $request, Propietario $propietario): RedirectResponse
     {
         $validated = $request->validate([
-            'nombre'                          => ['required', 'string', 'max:150'],
-            'apellidos'                       => ['required', 'string', 'max:150'],
-            'curp'                            => ['required', 'string', 'size:18', 'unique:propietarios,curp,' . $propietario->id],
-            'rfc'                             => ['required', 'string', 'min:12', 'max:13', 'unique:propietarios,rfc,' . $propietario->id],
-            'direcciones'                     => ['required', 'array', 'min:1'],
-            'direcciones.*.calle'             => ['required', 'string', 'max:200'],
-            'direcciones.*.numero_exterior'   => ['required', 'string', 'max:20'],
-            'direcciones.*.numero_interior'   => ['nullable', 'string', 'max:20'],
-            'direcciones.*.colonia'           => ['required', 'string', 'max:150'],
-            'direcciones.*.estado_id'         => ['required', 'integer', 'exists:estados,id'],
-            'direcciones.*.municipio_id'      => ['required', 'integer', 'exists:municipios,id'],
-            'direcciones.*.codigo_postal'     => ['required', 'string', 'max:10'],
+            'nombre' => ['required', 'string', 'max:150'],
+            'apellidos' => ['required', 'string', 'max:150'],
+            'curp' => ['nullable', 'string', 'size:18', 'unique:propietarios,curp,'.$propietario->id],
+            'rfc' => ['nullable', 'string', 'min:12', 'max:13', 'unique:propietarios,rfc,'.$propietario->id],
+            'telefono' => ['nullable', 'digits:10'],
+            'direcciones' => ['required', 'array', 'min:1'],
+            'direcciones.*.calle' => ['required', 'string', 'max:200'],
+            'direcciones.*.numero_exterior' => ['required', 'string', 'max:20'],
+            'direcciones.*.numero_interior' => ['nullable', 'string', 'max:20'],
+            'direcciones.*.colonia' => ['required', 'string', 'max:150'],
+            'direcciones.*.estado_id' => ['required', 'integer', 'exists:estados,id'],
+            'direcciones.*.municipio_id' => ['required', 'integer', 'exists:municipios,id'],
+            'direcciones.*.codigo_postal' => ['required', 'string', 'max:10'],
+            'direcciones.*.caseta' => ['nullable', 'string', 'max:50'],
+            'direcciones.*.lote' => ['nullable', 'string', 'max:50'],
+            'direcciones.*.parvada' => ['nullable', 'string', 'max:50'],
         ], [
-            'curp.size'               => 'La CURP debe tener exactamente 18 caracteres.',
-            'curp.unique'             => 'Ya existe un propietario con esa CURP.',
-            'rfc.min'                 => 'El RFC debe tener al menos 12 caracteres.',
-            'rfc.max'                 => 'El RFC no puede tener más de 13 caracteres.',
-            'rfc.unique'              => 'Ya existe un propietario con ese RFC.',
-            'direcciones.min'         => 'Se requiere al menos una dirección.',
+            'curp.size' => 'La CURP debe tener exactamente 18 caracteres.',
+            'curp.unique' => 'Ya existe un propietario con esa CURP.',
+            'rfc.min' => 'El RFC debe tener al menos 12 caracteres.',
+            'rfc.max' => 'El RFC no puede tener más de 13 caracteres.',
+            'rfc.unique' => 'Ya existe un propietario con ese RFC.',
+            'telefono.digits' => 'El teléfono debe tener exactamente 10 dígitos.',
+            'direcciones.min' => 'Se requiere al menos una dirección.',
         ]);
 
         $propietario->update([
-            'nombre'    => $validated['nombre'],
+            'nombre' => $validated['nombre'],
             'apellidos' => $validated['apellidos'],
-            'curp'      => strtoupper($validated['curp']),
-            'rfc'       => strtoupper($validated['rfc']),
+            'curp' => isset($validated['curp']) ? strtoupper($validated['curp']) : null,
+            'rfc' => isset($validated['rfc']) ? strtoupper($validated['rfc']) : null,
+            'telefono' => $validated['telefono'] ?? null,
         ]);
 
         $propietario->direcciones()->delete();

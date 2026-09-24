@@ -26,7 +26,7 @@ class EstadosController extends Controller
     {
         $validated = $request->validate([
             'nombre' => ['required', 'string', 'max:100', 'unique:estados'],
-            'clave'  => ['required', 'string', 'max:10', 'unique:estados'],
+            'clave' => ['required', 'string', 'max:10', 'unique:estados'],
         ]);
 
         Estado::create($validated);
@@ -44,8 +44,8 @@ class EstadosController extends Controller
     public function update(Request $request, Estado $estado): RedirectResponse
     {
         $validated = $request->validate([
-            'nombre' => ['required', 'string', 'max:100', 'unique:estados,nombre,' . $estado->id],
-            'clave'  => ['required', 'string', 'max:10', 'unique:estados,clave,' . $estado->id],
+            'nombre' => ['required', 'string', 'max:100', 'unique:estados,nombre,'.$estado->id],
+            'clave' => ['required', 'string', 'max:10', 'unique:estados,clave,'.$estado->id],
         ]);
 
         $estado->update($validated);

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Especie;
 use App\Models\FuncionZootecnica;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -13,19 +15,25 @@ class FuncionZootecnicasController extends Controller
     public function index(): Response
     {
         return Inertia::render('Catalogos/FuncionZootecnicas/Index', [
-            'funciones' => FuncionZootecnica::orderBy('nombre')->paginate(15),
+            'funciones' => FuncionZootecnica::with('especie')->orderBy('nombre')->paginate(15),
         ]);
     }
 
     public function create(): Response
     {
-        return Inertia::render('Catalogos/FuncionZootecnicas/Create');
+        return Inertia::render('Catalogos/FuncionZootecnicas/Create', [
+            'especies' => Especie::orderBy('nombre')->get(['id', 'nombre']),
+        ]);
     }
 
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'nombre' => ['required', 'string', 'max:150', 'unique:funcion_zootecnicas'],
+            'nombre' => [
+                'required', 'string', 'max:150',
+                Rule::unique('funcion_zootecnicas')->where('especie_id', $request->especie_id),
+            ],
+            'especie_id' => ['nullable', 'integer', 'exists:especies,id'],
         ]);
 
         FuncionZootecnica::create($validated);
@@ -37,13 +45,20 @@ class FuncionZootecnicasController extends Controller
     {
         return Inertia::render('Catalogos/FuncionZootecnicas/Edit', [
             'funcion' => $funcionZootecnica,
+            'especies' => Especie::orderBy('nombre')->get(['id', 'nombre']),
         ]);
     }
 
     public function update(Request $request, FuncionZootecnica $funcionZootecnica): RedirectResponse
     {
         $validated = $request->validate([
-            'nombre' => ['required', 'string', 'max:150', 'unique:funcion_zootecnicas,nombre,' . $funcionZootecnica->id],
+            'nombre' => [
+                'required', 'string', 'max:150',
+                Rule::unique('funcion_zootecnicas')
+                    ->where('especie_id', $request->especie_id)
+                    ->ignore($funcionZootecnica->id),
+            ],
+            'especie_id' => ['nullable', 'integer', 'exists:especies,id'],
         ]);
 
         $funcionZootecnica->update($validated);

@@ -18,6 +18,9 @@ class Direccion extends Model
         'municipio_id',
         'estado_id',
         'codigo_postal',
+        'caseta',
+        'lote',
+        'parvada',
     ];
 
     public function propietario(): BelongsTo

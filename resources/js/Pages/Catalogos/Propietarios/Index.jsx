@@ -39,6 +39,7 @@ export default function Index({ propietarios }) {
                             <thead className="bg-gray-50">
                                 <tr>
                                     <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Nombre</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Teléfono</th>
                                     <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">CURP</th>
                                     <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">RFC</th>
                                     <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Direcciones</th>
@@ -48,7 +49,7 @@ export default function Index({ propietarios }) {
                             <tbody className="divide-y divide-gray-200 bg-white">
                                 {propietarios.data.length === 0 && (
                                     <tr>
-                                        <td colSpan={5} className="px-6 py-4 text-center text-sm text-gray-500">
+                                        <td colSpan={6} className="px-6 py-4 text-center text-sm text-gray-500">
                                             Aún no hay propietarios registrados.
                                         </td>
                                     </tr>
@@ -58,8 +59,9 @@ export default function Index({ propietarios }) {
                                         <td className="px-6 py-4 text-sm font-medium text-gray-900">
                                             {propietario.apellidos}, {propietario.nombre}
                                         </td>
-                                        <td className="px-6 py-4 font-mono text-sm text-gray-500">{propietario.curp}</td>
-                                        <td className="px-6 py-4 font-mono text-sm text-gray-500">{propietario.rfc}</td>
+                                        <td className="px-6 py-4 text-sm text-gray-500">{propietario.telefono ?? '—'}</td>
+                                        <td className="px-6 py-4 font-mono text-sm text-gray-500">{propietario.curp ?? '—'}</td>
+                                        <td className="px-6 py-4 font-mono text-sm text-gray-500">{propietario.rfc ?? '—'}</td>
                                         <td className="px-6 py-4 text-sm text-gray-500">{propietario.direcciones_count}</td>
                                         <td className="px-6 py-4 text-right text-sm">
                                             <Link

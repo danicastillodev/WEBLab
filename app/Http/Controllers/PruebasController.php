@@ -28,8 +28,7 @@ class PruebasController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'clave'      => ['required', 'string', 'max:50', 'unique:pruebas'],
-            'nombre'     => ['required', 'string', 'max:255'],
+            'nombre' => ['required', 'string', 'max:255'],
             'especie_id' => ['nullable', 'integer', 'exists:especies,id'],
         ]);
 
@@ -41,7 +40,7 @@ class PruebasController extends Controller
     public function edit(Prueba $prueba): Response
     {
         return Inertia::render('Catalogos/Pruebas/Edit', [
-            'prueba'   => $prueba,
+            'prueba' => $prueba,
             'especies' => Especie::orderBy('nombre')->get(['id', 'nombre']),
         ]);
     }
@@ -49,8 +48,7 @@ class PruebasController extends Controller
     public function update(Request $request, Prueba $prueba): RedirectResponse
     {
         $validated = $request->validate([
-            'clave'      => ['required', 'string', 'max:50', 'unique:pruebas,clave,' . $prueba->id],
-            'nombre'     => ['required', 'string', 'max:255'],
+            'nombre' => ['required', 'string', 'max:255'],
             'especie_id' => ['nullable', 'integer', 'exists:especies,id'],
         ]);
 

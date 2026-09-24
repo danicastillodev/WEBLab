@@ -1,0 +1,37 @@
+---
+# Tareas que cPanel ejecuta al desplegar (Git Version Control -> Deploy HEAD Commit,
+# o vía UAPI desde el MCP). Se corren como el usuario de cPanel, con el repo como cwd.
+#
+# Ajustar si hace falta:
+#   APP  -> dónde vive la aplicación (fuera del document root)
+#   WEB  -> document root del dominio
+#   PHP  -> binario de PHP CLI. Alternativa típica:
+#           /opt/cpanel/ea-php83/root/usr/bin/php
+deployment:
+  tasks:
+    - export APP="$HOME/netlab"
+    - export WEB="$HOME/webapp.cefppj.org.mx"
+    - export PHP="/usr/local/bin/php"
+
+    # 1. Código de la aplicación (sin .env, sin storage: esos viven en el servidor)
+    - /bin/mkdir -p "$APP" "$WEB"
+    - /usr/bin/rsync -a --delete --exclude=.git --exclude=.env --exclude=/storage --exclude=/public --exclude=/node_modules ./ "$APP/"
+
+    # 2. Directorios de escritura que git no versiona
+    - /bin/mkdir -p "$APP/storage/framework/cache/data" "$APP/storage/framework/sessions" "$APP/storage/framework/views" "$APP/storage/logs" "$APP/storage/app/public" "$APP/bootstrap/cache"
+    - /bin/chmod -R 775 "$APP/storage" "$APP/bootstrap/cache"
+
+    # 3. Assets públicos. Se borra build/ para no acumular bundles viejos de Vite,
+    #    y el index.html de relleno del subdominio, que Apache sirve antes que
+    #    index.php y dejaría la app invisible.
+    - /bin/rm -rf "$WEB/build"
+    - /bin/rm -f "$WEB/index.html"
+    - /usr/bin/rsync -a --exclude=index.php ./public/ "$WEB/"
+    - /bin/cp ./deploy/cpanel-index.php "$WEB/index.php"
+    - /bin/ln -sfn "$APP/storage/app/public" "$WEB/storage"
+
+    # 4. Base de datos y cachés
+    - $PHP "$APP/artisan" migrate --force
+    - $PHP "$APP/artisan" optimize:clear
+    - $PHP "$APP/artisan" optimize
+    - echo "Deploy terminado: $(git log -1 --pretty='%h %s')"

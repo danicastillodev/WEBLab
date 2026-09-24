@@ -5,6 +5,8 @@ services:
       dockerfile: docker/php/Dockerfile
     container_name: laboratorio_app
     working_dir: /var/www
+    environment:
+      DB_HOST: db
     volumes:
       - .:/var/www
     depends_on:

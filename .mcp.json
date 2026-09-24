@@ -1,0 +1,8 @@
+{
+    "mcpServers": {
+        "netlab-deploy": {
+            "command": "node",
+            "args": ["mcp/deploy/index.js"]
+        }
+    }
+}
