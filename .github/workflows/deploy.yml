@@ -1,0 +1,100 @@
+name: Build rama deploy
+
+# El hosting compartido no tiene Node ni (necesariamente) Composer, así que el
+# build se hace acá y se publica en la rama `deploy`, que ya incluye vendor/ y
+# public/build. cPanel solo clona esa rama y ejecuta .cpanel.yml.
+#
+# La rama deploy es aditiva: cada build es un commit nuevo encima del anterior.
+# Nunca hacer force-push ahí — rompería el `git pull` de cPanel.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Commit, tag o rama a compilar"
+        default: main
+
+concurrency:
+  group: rama-deploy
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.ref || github.sha }}
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          extensions: mbstring, bcmath, intl, pdo_mysql, zip, gd
+          tools: composer:v2
+          coverage: none
+
+      - name: composer install
+        run: composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction --no-progress
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: npm ci
+        run: npm ci --no-audit --no-fund
+
+      # Todas las dependencias de front están en devDependencies, así que el
+      # npm ci de arriba es completo: sin él no habría Vite para compilar.
+      - name: Compilar assets
+        run: npm run build
+
+      - name: Publicar en la rama deploy
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          SRC_SHA=$(git rev-parse HEAD)
+          SRC_SUBJECT=$(git log -1 --pretty=%s)
+          REPO_URL="https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
+
+          BUILD=$(mktemp -d)
+          rsync -a --exclude=.git --exclude=node_modules ./ "$BUILD/"
+
+          TARGET=$(mktemp -d)
+          if git ls-remote --exit-code "$REPO_URL" refs/heads/deploy >/dev/null 2>&1; then
+            git clone --depth 1 --branch deploy "$REPO_URL" "$TARGET"
+          else
+            echo "La rama deploy no existe todavía: se crea huérfana."
+            git clone --depth 1 "$REPO_URL" "$TARGET"
+            git -C "$TARGET" checkout --orphan deploy
+            git -C "$TARGET" rm -rf . >/dev/null
+          fi
+
+          # Reemplazar el contenido conservando .git
+          find "$TARGET" -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+          rsync -a "$BUILD/" "$TARGET/"
+
+          # En la rama deploy sí queremos vendor/ y public/build versionados,
+          # así que se pisa el .gitignore del repo.
+          printf 'node_modules\n.env\n' > "$TARGET/.gitignore"
+
+          cd "$TARGET"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+
+          if git diff --cached --quiet; then
+            echo "Sin cambios respecto del último build."
+            exit 0
+          fi
+
+          git commit -q -m "Build: ${SRC_SUBJECT}" -m "Source: ${SRC_SHA}"
+          git push origin deploy
+          echo "Publicado $(git rev-parse --short HEAD) (source ${SRC_SHA})"
