@@ -1,9 +1,9 @@
 {
-    "name": "netlab-deploy-mcp",
+    "name": "weblab-deploy-mcp",
     "version": "1.0.0",
     "private": true,
     "type": "module",
-    "description": "Servidor MCP para desplegar NETLab en un VPS por SSH",
+    "description": "Servidor MCP para desplegar WebLab en un VPS por SSH",
     "main": "index.js",
     "scripts": {
         "start": "node index.js"

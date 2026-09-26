@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-**NETLab** — a veterinary clinical laboratory management system (Sistema de Gestión de Diagnósticos Clínicos). The domain is in Spanish. The central entity is `HistoriaClinica` (clinical record), which ties together a `Propietario` (owner), `Direccion` (address), `Especie` (species), `Raza` (breed), and ultimately `Analisis` (lab analyses) and `Diagnostico` (diagnosis). `netlab_class_diagram.html` and `netlab_schema.sql` in the project root document the original domain model — use them as the authoritative reference for entity names and relationships.
+**WebLab** — a veterinary clinical laboratory management system (Sistema de Gestión de Diagnósticos Clínicos). The domain is in Spanish. The central entity is `HistoriaClinica` (clinical record), which ties together a `Propietario` (owner), `Direccion` (address), `Especie` (species), `Raza` (breed), and ultimately `Analisis` (lab analyses) and `Diagnostico` (diagnosis). `weblab_class_diagram.html` and `weblab_schema.sql` in the project root document the original domain model — use them as the authoritative reference for entity names and relationships.
 
 ## Stack
 

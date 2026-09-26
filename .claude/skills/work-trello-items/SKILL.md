@@ -1,11 +1,11 @@
 ---
 name: work-trello-items
-description: Pick up ready work from the WebLab Trello board and actually build it — for each card carrying the green "Ready to start" label, read the card, implement its requirements in this NETLab repo, verify the build and tests, then move the card to the Value Review list and swap the green label for the sky "In progress" label so a human can review it. Use this whenever the user asks to work the board, pick up the next ready card, do the green cards, implement what's ready in Trello, or push finished cards for review — even if they don't name the board, list, or labels exactly. The card is only moved after its code is written and verified; moving a card without implementing it defeats the purpose.
+description: Pick up ready work from the WebLab Trello board and actually build it — for each card carrying the green "Ready to start" label, read the card, implement its requirements in this WebLab repo, verify the build and tests, then move the card to the Value Review list and swap the green label for the sky "In progress" label so a human can review it. Use this whenever the user asks to work the board, pick up the next ready card, do the green cards, implement what's ready in Trello, or push finished cards for review — even if they don't name the board, list, or labels exactly. The card is only moved after its code is written and verified; moving a card without implementing it defeats the purpose.
 ---
 
 # Work the WebLab board: implement ready cards, then hand them to Value Review
 
-The WebLab board is how NETLab work is tracked. A green label means "this is specified and
+The WebLab board is how WebLab work is tracked. A green label means "this is specified and
 ready to be built." This skill closes the loop: green card in, working code out, card parked
 in **Value Review** for a human to look at.
 

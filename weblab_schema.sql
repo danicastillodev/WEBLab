@@ -1,5 +1,5 @@
 -- =============================================================
---  NETLab – Sistema de Gestión de Diagnósticos Clínicos
+--  WebLab – Sistema de Gestión de Diagnósticos Clínicos
 --  Esquema de base de datos generado desde el Diagrama de Clases
 -- =============================================================
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Servidor MCP para desplegar NETLab en cPanel, sin SSH.
+ * Servidor MCP para desplegar WebLab en cPanel, sin SSH.
  *
  * Cómo funciona el circuito completo:
  *
@@ -63,7 +63,7 @@ const config = {
     user: env("CPANEL_USER"),
     token: env("CPANEL_TOKEN"),
     repoRoot: env("CPANEL_REPO_ROOT"),
-    appDir: env("CPANEL_APP_DIR", "netlab"),
+    appDir: env("CPANEL_APP_DIR", "weblab"),
     deployBranch: env("DEPLOY_BRANCH", "deploy"),
     sourceBranch: env("SOURCE_BRANCH", "main"),
     remote: env("GIT_REMOTE", "origin"),
@@ -619,7 +619,7 @@ const TOOLS = [
 ];
 
 const server = new Server(
-    { name: "netlab-deploy", version: "2.0.0" },
+    { name: "weblab-deploy", version: "2.0.0" },
     { capabilities: { tools: {} } }
 );
 
