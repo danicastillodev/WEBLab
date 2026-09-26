@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
         //
         // Solo fuera de producción. La factory usa la contraseña 'password', que
         // no tiene nada que hacer en un servidor público: en producción el
-        // administrador se crea con `php artisan netlab:crear-admin`, que exige
+        // administrador se crea con `php artisan weblab:crear-admin`, que exige
         // una contraseña real o genera una al azar.
         if (! app()->isProduction()) {
             User::factory()->create([

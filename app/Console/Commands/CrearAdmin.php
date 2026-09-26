@@ -10,7 +10,7 @@ use Illuminate\Validation\Rule;
 
 class CrearAdmin extends Command
 {
-    protected $signature = 'netlab:crear-admin
+    protected $signature = 'weblab:crear-admin
                             {username : Usuario con el que se inicia sesión}
                             {email : Correo del administrador}
                             {--name= : Nombre visible (por defecto, el username)}

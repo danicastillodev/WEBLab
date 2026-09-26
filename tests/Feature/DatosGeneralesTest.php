@@ -34,7 +34,7 @@ class DatosGeneralesTest extends TestCase
         $this->actingAs($this->admin())
             ->put(route('datos-generales.update'), [
                 'razon_social' => 'Laboratorio S.A. de C.V.',
-                'nombre_laboratorio' => 'NETLab',
+                'nombre_laboratorio' => 'WebLab',
                 'direccion' => 'Av. Central 123',
                 'colonia' => 'Centro',
                 'estado_id' => $estado->id,
@@ -45,7 +45,7 @@ class DatosGeneralesTest extends TestCase
 
         $this->assertDatabaseHas('datos_generales', [
             'razon_social' => 'Laboratorio S.A. de C.V.',
-            'nombre_laboratorio' => 'NETLab',
+            'nombre_laboratorio' => 'WebLab',
         ]);
     }
 
@@ -54,7 +54,7 @@ class DatosGeneralesTest extends TestCase
         $estado = Estado::where('clave', 'JAL')->firstOrFail();
         $municipio = Municipio::firstOrCreate(['nombre' => 'Guadalajara', 'estado_id' => $estado->id]);
         DatosGeneral::create([
-            'razon_social' => 'Original', 'nombre_laboratorio' => 'NETLab',
+            'razon_social' => 'Original', 'nombre_laboratorio' => 'WebLab',
             'direccion' => 'Av. Central 123', 'colonia' => 'Centro',
             'estado_id' => $estado->id, 'municipio_id' => $municipio->id,
             'jefe_laboratorio' => 'Dra. Ana Ruiz',
@@ -63,7 +63,7 @@ class DatosGeneralesTest extends TestCase
         $this->actingAs($this->admin())
             ->put(route('datos-generales.update'), [
                 'razon_social' => 'Actualizada',
-                'nombre_laboratorio' => 'NETLab',
+                'nombre_laboratorio' => 'WebLab',
                 'direccion' => 'Av. Central 123',
                 'colonia' => 'Centro',
                 'estado_id' => $estado->id,

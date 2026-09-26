@@ -9,7 +9,7 @@
 #           /opt/cpanel/ea-php83/root/usr/bin/php
 deployment:
   tasks:
-    - export APP="$HOME/netlab"
+    - export APP="$HOME/weblab"
     - export WEB="$HOME/webapp.cefppj.org.mx"
     - export PHP="/usr/local/bin/php"
 

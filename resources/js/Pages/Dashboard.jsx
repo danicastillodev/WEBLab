@@ -20,7 +20,7 @@ const mensajes = [
     '🐐 Las cabras son de los primeros animales domesticados por el ser humano, hace más de 10,000 años.',
 ];
 
-const SESSION_KEY = 'netlab_dato_animal';
+const SESSION_KEY = 'weblab_dato_animal';
 
 function getMensajeDelaSesion() {
     const guardado = sessionStorage.getItem(SESSION_KEY);
