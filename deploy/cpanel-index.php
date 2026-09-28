@@ -29,4 +29,10 @@ require $APP_BASE.'/vendor/autoload.php';
 /** @var Application $app */
 $app = require_once $APP_BASE.'/bootstrap/app.php';
 
+// La carpeta pública no vive dentro de la aplicación: su contenido se copia al
+// document root del subdominio, que es justamente este directorio. Sin esto,
+// public_path() apuntaría a $APP_BASE/public —que no existe— y @vite fallaría
+// al buscar el manifest, con un 500 en toda página que renderice una vista.
+$app->usePublicPath(__DIR__);
+
 $app->handleRequest(Request::capture());
