@@ -83,7 +83,13 @@ jobs:
 
           # En la rama deploy sí queremos vendor/ y public/build versionados,
           # así que se pisa el .gitignore del repo.
-          printf 'node_modules\n.env\n' > "$TARGET/.gitignore"
+          #
+          # .cpanel/ es imprescindible: cPanel escribe el log de cada despliegue
+          # dentro del propio repo clonado. Si no se ignora, queda como archivo
+          # sin rastrear y el siguiente "Deploy HEAD Commit" se niega a correr
+          # con "The system cannot deploy" — el despliegue se bloquea a sí mismo.
+          printf '%s\n' 'node_modules' '.env' '/.cpanel/' '/storage/logs/*.log' \
+            '/bootstrap/cache/*.php' > "$TARGET/.gitignore"
 
           cd "$TARGET"
           git config user.name "github-actions[bot]"
