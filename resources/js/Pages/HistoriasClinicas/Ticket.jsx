@@ -169,7 +169,7 @@ export default function Ticket({ historia }) {
                                 <p>Análisis: {muestra.prueba?.nombre}</p>
                                 <p>Cant: {muestra.cantidad}</p>
                                 <p>Tipo: {muestra.tipo_muestra?.nombre}</p>
-                                <p>Especie a la que pertenecen: {historia.especie?.nombre}</p>
+                                <p>Especie: {historia.especie?.nombre}</p>
                             </div>
                         ))
                     )}

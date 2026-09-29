@@ -44,5 +44,8 @@
       "Bash(cp:*)",
       "Bash(ls /Users/danielcastillo/Documents/projects/laboratorio/app/Http/Middleware/Verificar*)"
     ]
-  }
+  },
+  "enabledMcpjsonServers": [
+    "weblab-deploy"
+  ]
 }

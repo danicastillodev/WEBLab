@@ -1,1 +1,0 @@
-import{j as s}from"./app-B-UGIfZ-.js";function n({value:e,className:t="",children:a,required:r=!1,...l}){return s.jsxs("label",{...l,className:"block text-sm font-medium text-gray-700 "+t,children:[e||a,r&&s.jsx("span",{className:"ml-1 text-red-500",children:"*"})]})}export{n as I};
