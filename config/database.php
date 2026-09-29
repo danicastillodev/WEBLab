@@ -58,7 +58,14 @@ return [
             'prefix' => '',
             'prefix_indexes' => true,
             'strict' => true,
-            'engine' => null,
+
+            // Explícito a propósito. Con null manda el motor por defecto del
+            // servidor, que en el hosting de producción es MyISAM: ahí un
+            // índice único sobre varchar(255) utf8mb4 no cabe (1020 bytes
+            // frente a un máximo de 1000) y, peor, las claves foráneas se
+            // ignoran en silencio. El esquema usa constrained() en veinte
+            // migraciones, así que InnoDB es un requisito, no una preferencia.
+            'engine' => env('DB_ENGINE', 'InnoDB'),
             'options' => extension_loaded('pdo_mysql') ? array_filter([
                 (PHP_VERSION_ID >= 80500 ? Mysql::ATTR_SSL_CA : PDO::MYSQL_ATTR_SSL_CA) => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
@@ -78,7 +85,14 @@ return [
             'prefix' => '',
             'prefix_indexes' => true,
             'strict' => true,
-            'engine' => null,
+
+            // Explícito a propósito. Con null manda el motor por defecto del
+            // servidor, que en el hosting de producción es MyISAM: ahí un
+            // índice único sobre varchar(255) utf8mb4 no cabe (1020 bytes
+            // frente a un máximo de 1000) y, peor, las claves foráneas se
+            // ignoran en silencio. El esquema usa constrained() en veinte
+            // migraciones, así que InnoDB es un requisito, no una preferencia.
+            'engine' => env('DB_ENGINE', 'InnoDB'),
             'options' => extension_loaded('pdo_mysql') ? array_filter([
                 (PHP_VERSION_ID >= 80500 ? Mysql::ATTR_SSL_CA : PDO::MYSQL_ATTR_SSL_CA) => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
