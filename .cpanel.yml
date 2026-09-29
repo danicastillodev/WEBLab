@@ -11,7 +11,17 @@ deployment:
   tasks:
     - export APP="$HOME/weblab"
     - export WEB="$HOME/webapp.cefppj.org.mx"
-    - export PHP="/usr/local/bin/php"
+
+    # 0. Binario de PHP para la CLI.
+    #
+    #    No usar /usr/local/bin/php: es el PHP del selector de CloudLinux, que
+    #    gobierna la línea de comandos y puede ir por detrás del que sirve el
+    #    sitio. En este servidor la web corre 8.3.33 mientras la CLI seguía en
+    #    7.0.33, y artisan moría con "Composer detected issues in your platform".
+    #    Se elige el primer binario que sea realmente 8.3 o superior.
+    - export PHP=$(for p in /opt/cpanel/ea-php83/root/usr/bin/php /opt/alt/php83/usr/bin/php /opt/cpanel/ea-php84/root/usr/bin/php /opt/alt/php84/usr/bin/php /usr/local/bin/php; do [ -x "$p" ] && "$p" -r 'if (PHP_VERSION_ID < 80300) exit(1);' 2>/dev/null && { echo "$p"; break; }; done)
+    - test -n "$PHP" || { echo "ERROR - no se encontro un PHP 8.3+ en el servidor"; exit 1; }
+    - echo "PHP CLI -> $PHP ($($PHP -r 'echo PHP_VERSION;'))"
 
     # 1. Código de la aplicación (sin .env, sin storage: esos viven en el servidor)
     - /bin/mkdir -p "$APP" "$WEB"
