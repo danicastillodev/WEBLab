@@ -88,7 +88,7 @@ jobs:
           # dentro del propio repo clonado. Si no se ignora, queda como archivo
           # sin rastrear y el siguiente "Deploy HEAD Commit" se niega a correr
           # con "The system cannot deploy" — el despliegue se bloquea a sí mismo.
-          printf '%s\n' 'node_modules' '.env' '/.cpanel/' '/storage/logs/*.log' \
+          printf '%s\n' 'node_modules' '.env' '/.cpanel/' '/error_log' '/storage/logs/*.log' \
             '/bootstrap/cache/*.php' > "$TARGET/.gitignore"
 
           cd "$TARGET"

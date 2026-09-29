@@ -1,5 +1,6 @@
 node_modules
 .env
 /.cpanel/
+/error_log
 /storage/logs/*.log
 /bootstrap/cache/*.php
