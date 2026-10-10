@@ -12,10 +12,17 @@ import { useState } from 'react';
 
 const selectClass = 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500';
 const EDAD_UNIDADES = ['Dias', 'Meses', 'Años', 'NR', 'NA'];
-const MUESTRA_VACIA = { prueba_id: '', cantidad: 1, tipo_muestra_id: '', notas: '' };
+const MUESTRA_VACIA = { servicio_id: '', cantidad: 1, producto_id: '', notas: '' };
 
 function formatDireccion(dir) {
     return `${dir.calle} ${dir.numero_exterior}, ${dir.colonia}, ${dir.municipio?.nombre ?? ''}`;
+}
+
+function formatExplotacion(explotacion, estados) {
+    const estado = estados.find((es) => String(es.id) === String(explotacion.estado_id))?.nombre;
+    const lugar = [explotacion.municipio?.nombre, estado].filter(Boolean).join(', ');
+
+    return [explotacion.nombre, explotacion.direccion, lugar].filter(Boolean).join(' - ');
 }
 
 const porNombre = (a, b) => a.nombre.localeCompare(b.nombre);
@@ -40,14 +47,12 @@ function Modal({ title, onClose, children }) {
     );
 }
 
-export default function Create({ propietarios: initPropietarios, direcciones: initDirecciones, explotaciones: initExplotaciones, especies: initEspecies, razas: initRazas, estados, municipios, pruebas: initPruebas, tipos_muestra: initTiposMuestra, funciones_zootecnicas: initFunciones, preguntas = [] }) {
+export default function Create({ propietarios: initPropietarios, direcciones: initDirecciones, explotaciones: initExplotaciones, especies: initEspecies, razas: initRazas, estados, municipios, servicios, productos, funciones_zootecnicas: initFunciones, preguntas = [] }) {
     const [propietarios, setPropietarios]   = useState(initPropietarios);
     const [direcciones, setDirecciones]     = useState(initDirecciones);
     const [explotaciones, setExplotaciones] = useState(initExplotaciones);
     const [especies, setEspecies]           = useState(initEspecies);
     const [razas, setRazas]                 = useState(initRazas);
-    const [tiposMuestra, setTiposMuestra]   = useState(initTiposMuestra);
-    const [pruebas, setPruebas]             = useState(initPruebas);
     const [funciones, setFunciones]         = useState(initFunciones);
 
     /* ── Main form ── */
@@ -85,10 +90,6 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
         (f) => String(f.especie_id) === String(data.especie_id),
     );
 
-    // Registros seleccionados dentro de cada muestra (para editar/eliminar en línea).
-    const pruebaPorId = (id) => pruebas.find((p) => String(p.id) === String(id));
-    const tipoPorId   = (id) => tiposMuestra.find((t) => String(t.id) === String(id));
-
     function onPropietarioChange(id) {
         setData((prev) => ({ ...prev, propietario_id: id, direccion_id: '', explotacion_id: '' }));
     }
@@ -99,7 +100,6 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
             especie_id: id,
             raza_id: '',
             funcion_zootecnica_id: '',
-            muestras: prev.muestras.map(() => ({ ...MUESTRA_VACIA })),
         }));
     }
 
@@ -122,7 +122,7 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
 
     function updateMuestra(index, field, value) {
         const patch = { [field]: value };
-        if (field === 'prueba_id') patch.tipo_muestra_id = '';
+        if (field === 'servicio_id') patch.producto_id = '';
         const updated = data.muestras.map((m, i) => i === index ? { ...m, ...patch } : m);
         setData('muestras', updated);
     }
@@ -210,57 +210,6 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
                 setPropietarios((prev) => quitar(prev, id));
                 setDirecciones((prev) => prev.filter((d) => Number(d.propietario_id) !== id));
                 setData((prev) => ({ ...prev, propietario_id: '', direccion_id: '' }));
-            },
-        );
-    }
-
-    /* ── Prueba (análisis) modal ── */
-    const [showPruebaModal, setShowPruebaModal] = useState(false);
-    const [pruebaModalIdx, setPruebaModalIdx]   = useState(0);
-    const [pruebaEditId, setPruebaEditId]       = useState(null);
-    const [pruebaForm, setPruebaForm]           = useState({ nombre: '' });
-    const [pruebaErrors, setPruebaErrors]       = useState({});
-    const [pruebaSaving, setPruebaSaving]       = useState(false);
-
-    function openPruebaModal(muestraIndex, prueba = null) {
-        setPruebaModalIdx(muestraIndex);
-        setPruebaEditId(prueba?.id ?? null);
-        setPruebaForm({ nombre: prueba?.nombre ?? '' });
-        setPruebaErrors({});
-        setShowPruebaModal(true);
-    }
-
-    async function submitPrueba(e) {
-        e.preventDefault();
-        setPruebaSaving(true);
-        setPruebaErrors({});
-        try {
-            if (pruebaEditId) {
-                const { data: editada } = await axios.patch(route('historias-clinicas.update-prueba', pruebaEditId), pruebaForm);
-                setPruebas((prev) => reemplazar(prev, editada).sort(porNombre));
-            } else {
-                const payload = { ...pruebaForm, especie_id: data.especie_id };
-                const { data: nueva } = await axios.post(route('historias-clinicas.store-prueba'), payload);
-                setPruebas((prev) => [...prev, nueva].sort(porNombre));
-                updateMuestra(pruebaModalIdx, 'prueba_id', String(nueva.id));
-            }
-            setShowPruebaModal(false);
-        } catch (err) {
-            if (err.response?.status === 422) setPruebaErrors(err.response.data.errors);
-        } finally {
-            setPruebaSaving(false);
-        }
-    }
-
-    function eliminarPrueba(muestraIndex, prueba) {
-        eliminarRegistro(
-            'historias-clinicas.destroy-prueba',
-            prueba.id,
-            `¿Eliminar el análisis "${prueba.nombre}"? También se eliminarán sus tipos de muestra.`,
-            () => {
-                setPruebas((prev) => quitar(prev, prueba.id));
-                setTiposMuestra((prev) => prev.filter((t) => Number(t.prueba_id) !== Number(prueba.id)));
-                updateMuestra(muestraIndex, 'prueba_id', '');
             },
         );
     }
@@ -410,56 +359,6 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
             () => {
                 setFunciones((prev) => quitar(prev, Number(data.funcion_zootecnica_id)));
                 setData((prev) => ({ ...prev, funcion_zootecnica_id: '' }));
-            },
-        );
-    }
-
-    /* ── Tipo de muestra modal ── */
-    const [showTipoModal, setShowTipoModal]   = useState(false);
-    const [tipoModalCtx, setTipoModalCtx]     = useState({ prueba_id: '', muestraIndex: 0 });
-    const [tipoEditId, setTipoEditId]         = useState(null);
-    const [tipoForm, setTipoForm]             = useState({ nombre: '' });
-    const [tipoErrors, setTipoErrors]         = useState({});
-    const [tipoSaving, setTipoSaving]         = useState(false);
-
-    function openTipoModal(muestraIndex, prueba_id, tipo = null) {
-        setTipoModalCtx({ prueba_id, muestraIndex });
-        setTipoEditId(tipo?.id ?? null);
-        setTipoForm({ nombre: tipo?.nombre ?? '' });
-        setTipoErrors({});
-        setShowTipoModal(true);
-    }
-
-    async function submitTipoMuestra(e) {
-        e.preventDefault();
-        setTipoSaving(true);
-        setTipoErrors({});
-        try {
-            if (tipoEditId) {
-                const { data: editado } = await axios.patch(route('historias-clinicas.update-tipo-muestra', tipoEditId), tipoForm);
-                setTiposMuestra((prev) => reemplazar(prev, editado).sort(porNombre));
-            } else {
-                const payload = { nombre: tipoForm.nombre, prueba_id: tipoModalCtx.prueba_id };
-                const { data: nuevo } = await axios.post(route('historias-clinicas.store-tipo-muestra'), payload);
-                setTiposMuestra((prev) => [...prev, nuevo].sort(porNombre));
-                updateMuestra(tipoModalCtx.muestraIndex, 'tipo_muestra_id', String(nuevo.id));
-            }
-            setShowTipoModal(false);
-        } catch (err) {
-            if (err.response?.status === 422) setTipoErrors(err.response.data.errors);
-        } finally {
-            setTipoSaving(false);
-        }
-    }
-
-    function eliminarTipoMuestra(muestraIndex, tipo) {
-        eliminarRegistro(
-            'historias-clinicas.destroy-tipo-muestra',
-            tipo.id,
-            `¿Eliminar el tipo de muestra "${tipo.nombre}"? Esta acción no se puede deshacer.`,
-            () => {
-                setTiposMuestra((prev) => quitar(prev, tipo.id));
-                updateMuestra(muestraIndex, 'tipo_muestra_id', '');
             },
         );
     }
@@ -642,49 +541,6 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
                 </Modal>
             )}
 
-            {/* ── Tipo de muestra modal ── */}
-            {showTipoModal && (
-                <Modal title={tipoEditId ? 'Editar tipo de muestra' : 'Nuevo tipo de muestra'} onClose={() => setShowTipoModal(false)}>
-                    <form onSubmit={submitTipoMuestra} className="space-y-4">
-                        <div>
-                            <InputLabel value="Nombre" />
-                            <TextInput
-                                value={tipoForm.nombre}
-                                onChange={(e) => setTipoForm({ nombre: e.target.value })}
-                                className="mt-1 block w-full"
-                                autoFocus
-                            />
-                            {tipoErrors.nombre && <p className="mt-1 text-sm text-red-600">{tipoErrors.nombre[0]}</p>}
-                        </div>
-                        <div className="flex justify-end gap-3 pt-2">
-                            <button type="button" onClick={() => setShowTipoModal(false)} className="text-sm text-gray-600 hover:text-gray-900">Cancelar</button>
-                            <PrimaryButton disabled={tipoSaving}>Guardar</PrimaryButton>
-                        </div>
-                    </form>
-                </Modal>
-            )}
-
-            {/* ── Prueba modal ── */}
-            {showPruebaModal && (
-                <Modal title={pruebaEditId ? 'Editar análisis' : 'Nuevo análisis'} onClose={() => setShowPruebaModal(false)}>
-                    <form onSubmit={submitPrueba} className="space-y-4">
-                        <div>
-                            <InputLabel value="Nombre" />
-                            <TextInput
-                                value={pruebaForm.nombre}
-                                onChange={(e) => setPruebaForm((p) => ({ ...p, nombre: e.target.value }))}
-                                className="mt-1 block w-full"
-                                autoFocus
-                            />
-                            {pruebaErrors.nombre && <p className="mt-1 text-sm text-red-600">{pruebaErrors.nombre[0]}</p>}
-                        </div>
-                        <div className="flex justify-end gap-3 pt-2">
-                            <button type="button" onClick={() => setShowPruebaModal(false)} className="text-sm text-gray-600 hover:text-gray-900">Cancelar</button>
-                            <PrimaryButton disabled={pruebaSaving}>Guardar</PrimaryButton>
-                        </div>
-                    </form>
-                </Modal>
-            )}
 
             {/* ── Especie modal ── */}
             {showEspModal && (
@@ -1057,6 +913,12 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
                 <div className="mx-auto max-w-2xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden bg-white p-6 shadow-sm sm:rounded-lg">
                         <form onSubmit={submit} className="space-y-6">
+                            {Object.keys(errors).length > 0 && (
+                                <div className="rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+                                    Hay errores en el formulario. Revisa los campos marcados antes de guardar.
+                                </div>
+                            )}
+
                             {errorEliminar && (
                                 <div className="flex items-start justify-between gap-3 rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-700">
                                     <span>{errorEliminar}</span>
@@ -1176,33 +1038,19 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
 
                                         {/* Análisis solicitado */}
                                         <div>
-                                            <div className="flex items-center justify-between">
-                                                <InputLabel value="Análisis solicitado" />
-                                                <FieldActions
-                                                    etiqueta="análisis"
-                                                    disabled={!data.especie_id}
-                                                    seleccionado={!!muestra.prueba_id}
-                                                    onAdd={() => openPruebaModal(index)}
-                                                    onEdit={() => openPruebaModal(index, pruebaPorId(muestra.prueba_id))}
-                                                    onDelete={() => eliminarPrueba(index, pruebaPorId(muestra.prueba_id))}
-                                                />
-                                            </div>
+                                            <InputLabel value="Análisis solicitado" />
                                             <select
-                                                value={muestra.prueba_id}
-                                                onChange={(e) => updateMuestra(index, 'prueba_id', e.target.value)}
-                                                disabled={!data.especie_id}
+                                                value={muestra.servicio_id}
+                                                onChange={(e) => updateMuestra(index, 'servicio_id', e.target.value)}
                                                 className={selectClass}
                                             >
-                                                <option value="">— Selecciona un análisis —</option>
-                                                {pruebas
-                                                    .filter((p) => String(p.especie_id) === String(data.especie_id))
-                                                    .map((p) => (
-                                                        <option key={p.id} value={p.id}>{p.nombre}</option>
-                                                    ))
-                                                }
+                                                <option value="">— Selecciona un servicio —</option>
+                                                {servicios.map((s) => (
+                                                    <option key={s.id} value={s.id}>{s.clave} — {s.descripcion}</option>
+                                                ))}
                                             </select>
-                                            {errors[`muestras.${index}.prueba_id`] && (
-                                                <p className="mt-1 text-sm text-red-600">{errors[`muestras.${index}.prueba_id`]}</p>
+                                            {errors[`muestras.${index}.servicio_id`] && (
+                                                <p className="mt-1 text-sm text-red-600">{errors[`muestras.${index}.servicio_id`]}</p>
                                             )}
                                         </div>
 
@@ -1224,33 +1072,23 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
 
                                             {/* Tipo de muestra */}
                                             <div>
-                                                <div className="flex items-center justify-between">
-                                                    <InputLabel value="Tipo de muestra" />
-                                                    <FieldActions
-                                                        etiqueta="tipo de muestra"
-                                                        disabled={!muestra.prueba_id}
-                                                        seleccionado={!!muestra.tipo_muestra_id}
-                                                        onAdd={() => openTipoModal(index, muestra.prueba_id)}
-                                                        onEdit={() => openTipoModal(index, muestra.prueba_id, tipoPorId(muestra.tipo_muestra_id))}
-                                                        onDelete={() => eliminarTipoMuestra(index, tipoPorId(muestra.tipo_muestra_id))}
-                                                    />
-                                                </div>
+                                                <InputLabel value="Tipo de muestra" />
                                                 <select
-                                                    value={muestra.tipo_muestra_id}
-                                                    onChange={(e) => updateMuestra(index, 'tipo_muestra_id', e.target.value)}
-                                                    disabled={!muestra.prueba_id}
+                                                    value={muestra.producto_id}
+                                                    onChange={(e) => updateMuestra(index, 'producto_id', e.target.value)}
+                                                    disabled={!muestra.servicio_id}
                                                     className={selectClass}
                                                 >
                                                     <option value="">— Selecciona —</option>
-                                                    {tiposMuestra
-                                                        .filter((t) => String(t.prueba_id) === String(muestra.prueba_id))
-                                                        .map((t) => (
-                                                            <option key={t.id} value={t.id}>{t.nombre}</option>
+                                                    {productos
+                                                        .filter((p) => String(p.servicio_id) === String(muestra.servicio_id))
+                                                        .map((p) => (
+                                                            <option key={p.id} value={p.id}>{p.nombre} (${Number(p.precio_unitario).toFixed(2)})</option>
                                                         ))
                                                     }
                                                 </select>
-                                                {errors[`muestras.${index}.tipo_muestra_id`] && (
-                                                    <p className="mt-1 text-sm text-red-600">{errors[`muestras.${index}.tipo_muestra_id`]}</p>
+                                                {errors[`muestras.${index}.producto_id`] && (
+                                                    <p className="mt-1 text-sm text-red-600">{errors[`muestras.${index}.producto_id`]}</p>
                                                 )}
                                             </div>
                                         </div>
@@ -1492,7 +1330,7 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
                                 >
                                     <option value="">— Selecciona una explotación —</option>
                                     {explotacionesPropietario.map((e) => (
-                                        <option key={e.id} value={e.id}>{e.nombre}</option>
+                                        <option key={e.id} value={e.id}>{formatExplotacion(e, estados)}</option>
                                     ))}
                                 </select>
                                 <InputError message={errors.explotacion_id} className="mt-2" />

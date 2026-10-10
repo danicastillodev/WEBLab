@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'laravel/laravel',
-        'pretty_version' => 'dev-a61273e3fd700dd70f8d8fd8f15cfa77fcb9db76',
-        'version' => 'dev-a61273e3fd700dd70f8d8fd8f15cfa77fcb9db76',
-        'reference' => 'a61273e3fd700dd70f8d8fd8f15cfa77fcb9db76',
+        'pretty_version' => 'dev-a5e5ace8d2af4309cf42f19ff4b44ba82ac5fb79',
+        'version' => 'dev-a5e5ace8d2af4309cf42f19ff4b44ba82ac5fb79',
+        'reference' => 'a5e5ace8d2af4309cf42f19ff4b44ba82ac5fb79',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -362,9 +362,9 @@
             'dev_requirement' => false,
         ),
         'laravel/laravel' => array(
-            'pretty_version' => 'dev-a61273e3fd700dd70f8d8fd8f15cfa77fcb9db76',
-            'version' => 'dev-a61273e3fd700dd70f8d8fd8f15cfa77fcb9db76',
-            'reference' => 'a61273e3fd700dd70f8d8fd8f15cfa77fcb9db76',
+            'pretty_version' => 'dev-a5e5ace8d2af4309cf42f19ff4b44ba82ac5fb79',
+            'version' => 'dev-a5e5ace8d2af4309cf42f19ff4b44ba82ac5fb79',
+            'reference' => 'a5e5ace8d2af4309cf42f19ff4b44ba82ac5fb79',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

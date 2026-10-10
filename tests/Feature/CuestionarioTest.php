@@ -9,9 +9,9 @@ use App\Models\HistoriaClinica;
 use App\Models\Municipio;
 use App\Models\Pregunta;
 use App\Models\Propietario;
-use App\Models\Prueba;
 use App\Models\Raza;
 use App\Models\Respuesta;
+use App\Models\Servicio;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -40,7 +40,7 @@ class CuestionarioTest extends TestCase
         // Las especies ya vienen sembradas por su migración.
         $especie = Especie::firstOrCreate(['nombre' => 'Ave']);
         $raza = Raza::firstOrCreate(['nombre' => 'Leghorn', 'especie_id' => $especie->id]);
-        $prueba = Prueba::firstOrCreate(['nombre' => 'Coprológico', 'especie_id' => $especie->id]);
+        $servicio = Servicio::firstOrCreate(['clave' => 'COPRO'], ['descripcion' => 'Coprológico']);
 
         return [[
             'propietario_id' => $propietario->id,
@@ -49,7 +49,7 @@ class CuestionarioTest extends TestCase
             'raza_id' => $raza->id,
             'fecha_recepcion' => now()->toDateString(),
             'edad_unidad' => 'NA',
-            'muestras' => [['prueba_id' => $prueba->id, 'cantidad' => 1]],
+            'muestras' => [['servicio_id' => $servicio->id, 'cantidad' => 1]],
         ], $especie];
     }
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Especie;
+use App\Models\Producto;
 use App\Models\Prueba;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -14,7 +15,7 @@ class PruebasController extends Controller
     public function index(): Response
     {
         return Inertia::render('Catalogos/Pruebas/Index', [
-            'pruebas' => Prueba::with('especie')->orderBy('nombre')->paginate(15),
+            'pruebas' => Prueba::with(['especie', 'producto'])->orderBy('nombre')->paginate(15),
         ]);
     }
 
@@ -22,6 +23,7 @@ class PruebasController extends Controller
     {
         return Inertia::render('Catalogos/Pruebas/Create', [
             'especies' => Especie::orderBy('nombre')->get(['id', 'nombre']),
+            'productos' => Producto::where('activo', true)->orderBy('nombre')->get(['id', 'nombre', 'precio_unitario']),
         ]);
     }
 
@@ -30,6 +32,7 @@ class PruebasController extends Controller
         $validated = $request->validate([
             'nombre' => ['required', 'string', 'max:255'],
             'especie_id' => ['nullable', 'integer', 'exists:especies,id'],
+            'producto_id' => ['nullable', 'integer', 'exists:productos,id'],
         ]);
 
         Prueba::create($validated);
@@ -42,6 +45,7 @@ class PruebasController extends Controller
         return Inertia::render('Catalogos/Pruebas/Edit', [
             'prueba' => $prueba,
             'especies' => Especie::orderBy('nombre')->get(['id', 'nombre']),
+            'productos' => Producto::where('activo', true)->orderBy('nombre')->get(['id', 'nombre', 'precio_unitario']),
         ]);
     }
 
@@ -50,6 +54,7 @@ class PruebasController extends Controller
         $validated = $request->validate([
             'nombre' => ['required', 'string', 'max:255'],
             'especie_id' => ['nullable', 'integer', 'exists:especies,id'],
+            'producto_id' => ['nullable', 'integer', 'exists:productos,id'],
         ]);
 
         $prueba->update($validated);

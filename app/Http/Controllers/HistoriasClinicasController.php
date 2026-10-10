@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DatosGeneral;
 use App\Models\Direccion;
 use App\Models\Especie;
 use App\Models\Estado;
 use App\Models\Explotacion;
 use App\Models\FuncionZootecnica;
 use App\Models\HistoriaClinica;
-use App\Models\Muestra;
 use App\Models\Municipio;
 use App\Models\Pregunta;
+use App\Models\Producto;
 use App\Models\Propietario;
 use App\Models\Prueba;
 use App\Models\Raza;
-use App\Models\TipoMuestra;
+use App\Models\Servicio;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -32,14 +33,7 @@ class HistoriasClinicasController extends Controller
         // Primera visita sin parámetros → redirigir con la fecha de hoy y el
         // ejercicio en curso, que es el valor por defecto de ese filtro.
         if (! $request->hasAny($filtroKeys)) {
-            $hoy = now()->toDateString();
-
-            return redirect()->route('historias-clinicas.index', [
-                'fecha_desde' => $hoy,
-                'fecha_hasta' => $hoy,
-                'ejercicio' => now()->year,
-                'impreso' => HistoriaClinica::IMPRESO_NO,
-            ]);
+            return $this->redirectAlIndiceConFiltrosHoy();
         }
 
         $fechaDesde = $request->input('fecha_desde', '');
@@ -96,8 +90,8 @@ class HistoriasClinicasController extends Controller
             'razas' => Raza::orderBy('nombre')->get(['id', 'nombre', 'especie_id']),
             'estados' => Estado::orderBy('nombre')->get(['id', 'nombre']),
             'municipios' => Municipio::orderBy('nombre')->get(['id', 'nombre', 'estado_id']),
-            'pruebas' => Prueba::orderBy('nombre')->get(['id', 'nombre', 'especie_id']),
-            'tipos_muestra' => TipoMuestra::orderBy('nombre')->get(['id', 'prueba_id', 'nombre']),
+            'servicios' => Servicio::where('activo', true)->orderBy('descripcion')->get(['id', 'clave', 'descripcion']),
+            'productos' => Producto::where('activo', true)->orderBy('nombre')->get(['id', 'nombre', 'servicio_id', 'precio_unitario']),
             'funciones_zootecnicas' => FuncionZootecnica::orderBy('nombre')->get(['id', 'nombre', 'especie_id']),
             'preguntas' => Pregunta::vigentes()->get(['id', 'texto', 'tipo']),
         ]);
@@ -149,7 +143,7 @@ class HistoriasClinicasController extends Controller
 
         $direccion = Direccion::create($validated);
 
-        return response()->json($direccion->load('municipio'));
+        return response()->json($direccion->load(['municipio', 'estado']));
     }
 
     public function storeFuncionZootecnica(Request $request): JsonResponse
@@ -165,30 +159,6 @@ class HistoriasClinicasController extends Controller
         $funcion = FuncionZootecnica::create($validated);
 
         return response()->json($funcion);
-    }
-
-    public function storePrueba(Request $request): JsonResponse
-    {
-        $validated = $request->validate([
-            'nombre' => ['required', 'string', 'max:255'],
-            'especie_id' => ['required', 'integer', 'exists:especies,id'],
-        ]);
-
-        $prueba = Prueba::create($validated);
-
-        return response()->json($prueba);
-    }
-
-    public function storeTipoMuestra(Request $request): JsonResponse
-    {
-        $validated = $request->validate([
-            'prueba_id' => ['required', 'integer', 'exists:pruebas,id'],
-            'nombre' => ['required', 'string', 'max:150'],
-        ]);
-
-        $tipo = TipoMuestra::create($validated);
-
-        return response()->json($tipo);
     }
 
     public function storeEspecie(Request $request): JsonResponse
@@ -291,7 +261,7 @@ class HistoriasClinicasController extends Controller
 
         $direccion->update($validated);
 
-        return response()->json($direccion->load('municipio'));
+        return response()->json($direccion->load(['municipio', 'estado']));
     }
 
     public function destroyDireccion(Direccion $direccion): JsonResponse
@@ -437,53 +407,6 @@ class HistoriasClinicasController extends Controller
         return response()->json(['id' => $funcionZootecnica->id]);
     }
 
-    public function updatePrueba(Request $request, Prueba $prueba): JsonResponse
-    {
-        $validated = $request->validate([
-            'nombre' => ['required', 'string', 'max:255'],
-        ]);
-
-        $prueba->update($validated);
-
-        return response()->json($prueba);
-    }
-
-    public function destroyPrueba(Prueba $prueba): JsonResponse
-    {
-        $this->bloquearSiEnUso(
-            Muestra::where('prueba_id', $prueba->id)->exists(),
-            'No se puede eliminar: el análisis está usado en muestras registradas.',
-        );
-
-        // Los tipos de muestra son hijos del análisis y se eliminan en cascada.
-        $prueba->delete();
-
-        return response()->json(['id' => $prueba->id]);
-    }
-
-    public function updateTipoMuestra(Request $request, TipoMuestra $tipoMuestra): JsonResponse
-    {
-        $validated = $request->validate([
-            'nombre' => ['required', 'string', 'max:150'],
-        ]);
-
-        $tipoMuestra->update($validated);
-
-        return response()->json($tipoMuestra);
-    }
-
-    public function destroyTipoMuestra(TipoMuestra $tipoMuestra): JsonResponse
-    {
-        $this->bloquearSiEnUso(
-            Muestra::where('tipo_muestra_id', $tipoMuestra->id)->exists(),
-            'No se puede eliminar: el tipo de muestra está usado en muestras registradas.',
-        );
-
-        $tipoMuestra->delete();
-
-        return response()->json(['id' => $tipoMuestra->id]);
-    }
-
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
@@ -496,22 +419,22 @@ class HistoriasClinicasController extends Controller
             'raza_id' => ['required', 'integer', 'exists:razas,id'],
             'funcion_zootecnica_id' => ['required', 'integer', 'exists:funcion_zootecnicas,id'],
             'sexo' => ['nullable', 'in:Hembra,Macho,Ambos,NA'],
-            'edad_unidad' => ['required', 'in:Dias,Meses,Años,NR,NA'],
+            'edad_unidad' => ['nullable', 'in:Dias,Meses,Años,NR,NA'],
             'edad_valor' => ['nullable', 'integer', 'min:0'],
             'animales_explotacion' => ['nullable', 'integer', 'min:0'],
             'animales_muertos' => ['nullable', 'integer', 'min:0'],
             'animales_enfermos' => ['nullable', 'integer', 'min:0'],
             'notas_adicionales' => ['nullable', 'string', 'max:512'],
             'muestras' => ['required', 'array', 'min:1'],
-            'muestras.*.prueba_id' => ['required', 'integer', 'exists:pruebas,id'],
+            'muestras.*.servicio_id' => ['required', 'integer', 'exists:servicios,id'],
             'muestras.*.cantidad' => ['required', 'integer', 'min:1'],
-            'muestras.*.tipo_muestra_id' => ['nullable', 'integer', 'exists:tipo_muestras,id'],
+            'muestras.*.producto_id' => ['nullable', 'integer', 'exists:productos,id'],
             'muestras.*.notas' => ['nullable', 'string', 'max:1000'],
             'respuestas' => ['nullable', 'array'],
             'respuestas.*' => ['nullable', 'string', 'max:2000'],
         ]);
 
-        if (in_array($validated['edad_unidad'], ['NR', 'NA'])) {
+        if (in_array($validated['edad_unidad'] ?? null, ['NR', 'NA'], true)) {
             $validated['edad_valor'] = null;
         }
 
@@ -525,7 +448,11 @@ class HistoriasClinicasController extends Controller
 
         $this->guardarRespuestas($historia, $validated['respuestas'] ?? []);
 
-        return redirect()->route('historias-clinicas.index')
+        // El índice redirige a sí mismo con filtros por defecto cuando no
+        // recibe ninguno, lo que consumiría este flash en un salto invisible
+        // para el cliente. Se incluyen los mismos filtros por defecto aquí
+        // para evitar ese salto y que el modal sí llegue a mostrarse.
+        return $this->redirectAlIndiceConFiltrosHoy()
             ->with('success', 'Historia clínica creada.')
             ->with('numero_caso', $historia->numero_caso)
             ->with('historia_id', $historia->id);
@@ -542,8 +469,8 @@ class HistoriasClinicasController extends Controller
                 'raza',
                 'funcionZootecnica',
                 'creadoPor',
-                'muestras.prueba',
-                'muestras.tipoMuestra',
+                'muestras.servicio',
+                'muestras.producto',
                 'respuestas.pregunta',
             ]),
         ]);
@@ -553,7 +480,7 @@ class HistoriasClinicasController extends Controller
     {
         $historiaClinica->update(['estado' => HistoriaClinica::ESTADO_CANCELADA]);
 
-        return redirect()->route('historias-clinicas.index')->with('success', 'Historia clínica cancelada.');
+        return $this->redirectAlIndiceConFiltrosHoy()->with('success', 'Historia clínica cancelada.');
     }
 
     public function ticket(HistoriaClinica $historiaClinica): Response
@@ -564,9 +491,10 @@ class HistoriasClinicasController extends Controller
                 'especie',
                 'raza',
                 'creadoPor',
-                'muestras.prueba',
-                'muestras.tipoMuestra',
+                'muestras.servicio',
+                'muestras.producto',
             ]),
+            'datosGenerales' => DatosGeneral::first(),
         ]);
     }
 
@@ -619,24 +547,41 @@ class HistoriasClinicasController extends Controller
             'fecha_recepcion' => ['required', 'date'],
             'especie_id' => ['required', 'integer', 'exists:especies,id'],
             'raza_id' => ['required', 'integer', 'exists:razas,id'],
-            'edad_unidad' => ['required', 'in:Dias,Meses,Años,NR,NA'],
+            'edad_unidad' => ['nullable', 'in:Dias,Meses,Años,NR,NA'],
             'edad_valor' => ['nullable', 'integer', 'min:0'],
             'cantidad' => ['required', 'integer', 'min:1'],
         ]);
 
-        if (in_array($validated['edad_unidad'], ['NR', 'NA'])) {
+        if (in_array($validated['edad_unidad'] ?? null, ['NR', 'NA'], true)) {
             $validated['edad_valor'] = null;
         }
 
         $historiaClinica->update($validated);
 
-        return redirect()->route('historias-clinicas.index')->with('success', 'Historia clínica actualizada.');
+        return $this->redirectAlIndiceConFiltrosHoy()->with('success', 'Historia clínica actualizada.');
     }
 
     public function destroy(HistoriaClinica $historiaClinica): RedirectResponse
     {
         $historiaClinica->delete();
 
-        return redirect()->route('historias-clinicas.index')->with('success', 'Historia clínica eliminada.');
+        return $this->redirectAlIndiceConFiltrosHoy()->with('success', 'Historia clínica eliminada.');
+    }
+
+    /**
+     * Mismos filtros por defecto que aplica el índice cuando no recibe
+     * ninguno. Redirigir ya con ellos evita el salto interno que el índice
+     * haría por su cuenta, el cual perdería cualquier flash adjunto.
+     */
+    private function redirectAlIndiceConFiltrosHoy(): RedirectResponse
+    {
+        $hoy = now()->toDateString();
+
+        return redirect()->route('historias-clinicas.index', [
+            'fecha_desde' => $hoy,
+            'fecha_hasta' => $hoy,
+            'ejercicio' => now()->year,
+            'impreso' => HistoriaClinica::IMPRESO_NO,
+        ]);
     }
 }

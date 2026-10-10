@@ -64,9 +64,13 @@ class HistoriaClinicaConsultaYCancelacionTest extends TestCase
     {
         $historia = $this->historia();
 
-        $this->actingAs(User::factory()->create(['es_admin' => true]))
-            ->patch(route('historias-clinicas.cancelar', $historia))
-            ->assertRedirect(route('historias-clinicas.index'));
+        $response = $this->actingAs(User::factory()->create(['es_admin' => true]))
+            ->patch(route('historias-clinicas.cancelar', $historia));
+
+        // Redirige con los filtros por defecto (no a la URL pelada) para que
+        // el índice no vuelva a redirigir por su cuenta y se pierda el flash.
+        $this->assertStringStartsWith(route('historias-clinicas.index'), $response->headers->get('Location'));
+        $response->assertSessionHas('success', 'Historia clínica cancelada.');
 
         $this->assertDatabaseHas('historias_clinicas', [
             'id' => $historia->id,

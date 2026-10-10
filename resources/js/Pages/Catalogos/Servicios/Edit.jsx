@@ -5,16 +5,15 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
-import { METODOS } from './Index';
 
 const selectClass = 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500';
 
-export default function Edit({ servicio, areas }) {
+export default function Edit({ servicio, areas, metodos }) {
     const { data, setData, patch, processing, errors } = useForm({
         clave: servicio.clave,
         siglas: servicio.siglas ?? '',
         descripcion: servicio.descripcion,
-        metodo: servicio.metodo ?? '',
+        metodo_id: servicio.metodo_id ? String(servicio.metodo_id) : '',
         area_id: servicio.area_id ? String(servicio.area_id) : '',
         referencias: servicio.referencias ?? '',
         activo: servicio.activo,
@@ -74,18 +73,19 @@ export default function Edit({ servicio, areas }) {
                                     <InputError message={errors.area_id} className="mt-2" />
                                 </div>
                                 <div>
-                                    <InputLabel htmlFor="metodo" value="Método" />
-                                    <TextInput
-                                        id="metodo"
-                                        list="metodos-sugeridos"
-                                        value={data.metodo}
-                                        onChange={(e) => setData('metodo', e.target.value)}
-                                        className="mt-1 block w-full"
-                                    />
-                                    <datalist id="metodos-sugeridos">
-                                        {METODOS.map((m) => <option key={m} value={m} />)}
-                                    </datalist>
-                                    <InputError message={errors.metodo} className="mt-2" />
+                                    <InputLabel htmlFor="metodo_id" value="Método" />
+                                    <select
+                                        id="metodo_id"
+                                        value={data.metodo_id}
+                                        onChange={(e) => setData('metodo_id', e.target.value)}
+                                        className={selectClass}
+                                    >
+                                        <option value="">— Selecciona un método —</option>
+                                        {metodos.map((m) => (
+                                            <option key={m.id} value={m.id}>{m.nombre}</option>
+                                        ))}
+                                    </select>
+                                    <InputError message={errors.metodo_id} className="mt-2" />
                                 </div>
                                 <div className="sm:col-span-2">
                                     <InputLabel htmlFor="descripcion" value="Descripción" />

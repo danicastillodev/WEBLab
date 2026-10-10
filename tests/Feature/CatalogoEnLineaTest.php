@@ -8,8 +8,8 @@ use App\Models\Estado;
 use App\Models\HistoriaClinica;
 use App\Models\Municipio;
 use App\Models\Propietario;
-use App\Models\Prueba;
 use App\Models\Raza;
+use App\Models\Servicio;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -89,18 +89,6 @@ class CatalogoEnLineaTest extends TestCase
             ->assertStatus(409);
 
         $this->assertDatabaseHas('razas', ['id' => $historia->raza_id]);
-    }
-
-    public function test_elimina_un_registro_sin_dependencias(): void
-    {
-        $especie = Especie::create(['nombre' => 'Equino']);
-        $prueba = Prueba::create(['nombre' => 'Hemograma', 'especie_id' => $especie->id]);
-
-        $this->actingAs($this->admin())
-            ->deleteJson(route('historias-clinicas.destroy-prueba', $prueba->id))
-            ->assertOk();
-
-        $this->assertDatabaseMissing('pruebas', ['id' => $prueba->id]);
     }
 
     /**
@@ -265,7 +253,7 @@ class CatalogoEnLineaTest extends TestCase
                 'edad_unidad' => 'NA',
                 'estado' => HistoriaClinica::ESTADO_CONCLUIDA,
                 'muestras' => [[
-                    'prueba_id' => Prueba::create(['nombre' => 'Coprológico', 'especie_id' => $base->especie_id])->id,
+                    'servicio_id' => Servicio::create(['clave' => 'TEST01', 'descripcion' => 'Coprológico'])->id,
                     'cantidad' => 1,
                 ]],
             ])

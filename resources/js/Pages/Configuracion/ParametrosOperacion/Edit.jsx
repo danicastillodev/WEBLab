@@ -6,9 +6,9 @@ import SecondaryButton from '@/Components/SecondaryButton';
 import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
 
-// Las secciones de "Impresión de facturas" abajo abren un flujo que ningún
+// Las secciones de "Impresión de Notas de pago" abajo abren un flujo que ningún
 // card describe todavía (editor de posiciones de campos), así que su botón
-// queda sin acción, igual que los placeholders "#" del grupo Facturación.
+// queda sin acción, igual que los placeholders "#" del grupo Notas de pago.
 export default function Edit({ parametros }) {
     const { flash } = usePage().props;
     const { data, setData, put, processing, errors } = useForm({
@@ -42,13 +42,13 @@ export default function Edit({ parametros }) {
                     <div className="overflow-hidden bg-white p-6 shadow-sm sm:rounded-lg">
                         <form onSubmit={submit} className="space-y-6">
                             <div className={fieldsetClass}>
-                                <h3 className={legendClass}>Impresión de Facturas</h3>
+                                <h3 className={legendClass}>Impresión de Notas de pago</h3>
                                 <p className="text-sm text-gray-500">
-                                    Para tener mayor control sobre la posición de cada uno de los campos que conforman la factura,
+                                    Para tener mayor control sobre la posición de cada uno de los campos que conforman la nota de pago,
                                     es posible configurar dichos parámetros con el siguiente botón.
                                 </p>
                                 <div className="flex items-center gap-2">
-                                    <SecondaryButton>Configurar factura...</SecondaryButton>
+                                    <SecondaryButton>Configurar nota de pago...</SecondaryButton>
                                     <span className="inline-flex items-center rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-800">
                                         Prox
                                     </span>
@@ -56,7 +56,7 @@ export default function Edit({ parametros }) {
                             </div>
 
                             <div className={fieldsetClass}>
-                                <h3 className={legendClass}>Folio Automático en Facturas</h3>
+                                <h3 className={legendClass}>Folio Automático en Notas de pago</h3>
                                 <p className="text-sm text-gray-500">
                                     Puede seleccionar el comportamiento que más se adapte a lo descrito a continuación.
                                 </p>
@@ -97,9 +97,9 @@ export default function Edit({ parametros }) {
                             </div>
 
                             <div className={fieldsetClass}>
-                                <h3 className={legendClass}>IVA en Facturas</h3>
+                                <h3 className={legendClass}>IVA en Notas de pago</h3>
                                 <p className="text-sm text-gray-500">
-                                    Puede definir el porcentaje de IVA a aplicar a las facturas generadas en el sistema.
+                                    Puede definir el porcentaje de IVA a aplicar a las notas de pago generadas en el sistema.
                                 </p>
                                 <div className="max-w-xs">
                                     <InputLabel htmlFor="iva_porcentaje" value="Porcentaje de IVA a aplicar" />

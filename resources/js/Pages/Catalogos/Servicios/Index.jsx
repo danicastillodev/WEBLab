@@ -2,27 +2,13 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 
-// Métodos sugeridos en el filtro; el campo del formulario admite cualquier
-// valor libre, así que esta lista es sólo de referencia rápida.
-export const METODOS = [
-    'PCR',
-    'Microscopía Directa',
-    'Hidrólisis Alcalina',
-    'Tinción de Wright',
-    'Kirby Bauer',
-    'Centrifugado',
-    'Bacteriológico',
-    'Número Más Probable',
-    'Procedimiento Estándar',
-];
-
-export default function Index({ servicios, areas, filtros }) {
+export default function Index({ servicios, areas, metodos, filtros }) {
     const { flash } = usePage().props;
 
     const [form, setForm] = useState({
         buscar: filtros.buscar ?? '',
         area_id: filtros.area_id ?? '',
-        metodo: filtros.metodo ?? '',
+        metodo_id: filtros.metodo_id ?? '',
     });
 
     function handleChange(e) {
@@ -35,7 +21,7 @@ export default function Index({ servicios, areas, filtros }) {
     }
 
     function limpiar() {
-        const vacio = { buscar: '', area_id: '', metodo: '' };
+        const vacio = { buscar: '', area_id: '', metodo_id: '' };
         setForm(vacio);
         router.get(route('servicios.index'), vacio, { preserveState: true, replace: true });
     }
@@ -102,10 +88,10 @@ export default function Index({ servicios, areas, filtros }) {
                             </div>
                             <div>
                                 <label className="mb-1 block text-xs font-medium text-gray-600">Método</label>
-                                <select name="metodo" value={form.metodo} onChange={handleChange} className={inputClass}>
+                                <select name="metodo_id" value={form.metodo_id} onChange={handleChange} className={inputClass}>
                                     <option value="">Todos</option>
-                                    {METODOS.map((m) => (
-                                        <option key={m} value={m}>{m}</option>
+                                    {metodos.map((m) => (
+                                        <option key={m.id} value={m.id}>{m.nombre}</option>
                                     ))}
                                 </select>
                             </div>
@@ -131,6 +117,7 @@ export default function Index({ servicios, areas, filtros }) {
                         <table className="min-w-full divide-y divide-gray-200">
                             <thead className="bg-gray-50">
                                 <tr>
+                                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">N°</th>
                                     <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Clave</th>
                                     <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Siglas</th>
                                     <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Descripción</th>
@@ -144,17 +131,18 @@ export default function Index({ servicios, areas, filtros }) {
                             <tbody className="divide-y divide-gray-200 bg-white">
                                 {servicios.data.length === 0 && (
                                     <tr>
-                                        <td colSpan={8} className="px-6 py-4 text-center text-sm text-gray-500">
+                                        <td colSpan={9} className="px-6 py-4 text-center text-sm text-gray-500">
                                             No se encontraron servicios con los filtros seleccionados.
                                         </td>
                                     </tr>
                                 )}
                                 {servicios.data.map((servicio) => (
                                     <tr key={servicio.id}>
+                                        <td className="px-6 py-4 text-sm text-gray-500">{servicio.numero}</td>
                                         <td className="px-6 py-4 font-mono text-sm font-medium text-gray-900">{servicio.clave}</td>
                                         <td className="px-6 py-4 text-sm text-gray-500">{servicio.siglas ?? '—'}</td>
                                         <td className="px-6 py-4 text-sm text-gray-500">{servicio.descripcion}</td>
-                                        <td className="px-6 py-4 text-sm text-gray-500">{servicio.metodo ?? '—'}</td>
+                                        <td className="px-6 py-4 text-sm text-gray-500">{servicio.metodo?.nombre ?? '—'}</td>
                                         <td className="px-6 py-4 text-sm text-gray-500">{servicio.area?.nombre ?? '—'}</td>
                                         <td className="px-6 py-4 text-sm text-gray-500">{servicio.referencias ?? '—'}</td>
                                         <td className="px-6 py-4 text-sm">

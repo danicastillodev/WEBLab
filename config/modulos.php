@@ -27,7 +27,9 @@ return [
         'razas' => 'Razas',
         'pruebas' => 'Pruebas',
         'funcion-zootecnicas' => 'Funciones Zootécnicas',
+        'metodos' => 'Métodos',
         'servicios' => 'Servicios',
+        'productos' => 'Productos',
         'users' => 'Usuarios',
     ],
 

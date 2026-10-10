@@ -135,4 +135,27 @@ class User extends Authenticatable
             ->map(fn ($p) => ['ver' => $p->ver, 'crear' => $p->crear])
             ->all();
     }
+
+    /**
+     * Mapa clave => true de los permisos granulares concedidos (ver
+     * config/permisos_granulares.php), usado por el sidebar para mostrar
+     * enlaces que no encajan en la matriz módulo × acción. Los
+     * administradores tienen todos los permisos concedidos.
+     *
+     * @return array<string, bool>
+     */
+    public function matrizDePermisosGranulares(): array
+    {
+        if ($this->es_admin) {
+            $claves = collect(config('permisos_granulares.grupos'))
+                ->flatMap(fn ($grupo) => array_keys($grupo['permisos']));
+
+            return $claves->mapWithKeys(fn ($clave) => [$clave => true])->all();
+        }
+
+        return $this->permisosGranulares()
+            ->pluck('clave')
+            ->mapWithKeys(fn ($clave) => [$clave => true])
+            ->all();
+    }
 }

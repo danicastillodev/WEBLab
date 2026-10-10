@@ -10,6 +10,8 @@ class Muestra extends Model
     protected $fillable = [
         'historia_clinica_id',
         'prueba_id',
+        'servicio_id',
+        'producto_id',
         'cantidad',
         'tipo_muestra_id',
         'notas',
@@ -18,6 +20,16 @@ class Muestra extends Model
     public function historiaClinica(): BelongsTo
     {
         return $this->belongsTo(HistoriaClinica::class);
+    }
+
+    public function servicio(): BelongsTo
+    {
+        return $this->belongsTo(Servicio::class);
+    }
+
+    public function producto(): BelongsTo
+    {
+        return $this->belongsTo(Producto::class);
     }
 
     public function prueba(): BelongsTo

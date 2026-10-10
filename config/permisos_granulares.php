@@ -19,18 +19,18 @@
 return [
     'grupos' => [
         'facturacion' => [
-            'etiqueta' => 'Facturación',
+            'etiqueta' => 'Notas de pago',
             'permisos' => [
-                'facturacion.agregar_facturas' => 'Agregar facturas',
-                'facturacion.modificar_facturas' => 'Modificar facturas',
+                'facturacion.agregar_facturas' => 'Agregar notas de pago',
+                'facturacion.modificar_facturas' => 'Modificar notas de pago',
                 'facturacion.agregar_productos' => 'Agregar productos',
                 'facturacion.modificar_productos' => 'Modificar productos',
                 'facturacion.agregar_notas_abono' => 'Agregar Notas de Abono',
                 'facturacion.modificar_notas_abono' => 'Modificar Notas de Abono',
-                'facturacion.cancelar_factura' => 'Cancelar una factura',
+                'facturacion.cancelar_factura' => 'Cancelar una nota de pago',
                 'facturacion.cancelar_nota_abono' => 'Cancelar una nota de abono',
                 'facturacion.modificar_iva' => 'Permitir modificar IVA',
-                'facturacion.refacturar_historias_clinicas' => 'Refacturar historias clínicas',
+                'facturacion.refacturar_historias_clinicas' => 'Regenerar la nota de pago de historias clínicas',
             ],
         ],
 
@@ -57,8 +57,8 @@ return [
         'configuracion-general' => [
             'etiqueta' => 'Configuración General',
             'permisos' => [
-                'configuracion-general.folio_automatico_facturas' => 'Configurar generación de folio automático en facturas',
-                'configuracion-general.porcentaje_iva_facturas' => 'Configurar el porcentaje de IVA aplicado a facturas',
+                'configuracion-general.folio_automatico_facturas' => 'Configurar generación de folio automático en notas de pago',
+                'configuracion-general.porcentaje_iva_facturas' => 'Configurar el porcentaje de IVA aplicado a notas de pago',
             ],
         ],
 
@@ -73,9 +73,9 @@ return [
                 'reportes.notificacion_b_agonistas' => 'Acceso Reporte Notificación de Res. de B-Agonistas',
                 'reportes.global' => 'Acceso Reporte Global',
                 'reportes.estado_cuenta_cliente' => 'Acceso Reporte de Estado de cuenta por cliente',
-                'reportes.estados_movimientos_facturacion' => 'Acceso Reporte de Estados Movimientos de facturación',
+                'reportes.estados_movimientos_facturacion' => 'Acceso Reporte de Estados Movimientos de notas de pago',
                 'reportes.volumen_trabajo' => 'Acceso Reporte de volumen de trabajo',
-                'reportes.muestras_casos_no_facturados' => 'Acceso Reporte Muestras / Casos no facturados',
+                'reportes.muestras_casos_no_facturados' => 'Acceso Reporte Muestras / Casos sin nota de pago',
             ],
         ],
     ],

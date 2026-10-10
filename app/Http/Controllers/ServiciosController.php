@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Area;
+use App\Models\Metodo;
 use App\Models\Servicio;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -14,9 +16,9 @@ class ServiciosController extends Controller
 {
     public function index(Request $request): Response
     {
-        $filtros = $request->only(['buscar', 'area_id', 'metodo']);
+        $filtros = $request->only(['buscar', 'area_id', 'metodo_id']);
 
-        $servicios = Servicio::with('area')
+        $servicios = Servicio::with(['area', 'metodo'])
             ->when($filtros['buscar'] ?? null, function ($query, $buscar) {
                 $query->where(function ($query) use ($buscar) {
                     $query->where('clave', 'like', "%{$buscar}%")
@@ -25,7 +27,7 @@ class ServiciosController extends Controller
                 });
             })
             ->when($filtros['area_id'] ?? null, fn ($query, $areaId) => $query->where('area_id', $areaId))
-            ->when($filtros['metodo'] ?? null, fn ($query, $metodo) => $query->where('metodo', $metodo))
+            ->when($filtros['metodo_id'] ?? null, fn ($query, $metodoId) => $query->where('metodo_id', $metodoId))
             ->orderBy('clave')
             ->paginate(15)
             ->withQueryString();
@@ -33,6 +35,7 @@ class ServiciosController extends Controller
         return Inertia::render('Catalogos/Servicios/Index', [
             'servicios' => $servicios,
             'areas' => Area::orderBy('nombre')->get(['id', 'nombre']),
+            'metodos' => Metodo::orderBy('nombre')->get(['id', 'nombre']),
             'filtros' => $filtros,
         ]);
     }
@@ -41,12 +44,15 @@ class ServiciosController extends Controller
     {
         return Inertia::render('Catalogos/Servicios/Create', [
             'areas' => Area::orderBy('nombre')->get(['id', 'nombre']),
+            'metodos' => Metodo::orderBy('nombre')->get(['id', 'nombre']),
         ]);
     }
 
     public function store(Request $request): RedirectResponse
     {
-        Servicio::create($this->validado($request));
+        $datos = $this->validado($request);
+
+        DB::transaction(fn () => Servicio::create($datos));
 
         return redirect()->route('servicios.index')->with('success', 'Servicio creado.');
     }
@@ -56,6 +62,7 @@ class ServiciosController extends Controller
         return Inertia::render('Catalogos/Servicios/Edit', [
             'servicio' => $servicio,
             'areas' => Area::orderBy('nombre')->get(['id', 'nombre']),
+            'metodos' => Metodo::orderBy('nombre')->get(['id', 'nombre']),
         ]);
     }
 
@@ -79,7 +86,7 @@ class ServiciosController extends Controller
             'clave' => ['required', 'string', 'max:20', Rule::unique('servicios')->ignore($servicio)],
             'siglas' => ['nullable', 'string', 'max:15'],
             'descripcion' => ['required', 'string', 'max:255'],
-            'metodo' => ['nullable', 'string', 'max:100'],
+            'metodo_id' => ['nullable', 'integer', 'exists:metodos,id'],
             'area_id' => ['nullable', 'integer', 'exists:areas,id'],
             'referencias' => ['nullable', 'string', 'max:255'],
             'activo' => ['boolean'],

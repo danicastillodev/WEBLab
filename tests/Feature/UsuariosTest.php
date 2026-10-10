@@ -75,10 +75,10 @@ class UsuariosTest extends TestCase
                     ->where('modulos.historias-clinicas', 'Historias Clínicas')
                     ->where('acciones.ver', 'Ver')
                     ->has('dias', 7)
-                    ->where('gruposPermisos.facturacion.etiqueta', 'Facturación');
+                    ->where('gruposPermisos.facturacion.etiqueta', 'Notas de pago');
 
                 $this->assertSame(
-                    'Agregar facturas',
+                    'Agregar notas de pago',
                     $page->toArray()['props']['gruposPermisos']['facturacion']['permisos']['facturacion.agregar_facturas'],
                 );
             });

@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Auth;
 
@@ -150,5 +151,10 @@ class HistoriaClinica extends Model
     public function respuestas(): HasMany
     {
         return $this->hasMany(Respuesta::class);
+    }
+
+    public function notasPago(): BelongsToMany
+    {
+        return $this->belongsToMany(NotaPago::class, 'nota_pago_historia_clinica');
     }
 }

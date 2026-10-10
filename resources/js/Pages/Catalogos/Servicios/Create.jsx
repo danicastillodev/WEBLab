@@ -5,16 +5,15 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
-import { METODOS } from './Index';
 
 const selectClass = 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500';
 
-export default function Create({ areas }) {
+export default function Create({ areas, metodos }) {
     const { data, setData, post, processing, errors } = useForm({
         clave: '',
         siglas: '',
         descripcion: '',
-        metodo: '',
+        metodo_id: '',
         area_id: '',
         referencias: '',
         activo: true,
@@ -43,7 +42,6 @@ export default function Create({ areas }) {
                                         value={data.clave}
                                         onChange={(e) => setData('clave', e.target.value.toUpperCase())}
                                         className="mt-1 block w-full"
-                                        placeholder="PCR11"
                                         autoFocus
                                     />
                                     <InputError message={errors.clave} className="mt-2" />
@@ -55,7 +53,6 @@ export default function Create({ areas }) {
                                         value={data.siglas}
                                         onChange={(e) => setData('siglas', e.target.value.toUpperCase())}
                                         className="mt-1 block w-full"
-                                        placeholder="VAPCR"
                                         maxLength={15}
                                     />
                                     <InputError message={errors.siglas} className="mt-2" />
@@ -76,19 +73,19 @@ export default function Create({ areas }) {
                                     <InputError message={errors.area_id} className="mt-2" />
                                 </div>
                                 <div>
-                                    <InputLabel htmlFor="metodo" value="Método" />
-                                    <TextInput
-                                        id="metodo"
-                                        list="metodos-sugeridos"
-                                        value={data.metodo}
-                                        onChange={(e) => setData('metodo', e.target.value)}
-                                        className="mt-1 block w-full"
-                                        placeholder="PCR"
-                                    />
-                                    <datalist id="metodos-sugeridos">
-                                        {METODOS.map((m) => <option key={m} value={m} />)}
-                                    </datalist>
-                                    <InputError message={errors.metodo} className="mt-2" />
+                                    <InputLabel htmlFor="metodo_id" value="Método" />
+                                    <select
+                                        id="metodo_id"
+                                        value={data.metodo_id}
+                                        onChange={(e) => setData('metodo_id', e.target.value)}
+                                        className={selectClass}
+                                    >
+                                        <option value="">— Selecciona un método —</option>
+                                        {metodos.map((m) => (
+                                            <option key={m.id} value={m.id}>{m.nombre}</option>
+                                        ))}
+                                    </select>
+                                    <InputError message={errors.metodo_id} className="mt-2" />
                                 </div>
                                 <div className="sm:col-span-2">
                                     <InputLabel htmlFor="descripcion" value="Descripción" />
@@ -97,7 +94,6 @@ export default function Create({ areas }) {
                                         value={data.descripcion}
                                         onChange={(e) => setData('descripcion', e.target.value)}
                                         className="mt-1 block w-full"
-                                        placeholder="DETECCION VIRAL POR PCR"
                                     />
                                     <InputError message={errors.descripcion} className="mt-2" />
                                 </div>
@@ -108,7 +104,6 @@ export default function Create({ areas }) {
                                         value={data.referencias}
                                         onChange={(e) => setData('referencias', e.target.value)}
                                         className="mt-1 block w-full"
-                                        placeholder="NOM-005-ZOO-1993"
                                     />
                                     <InputError message={errors.referencias} className="mt-2" />
                                 </div>
