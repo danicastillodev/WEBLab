@@ -18,7 +18,10 @@ return new class extends Migration
             $table->foreignId('historia_clinica_id')->constrained('historias_clinicas')->cascadeOnDelete();
             $table->timestamps();
 
-            $table->unique(['nota_pago_id', 'historia_clinica_id']);
+            // Nombre explícito: el que genera Laravel por convención mide 66
+            // caracteres y MariaDB corta en 64, así que la migración fallaba
+            // al crear el índice.
+            $table->unique(['nota_pago_id', 'historia_clinica_id'], 'nota_pago_historia_unique');
         });
     }
 
