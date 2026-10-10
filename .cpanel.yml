@@ -36,12 +36,25 @@ deployment:
     #    index.php y dejaría la app invisible.
     - /bin/rm -rf "$WEB/build"
     - /bin/rm -f "$WEB/index.html"
+
+    #    El .htaccess del document root no es solo de Laravel: ahí vive también
+    #    el handler que fija la versión de PHP del subdominio. El rsync de
+    #    public/ lo pisaba, el dominio volvía al PHP por defecto de la cuenta
+    #    (7.0) y la aplicación moría entera con "Composer detected issues in
+    #    your platform". Se guarda el handler antes y se repone después.
+    - /bin/rm -f "$HOME/.htaccess-php-handler"
+    - if [ -f "$WEB/.htaccess" ]; then /bin/sed -n '/# php -- BEGIN/,/# php -- END/p' "$WEB/.htaccess" > "$HOME/.htaccess-php-handler"; if [ ! -s "$HOME/.htaccess-php-handler" ]; then /bin/grep -E '^[[:space:]]*(AddHandler|AddType).*php' "$WEB/.htaccess" > "$HOME/.htaccess-php-handler" || true; fi; fi
+
     - /usr/bin/rsync -a --exclude=index.php ./public/ "$WEB/"
     - /bin/cp ./deploy/cpanel-index.php "$WEB/index.php"
     - /bin/ln -sfn "$APP/storage/app/public" "$WEB/storage"
+
+    - if [ -s "$HOME/.htaccess-php-handler" ]; then /bin/cat "$HOME/.htaccess-php-handler" "$WEB/.htaccess" > "$WEB/.htaccess.nuevo" && /bin/mv -f "$WEB/.htaccess.nuevo" "$WEB/.htaccess" && echo "handler de PHP repuesto en .htaccess"; else echo "AVISO - no habia handler de PHP que preservar"; fi
 
     # 4. Base de datos y cachés
     - $PHP "$APP/artisan" migrate --force
     - $PHP "$APP/artisan" optimize:clear
     - $PHP "$APP/artisan" optimize
-    - echo "Deploy terminado: $(git log -1 --pretty='%h %s')"
+    # Sin ":" seguido de espacio: el parser de YAML de cPanel lo tomaría como
+    # un mapa y la tarea acababa ejecutando literalmente "HASH(0x...)".
+    - echo "Deploy terminado -- $(git log -1 --pretty='%h %s')"
