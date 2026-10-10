@@ -8,10 +8,10 @@ use App\Models\Explotacion;
 use App\Models\FuncionZootecnica;
 use App\Models\HistoriaClinica;
 use App\Models\Municipio;
+use App\Models\Producto;
 use App\Models\Propietario;
-use App\Models\Prueba;
 use App\Models\Raza;
-use App\Models\TipoMuestra;
+use App\Models\Servicio;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -89,17 +89,19 @@ class HistoriasClinicasMockSeeder extends Seeder
         }
 
         // ── Datos por especie ─────────────────────────────────────────────────
+        // Los servicios de análisis ya no dependen de la especie (ver Servicio),
+        // así que el mismo catálogo completo aplica a cualquier historia.
+        $servicios = Servicio::where('activo', true)->get();
+
         $especieDatos = [];
         foreach (Especie::all() as $especie) {
             $razaIds = Raza::where('especie_id', $especie->id)->pluck('id')->all();
             $funcIds = FuncionZootecnica::where('especie_id', $especie->id)->pluck('id')->all();
-            $pruebas = Prueba::where('especie_id', $especie->id)->get();
 
-            if ($razaIds && $funcIds && $pruebas->isNotEmpty()) {
+            if ($razaIds && $funcIds) {
                 $especieDatos[$especie->id] = [
                     'razas' => $razaIds,
                     'funcs' => $funcIds,
-                    'pruebas' => $pruebas,
                 ];
             }
         }
@@ -159,12 +161,12 @@ class HistoriasClinicasMockSeeder extends Seeder
             });
 
             // Agregar 1 o 2 muestras por historia
-            $pruebasDisp = $datos['pruebas']->shuffle()->take(rand(1, 2));
-            foreach ($pruebasDisp as $prueba) {
-                $tipoId = TipoMuestra::where('prueba_id', $prueba->id)->value('id');
+            $serviciosDisp = $servicios->shuffle()->take(rand(1, 2));
+            foreach ($serviciosDisp as $servicio) {
+                $productoId = Producto::where('servicio_id', $servicio->id)->value('id');
                 $historia->muestras()->create([
-                    'prueba_id' => $prueba->id,
-                    'tipo_muestra_id' => $tipoId,
+                    'servicio_id' => $servicio->id,
+                    'producto_id' => $productoId,
                     'cantidad' => rand(1, 5),
                 ]);
             }

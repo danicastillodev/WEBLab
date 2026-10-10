@@ -8,11 +8,16 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Prueba extends Model
 {
-    protected $fillable = ['nombre', 'especie_id'];
+    protected $fillable = ['nombre', 'especie_id', 'producto_id'];
 
     public function especie(): BelongsTo
     {
         return $this->belongsTo(Especie::class);
+    }
+
+    public function producto(): BelongsTo
+    {
+        return $this->belongsTo(Producto::class);
     }
 
     public function tiposMuestra(): HasMany

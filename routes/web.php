@@ -8,8 +8,11 @@ use App\Http\Controllers\EstadosController;
 use App\Http\Controllers\FuncionZootecnicasController;
 use App\Http\Controllers\HistoriasClinicasController;
 use App\Http\Controllers\MantenimientoBaseDatosController;
+use App\Http\Controllers\MetodosController;
 use App\Http\Controllers\MunicipiosController;
+use App\Http\Controllers\NotasPagoController;
 use App\Http\Controllers\ParametrosOperacionController;
+use App\Http\Controllers\ProductosController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PropietariosController;
 use App\Http\Controllers\PruebasController;
@@ -64,7 +67,19 @@ Route::middleware('auth')->group(function () {
     Route::resource('razas', RazasController::class)->except(['show']);
     Route::resource('pruebas', PruebasController::class)->except(['show']);
     Route::resource('funcion-zootecnicas', FuncionZootecnicasController::class)->except(['show']);
+    Route::resource('metodos', MetodosController::class)->except(['show']);
     Route::resource('servicios', ServiciosController::class)->except(['show']);
+    Route::resource('productos', ProductosController::class)->except(['show', 'destroy']);
+
+    Route::controller(NotasPagoController::class)
+        ->prefix('notas-pago')
+        ->name('notas-pago.')
+        ->group(function () {
+            Route::get('nueva', 'create')->name('create');
+            Route::post('/', 'store')->name('store');
+            Route::get('historias-clinicas', 'buscarHistorias')->name('buscar-historias');
+            Route::get('historias-clinicas/conceptos', 'conceptosDeHistorias')->name('conceptos-de-historias');
+        });
 
     // El catálogo de preguntas se expone bajo 'cuestionario' pero el modelo es Pregunta.
     Route::resource('cuestionario', CuestionarioController::class)
@@ -100,14 +115,6 @@ Route::middleware('auth')->group(function () {
             Route::post('funcion-zootecnica', 'storeFuncionZootecnica')->name('store-funcion-zootecnica');
             Route::patch('funcion-zootecnica/{funcion_zootecnica}', 'updateFuncionZootecnica')->name('update-funcion-zootecnica');
             Route::delete('funcion-zootecnica/{funcion_zootecnica}', 'destroyFuncionZootecnica')->name('destroy-funcion-zootecnica');
-
-            Route::post('prueba', 'storePrueba')->name('store-prueba');
-            Route::patch('prueba/{prueba}', 'updatePrueba')->name('update-prueba');
-            Route::delete('prueba/{prueba}', 'destroyPrueba')->name('destroy-prueba');
-
-            Route::post('tipo-muestra', 'storeTipoMuestra')->name('store-tipo-muestra');
-            Route::patch('tipo-muestra/{tipo_muestra}', 'updateTipoMuestra')->name('update-tipo-muestra');
-            Route::delete('tipo-muestra/{tipo_muestra}', 'destroyTipoMuestra')->name('destroy-tipo-muestra');
 
             Route::get('ticket/{historia_clinica}', 'ticket')->name('ticket');
             Route::patch('{historia_clinica}/cancelar', 'cancel')->name('cancelar');

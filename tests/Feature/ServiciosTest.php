@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Area;
+use App\Models\Metodo;
 use App\Models\Servicio;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -20,9 +21,10 @@ class ServiciosTest extends TestCase
     public function test_el_listado_trae_los_servicios_con_su_area(): void
     {
         $area = Area::create(['nombre' => 'Bacteriología']);
+        $metodo = Metodo::create(['nombre' => 'Número Más Probable']);
         Servicio::create([
             'clave' => 'BTA24', 'siglas' => 'BAAG', 'descripcion' => 'BACTER. AGUAS',
-            'metodo' => 'Número Más Probable', 'area_id' => $area->id,
+            'metodo_id' => $metodo->id, 'area_id' => $area->id,
         ]);
 
         $this->actingAs($this->admin())
@@ -30,7 +32,8 @@ class ServiciosTest extends TestCase
             ->assertOk()
             ->assertInertia(fn ($page) => $page
                 ->where('servicios.data.0.clave', 'BTA24')
-                ->where('servicios.data.0.area.nombre', 'Bacteriología'));
+                ->where('servicios.data.0.area.nombre', 'Bacteriología')
+                ->where('servicios.data.0.metodo.nombre', 'Número Más Probable'));
     }
 
     public function test_filtra_el_listado_por_area(): void
@@ -50,18 +53,20 @@ class ServiciosTest extends TestCase
 
     public function test_crea_un_servicio(): void
     {
+        $metodo = Metodo::create(['nombre' => 'PCR']);
+
         $this->actingAs($this->admin())
             ->post(route('servicios.store'), [
                 'clave' => 'PCR11',
                 'siglas' => 'VAPCR',
                 'descripcion' => 'DETECCION VIRAL POR PCR',
-                'metodo' => 'PCR',
+                'metodo_id' => $metodo->id,
                 'referencias' => 'PROCEDIMIENTO INTERNO',
                 'activo' => true,
             ])
             ->assertRedirect(route('servicios.index'));
 
-        $this->assertDatabaseHas('servicios', ['clave' => 'PCR11', 'activo' => true]);
+        $this->assertDatabaseHas('servicios', ['clave' => 'PCR11', 'metodo_id' => $metodo->id, 'activo' => true]);
     }
 
     public function test_la_clave_debe_ser_unica(): void

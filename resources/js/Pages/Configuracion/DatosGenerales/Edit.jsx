@@ -3,11 +3,13 @@ import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, useForm, usePage } from '@inertiajs/react';
 
 const selectClass = 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500';
 
 export default function Edit({ datosGenerales, estados, municipios }) {
+    const { flash } = usePage().props;
+
     const { data, setData, put, processing, errors } = useForm({
         razon_social: datosGenerales?.razon_social ?? '',
         nombre_laboratorio: datosGenerales?.nombre_laboratorio ?? '',
@@ -45,6 +47,12 @@ export default function Edit({ datosGenerales, estados, municipios }) {
 
             <div className="py-12">
                 <div className="mx-auto max-w-2xl sm:px-6 lg:px-8">
+                    {flash?.success && (
+                        <div className="mb-4 rounded-md bg-green-50 px-4 py-3 text-sm text-green-700">
+                            {flash.success}
+                        </div>
+                    )}
+
                     <div className="overflow-hidden bg-white p-6 shadow-sm sm:rounded-lg">
                         <form onSubmit={submit} className="space-y-6">
                             <div>

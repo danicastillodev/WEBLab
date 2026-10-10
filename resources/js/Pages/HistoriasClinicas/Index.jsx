@@ -13,9 +13,22 @@ const IMPRESOS = {
 const ejercicioActual = String(new Date().getFullYear());
 
 export default function Index({ historias, filtros, especies }) {
-    const { flash } = usePage().props;
+    const { flash, auth } = usePage().props;
     const [modalNumeroCaso, setModalNumeroCaso] = useState(flash?.numero_caso ?? null);
+    const [modalNotaPago, setModalNotaPago] = useState(false);
     const historiaId = flash?.historia_id ?? null;
+    const puedeCrearNotaPago = !!auth?.permisosGranulares?.['facturacion.agregar_facturas'];
+
+    // Al cerrar el modal de impresión del ticket (sea con "Sí" o "No"), se
+    // encadena la pregunta de si se desea crear una nota de pago para la
+    // historia clínica recién guardada, siempre que el usuario pueda
+    // facturar; si no, simplemente se queda en la lista.
+    function cerrarModalTicket() {
+        setModalNumeroCaso(null);
+        if (puedeCrearNotaPago) {
+            setModalNotaPago(true);
+        }
+    }
 
     const [form, setForm] = useState({
         fecha_desde: filtros.fecha_desde ?? '',
@@ -233,7 +246,7 @@ export default function Index({ historias, filtros, especies }) {
                                     <tr key={historia.id}>
                                         <td className="px-6 py-4 text-sm text-gray-500">{historia.ejercicio ?? '—'}</td>
                                         <td className="px-6 py-4 text-sm text-gray-500">
-                                            {historia.numero_caso ? String(historia.numero_caso).padStart(4, '0') : '—'}
+                                            {historia.numero_caso ?? '—'}
                                         </td>
                                         <td className="px-6 py-4 text-sm font-medium text-gray-900">
                                             {historia.propietario?.nombre} {historia.propietario?.apellidos}
@@ -308,22 +321,51 @@ export default function Index({ historias, filtros, especies }) {
                                 </svg>
                             </div>
                         </div>
-                        <h3 className="text-lg font-semibold text-gray-900">Historia clínica registrada</h3>
-                        <p className="mt-2 text-sm text-gray-500">Número de caso:</p>
-                        <p className="mt-3 text-4xl font-bold text-brand">{String(modalNumeroCaso).padStart(4, '0')}</p>
-                        <p className="mt-6 text-sm font-medium text-gray-700">¿Desea imprimir ticket?</p>
+                        <h3 className="text-lg font-semibold text-gray-900">Historia clínica guardada</h3>
+                        <p className="mt-3 text-sm text-gray-700">
+                            La historia clínica se guardó correctamente. Se asignó con el caso: <span className="font-bold text-brand">{modalNumeroCaso}</span>.
+                        </p>
+                        <p className="mt-3 text-sm font-medium text-gray-700">¿Desea imprimirla ahora?</p>
                         <div className="mt-3 flex gap-3">
                             <button
-                                onClick={() => setModalNumeroCaso(null)}
+                                onClick={cerrarModalTicket}
+                                className="flex-1 rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                            >
+                                No
+                            </button>
+                            <a
+                                href={route('historias-clinicas.ticket', historiaId)}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={cerrarModalTicket}
+                                className="flex-1 rounded-md bg-brand px-4 py-2 text-sm font-medium text-white hover:bg-brand-hover"
+                            >
+                                Sí
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {modalNotaPago && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+                    <div className="mx-4 w-full max-w-sm rounded-lg bg-white p-8 shadow-xl text-center">
+                        <h3 className="text-lg font-semibold text-gray-900">Nota de pago</h3>
+                        <p className="mt-3 text-sm font-medium text-gray-700">
+                            ¿Desea crear una nota de pago para esta historia clínica?
+                        </p>
+                        <div className="mt-3 flex gap-3">
+                            <button
+                                onClick={() => setModalNotaPago(false)}
                                 className="flex-1 rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
                             >
                                 No
                             </button>
                             <Link
-                                href={route('historias-clinicas.ticket', historiaId)}
+                                href={route('notas-pago.create', { preseleccionar_hoy: 1 })}
                                 className="flex-1 rounded-md bg-brand px-4 py-2 text-sm font-medium text-white hover:bg-brand-hover"
                             >
-                                Sí, imprimir
+                                Sí
                             </Link>
                         </div>
                     </div>

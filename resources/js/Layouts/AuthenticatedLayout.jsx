@@ -5,10 +5,11 @@ import { Link, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 
 export default function AuthenticatedLayout({ header, children }) {
-    const { user, permisos } = usePage().props.auth;
+    const { user, permisos, permisosGranulares } = usePage().props.auth;
 
     const puedeVer   = (modulo) => !!permisos?.[modulo]?.ver;
     const puedeCrear = (modulo) => !!permisos?.[modulo]?.crear;
+    const puedeGranular = (clave) => !!permisosGranulares?.[clave];
 
     const catalogos = [
         ['propietarios',       'Propietarios',           'propietarios.*'],
@@ -18,6 +19,7 @@ export default function AuthenticatedLayout({ header, children }) {
         ['razas',              'Razas',                  'razas.index'],
         ['pruebas',            'Pruebas',                'pruebas.index'],
         ['funcion-zootecnicas','Funciones Zootécnicas',  'funcion-zootecnicas.*'],
+        ['metodos',            'Métodos',                'metodos.*'],
     ].filter(([modulo]) => puedeVer(modulo));
 
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
@@ -28,6 +30,7 @@ export default function AuthenticatedLayout({ header, children }) {
         'propietarios.index', 'propietarios.create', 'propietarios.edit',
         'municipios.index', 'estados.index', 'especies.index',
         'razas.index', 'pruebas.index', 'funcion-zootecnicas.index',
+        'metodos.index',
     ];
     const [catalogosOpen, setCatalogosOpen] = useState(
         catalogosRoutes.some((r) => route().current(r)),
@@ -155,17 +158,29 @@ export default function AuthenticatedLayout({ header, children }) {
                         </div>
                     )}
 
-                    {/* Facturación */}
+                    {/* Notas de pago */}
                     <div>
-                        {groupBtn('Facturación', facturacionOpen, () => setFacturacionOpen((v) => !v), false, true)}
+                        {groupBtn('Notas de pago', facturacionOpen, () => setFacturacionOpen((v) => !v), route().current('productos.*') || route().current('notas-pago.*'))}
                         {facturacionOpen && (
                             <div className="ms-3 mt-1 space-y-1 border-l border-gray-200 ps-3">
-                                {enlacePendiente('Nueva factura')}
-                                {enlacePendiente('Listado facturas')}
+                                {puedeGranular('facturacion.agregar_facturas') ? (
+                                    <NavLink href={route('notas-pago.create')} active={route().current('notas-pago.create')}>Nueva nota de pago</NavLink>
+                                ) : (
+                                    <NavLink href="#" active={false}>Nueva nota de pago</NavLink>
+                                )}
+                                {enlacePendiente('Listado notas de pago')}
                                 {enlacePendiente('Nueva nota de abono')}
                                 {enlacePendiente('Listado Notas de abono')}
-                                {enlacePendiente('Nuevo producto')}
-                                {enlacePendiente('Listado productos')}
+                                {puedeVer('productos') ? (
+                                    <NavLink href={route('productos.index')} active={route().current('productos.index') || route().current('productos.edit')}>Catálogo de productos</NavLink>
+                                ) : (
+                                    <NavLink href="#" active={false}>Catálogo de productos</NavLink>
+                                )}
+                                {puedeCrear('productos') ? (
+                                    <NavLink href={route('productos.create')} active={route().current('productos.create')}>Agregar producto</NavLink>
+                                ) : (
+                                    <NavLink href="#" active={false}>Agregar producto</NavLink>
+                                )}
                                 {enlacePendiente('Listado clientes')}
                                 {enlacePendiente('Estado de cuenta')}
                             </div>
@@ -215,9 +230,9 @@ export default function AuthenticatedLayout({ header, children }) {
                                 {enlacePendiente('Notificación de res. de B-Agonistas')}
                                 {enlacePendiente('Reporte global')}
                                 {enlacePendiente('Estado de cuenta por cliente')}
-                                {enlacePendiente('Estados Movimientos de facturación')}
+                                {enlacePendiente('Estados Movimientos de notas de pago')}
                                 {enlacePendiente('Volumen de Trabajo')}
-                                {enlacePendiente('Muestras / Casos no facturados')}
+                                {enlacePendiente('Muestras / Casos sin nota de pago')}
                             </div>
                         )}
                     </div>
@@ -349,16 +364,25 @@ export default function AuthenticatedLayout({ header, children }) {
                                 </>
                             )}
                             <>
-                                <div className="flex items-center px-4 py-1 text-xs font-semibold uppercase tracking-wider text-gray-400">
-                                    Facturación
-                                    {insigniaPendiente}
-                                </div>
-                                {enlacePendienteMovil('Nueva factura')}
-                                {enlacePendienteMovil('Listado facturas')}
+                                <div className="px-4 py-1 text-xs font-semibold uppercase tracking-wider text-gray-400">Notas de pago</div>
+                                {puedeGranular('facturacion.agregar_facturas') ? (
+                                    <ResponsiveNavLink href={route('notas-pago.create')} active={route().current('notas-pago.create')}>Nueva nota de pago</ResponsiveNavLink>
+                                ) : (
+                                    <ResponsiveNavLink href="#" active={false}>Nueva nota de pago</ResponsiveNavLink>
+                                )}
+                                {enlacePendienteMovil('Listado notas de pago')}
                                 {enlacePendienteMovil('Nueva nota de abono')}
                                 {enlacePendienteMovil('Listado Notas de abono')}
-                                {enlacePendienteMovil('Nuevo producto')}
-                                {enlacePendienteMovil('Listado productos')}
+                                {puedeVer('productos') ? (
+                                    <ResponsiveNavLink href={route('productos.index')} active={route().current('productos.index') || route().current('productos.edit')}>Catálogo de productos</ResponsiveNavLink>
+                                ) : (
+                                    <ResponsiveNavLink href="#" active={false}>Catálogo de productos</ResponsiveNavLink>
+                                )}
+                                {puedeCrear('productos') ? (
+                                    <ResponsiveNavLink href={route('productos.create')} active={route().current('productos.create')}>Agregar producto</ResponsiveNavLink>
+                                ) : (
+                                    <ResponsiveNavLink href="#" active={false}>Agregar producto</ResponsiveNavLink>
+                                )}
                                 {enlacePendienteMovil('Listado clientes')}
                                 {enlacePendienteMovil('Estado de cuenta')}
                             </>
@@ -396,9 +420,9 @@ export default function AuthenticatedLayout({ header, children }) {
                                 {enlacePendienteMovil('Notificación de res. de B-Agonistas')}
                                 {enlacePendienteMovil('Reporte global')}
                                 {enlacePendienteMovil('Estado de cuenta por cliente')}
-                                {enlacePendienteMovil('Estados Movimientos de facturación')}
+                                {enlacePendienteMovil('Estados Movimientos de notas de pago')}
                                 {enlacePendienteMovil('Volumen de Trabajo')}
-                                {enlacePendienteMovil('Muestras / Casos no facturados')}
+                                {enlacePendienteMovil('Muestras / Casos sin nota de pago')}
                             </>
                             {catalogos.length > 0 && (
                                 <>

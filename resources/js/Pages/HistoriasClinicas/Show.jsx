@@ -59,7 +59,7 @@ export default function Show({ historia }) {
             header={
                 <div className="flex items-center justify-between">
                     <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                        Historia clínica #{String(historia.numero_caso).padStart(4, '0')}
+                        Historia clínica #{historia.numero_caso}
                     </h2>
                     <div className="flex items-center gap-3">
                         <EstadoBadge estado={historia.estado} />
@@ -73,14 +73,14 @@ export default function Show({ historia }) {
                 </div>
             }
         >
-            <Head title={`Historia clínica #${String(historia.numero_caso).padStart(4, '0')}`} />
+            <Head title={`Historia clínica #${historia.numero_caso}`} />
 
             <div className="py-12">
                 <div className="mx-auto max-w-4xl space-y-6 sm:px-6 lg:px-8">
                     <div className="overflow-hidden bg-white p-6 shadow-sm sm:rounded-lg">
                         <Seccion titulo="Datos generales">
                             <Campo etiqueta="Ejercicio">{historia.ejercicio}</Campo>
-                            <Campo etiqueta="No. caso">{String(historia.numero_caso).padStart(4, '0')}</Campo>
+                            <Campo etiqueta="No. caso">{historia.numero_caso}</Campo>
                             <Campo etiqueta="Fecha de recepción">{formatFecha(historia.fecha_recepcion)}</Campo>
                             <Campo etiqueta="Fecha de muestra">{formatFecha(historia.fecha_muestra)}</Campo>
                             <Campo etiqueta="Impreso">{IMPRESOS[historia.impreso] ?? '—'}</Campo>
@@ -136,9 +136,9 @@ export default function Show({ historia }) {
                                 {muestras.map((muestra, i) => (
                                     <div key={muestra.id ?? i} className="rounded-lg border border-gray-200 bg-gray-50 p-4">
                                         <dl className="grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-3">
-                                            <Campo etiqueta="Análisis">{muestra.prueba?.nombre}</Campo>
+                                            <Campo etiqueta="Análisis">{muestra.servicio?.descripcion}</Campo>
                                             <Campo etiqueta="Cantidad">{muestra.cantidad}</Campo>
-                                            <Campo etiqueta="Tipo de muestra">{muestra.tipo_muestra?.nombre}</Campo>
+                                            <Campo etiqueta="Tipo de muestra">{muestra.producto?.nombre}</Campo>
                                             {muestra.notas && (
                                                 <div className="sm:col-span-3">
                                                     <Campo etiqueta="Notas">{muestra.notas}</Campo>

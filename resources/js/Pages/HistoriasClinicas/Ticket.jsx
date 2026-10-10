@@ -2,10 +2,10 @@ import { Head, Link } from '@inertiajs/react';
 import { useEffect } from 'react';
 
 /**
- * Medidas del rollo de la impresora de tickets. Si se cambia de rollo
- * (58 mm es el otro tamaño común), basta con ajustar estas dos.
+ * Medidas del rollo de la impresora térmica de tickets: 7.5 cm de ancho fijo.
+ * Si se cambia de rollo, basta con ajustar estas dos.
  */
-const ANCHO_PAPEL = '80mm';
+const ANCHO_PAPEL = '75mm';
 const MARGEN_PAPEL = '3mm';
 
 /**
@@ -37,10 +37,19 @@ const ESTILOS = `
 
     .ticket-negrita { font-weight: bold; }
 
+    /* Logo del laboratorio, en escala de grises para no gastar tinta de
+       color en la impresora térmica. */
+    .ticket-logo {
+        display: block;
+        width: 18mm;
+        height: auto;
+        filter: grayscale(100%);
+    }
+
     /* El encabezado del laboratorio va con los saltos de línea del formato
        F079; a 12 pt no caben en 80 mm, así que se reduce solo ese bloque. */
     .ticket-encabezado {
-        text-align: center;
+        text-align: left;
         font-size: 10pt;
     }
 
@@ -104,12 +113,12 @@ function formatFecha(valor) {
     return y && m && d ? `${d}/${m}/${y}` : String(valor);
 }
 
-export default function Ticket({ historia }) {
+export default function Ticket({ historia, datosGenerales }) {
     useEffect(() => {
         window.print();
     }, []);
 
-    const caso = String(historia.numero_caso).padStart(4, '0');
+    const caso = historia.numero_caso;
     const propietario = [historia.propietario?.nombre, historia.propietario?.apellidos]
         .filter(Boolean)
         .join(' ');
@@ -138,6 +147,8 @@ export default function Ticket({ historia }) {
 
             <div className="ticket-hoja flex justify-center bg-gray-100 py-6">
                 <div className="ticket border border-gray-300 shadow-sm">
+                    <img src="/images/logo.png" alt="Logo" className="ticket-logo" />
+
                     {/* Encabezado fijo del laboratorio (formato F079) */}
                     <div className="ticket-encabezado">
                         <p className="ticket-negrita">DIAGNOSTICOS Y SERVICIOS</p>
@@ -146,6 +157,8 @@ export default function Ticket({ historia }) {
                         <p>El Salto, Jal.</p>
                         <p>Calz. Solidaridad Iberoamericana #7069</p>
                         <p>Delegación Las Pintas, El Salto Jal.</p>
+                        {datosGenerales?.telefono && <p>Tel: {datosGenerales.telefono}</p>}
+                        {datosGenerales?.email && <p>{datosGenerales.email}</p>}
                         <p>Formato: F079</p>
                     </div>
 
@@ -166,9 +179,9 @@ export default function Ticket({ historia }) {
                     ) : (
                         muestras.map((muestra, i) => (
                             <div className="ticket-muestra" key={muestra.id ?? i}>
-                                <p>Análisis: {muestra.prueba?.nombre}</p>
+                                <p>Análisis: {muestra.servicio?.descripcion}</p>
                                 <p>Cant: {muestra.cantidad}</p>
-                                <p>Tipo: {muestra.tipo_muestra?.nombre}</p>
+                                <p>Tipo: {muestra.producto?.nombre}</p>
                                 <p>Especie: {historia.especie?.nombre}</p>
                             </div>
                         ))
@@ -180,7 +193,7 @@ export default function Ticket({ historia }) {
                         <p>Firma Propietario Entrega Muestras</p>
                     </div>
                     <div className="ticket-firma">
-                        <p>Firma Laboratorio Recibe Muestras</p>
+                        <p>Firma Recepción de muestras</p>
                     </div>
                     <div className="ticket-firma">
                         <p>Firma Recibe Área Técnica</p>

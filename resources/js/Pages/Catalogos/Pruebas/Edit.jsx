@@ -7,10 +7,11 @@ import { Head, Link, useForm } from '@inertiajs/react';
 
 const selectClass = 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500';
 
-export default function Edit({ prueba, especies }) {
+export default function Edit({ prueba, especies, productos }) {
     const { data, setData, patch, processing, errors } = useForm({
         especie_id: prueba.especie_id ? String(prueba.especie_id) : '',
         nombre:     prueba.nombre,
+        producto_id: prueba.producto_id ? String(prueba.producto_id) : '',
     });
 
     function submit(e) {
@@ -58,6 +59,25 @@ export default function Edit({ prueba, especies }) {
                                     className="mt-1 block w-full"
                                 />
                                 <InputError message={errors.nombre} className="mt-2" />
+                            </div>
+
+                            <div>
+                                <InputLabel htmlFor="producto_id" value="Producto asociado (facturación)" />
+                                <select
+                                    id="producto_id"
+                                    value={data.producto_id}
+                                    onChange={(e) => setData('producto_id', e.target.value)}
+                                    className={selectClass}
+                                >
+                                    <option value="">— Sin producto asociado —</option>
+                                    {productos.map((p) => (
+                                        <option key={p.id} value={p.id}>{p.nombre} (${Number(p.precio_unitario).toFixed(2)})</option>
+                                    ))}
+                                </select>
+                                <p className="mt-1 text-xs text-gray-500">
+                                    Determina el precio con el que esta prueba se agrega automáticamente a una nota de pago generada desde una historia clínica.
+                                </p>
+                                <InputError message={errors.producto_id} className="mt-2" />
                             </div>
 
                             <div className="flex items-center gap-4">

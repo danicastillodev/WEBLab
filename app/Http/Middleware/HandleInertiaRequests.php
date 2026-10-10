@@ -38,6 +38,9 @@ class HandleInertiaRequests extends Middleware
                 // Matriz usada por el sidebar para ocultar los módulos a los
                 // que el usuario no tiene acceso de lectura.
                 'permisos' => $user?->matrizDePermisos() ?? [],
+                // Permisos puntuales (ver config/permisos_granulares.php) que
+                // no encajan en la matriz módulo × acción anterior.
+                'permisosGranulares' => $user?->matrizDePermisosGranulares() ?? [],
             ],
             'flash' => [
                 'success' => session('success'),
