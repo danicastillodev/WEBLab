@@ -2,7 +2,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm } from '@inertiajs/react';
 import UserForm from './_form';
 
-export default function Edit({ user, areas, modulos, acciones, dias, gruposPermisos }) {
+export default function Edit({ user, areas, modulos, secciones, acciones, dias, gruposPermisos, roles }) {
     const { data, setData, patch, processing, errors } = useForm({
         name: user.name,
         username: user.username ?? '',
@@ -11,6 +11,7 @@ export default function Edit({ user, areas, modulos, acciones, dias, gruposPermi
         password: '',
         password_confirmation: '',
         es_admin: user.es_admin,
+        rol_id: user.rol_id ?? '',
         hora_inicio: user.hora_inicio ?? '',
         hora_fin: user.hora_fin ?? '',
         dias_permitidos: user.dias_permitidos ?? [],
@@ -41,9 +42,11 @@ export default function Edit({ user, areas, modulos, acciones, dias, gruposPermi
                             etiquetaBoton="Guardar"
                             areas={areas}
                             modulos={modulos}
+                            secciones={secciones}
                             acciones={acciones}
                             dias={dias}
                             gruposPermisos={gruposPermisos}
+                            roles={roles}
                             esEdicion
                         />
                     </div>

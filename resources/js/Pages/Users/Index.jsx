@@ -44,13 +44,14 @@ export default function Index({ users }) {
                                     <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Usuario</th>
                                     <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Correo electrónico</th>
                                     <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Área</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Rol</th>
                                     <th className="px-6 py-3" />
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-200 bg-white">
                                 {users.data.length === 0 && (
                                     <tr>
-                                        <td colSpan={5} className="px-6 py-4 text-center text-sm text-gray-500">
+                                        <td colSpan={6} className="px-6 py-4 text-center text-sm text-gray-500">
                                             Aún no hay usuarios.
                                         </td>
                                     </tr>
@@ -72,6 +73,7 @@ export default function Index({ users }) {
                                                 ? user.areas.map((a) => a.nombre).join(', ')
                                                 : '—'}
                                         </td>
+                                        <td className="px-6 py-4 text-sm text-gray-500">{user.rol?.nombre ?? '—'}</td>
                                         <td className="px-6 py-4 text-right text-sm">
                                             <Link
                                                 href={route('users.edit', user.id)}

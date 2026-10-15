@@ -24,7 +24,7 @@ export default function AuthenticatedLayout({ header, children }) {
 
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
-    const [adminOpen, setAdminOpen] = useState(route().current('users.*'));
+    const [adminOpen, setAdminOpen] = useState(route().current('users.*') || route().current('roles.*'));
 
     const catalogosRoutes = [
         'propietarios.index', 'propietarios.create', 'propietarios.edit',
@@ -145,7 +145,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                 route().current('historias-clinicas.*') || route().current('cuestionario.*'),
                             )}
                             {historiasOpen && (
-                                <div className="ms-3 mt-1 space-y-1 border-l border-gray-200 ps-3">
+                                <div className="ms-3 mt-1 flex flex-col items-start space-y-1 border-l border-gray-200 ps-3">
                                     <NavLink href={route('historias-clinicas.index')} active={route().current('historias-clinicas.index')}>Listado de historias clínicas</NavLink>
                                     {puedeCrear('historias-clinicas') && (
                                         <NavLink href={route('historias-clinicas.create')} active={route().current('historias-clinicas.create')}>Nueva historia clínica</NavLink>
@@ -162,7 +162,7 @@ export default function AuthenticatedLayout({ header, children }) {
                     <div>
                         {groupBtn('Notas de pago', facturacionOpen, () => setFacturacionOpen((v) => !v), route().current('productos.*') || route().current('notas-pago.*'))}
                         {facturacionOpen && (
-                            <div className="ms-3 mt-1 space-y-1 border-l border-gray-200 ps-3">
+                            <div className="ms-3 mt-1 flex flex-col items-start space-y-1 border-l border-gray-200 ps-3">
                                 {puedeGranular('facturacion.agregar_facturas') ? (
                                     <NavLink href={route('notas-pago.create')} active={route().current('notas-pago.create')}>Nueva nota de pago</NavLink>
                                 ) : (
@@ -191,7 +191,7 @@ export default function AuthenticatedLayout({ header, children }) {
                     <div>
                         {groupBtn('Diagnósticos', diagnosticosOpen, () => setDiagnosticosOpen((v) => !v), false, true)}
                         {diagnosticosOpen && (
-                            <div className="ms-3 mt-1 space-y-1 border-l border-gray-200 ps-3">
+                            <div className="ms-3 mt-1 flex flex-col items-start space-y-1 border-l border-gray-200 ps-3">
                                 {enlacePendiente('Nuevo diagnóstico')}
                                 {enlacePendiente('Listado de diagnósticos')}
                             </div>
@@ -202,7 +202,7 @@ export default function AuthenticatedLayout({ header, children }) {
                     <div>
                         {groupBtn('Servicios', serviciosOpen, () => setServiciosOpen((v) => !v), route().current('servicios.*'))}
                         {serviciosOpen && (
-                            <div className="ms-3 mt-1 space-y-1 border-l border-gray-200 ps-3">
+                            <div className="ms-3 mt-1 flex flex-col items-start space-y-1 border-l border-gray-200 ps-3">
                                 {puedeVer('servicios') ? (
                                     <NavLink href={route('servicios.index')} active={route().current('servicios.index') || route().current('servicios.edit')}>Catálogo de servicios</NavLink>
                                 ) : (
@@ -221,7 +221,7 @@ export default function AuthenticatedLayout({ header, children }) {
                     <div>
                         {groupBtn('Reportes', reportesOpen, () => setReportesOpen((v) => !v), false, true)}
                         {reportesOpen && (
-                            <div className="ms-3 mt-1 space-y-1 border-l border-gray-200 ps-3">
+                            <div className="ms-3 mt-1 flex flex-col items-start space-y-1 border-l border-gray-200 ps-3">
                                 {enlacePendiente('Diagnósticos')}
                                 {enlacePendiente('Análisis por especie')}
                                 {enlacePendiente('Muestras Trabajadas X Especie')}
@@ -247,7 +247,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                 catalogosRoutes.some((r) => route().current(r)),
                             )}
                             {catalogosOpen && (
-                                <div className="ms-3 mt-1 space-y-1 border-l border-gray-200 ps-3">
+                                <div className="ms-3 mt-1 flex flex-col items-start space-y-1 border-l border-gray-200 ps-3">
                                     {catalogos.map(([modulo, etiqueta, patron]) => (
                                         <NavLink key={modulo} href={route(`${modulo}.index`)} active={route().current(patron)}>
                                             {etiqueta}
@@ -262,7 +262,7 @@ export default function AuthenticatedLayout({ header, children }) {
                     <div>
                         {groupBtn('Configuración General', configuracionOpen, () => setConfiguracionOpen((v) => !v), route().current('areas.*') || route().current('datos-generales.*') || route().current('parametros-operacion.*') || route().current('mantenimiento-base-datos.*'))}
                         {configuracionOpen && (
-                            <div className="ms-3 mt-1 space-y-1 border-l border-gray-200 ps-3">
+                            <div className="ms-3 mt-1 flex flex-col items-start space-y-1 border-l border-gray-200 ps-3">
                                 {puedeVer('datos-generales') ? (
                                     <NavLink href={route('datos-generales.edit')} active={route().current('datos-generales.*')}>Datos generales</NavLink>
                                 ) : (
@@ -293,17 +293,25 @@ export default function AuthenticatedLayout({ header, children }) {
                     </div>
 
                     {/* Seguridad */}
-                    {puedeVer('users') && (
+                    {(puedeVer('users') || puedeVer('roles')) && (
                         <div>
                             {groupBtn(
                                 'Seguridad',
                                 adminOpen,
                                 () => setAdminOpen((v) => !v),
-                                route().current('users.*'),
+                                route().current('users.*') || route().current('roles.*'),
                             )}
                             {adminOpen && (
-                                <div className="ms-3 mt-1 space-y-1 border-l border-gray-200 ps-3">
-                                    <NavLink href={route('users.index')} active={route().current('users.*')}>Usuarios</NavLink>
+                                <div className="ms-3 mt-1 flex flex-col items-start space-y-1 border-l border-gray-200 ps-3">
+                                    {puedeVer('users') && (
+                                        <NavLink href={route('users.index')} active={route().current('users.index') || route().current('users.edit')}>Usuarios</NavLink>
+                                    )}
+                                    {puedeCrear('users') && (
+                                        <NavLink href={route('users.create')} active={route().current('users.create')}>Nuevo usuario</NavLink>
+                                    )}
+                                    {puedeVer('roles') && (
+                                        <NavLink href={route('roles.index')} active={route().current('roles.*')}>Roles</NavLink>
+                                    )}
                                 </div>
                             )}
                         </div>
@@ -462,10 +470,18 @@ export default function AuthenticatedLayout({ header, children }) {
                                     <ResponsiveNavLink href="#" active={false}>Catálogo de servicios</ResponsiveNavLink>
                                 )}
                             </>
-                            {puedeVer('users') && (
+                            {(puedeVer('users') || puedeVer('roles')) && (
                                 <>
                                     <div className="px-4 py-1 text-xs font-semibold uppercase tracking-wider text-gray-400">Seguridad</div>
-                                    <ResponsiveNavLink href={route('users.index')} active={route().current('users.*')}>Usuarios</ResponsiveNavLink>
+                                    {puedeVer('users') && (
+                                        <ResponsiveNavLink href={route('users.index')} active={route().current('users.index') || route().current('users.edit')}>Usuarios</ResponsiveNavLink>
+                                    )}
+                                    {puedeCrear('users') && (
+                                        <ResponsiveNavLink href={route('users.create')} active={route().current('users.create')}>Nuevo usuario</ResponsiveNavLink>
+                                    )}
+                                    {puedeVer('roles') && (
+                                        <ResponsiveNavLink href={route('roles.index')} active={route().current('roles.*')}>Roles</ResponsiveNavLink>
+                                    )}
                                 </>
                             )}
                         </div>

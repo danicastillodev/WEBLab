@@ -3,7 +3,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm } from '@inertiajs/react';
 import UserForm from './_form';
 
-export default function Create({ areas, modulos, acciones, dias, gruposPermisos }) {
+export default function Create({ areas, modulos, secciones, acciones, dias, gruposPermisos, roles }) {
     const { data, setData, post, processing, errors } = useForm({
         name: '',
         username: '',
@@ -12,6 +12,7 @@ export default function Create({ areas, modulos, acciones, dias, gruposPermisos 
         password: '',
         password_confirmation: '',
         es_admin: false,
+        rol_id: '',
         hora_inicio: '',
         hora_fin: '',
         dias_permitidos: [],
@@ -42,9 +43,11 @@ export default function Create({ areas, modulos, acciones, dias, gruposPermisos 
                             etiquetaBoton="Crear"
                             areas={areas}
                             modulos={modulos}
+                            secciones={secciones}
                             acciones={acciones}
                             dias={dias}
                             gruposPermisos={gruposPermisos}
+                            roles={roles}
                         />
                     </div>
                 </div>
