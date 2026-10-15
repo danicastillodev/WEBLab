@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Area;
+use App\Models\Rol;
 use App\Models\User;
+use App\Support\Permisos;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -22,7 +24,7 @@ class UserController extends Controller
     public function index(): Response
     {
         return Inertia::render('Users/Index', [
-            'users' => User::with('areas:id,nombre')->orderBy('name')->paginate(10),
+            'users' => User::with(['areas:id,nombre', 'rol:id,nombre'])->orderBy('name')->paginate(10),
         ]);
     }
 
@@ -40,6 +42,7 @@ class UserController extends Controller
             'username' => $validated['username'],
             'email' => $validated['email'],
             'es_admin' => $validated['es_admin'] ?? false,
+            'rol_id' => $validated['rol_id'] ?? null,
             'hora_inicio' => $validated['hora_inicio'] ?? null,
             'hora_fin' => $validated['hora_fin'] ?? null,
             'dias_permitidos' => $validated['dias_permitidos'] ?? null,
@@ -64,6 +67,7 @@ class UserController extends Controller
                 'email' => $user->email,
                 'area_ids' => $user->areas()->pluck('areas.id')->all(),
                 'es_admin' => (bool) $user->es_admin,
+                'rol_id' => $user->rol_id,
                 // El input type="time" del formulario espera HH:MM.
                 'hora_inicio' => $user->hora_inicio ? substr($user->hora_inicio, 0, 5) : '',
                 'hora_fin' => $user->hora_fin ? substr($user->hora_fin, 0, 5) : '',
@@ -84,6 +88,7 @@ class UserController extends Controller
             'username' => $validated['username'],
             'email' => $validated['email'],
             'es_admin' => $validated['es_admin'] ?? false,
+            'rol_id' => $validated['rol_id'] ?? null,
             'hora_inicio' => $validated['hora_inicio'] ?? null,
             'hora_fin' => $validated['hora_fin'] ?? null,
             'dias_permitidos' => $validated['dias_permitidos'] ?? null,
@@ -126,7 +131,14 @@ class UserController extends Controller
     {
         return [
             'areas' => Area::orderBy('nombre')->get(['id', 'nombre']),
+            // Plantillas que el formulario copia sobre la matriz al elegir un rol.
+            'roles' => Rol::orderBy('nombre')->get()->map(fn (Rol $rol) => [
+                'id' => $rol->id,
+                'nombre' => $rol->nombre,
+                ...$rol->plantilla(),
+            ]),
             'modulos' => config('modulos.modulos'),
+            'secciones' => config('modulos.secciones'),
             'acciones' => config('modulos.acciones'),
             'dias' => config('modulos.dias'),
             'gruposPermisos' => config('permisos_granulares.grupos'),
@@ -145,6 +157,7 @@ class UserController extends Controller
             'area_ids' => ['nullable', 'array'],
             'area_ids.*' => ['integer', 'exists:areas,id'],
             'es_admin' => ['boolean'],
+            'rol_id' => ['nullable', 'integer', 'exists:roles_usuario,id'],
             'hora_inicio' => ['nullable', 'date_format:H:i', 'required_with:hora_fin'],
             'hora_fin' => ['nullable', 'date_format:H:i', 'required_with:hora_inicio'],
             'dias_permitidos' => ['nullable', 'array'],
@@ -166,17 +179,9 @@ class UserController extends Controller
      */
     private function matrizGuardada(User $user): array
     {
-        $guardados = $user->permissions()->get()->keyBy('modulo');
-
-        $matriz = [];
-
-        foreach (array_keys(config('modulos.modulos')) as $modulo) {
-            foreach (array_keys(config('modulos.acciones')) as $accion) {
-                $matriz[$modulo][$accion] = (bool) ($guardados[$modulo]->$accion ?? false);
-            }
-        }
-
-        return $matriz;
+        return Permisos::matrizCompleta(
+            $user->permissions()->get()->keyBy('modulo')->map->only(array_keys(config('modulos.acciones')))->all()
+        );
     }
 
     /**
@@ -188,37 +193,11 @@ class UserController extends Controller
      */
     private function sincronizarPermisos(User $user, array $permisos): void
     {
-        $acciones = array_keys(config('modulos.acciones'));
-
         $user->permissions()->delete();
 
-        foreach (array_keys(config('modulos.modulos')) as $modulo) {
-            $fila = [];
-
-            foreach ($acciones as $accion) {
-                $fila[$accion] = filter_var(
-                    $permisos[$modulo][$accion] ?? false,
-                    FILTER_VALIDATE_BOOLEAN
-                );
-            }
-
-            if (in_array(true, $fila, true)) {
-                $user->permissions()->create([...$fila, 'modulo' => $modulo]);
-            }
+        foreach (Permisos::matrizConcedida($permisos) as $modulo => $fila) {
+            $user->permissions()->create([...$fila, 'modulo' => $modulo]);
         }
-    }
-
-    /**
-     * Claves declaradas en config/permisos_granulares.php, sin importar el
-     * grupo al que pertenezcan.
-     *
-     * @return array<int, string>
-     */
-    private function clavesGranulares(): array
-    {
-        return collect(config('permisos_granulares.grupos', []))
-            ->flatMap(fn (array $grupo) => array_keys($grupo['permisos']))
-            ->all();
     }
 
     /**
@@ -229,11 +208,7 @@ class UserController extends Controller
      */
     private function permisosGranularesGuardados(User $user): array
     {
-        $guardadas = $user->permisosGranulares()->pluck('clave')->all();
-
-        return collect($this->clavesGranulares())
-            ->mapWithKeys(fn (string $clave) => [$clave => in_array($clave, $guardadas, true)])
-            ->all();
+        return Permisos::mapaGranular($user->permisosGranulares()->pluck('clave')->all());
     }
 
     /**
@@ -247,8 +222,7 @@ class UserController extends Controller
     {
         $user->permisosGranulares()->delete();
 
-        $marcadas = collect($this->clavesGranulares())
-            ->filter(fn (string $clave) => filter_var($permisos[$clave] ?? false, FILTER_VALIDATE_BOOLEAN))
+        $marcadas = collect(Permisos::granularesConcedidos($permisos))
             ->map(fn (string $clave) => ['clave' => $clave]);
 
         if ($marcadas->isNotEmpty()) {

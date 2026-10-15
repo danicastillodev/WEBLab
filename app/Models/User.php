@@ -7,13 +7,14 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
 
-#[Fillable(['name', 'email', 'password', 'username', 'es_admin', 'hora_inicio', 'hora_fin', 'dias_permitidos'])]
+#[Fillable(['name', 'email', 'password', 'username', 'es_admin', 'rol_id', 'hora_inicio', 'hora_fin', 'dias_permitidos'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -33,6 +34,12 @@ class User extends Authenticatable
     public function areas(): BelongsToMany
     {
         return $this->belongsToMany(Area::class)->withTimestamps();
+    }
+
+    /** Rol del que se tomaron los permisos como plantilla (informativo). */
+    public function rol(): BelongsTo
+    {
+        return $this->belongsTo(Rol::class);
     }
 
     public function permissions(): HasMany

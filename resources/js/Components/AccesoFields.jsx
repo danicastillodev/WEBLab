@@ -1,13 +1,14 @@
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
+import PermisosPorSeccion from '@/Components/PermisosPorSeccion';
 
 const checkboxClass =
     'rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500';
 
 /**
  * Campos de control de acceso compartidos por Users/Create y Users/Edit:
- * bandera de administrador, ventana horaria + días permitidos, y la matriz
- * de permisos módulo × acción.
+ * bandera de administrador, ventana horaria + días permitidos, el rol que
+ * sirve de plantilla y las funciones permitidas (PermisosPorSeccion).
  *
  * Cuando el usuario es administrador la matriz y el horario se deshabilitan,
  * porque `User::puede()` y `User::dentroDeHorario()` los ignoran.
@@ -17,9 +18,11 @@ export default function AccesoFields({
     setData,
     errors,
     modulos,
+    secciones = {},
     acciones,
     dias,
     gruposPermisos = {},
+    roles = [],
 }) {
     const esAdmin = data.es_admin;
 
@@ -33,37 +36,22 @@ export default function AccesoFields({
         );
     }
 
-    function togglePermiso(modulo, accion) {
-        setData('permisos', {
-            ...data.permisos,
-            [modulo]: {
-                ...data.permisos[modulo],
-                [accion]: !data.permisos[modulo]?.[accion],
-            },
-        });
-    }
+    // El rol es una plantilla: copia sus permisos sobre los del formulario.
+    // "Sin rol" sólo quita la referencia y deja los permisos como estén.
+    function aplicarRol(valor) {
+        const rol = roles.find((r) => String(r.id) === valor);
 
-    function toggleModuloCompleto(modulo, valor) {
-        const fila = {};
-        Object.keys(acciones).forEach((accion) => {
-            fila[accion] = valor;
-        });
-        setData('permisos', { ...data.permisos, [modulo]: fila });
-    }
+        if (!rol) {
+            setData('rol_id', '');
+            return;
+        }
 
-    function togglePermisoGranular(clave) {
-        setData('permisos_granulares', {
-            ...data.permisos_granulares,
-            [clave]: !data.permisos_granulares?.[clave],
+        setData({
+            ...data,
+            rol_id: rol.id,
+            permisos: rol.permisos,
+            permisos_granulares: rol.permisos_granulares,
         });
-    }
-
-    function toggleGrupoGranularCompleto(claves, valor) {
-        const cambios = {};
-        claves.forEach((clave) => {
-            cambios[clave] = valor;
-        });
-        setData('permisos_granulares', { ...data.permisos_granulares, ...cambios });
     }
 
     return (
@@ -144,111 +132,36 @@ export default function AccesoFields({
                 </div>
 
                 <div className="border-t border-gray-200 pt-6">
-                    <h3 className="text-sm font-semibold text-gray-900">
-                        Funciones permitidas
-                    </h3>
-
-                    <div className="mt-4 overflow-x-auto">
-                        <table className="min-w-full divide-y divide-gray-200">
-                            <thead className="bg-gray-50">
-                                <tr>
-                                    <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                                        Módulo
-                                    </th>
-                                    {Object.values(acciones).map((etiqueta) => (
-                                        <th
-                                            key={etiqueta}
-                                            className="px-4 py-2 text-center text-xs font-medium uppercase tracking-wider text-gray-500"
-                                        >
-                                            {etiqueta}
-                                        </th>
-                                    ))}
-                                    <th className="px-4 py-2" />
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-gray-200 bg-white">
-                                {Object.entries(modulos).map(([modulo, etiqueta]) => {
-                                    const fila = data.permisos[modulo] ?? {};
-                                    const todos = Object.keys(acciones).every((a) => fila[a]);
-
-                                    return (
-                                        <tr key={modulo}>
-                                            <td className="px-4 py-2 text-sm font-medium text-gray-900">
-                                                {etiqueta}
-                                            </td>
-                                            {Object.keys(acciones).map((accion) => (
-                                                <td key={accion} className="px-4 py-2 text-center">
-                                                    <input
-                                                        type="checkbox"
-                                                        checked={!!fila[accion]}
-                                                        onChange={() => togglePermiso(modulo, accion)}
-                                                        className={checkboxClass}
-                                                    />
-                                                </td>
-                                            ))}
-                                            <td className="px-4 py-2 text-right">
-                                                <button
-                                                    type="button"
-                                                    onClick={() => toggleModuloCompleto(modulo, !todos)}
-                                                    className="text-xs text-indigo-600 hover:text-indigo-900"
-                                                >
-                                                    {todos ? 'Ninguno' : 'Todos'}
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    );
-                                })}
-                            </tbody>
-                        </table>
-                    </div>
-                    <InputError message={errors.permisos} className="mt-2" />
+                    <InputLabel htmlFor="rol_id" value="Rol" />
+                    <select
+                        id="rol_id"
+                        value={data.rol_id ?? ''}
+                        onChange={(e) => aplicarRol(e.target.value)}
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                    >
+                        <option value="">Sin rol</option>
+                        {roles.map((rol) => (
+                            <option key={rol.id} value={rol.id}>
+                                {rol.nombre}
+                            </option>
+                        ))}
+                    </select>
+                    <p className="mt-1 text-xs text-gray-500">
+                        Al elegir un rol se cargan sus permisos como plantilla; después
+                        puedes ajustarlos para este usuario.
+                    </p>
+                    <InputError message={errors.rol_id} className="mt-2" />
                 </div>
 
-                {Object.keys(gruposPermisos).length > 0 && (
-                    <div className="border-t border-gray-200 pt-6">
-                        <h3 className="text-sm font-semibold text-gray-900">
-                            Permisos adicionales
-                        </h3>
-
-                        <div className="mt-4 space-y-6">
-                            {Object.entries(gruposPermisos).map(([grupo, { etiqueta, permisos }]) => {
-                                const claves = Object.keys(permisos);
-                                const todos = claves.every((clave) => data.permisos_granulares?.[clave]);
-
-                                return (
-                                    <div key={grupo}>
-                                        <div className="flex items-center justify-between">
-                                            <h4 className="text-sm font-medium text-gray-900">{etiqueta}</h4>
-                                            <button
-                                                type="button"
-                                                onClick={() => toggleGrupoGranularCompleto(claves, !todos)}
-                                                className="text-xs text-indigo-600 hover:text-indigo-900"
-                                            >
-                                                {todos ? 'Ninguno' : 'Todos'}
-                                            </button>
-                                        </div>
-                                        <div className="mt-2 grid grid-cols-1 gap-x-4 gap-y-2 sm:grid-cols-2">
-                                            {Object.entries(permisos).map(([clave, etiquetaPermiso]) => (
-                                                <label key={clave} className="flex items-center gap-2">
-                                                    <input
-                                                        type="checkbox"
-                                                        checked={!!data.permisos_granulares?.[clave]}
-                                                        onChange={() => togglePermisoGranular(clave)}
-                                                        className={checkboxClass}
-                                                    />
-                                                    <span className="text-sm text-gray-700">
-                                                        {etiquetaPermiso}
-                                                    </span>
-                                                </label>
-                                            ))}
-                                        </div>
-                                    </div>
-                                );
-                            })}
-                        </div>
-                        <InputError message={errors.permisos_granulares} className="mt-2" />
-                    </div>
-                )}
+                <PermisosPorSeccion
+                    data={data}
+                    setData={setData}
+                    errors={errors}
+                    modulos={modulos}
+                    secciones={secciones}
+                    acciones={acciones}
+                    gruposPermisos={gruposPermisos}
+                />
             </fieldset>
         </>
     );

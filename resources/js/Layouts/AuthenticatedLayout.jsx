@@ -24,7 +24,7 @@ export default function AuthenticatedLayout({ header, children }) {
 
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
-    const [adminOpen, setAdminOpen] = useState(route().current('users.*'));
+    const [adminOpen, setAdminOpen] = useState(route().current('users.*') || route().current('roles.*'));
 
     const catalogosRoutes = [
         'propietarios.index', 'propietarios.create', 'propietarios.edit',
@@ -293,17 +293,22 @@ export default function AuthenticatedLayout({ header, children }) {
                     </div>
 
                     {/* Seguridad */}
-                    {puedeVer('users') && (
+                    {(puedeVer('users') || puedeVer('roles')) && (
                         <div>
                             {groupBtn(
                                 'Seguridad',
                                 adminOpen,
                                 () => setAdminOpen((v) => !v),
-                                route().current('users.*'),
+                                route().current('users.*') || route().current('roles.*'),
                             )}
                             {adminOpen && (
                                 <div className="ms-3 mt-1 space-y-1 border-l border-gray-200 ps-3">
-                                    <NavLink href={route('users.index')} active={route().current('users.*')}>Usuarios</NavLink>
+                                    {puedeVer('users') && (
+                                        <NavLink href={route('users.index')} active={route().current('users.*')}>Usuarios</NavLink>
+                                    )}
+                                    {puedeVer('roles') && (
+                                        <NavLink href={route('roles.index')} active={route().current('roles.*')}>Roles</NavLink>
+                                    )}
                                 </div>
                             )}
                         </div>
@@ -462,10 +467,15 @@ export default function AuthenticatedLayout({ header, children }) {
                                     <ResponsiveNavLink href="#" active={false}>Catálogo de servicios</ResponsiveNavLink>
                                 )}
                             </>
-                            {puedeVer('users') && (
+                            {(puedeVer('users') || puedeVer('roles')) && (
                                 <>
                                     <div className="px-4 py-1 text-xs font-semibold uppercase tracking-wider text-gray-400">Seguridad</div>
-                                    <ResponsiveNavLink href={route('users.index')} active={route().current('users.*')}>Usuarios</ResponsiveNavLink>
+                                    {puedeVer('users') && (
+                                        <ResponsiveNavLink href={route('users.index')} active={route().current('users.*')}>Usuarios</ResponsiveNavLink>
+                                    )}
+                                    {puedeVer('roles') && (
+                                        <ResponsiveNavLink href={route('roles.index')} active={route().current('roles.*')}>Roles</ResponsiveNavLink>
+                                    )}
                                 </>
                             )}
                         </div>

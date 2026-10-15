@@ -17,6 +17,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PropietariosController;
 use App\Http\Controllers\PruebasController;
 use App\Http\Controllers\RazasController;
+use App\Http\Controllers\RolController;
 use App\Http\Controllers\ServiciosController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
@@ -39,6 +40,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::resource('users', UserController::class);
+    // Str::singular('roles') da 'role', que no coincide con el argumento $rol.
+    Route::resource('roles', RolController::class)
+        ->except(['show'])
+        ->parameters(['roles' => 'rol']);
 
     Route::resource('areas', AreasController::class)->except(['show']);
 

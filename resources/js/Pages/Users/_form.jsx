@@ -15,9 +15,11 @@ export default function UserForm({
     etiquetaBoton,
     areas,
     modulos,
+    secciones,
     acciones,
     dias,
     gruposPermisos,
+    roles,
     esEdicion = false,
 }) {
     function toggleArea(id) {
@@ -128,9 +130,11 @@ export default function UserForm({
                 setData={setData}
                 errors={errors}
                 modulos={modulos}
+                secciones={secciones}
                 acciones={acciones}
                 dias={dias}
                 gruposPermisos={gruposPermisos}
+                roles={roles}
             />
 
             <div className="flex items-center gap-4 border-t border-gray-200 pt-6">

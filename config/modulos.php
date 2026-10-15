@@ -31,6 +31,59 @@ return [
         'servicios' => 'Servicios',
         'productos' => 'Productos',
         'users' => 'Usuarios',
+        'roles' => 'Roles',
+    ],
+
+    /*
+    | Secciones del formulario de usuarios. Siguen el orden y los grupos del
+    | menú lateral (AuthenticatedLayout.jsx) para que "Funciones permitidas"
+    | se lea igual que el menú. 'modulos' son claves de 'modulos' arriba y
+    | 'grupos_granulares' claves de config/permisos_granulares.php.
+    */
+    'secciones' => [
+        'historias-clinicas' => [
+            'etiqueta' => 'Historias Clínicas',
+            'modulos' => ['historias-clinicas', 'cuestionario'],
+            'grupos_granulares' => ['historias-clinicas'],
+        ],
+        'notas-pago' => [
+            'etiqueta' => 'Notas de pago',
+            'modulos' => ['productos'],
+            'grupos_granulares' => ['facturacion'],
+        ],
+        'diagnosticos' => [
+            'etiqueta' => 'Diagnósticos',
+            'modulos' => [],
+            'grupos_granulares' => ['diagnosticos'],
+        ],
+        'servicios' => [
+            'etiqueta' => 'Servicios',
+            'modulos' => ['servicios'],
+            'grupos_granulares' => [],
+        ],
+        'reportes' => [
+            'etiqueta' => 'Reportes',
+            'modulos' => [],
+            'grupos_granulares' => ['reportes'],
+        ],
+        'catalogos' => [
+            'etiqueta' => 'Catálogos',
+            'modulos' => [
+                'propietarios', 'municipios', 'estados', 'especies',
+                'razas', 'pruebas', 'funcion-zootecnicas', 'metodos',
+            ],
+            'grupos_granulares' => [],
+        ],
+        'configuracion-general' => [
+            'etiqueta' => 'Configuración General',
+            'modulos' => ['datos-generales', 'mantenimiento-base-datos', 'parametros-operacion', 'areas'],
+            'grupos_granulares' => ['configuracion-general'],
+        ],
+        'seguridad' => [
+            'etiqueta' => 'Seguridad',
+            'modulos' => ['users', 'roles'],
+            'grupos_granulares' => [],
+        ],
     ],
 
     'acciones' => [
