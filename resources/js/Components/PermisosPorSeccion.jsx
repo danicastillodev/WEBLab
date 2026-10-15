@@ -142,7 +142,8 @@ export default function PermisosPorSeccion({
             <div className="mt-4 space-y-4">
                 {seccionesFormulario.map((seccion) => {
                     const estado = estadoSeccion(seccion);
-                    const abierta = abiertas[seccion.clave] ?? false;
+                    // Las secciones arrancan mostrando su detalle.
+                    const abierta = abiertas[seccion.clave] ?? true;
 
                     return (
                         <div key={seccion.clave} className="rounded-md border border-gray-200">
