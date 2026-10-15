@@ -1,3 +1,4 @@
+import HorarioFields from '@/Components/HorarioFields';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PermisosPorSeccion from '@/Components/PermisosPorSeccion';
@@ -16,6 +17,7 @@ export default function RolForm({
     modulos,
     secciones,
     acciones,
+    dias,
     gruposPermisos,
 }) {
     return (
@@ -43,6 +45,8 @@ export default function RolForm({
                 <InputError message={errors.descripcion} className="mt-2" />
             </div>
 
+            <HorarioFields data={data} setData={setData} errors={errors} dias={dias} />
+
             <PermisosPorSeccion
                 data={data}
                 setData={setData}
@@ -54,8 +58,8 @@ export default function RolForm({
             />
 
             <p className="text-xs text-gray-500">
-                El rol funciona como plantilla: los cambios aplican a los usuarios a los que
-                se les asigne a partir de ahora, no a los que ya lo tienen.
+                El rol funciona como plantilla de horario y permisos: los cambios aplican a
+                los usuarios a los que se les asigne a partir de ahora, no a los que ya lo tienen.
             </p>
 
             <div className="flex items-center gap-4 border-t border-gray-200 pt-6">

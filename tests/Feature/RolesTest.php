@@ -124,6 +124,41 @@ class RolesTest extends TestCase
         $this->assertTrue($usuario->puede('estados', 'ver'));
     }
 
+    public function test_el_rol_guarda_horario_y_dias_permitidos(): void
+    {
+        $this->actingAs($this->admin())
+            ->post(route('roles.store'), [
+                'nombre' => 'Turno matutino',
+                'hora_inicio' => '07:00',
+                'hora_fin' => '15:00',
+                'dias_permitidos' => [5, 1, 3],
+            ])
+            ->assertRedirect(route('roles.index'));
+
+        $rol = Rol::where('nombre', 'Turno matutino')->firstOrFail();
+        $plantilla = $rol->plantilla();
+
+        $this->assertSame('07:00', $plantilla['hora_inicio']);
+        $this->assertSame('15:00', $plantilla['hora_fin']);
+        $this->assertSame([1, 3, 5], $plantilla['dias_permitidos']);
+
+        // El formulario de usuarios recibe el horario junto con la plantilla.
+        $this->actingAs($this->admin())
+            ->get(route('users.create'))
+            ->assertInertia(function ($page) use ($rol) {
+                $fila = collect($page->toArray()['props']['roles'])->firstWhere('id', $rol->id);
+                $this->assertSame('07:00', $fila['hora_inicio']);
+                $this->assertSame([1, 3, 5], $fila['dias_permitidos']);
+            });
+    }
+
+    public function test_una_hora_del_rol_sin_su_pareja_es_invalida(): void
+    {
+        $this->actingAs($this->admin())
+            ->post(route('roles.store'), ['nombre' => 'Incompleto', 'hora_inicio' => '07:00'])
+            ->assertSessionHasErrors('hora_fin');
+    }
+
     public function test_sin_permiso_no_se_accede_a_roles(): void
     {
         $this->actingAs(User::factory()->create())

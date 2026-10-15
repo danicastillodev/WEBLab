@@ -2,10 +2,13 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm } from '@inertiajs/react';
 import RolForm from './_form';
 
-export default function Edit({ rol, modulos, secciones, acciones, gruposPermisos }) {
+export default function Edit({ rol, modulos, secciones, acciones, dias, gruposPermisos }) {
     const { data, setData, patch, processing, errors } = useForm({
         nombre: rol.nombre,
         descripcion: rol.descripcion,
+        hora_inicio: rol.hora_inicio,
+        hora_fin: rol.hora_fin,
+        dias_permitidos: rol.dias_permitidos,
         permisos: rol.permisos,
         permisos_granulares: rol.permisos_granulares,
     });
@@ -34,6 +37,7 @@ export default function Edit({ rol, modulos, secciones, acciones, gruposPermisos
                             modulos={modulos}
                             secciones={secciones}
                             acciones={acciones}
+                            dias={dias}
                             gruposPermisos={gruposPermisos}
                         />
                     </div>

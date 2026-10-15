@@ -5,6 +5,16 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Link } from '@inertiajs/react';
 
+// Se está dando de alta o editando a OTRO usuario: el navegador no debe
+// rellenar estos campos con las credenciales guardadas de quien inició sesión.
+// Chrome ignora autocomplete="off" en contraseñas, pero respeta "new-password";
+// los data-* hacen lo mismo con 1Password, LastPass y Bitwarden.
+const sinAutollenado = {
+    'data-1p-ignore': true,
+    'data-lpignore': 'true',
+    'data-bwignore': true,
+};
+
 /** Campos compartidos por las pantallas de alta y edición de usuarios. */
 export default function UserForm({
     data,
@@ -33,7 +43,7 @@ export default function UserForm({
     }
 
     return (
-        <form onSubmit={submit} className="space-y-6">
+        <form onSubmit={submit} className="space-y-6" autoComplete="off">
             <div>
                 <InputLabel htmlFor="name" value="Nombre" />
                 <TextInput
@@ -53,6 +63,8 @@ export default function UserForm({
                     value={data.username}
                     onChange={(e) => setData('username', e.target.value)}
                     className="mt-1 block w-full"
+                    autoComplete="off"
+                    {...sinAutollenado}
                 />
                 <p className="mt-1 text-xs text-gray-500">
                     Es el nombre con el que se inicia sesión.
@@ -80,7 +92,7 @@ export default function UserForm({
                 {areas.length === 0 ? (
                     <p className="mt-2 text-sm text-gray-500">Aún no hay áreas.</p>
                 ) : (
-                    <div className="mt-2 space-y-2">
+                    <div className="mt-2 flex flex-wrap gap-x-4 gap-y-2">
                         {areas.map((area) => (
                             <label key={area.id} className="flex items-center gap-2">
                                 <input
@@ -105,6 +117,8 @@ export default function UserForm({
                     value={data.password}
                     onChange={(e) => setData('password', e.target.value)}
                     className="mt-1 block w-full"
+                    autoComplete="new-password"
+                    {...sinAutollenado}
                     placeholder={esEdicion ? 'Dejar en blanco para mantener la contraseña actual' : ''}
                 />
                 <InputError message={errors.password} className="mt-2" />
@@ -121,6 +135,8 @@ export default function UserForm({
                     value={data.password_confirmation}
                     onChange={(e) => setData('password_confirmation', e.target.value)}
                     className="mt-1 block w-full"
+                    autoComplete="new-password"
+                    {...sinAutollenado}
                 />
                 <InputError message={errors.password_confirmation} className="mt-2" />
             </div>

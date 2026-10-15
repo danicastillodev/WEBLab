@@ -3,10 +3,13 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm } from '@inertiajs/react';
 import RolForm from './_form';
 
-export default function Create({ modulos, secciones, acciones, gruposPermisos }) {
+export default function Create({ modulos, secciones, acciones, dias, gruposPermisos }) {
     const { data, setData, post, processing, errors } = useForm({
         nombre: '',
         descripcion: '',
+        hora_inicio: '',
+        hora_fin: '',
+        dias_permitidos: [],
         permisos: matrizVacia(modulos, acciones),
         permisos_granulares: permisosGranularesVacios(gruposPermisos),
     });
@@ -35,6 +38,7 @@ export default function Create({ modulos, secciones, acciones, gruposPermisos })
                             modulos={modulos}
                             secciones={secciones}
                             acciones={acciones}
+                            dias={dias}
                             gruposPermisos={gruposPermisos}
                         />
                     </div>

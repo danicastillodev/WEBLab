@@ -72,6 +72,7 @@ class RolController extends Controller
             'modulos' => config('modulos.modulos'),
             'secciones' => config('modulos.secciones'),
             'acciones' => config('modulos.acciones'),
+            'dias' => config('modulos.dias'),
             'gruposPermisos' => config('permisos_granulares.grupos'),
         ];
     }
@@ -84,6 +85,10 @@ class RolController extends Controller
         $validated = $request->validate([
             'nombre' => ['required', 'string', 'max:100', Rule::unique('roles_usuario')->ignore($rol)],
             'descripcion' => ['nullable', 'string', 'max:255'],
+            'hora_inicio' => ['nullable', 'date_format:H:i', 'required_with:hora_fin'],
+            'hora_fin' => ['nullable', 'date_format:H:i', 'required_with:hora_inicio'],
+            'dias_permitidos' => ['nullable', 'array'],
+            'dias_permitidos.*' => ['integer', 'between:1,7'],
             'permisos' => ['nullable', 'array'],
             'permisos.*' => ['array'],
             'permisos.*.*' => ['boolean'],
@@ -94,6 +99,12 @@ class RolController extends Controller
         return [
             'nombre' => $validated['nombre'],
             'descripcion' => $validated['descripcion'] ?? null,
+            'hora_inicio' => $validated['hora_inicio'] ?? null,
+            'hora_fin' => $validated['hora_fin'] ?? null,
+            // Sin días marcados = todos los días, igual que en users.
+            'dias_permitidos' => ! empty($validated['dias_permitidos'])
+                ? collect($validated['dias_permitidos'])->map(fn ($d) => (int) $d)->unique()->sort()->values()->all()
+                : null,
             'permisos' => Permisos::matrizConcedida($validated['permisos'] ?? []),
             'permisos_granulares' => Permisos::granularesConcedidos($validated['permisos_granulares'] ?? []),
         ];

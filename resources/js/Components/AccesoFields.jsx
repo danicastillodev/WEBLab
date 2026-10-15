@@ -1,5 +1,6 @@
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
+import HorarioFields from '@/Components/HorarioFields';
 import PermisosPorSeccion from '@/Components/PermisosPorSeccion';
 
 const checkboxClass =
@@ -26,18 +27,8 @@ export default function AccesoFields({
 }) {
     const esAdmin = data.es_admin;
 
-    function toggleDia(dia) {
-        const actuales = data.dias_permitidos ?? [];
-        setData(
-            'dias_permitidos',
-            actuales.includes(dia)
-                ? actuales.filter((d) => d !== dia)
-                : [...actuales, dia].sort((a, b) => a - b),
-        );
-    }
-
-    // El rol es una plantilla: copia sus permisos sobre los del formulario.
-    // "Sin rol" sólo quita la referencia y deja los permisos como estén.
+    // El rol es una plantilla: copia su horario y sus permisos sobre los del formulario.
+    // "Personalizado" sólo quita la referencia y deja horario y permisos como estén.
     function aplicarRol(valor) {
         const rol = roles.find((r) => String(r.id) === valor);
 
@@ -49,6 +40,9 @@ export default function AccesoFields({
         setData({
             ...data,
             rol_id: rol.id,
+            hora_inicio: rol.hora_inicio,
+            hora_fin: rol.hora_fin,
+            dias_permitidos: rol.dias_permitidos,
             permisos: rol.permisos,
             permisos_granulares: rol.permisos_granulares,
         });
@@ -76,62 +70,6 @@ export default function AccesoFields({
 
             <fieldset disabled={esAdmin} className={esAdmin ? 'opacity-50' : ''}>
                 <div className="border-t border-gray-200 pt-6">
-                    <h3 className="text-sm font-semibold text-gray-900">
-                        Horario de acceso
-                    </h3>
-                    <p className="mt-1 text-xs text-gray-500">
-                        Dejar las horas en blanco permite el acceso a cualquier hora. Si la
-                        hora final es menor que la inicial, la ventana cruza la medianoche.
-                    </p>
-
-                    <div className="mt-4 grid grid-cols-2 gap-4">
-                        <div>
-                            <InputLabel htmlFor="hora_inicio" value="Hora de inicio" />
-                            <input
-                                id="hora_inicio"
-                                type="time"
-                                value={data.hora_inicio}
-                                onChange={(e) => setData('hora_inicio', e.target.value)}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                            />
-                            <InputError message={errors.hora_inicio} className="mt-2" />
-                        </div>
-                        <div>
-                            <InputLabel htmlFor="hora_fin" value="Hora de fin" />
-                            <input
-                                id="hora_fin"
-                                type="time"
-                                value={data.hora_fin}
-                                onChange={(e) => setData('hora_fin', e.target.value)}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                            />
-                            <InputError message={errors.hora_fin} className="mt-2" />
-                        </div>
-                    </div>
-
-                    <div className="mt-4">
-                        <InputLabel value="Días permitidos" />
-                        <p className="mt-1 text-xs text-gray-500">
-                            Sin ningún día marcado se permite el acceso todos los días.
-                        </p>
-                        <div className="mt-2 flex flex-wrap gap-3">
-                            {Object.entries(dias).map(([numero, nombre]) => (
-                                <label key={numero} className="flex items-center gap-2">
-                                    <input
-                                        type="checkbox"
-                                        checked={(data.dias_permitidos ?? []).includes(Number(numero))}
-                                        onChange={() => toggleDia(Number(numero))}
-                                        className={checkboxClass}
-                                    />
-                                    <span className="text-sm text-gray-700">{nombre}</span>
-                                </label>
-                            ))}
-                        </div>
-                        <InputError message={errors.dias_permitidos} className="mt-2" />
-                    </div>
-                </div>
-
-                <div className="border-t border-gray-200 pt-6">
                     <InputLabel htmlFor="rol_id" value="Rol" />
                     <select
                         id="rol_id"
@@ -139,7 +77,7 @@ export default function AccesoFields({
                         onChange={(e) => aplicarRol(e.target.value)}
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                     >
-                        <option value="">Sin rol</option>
+                        <option value="">Personalizado</option>
                         {roles.map((rol) => (
                             <option key={rol.id} value={rol.id}>
                                 {rol.nombre}
@@ -147,11 +85,13 @@ export default function AccesoFields({
                         ))}
                     </select>
                     <p className="mt-1 text-xs text-gray-500">
-                        Al elegir un rol se cargan sus permisos como plantilla; después
-                        puedes ajustarlos para este usuario.
+                        Al elegir un rol se cargan su horario y sus permisos como
+                        plantilla; después puedes ajustarlos para este usuario.
                     </p>
                     <InputError message={errors.rol_id} className="mt-2" />
                 </div>
+
+                <HorarioFields data={data} setData={setData} errors={errors} dias={dias} />
 
                 <PermisosPorSeccion
                     data={data}
