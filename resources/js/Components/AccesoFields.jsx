@@ -68,7 +68,7 @@ export default function AccesoFields({
                 <InputError message={errors.es_admin} className="mt-2" />
             </div>
 
-            <fieldset disabled={esAdmin} className={esAdmin ? 'opacity-50' : ''}>
+            <fieldset disabled={esAdmin} className={`space-y-6 ${esAdmin ? 'opacity-50' : ''}`}>
                 <div className="border-t border-gray-200 pt-6">
                     <InputLabel htmlFor="rol_id" value="Rol" />
                     <select
