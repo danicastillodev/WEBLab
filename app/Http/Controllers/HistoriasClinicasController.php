@@ -96,7 +96,8 @@ class HistoriasClinicasController extends Controller
                 ->with(['tiposMuestra' => fn ($q) => $q->orderBy('nombre')->select('tipo_muestras.id', 'tipo_muestras.nombre')])
                 ->orderBy('descripcion')
                 ->get(['id', 'clave', 'descripcion']),
-            'funciones_zootecnicas' => FuncionZootecnica::orderBy('nombre')->get(['id', 'nombre', 'especie_id']),
+            'funciones_zootecnicas' => FuncionZootecnica::with('especies:id')->orderBy('nombre')->get(['id', 'nombre'])
+                ->map(fn ($f) => $this->funcionConEspecies($f)),
             'preguntas' => Pregunta::vigentes()->get(['id', 'texto', 'tipo']),
         ]);
     }
@@ -153,16 +154,28 @@ class HistoriasClinicasController extends Controller
     public function storeFuncionZootecnica(Request $request): JsonResponse
     {
         $validated = $request->validate([
-            'nombre' => [
-                'required', 'string', 'max:150',
-                Rule::unique('funcion_zootecnicas')->where('especie_id', $request->especie_id),
-            ],
+            'nombre' => ['required', 'string', 'max:150'],
             'especie_id' => ['required', 'integer', 'exists:especies,id'],
         ]);
 
-        $funcion = FuncionZootecnica::create($validated);
+        // Las funciones se comparten entre especies: si ya existe una con ese
+        // nombre, solo se le agrega la especie.
+        $funcion = FuncionZootecnica::firstOrCreate(['nombre' => trim($validated['nombre'])]);
+        $funcion->especies()->syncWithoutDetaching([$validated['especie_id']]);
 
-        return response()->json($funcion);
+        return response()->json($this->funcionConEspecies($funcion->load('especies:id')));
+    }
+
+    /**
+     * @return array{id: int, nombre: string, especie_ids: list<int>}
+     */
+    private function funcionConEspecies(FuncionZootecnica $funcion): array
+    {
+        return [
+            'id' => $funcion->id,
+            'nombre' => $funcion->nombre,
+            'especie_ids' => $funcion->especies->pluck('id')->all(),
+        ];
     }
 
     public function storeEspecie(Request $request): JsonResponse
@@ -346,13 +359,13 @@ class HistoriasClinicasController extends Controller
             HistoriaClinica::where('especie_id', $especie->id)->exists(),
             'No se puede eliminar: la especie está usada en historias clínicas.',
         );
-        // Razas, pruebas y funciones quedarían con especie_id nulo (SET NULL) e
-        // invisibles en el formulario, así que también bloqueamos.
+        // Razas y pruebas quedarían con especie_id nulo (SET NULL) e invisibles
+        // en el formulario, así que también bloqueamos. Las funciones
+        // zootécnicas se comparten: solo se suelta el enlace.
         $this->bloquearSiEnUso(
             Raza::where('especie_id', $especie->id)->exists()
-                || Prueba::where('especie_id', $especie->id)->exists()
-                || FuncionZootecnica::where('especie_id', $especie->id)->exists(),
-            'No se puede eliminar: la especie tiene razas, análisis o funciones asociadas.',
+                || Prueba::where('especie_id', $especie->id)->exists(),
+            'No se puede eliminar: la especie tiene razas o análisis asociados.',
         );
 
         $especie->delete();
@@ -388,15 +401,13 @@ class HistoriasClinicasController extends Controller
         $validated = $request->validate([
             'nombre' => [
                 'required', 'string', 'max:150',
-                Rule::unique('funcion_zootecnicas')
-                    ->where('especie_id', $funcionZootecnica->especie_id)
-                    ->ignore($funcionZootecnica->id),
+                Rule::unique('funcion_zootecnicas')->ignore($funcionZootecnica->id),
             ],
         ]);
 
         $funcionZootecnica->update($validated);
 
-        return response()->json($funcionZootecnica);
+        return response()->json($this->funcionConEspecies($funcionZootecnica->load('especies:id')));
     }
 
     public function destroyFuncionZootecnica(FuncionZootecnica $funcionZootecnica): JsonResponse
@@ -421,7 +432,11 @@ class HistoriasClinicasController extends Controller
             'fecha_muestra' => ['required', 'date'],
             'especie_id' => ['required', 'integer', 'exists:especies,id'],
             'raza_id' => ['required', 'integer', 'exists:razas,id'],
-            'funcion_zootecnica_id' => ['required', 'integer', 'exists:funcion_zootecnicas,id'],
+            // La función tiene que ser una de las de la especie elegida.
+            'funcion_zootecnica_id' => [
+                'required', 'integer',
+                Rule::exists('especie_funcion_zootecnica', 'funcion_zootecnica_id')->where('especie_id', $request->integer('especie_id')),
+            ],
             'sexo' => ['nullable', 'in:Hembra,Macho,Ambos,NA'],
             'edad_unidad' => ['nullable', 'in:Dias,Meses,Años,NR,NA'],
             'edad_valor' => ['nullable', 'integer', 'min:0'],

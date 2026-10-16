@@ -3,14 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class FuncionZootecnica extends Model
 {
-    protected $fillable = ['nombre', 'especie_id'];
+    protected $fillable = ['nombre'];
 
-    public function especie(): BelongsTo
+    public function especies(): BelongsToMany
     {
-        return $this->belongsTo(Especie::class);
+        return $this->belongsToMany(Especie::class, 'especie_funcion_zootecnica');
     }
 }

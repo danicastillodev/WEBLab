@@ -30,8 +30,8 @@ export default function AuthenticatedLayout({ header, children }) {
 
     const catalogosRoutes = [
         'propietarios.index', 'propietarios.create', 'propietarios.edit',
-        'municipios.index', 'estados.index', 'especies.index',
-        'razas.index', 'pruebas.index', 'funcion-zootecnicas.index',
+        'municipios.index', 'estados.index', 'especies.*',
+        'razas.index', 'pruebas.index', 'funcion-zootecnicas.*',
         'metodos.index', 'tipos-muestra.*',
     ];
     const [catalogosOpen, setCatalogosOpen] = useState(

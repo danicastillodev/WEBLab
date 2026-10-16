@@ -2,12 +2,14 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
+import SeleccionMultiple from '@/Components/SeleccionMultiple';
 import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
 
-export default function Create() {
+export default function Create({ funciones }) {
     const { data, setData, post, processing, errors } = useForm({
         nombre: '',
+        funcion_ids: [],
     });
 
     function submit(e) {
@@ -39,6 +41,20 @@ export default function Create() {
                                     autoFocus
                                 />
                                 <InputError message={errors.nombre} className="mt-2" />
+                            </div>
+
+                            <div>
+                                <InputLabel value="Funciones zootécnicas" />
+                                <p className="mt-1 text-xs text-gray-500">
+                                    Son las opciones de «Función zootécnica» al capturar una historia clínica de esta especie.
+                                </p>
+                                <SeleccionMultiple
+                                    opciones={funciones}
+                                    value={data.funcion_ids}
+                                    onChange={(ids) => setData('funcion_ids', ids)}
+                                    placeholder="Buscar función…"
+                                />
+                                <InputError message={errors.funcion_ids} className="mt-2" />
                             </div>
 
                             <div className="flex items-center gap-4">

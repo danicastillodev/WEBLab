@@ -48,7 +48,8 @@ class HistoriaClinicaTipoMuestraTest extends TestCase
         ]);
         $especie = Especie::firstOrCreate(['nombre' => 'Ave']);
         $raza = Raza::firstOrCreate(['nombre' => 'Leghorn', 'especie_id' => $especie->id]);
-        $funcion = FuncionZootecnica::firstOrCreate(['nombre' => 'Postura', 'especie_id' => $especie->id]);
+        $funcion = FuncionZootecnica::firstOrCreate(['nombre' => 'POSTURA']);
+        $funcion->especies()->syncWithoutDetaching([$especie->id]);
 
         return [
             'propietario_id' => $propietario->id,
@@ -106,6 +107,19 @@ class HistoriaClinicaTipoMuestraTest extends TestCase
         $this->actingAs($this->admin())
             ->post(route('historias-clinicas.store'), $datos)
             ->assertSessionHasErrors(['propietario_id', 'direccion_id']);
+
+        $this->assertDatabaseCount('historias_clinicas', 0);
+    }
+
+    public function test_rechaza_una_funcion_zootecnica_que_no_es_de_la_especie(): void
+    {
+        $servicio = Servicio::create(['clave' => 'COPRO', 'descripcion' => 'Coprológico', 'activo' => true]);
+        $datos = $this->datosHistoria(['servicio_id' => $servicio->id]);
+        $datos['funcion_zootecnica_id'] = FuncionZootecnica::where('nombre', 'LIDIA')->value('id');
+
+        $this->actingAs($this->admin())
+            ->post(route('historias-clinicas.store'), $datos)
+            ->assertSessionHasErrors('funcion_zootecnica_id');
 
         $this->assertDatabaseCount('historias_clinicas', 0);
     }

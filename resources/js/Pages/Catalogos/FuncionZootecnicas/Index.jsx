@@ -1,8 +1,19 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, router, usePage } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
 
-export default function Index({ funciones }) {
+export default function Index({ funciones, buscar }) {
     const { flash } = usePage().props;
+    const [texto, setTexto] = useState(buscar ?? '');
+
+    // Filtra en el servidor un momento después de dejar de teclear.
+    useEffect(() => {
+        if (texto === (buscar ?? '')) return;
+        const t = setTimeout(() => {
+            router.get(route('funcion-zootecnicas.index'), texto ? { buscar: texto } : {}, { preserveState: true, replace: true });
+        }, 300);
+        return () => clearTimeout(t);
+    }, [texto]);
 
     function handleDelete(funcion) {
         if (confirm(`¿Eliminar "${funcion.nombre}"?`)) {
@@ -27,19 +38,27 @@ export default function Index({ funciones }) {
             <Head title="Funciones Zootécnicas" />
 
             <div className="py-12">
-                <div className="mx-auto max-w-2xl sm:px-6 lg:px-8">
+                <div className="mx-auto max-w-4xl sm:px-6 lg:px-8">
                     {flash?.success && (
                         <div className="mb-4 rounded-md bg-green-50 px-4 py-3 text-sm text-green-700">
                             {flash.success}
                         </div>
                     )}
 
+                    <input
+                        type="search"
+                        value={texto}
+                        onChange={(e) => setTexto(e.target.value)}
+                        placeholder="Buscar función…"
+                        className="mb-4 block w-full rounded-md border-gray-300 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                    />
+
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                         <table className="min-w-full divide-y divide-gray-200">
                             <thead className="bg-gray-50">
                                 <tr>
                                     <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Nombre</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Especie</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Especies</th>
                                     <th className="px-6 py-3" />
                                 </tr>
                             </thead>
@@ -47,14 +66,22 @@ export default function Index({ funciones }) {
                                 {funciones.data.length === 0 && (
                                     <tr>
                                         <td colSpan={3} className="px-6 py-4 text-center text-sm text-gray-500">
-                                            Aún no hay funciones zootécnicas registradas.
+                                            {buscar ? 'Ninguna función coincide con la búsqueda.' : 'Aún no hay funciones zootécnicas registradas.'}
                                         </td>
                                     </tr>
                                 )}
                                 {funciones.data.map((funcion) => (
                                     <tr key={funcion.id}>
                                         <td className="px-6 py-4 text-sm font-medium text-gray-900">{funcion.nombre}</td>
-                                        <td className="px-6 py-4 text-sm text-gray-500">{funcion.especie?.nombre ?? '—'}</td>
+                                        <td className="px-6 py-4 text-sm text-gray-500">
+                                            {funcion.especies.length === 0 ? '—' : (
+                                                <div className="flex flex-wrap gap-1">
+                                                    {funcion.especies.map((e) => (
+                                                        <span key={e.id} className="rounded bg-gray-100 px-1.5 py-0.5 text-xs text-gray-700">{e.nombre}</span>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </td>
                                         <td className="px-6 py-4 text-right text-sm">
                                             <Link
                                                 href={route('funcion-zootecnicas.edit', funcion.id)}
