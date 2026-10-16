@@ -2,6 +2,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
+import ExplotacionesPropietario from '@/Components/ExplotacionesPropietario';
 import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
 
@@ -31,6 +32,7 @@ export default function Create({ estados, municipios }) {
         rfc: '',
         telefono: '',
         direcciones: [{ ...direccionVacia }],
+        explotaciones: [],
     });
 
     function submit(e) {
@@ -303,6 +305,16 @@ export default function Create({ estados, municipios }) {
                                     })}
                                 </div>
                             </div>
+
+
+                            <ExplotacionesPropietario
+                                value={data.explotaciones}
+                                onChange={(lista) => setData('explotaciones', lista)}
+                                estados={estados}
+                                municipios={municipios}
+                                errors={errors}
+                                estadoDefault={estadoDefault}
+                            />
 
                             <div className="flex items-center gap-4">
                                 <PrimaryButton disabled={processing}>Crear</PrimaryButton>
