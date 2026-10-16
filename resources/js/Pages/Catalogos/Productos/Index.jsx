@@ -1,6 +1,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import { useState } from 'react';
+import { etiquetaUnidad } from './unidadesPrecio';
 
 export default function Index({ productos, servicios, filtros }) {
     const { flash } = usePage().props;
@@ -8,6 +9,7 @@ export default function Index({ productos, servicios, filtros }) {
     const [form, setForm] = useState({
         buscar: filtros.buscar ?? '',
         servicio_id: filtros.servicio_id ?? '',
+        activo: filtros.activo ?? '',
     });
 
     function handleChange(e) {
@@ -20,7 +22,7 @@ export default function Index({ productos, servicios, filtros }) {
     }
 
     function limpiar() {
-        const vacio = { buscar: '', servicio_id: '' };
+        const vacio = { buscar: '', servicio_id: '', activo: '' };
         setForm(vacio);
         router.get(route('productos.index'), vacio, { preserveState: true, replace: true });
     }
@@ -38,6 +40,7 @@ export default function Index({ productos, servicios, filtros }) {
                 nombre: producto.nombre,
                 servicio_id: producto.servicio_id,
                 precio_unitario: producto.precio_unitario,
+                unidad_precio: producto.unidad_precio,
                 activo: !producto.activo,
             });
         }
@@ -70,7 +73,7 @@ export default function Index({ productos, servicios, filtros }) {
                     )}
 
                     <form onSubmit={buscar} className="mb-4 rounded-lg bg-white p-4 shadow-sm">
-                        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
                             <div>
                                 <label className="mb-1 block text-xs font-medium text-gray-600">Buscar</label>
                                 <input
@@ -83,12 +86,20 @@ export default function Index({ productos, servicios, filtros }) {
                                 />
                             </div>
                             <div>
-                                <label className="mb-1 block text-xs font-medium text-gray-600">Servicio relacionado</label>
+                                <label className="mb-1 block text-xs font-medium text-gray-600">Análisis relacionado</label>
                                 <select name="servicio_id" value={form.servicio_id} onChange={handleChange} className={inputClass}>
                                     <option value="">Todos</option>
                                     {servicios.map((s) => (
                                         <option key={s.id} value={s.id}>{s.descripcion}</option>
                                     ))}
+                                </select>
+                            </div>
+                            <div>
+                                <label className="mb-1 block text-xs font-medium text-gray-600">Status</label>
+                                <select name="activo" value={form.activo} onChange={handleChange} className={inputClass}>
+                                    <option value="">Todos</option>
+                                    <option value="1">Activo</option>
+                                    <option value="0">Inactivo</option>
                                 </select>
                             </div>
                         </div>
@@ -114,9 +125,9 @@ export default function Index({ productos, servicios, filtros }) {
                             <thead className="bg-gray-50">
                                 <tr>
                                     <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Nombre</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Servicio relacionado</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Análisis relacionado</th>
                                     <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Precio Unit.</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Estado</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Status</th>
                                     <th className="px-6 py-3" />
                                 </tr>
                             </thead>
@@ -132,7 +143,7 @@ export default function Index({ productos, servicios, filtros }) {
                                     <tr key={producto.id}>
                                         <td className="px-6 py-4 text-sm font-medium text-gray-900">{producto.nombre}</td>
                                         <td className="px-6 py-4 text-sm text-gray-500">{producto.servicio?.descripcion ?? '—'}</td>
-                                        <td className="px-6 py-4 text-sm text-gray-500">${Number(producto.precio_unitario).toFixed(2)}</td>
+                                        <td className="px-6 py-4 text-sm text-gray-500">${Number(producto.precio_unitario).toFixed(2)} {etiquetaUnidad(producto.unidad_precio)}</td>
                                         <td className="px-6 py-4 text-sm">
                                             <span className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-medium ${producto.activo ? 'bg-green-50 text-green-700 ring-1 ring-inset ring-green-200' : 'bg-gray-100 text-gray-600 ring-1 ring-inset ring-gray-200'}`}>
                                                 {producto.activo ? 'Activo' : 'Inactivo'}

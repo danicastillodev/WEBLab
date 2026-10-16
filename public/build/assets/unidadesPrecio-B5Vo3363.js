@@ -1,0 +1,1 @@
+const u=[{value:"muestra",label:"Por muestra"},{value:"grupo",label:"Por grupo"},{value:"analisis",label:"Por análisis"}];function o(e){const a=u.find(l=>l.value===e);return a?a.label.toLowerCase():""}export{u as U,o as e};

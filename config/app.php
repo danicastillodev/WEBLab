@@ -63,9 +63,13 @@ return [
     | will be used by the PHP date and date-time functions. The timezone
     | is set to "UTC" by default as it is suitable for most use cases.
     |
+    | El laboratorio opera en México: con UTC, "hoy" (filtro del listado,
+    | historias capturadas hoy, fechas por defecto) pasaba a ser mañana a
+    | partir de las 18:00 hora local.
+    |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => env('APP_TIMEZONE', 'America/Mexico_City'),
 
     /*
     |--------------------------------------------------------------------------

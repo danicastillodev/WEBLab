@@ -181,7 +181,7 @@ export default function Ticket({ historia, datosGenerales }) {
                             <div className="ticket-muestra" key={muestra.id ?? i}>
                                 <p>Análisis: {muestra.servicio?.descripcion}</p>
                                 <p>Cant: {muestra.cantidad}</p>
-                                <p>Tipo: {muestra.producto?.nombre}</p>
+                                <p>Tipo: {muestra.tipo_muestra?.nombre}</p>
                                 <p>Especie: {historia.especie?.nombre}</p>
                             </div>
                         ))

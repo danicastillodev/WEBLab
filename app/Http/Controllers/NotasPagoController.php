@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Direccion;
+use App\Http\Requests\ClienteRequest;
+use App\Models\Cliente;
 use App\Models\Estado;
 use App\Models\HistoriaClinica;
 use App\Models\Municipio;
 use App\Models\NotaPago;
 use App\Models\ParametroOperacion;
-use App\Models\Propietario;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -19,13 +19,60 @@ use Inertia\Response;
 
 class NotasPagoController extends Controller
 {
+    /**
+     * Permisos granulares que dan acceso al listado: no hay uno específico
+     * de "consultar", así que basta con cualquiera que opere sobre notas.
+     */
+    private const PERMISOS_LISTADO = [
+        'facturacion.agregar_facturas',
+        'facturacion.modificar_facturas',
+        'facturacion.cancelar_factura',
+    ];
+
+    public function index(Request $request): Response
+    {
+        $user = $request->user();
+        abort_unless(collect(self::PERMISOS_LISTADO)->contains(fn ($clave) => $user->tienePermisoGranular($clave)), 403);
+
+        $filtros = [
+            'buscar' => trim((string) $request->input('buscar', '')),
+            'fecha_desde' => (string) $request->input('fecha_desde', ''),
+            'fecha_hasta' => (string) $request->input('fecha_hasta', ''),
+            'pagada' => (string) $request->input('pagada', ''),
+        ];
+
+        // El DatePickerInput envía las fechas como aaaa/mm/dd.
+        $fechaDesde = str_replace('/', '-', $filtros['fecha_desde']);
+        $fechaHasta = str_replace('/', '-', $filtros['fecha_hasta']);
+
+        $notas = NotaPago::with(['cliente:id,nombre,rfc', 'historiasClinicas:id,numero_caso'])
+            ->when($filtros['buscar'] !== '', function ($query) use ($filtros) {
+                $buscar = $filtros['buscar'];
+                $query->where(fn ($q) => $q
+                    ->where('folio', $buscar)
+                    ->orWhereHas('cliente', fn ($c) => $c->where('nombre', 'like', "%{$buscar}%")->orWhere('rfc', 'like', "%{$buscar}%"))
+                    ->orWhereHas('historiasClinicas', fn ($h) => $h->where('numero_caso', $buscar)));
+            })
+            ->when($fechaDesde !== '', fn ($q) => $q->whereDate('created_at', '>=', $fechaDesde))
+            ->when($fechaHasta !== '', fn ($q) => $q->whereDate('created_at', '<=', $fechaHasta))
+            ->when(in_array($filtros['pagada'], ['0', '1'], true), fn ($q) => $q->where('pagada', $filtros['pagada'] === '1'))
+            ->orderByDesc('folio')
+            ->paginate(15)
+            ->withQueryString();
+
+        return Inertia::render('NotasPago/Index', [
+            'notas' => $notas,
+            'filtros' => $filtros,
+            'puede' => ['crear' => $user->tienePermisoGranular('facturacion.agregar_facturas')],
+        ]);
+    }
+
     public function create(Request $request): Response
     {
         abort_unless($request->user()->tienePermisoGranular('facturacion.agregar_facturas'), 403);
 
         return Inertia::render('NotasPago/Create', [
-            'propietarios' => Propietario::orderBy('apellidos')->orderBy('nombre')->get(['id', 'nombre', 'apellidos', 'telefono', 'rfc']),
-            'direcciones' => Direccion::with(['municipio', 'estado'])->get(['id', 'propietario_id', 'calle', 'numero_exterior', 'numero_interior', 'colonia', 'municipio_id', 'estado_id', 'codigo_postal', 'caseta', 'lote', 'parvada']),
+            'clientes' => Cliente::with(['estado:id,nombre', 'municipio:id,nombre'])->orderBy('nombre')->get(),
             'estados' => Estado::orderBy('nombre')->get(['id', 'nombre']),
             'municipios' => Municipio::orderBy('nombre')->get(['id', 'nombre', 'estado_id']),
             'conceptos_opciones' => NotaPago::CONCEPTOS,
@@ -45,7 +92,7 @@ class NotasPagoController extends Controller
      */
     private function historiasCapturadasHoySinNotaPago(Request $request): ?array
     {
-        $historias = HistoriaClinica::with(['muestras.servicio', 'muestras.producto'])
+        $historias = HistoriaClinica::with($this->relacionesConceptos())
             ->where('created_by', $request->user()->id)
             ->whereDate('created_at', today())
             ->whereDoesntHave('notasPago')
@@ -56,12 +103,8 @@ class NotasPagoController extends Controller
             return null;
         }
 
-        $primera = $historias->first();
-
         return [
             'historias' => $historias->map(fn ($h) => ['id' => $h->id, 'numero_caso' => $h->numero_caso])->values(),
-            'propietario_id' => $primera->propietario_id,
-            'direccion_id' => $primera->direccion_id,
             'conceptos' => $this->construirConceptosDesdeHistorias($historias),
         ];
     }
@@ -71,10 +114,12 @@ class NotasPagoController extends Controller
         abort_unless($request->user()->tienePermisoGranular('facturacion.agregar_facturas'), 403);
 
         $validated = $request->validate([
-            'propietario_id' => ['required', 'integer', 'exists:propietarios,id'],
-            'direccion_id' => ['nullable', 'integer', 'exists:direcciones,id'],
+            'cliente_id' => ['required', 'integer', 'exists:clientes,id'],
             'historia_clinica_ids' => ['required', 'array', 'min:1'],
             'historia_clinica_ids.*' => ['integer', 'exists:historias_clinicas,id'],
+            // Cantidad ajustada por el usuario en cada concepto, indexada por muestra_id.
+            'cantidades' => ['nullable', 'array'],
+            'cantidades.*' => ['required', 'integer', 'min:1', 'max:99999'],
             'concepto' => ['required', 'string', 'in:'.implode(',', NotaPago::CONCEPTOS)],
             'tipo_pago' => ['required', 'string', 'in:'.implode(',', NotaPago::TIPOS_PAGO)],
             'pagada' => ['boolean'],
@@ -84,8 +129,9 @@ class NotasPagoController extends Controller
         // Los conceptos nunca se confían al cliente: se reconstruyen aquí a
         // partir de las muestras de las historias clínicas seleccionadas,
         // igual que en conceptosDeHistorias(), para que no sea posible
-        // manipular cantidades o precios desde el navegador.
-        $historias = HistoriaClinica::with(['muestras.servicio', 'muestras.producto'])
+        // manipular productos o precios desde el navegador. Lo único que el
+        // usuario puede ajustar es la cantidad de cada concepto.
+        $historias = HistoriaClinica::with($this->relacionesConceptos())
             ->whereIn('id', $validated['historia_clinica_ids'])
             ->get();
 
@@ -106,22 +152,27 @@ class NotasPagoController extends Controller
         // cuando todavía no existe el registro de parámetros).
         $ivaPorcentaje = (float) (ParametroOperacion::first()?->iva_porcentaje ?? 16);
 
-        $notaPago = DB::transaction(function () use ($validated, $historias, $ivaPorcentaje) {
-            $conceptos = $this->construirConceptosDesdeHistorias($historias)->map(fn ($c) => [
-                'producto_id' => $c['producto_id'],
-                'descripcion' => $c['descripcion'],
-                'cantidad' => $c['cantidad'],
-                'precio_unitario' => $c['precio_unitario'],
-                'importe' => round($c['cantidad'] * $c['precio_unitario'], 2),
-            ]);
+        $cantidades = $validated['cantidades'] ?? [];
+
+        $notaPago = DB::transaction(function () use ($validated, $historias, $ivaPorcentaje, $cantidades) {
+            $conceptos = $this->construirConceptosDesdeHistorias($historias)->map(function ($c) use ($cantidades) {
+                $cantidad = (int) ($cantidades[$c['muestra_id']] ?? $c['cantidad']);
+
+                return [
+                    'producto_id' => $c['producto_id'],
+                    'descripcion' => $c['descripcion'],
+                    'cantidad' => $cantidad,
+                    'precio_unitario' => $c['precio_unitario'],
+                    'importe' => round($cantidad * $c['precio_unitario'], 2),
+                ];
+            });
 
             $subtotal = round((float) $conceptos->sum('importe'), 2);
             $ivaMonto = round($subtotal * $ivaPorcentaje / 100, 2);
 
             $notaPago = NotaPago::create([
                 'folio' => NotaPago::siguienteFolio(),
-                'propietario_id' => $validated['propietario_id'],
-                'direccion_id' => $validated['direccion_id'] ?? null,
+                'cliente_id' => $validated['cliente_id'],
                 'concepto' => $validated['concepto'],
                 'tipo_pago' => $validated['tipo_pago'],
                 'pagada' => $validated['pagada'] ?? false,
@@ -140,6 +191,40 @@ class NotasPagoController extends Controller
 
         return redirect()->route('notas-pago.create')
             ->with('success', "Nota de pago folio {$notaPago->folio} creada.");
+    }
+
+    /**
+     * Alta rápida de un cliente desde el modal del formulario (vía axios).
+     */
+    public function storeCliente(ClienteRequest $request): JsonResponse
+    {
+        abort_unless($request->user()->tienePermisoGranular('facturacion.agregar_facturas'), 403);
+
+        $cliente = Cliente::create($request->validated());
+
+        return response()->json($cliente->load(['estado:id,nombre', 'municipio:id,nombre']), 201);
+    }
+
+    public function updateCliente(ClienteRequest $request, Cliente $cliente): JsonResponse
+    {
+        abort_unless($request->user()->tienePermisoGranular('facturacion.agregar_facturas'), 403);
+
+        $cliente->update($request->validated());
+
+        return response()->json($cliente->load(['estado:id,nombre', 'municipio:id,nombre']));
+    }
+
+    public function destroyCliente(Request $request, Cliente $cliente): JsonResponse
+    {
+        abort_unless($request->user()->tienePermisoGranular('facturacion.agregar_facturas'), 403);
+
+        if ($cliente->notasPago()->exists()) {
+            return response()->json(['message' => 'No se puede eliminar: el cliente ya tiene notas de pago.'], 422);
+        }
+
+        $cliente->delete();
+
+        return response()->json(null, 204);
     }
 
     /**
@@ -197,7 +282,7 @@ class NotasPagoController extends Controller
             'historia_clinica_ids.*' => ['integer', 'exists:historias_clinicas,id'],
         ]);
 
-        $historias = HistoriaClinica::with(['muestras.servicio', 'muestras.producto'])
+        $historias = HistoriaClinica::with($this->relacionesConceptos())
             ->whereIn('id', $validated['historia_clinica_ids'])
             ->orderBy('numero_caso')
             ->get();
@@ -206,21 +291,32 @@ class NotasPagoController extends Controller
             return response()->json(['message' => 'No se encontraron las historias clínicas seleccionadas.'], 404);
         }
 
-        $primera = $historias->first();
-
         return response()->json([
             'historias' => $historias->map(fn ($h) => ['id' => $h->id, 'numero_caso' => $h->numero_caso])->values(),
-            'propietario_id' => $primera->propietario_id,
-            'direccion_id' => $primera->direccion_id,
             'conceptos' => $this->construirConceptosDesdeHistorias($historias),
         ]);
     }
 
     /**
-     * Conceptos (uno por muestra) de un conjunto de historias clínicas, con
-     * el precio exacto que venga del producto vinculado a cada prueba
-     * ("Tipo de muestra" en la captura de la historia clínica) — 0 cuando la
-     * muestra no tiene un producto capturado.
+     * Relaciones que necesita construirConceptosDesdeHistorias(): de cada
+     * servicio, solo sus productos activos y en orden de alta.
+     *
+     * @return array<int|string, mixed>
+     */
+    private function relacionesConceptos(): array
+    {
+        return [
+            'muestras.producto',
+            'muestras.servicio.productos' => fn ($q) => $q->where('activo', true)->orderBy('id'),
+        ];
+    }
+
+    /**
+     * Conceptos (uno por muestra) de un conjunto de historias clínicas. El
+     * precio sale del producto asociado al servicio de cada muestra; si el
+     * servicio tiene varios productos activos se toma el primero dado de alta.
+     * Las muestras capturadas antes, cuando el producto se elegía en la
+     * historia, conservan ese producto. Sin producto, el precio es 0.
      *
      * @param  Collection<int, HistoriaClinica>  $historias
      * @return Collection<int, array>
@@ -229,13 +325,16 @@ class NotasPagoController extends Controller
     {
         return $historias->flatMap(function ($historiaClinica) {
             return $historiaClinica->muestras->map(function ($muestra) use ($historiaClinica) {
+                $producto = $muestra->producto ?? $muestra->servicio?->productos->first();
+
                 return [
+                    'muestra_id' => $muestra->id,
                     'historia_clinica_id' => $historiaClinica->id,
                     'numero_caso' => $historiaClinica->numero_caso,
-                    'producto_id' => $muestra->producto_id,
-                    'descripcion' => $muestra->producto->nombre ?? $muestra->servicio->descripcion ?? '',
+                    'producto_id' => $producto?->id,
+                    'descripcion' => $producto->nombre ?? $muestra->servicio->descripcion ?? '',
                     'cantidad' => $muestra->cantidad,
-                    'precio_unitario' => $muestra->producto->precio_unitario ?? 0,
+                    'precio_unitario' => $producto->precio_unitario ?? 0,
                 ];
             });
         })->values();

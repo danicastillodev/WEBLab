@@ -9,6 +9,7 @@ export default function Index({ servicios, areas, metodos, filtros }) {
         buscar: filtros.buscar ?? '',
         area_id: filtros.area_id ?? '',
         metodo_id: filtros.metodo_id ?? '',
+        estado: filtros.estado ?? 'todos',
     });
 
     function handleChange(e) {
@@ -21,7 +22,7 @@ export default function Index({ servicios, areas, metodos, filtros }) {
     }
 
     function limpiar() {
-        const vacio = { buscar: '', area_id: '', metodo_id: '' };
+        const vacio = { buscar: '', area_id: '', metodo_id: '', estado: 'todos' };
         setForm(vacio);
         router.get(route('servicios.index'), vacio, { preserveState: true, replace: true });
     }
@@ -32,9 +33,11 @@ export default function Index({ servicios, areas, metodos, filtros }) {
         router.get(route('servicios.index'), { ...filtros, page }, { preserveState: true, replace: true });
     }
 
-    function handleDelete(servicio) {
-        if (confirm(`¿Eliminar el servicio "${servicio.clave}"?`)) {
-            router.delete(route('servicios.destroy', servicio.id));
+    function toggleActivo(servicio) {
+        const accion = servicio.activo ? 'Desactivar' : 'Activar';
+        const aviso = servicio.activo ? '\nTambién se desactivarán sus productos asociados.' : '';
+        if (confirm(`¿${accion} el análisis "${servicio.clave}"?${aviso}`)) {
+            router.patch(route('servicios.update-activo', servicio.id), {}, { preserveScroll: true });
         }
     }
 
@@ -44,17 +47,17 @@ export default function Index({ servicios, areas, metodos, filtros }) {
         <AuthenticatedLayout
             header={
                 <div className="flex items-center justify-between">
-                    <h2 className="text-xl font-semibold leading-tight text-gray-800">Servicios - Listado</h2>
+                    <h2 className="text-xl font-semibold leading-tight text-gray-800">Análisis - Listado</h2>
                     <Link
                         href={route('servicios.create')}
                         className="rounded-md bg-brand px-4 py-2 text-sm text-white hover:bg-brand-hover"
                     >
-                        Nuevo servicio
+                        Nuevo análisis
                     </Link>
                 </div>
             }
         >
-            <Head title="Servicios" />
+            <Head title="Análisis" />
 
             <div className="py-12">
                 <div className="mx-auto max-w-6xl sm:px-6 lg:px-8">
@@ -65,7 +68,7 @@ export default function Index({ servicios, areas, metodos, filtros }) {
                     )}
 
                     <form onSubmit={buscar} className="mb-4 rounded-lg bg-white p-4 shadow-sm">
-                        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+                        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
                             <div>
                                 <label className="mb-1 block text-xs font-medium text-gray-600">Buscar</label>
                                 <input
@@ -93,6 +96,14 @@ export default function Index({ servicios, areas, metodos, filtros }) {
                                     {metodos.map((m) => (
                                         <option key={m.id} value={m.id}>{m.nombre}</option>
                                     ))}
+                                </select>
+                            </div>
+                            <div>
+                                <label className="mb-1 block text-xs font-medium text-gray-600">Status</label>
+                                <select name="estado" value={form.estado} onChange={handleChange} className={inputClass}>
+                                    <option value="todos">Todos</option>
+                                    <option value="activos">Activos</option>
+                                    <option value="inactivos">Inactivos</option>
                                 </select>
                             </div>
                         </div>
@@ -123,16 +134,15 @@ export default function Index({ servicios, areas, metodos, filtros }) {
                                     <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Descripción</th>
                                     <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Método</th>
                                     <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Área</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Referencias</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Estado</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Status</th>
                                     <th className="px-6 py-3" />
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-200 bg-white">
                                 {servicios.data.length === 0 && (
                                     <tr>
-                                        <td colSpan={9} className="px-6 py-4 text-center text-sm text-gray-500">
-                                            No se encontraron servicios con los filtros seleccionados.
+                                        <td colSpan={8} className="px-6 py-4 text-center text-sm text-gray-500">
+                                            No se encontraron análisis con los filtros seleccionados.
                                         </td>
                                     </tr>
                                 )}
@@ -144,7 +154,6 @@ export default function Index({ servicios, areas, metodos, filtros }) {
                                         <td className="px-6 py-4 text-sm text-gray-500">{servicio.descripcion}</td>
                                         <td className="px-6 py-4 text-sm text-gray-500">{servicio.metodo?.nombre ?? '—'}</td>
                                         <td className="px-6 py-4 text-sm text-gray-500">{servicio.area?.nombre ?? '—'}</td>
-                                        <td className="px-6 py-4 text-sm text-gray-500">{servicio.referencias ?? '—'}</td>
                                         <td className="px-6 py-4 text-sm">
                                             <span className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-medium ${servicio.activo ? 'bg-green-50 text-green-700 ring-1 ring-inset ring-green-200' : 'bg-gray-100 text-gray-600 ring-1 ring-inset ring-gray-200'}`}>
                                                 {servicio.activo ? 'Activo' : 'Inactivo'}
@@ -158,10 +167,10 @@ export default function Index({ servicios, areas, metodos, filtros }) {
                                                 Editar
                                             </Link>
                                             <button
-                                                onClick={() => handleDelete(servicio)}
-                                                className="text-red-600 hover:text-red-900"
+                                                onClick={() => toggleActivo(servicio)}
+                                                className={servicio.activo ? 'text-amber-600 hover:text-amber-800' : 'text-green-600 hover:text-green-800'}
                                             >
-                                                Eliminar
+                                                {servicio.activo ? 'Desactivar' : 'Activar'}
                                             </button>
                                         </td>
                                     </tr>

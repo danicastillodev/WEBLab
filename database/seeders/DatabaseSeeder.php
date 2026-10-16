@@ -38,7 +38,9 @@ class DatabaseSeeder extends Seeder
         $this->call(FuncionesZootecnicasSeeder::class);
         $this->call(PruebasSeeder::class);
         $this->call(AreasSeeder::class);
+        $this->call(CatalogosServicioSeeder::class);
         $this->call(ServiciosSeeder::class);
+        $this->call(TiposMuestraServiciosSeeder::class);
         $this->call(ProductosSeeder::class);
     }
 }

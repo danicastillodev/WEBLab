@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Cliente;
 use App\Models\Direccion;
 use App\Models\Especie;
 use App\Models\Estado;
@@ -29,6 +30,20 @@ class NotasPagoTest extends TestCase
     private function propietario(): Propietario
     {
         return Propietario::create(['nombre' => 'Juan', 'apellidos' => 'Pérez', 'telefono' => '3311223344']);
+    }
+
+    private function cliente(array $datos = []): Cliente
+    {
+        $estado = Estado::where('clave', 'JAL')->firstOrFail();
+        $municipio = Municipio::firstOrCreate(['nombre' => 'Guadalajara', 'estado_id' => $estado->id]);
+
+        return Cliente::create($datos + [
+            'nombre' => 'Agropecuaria del Bajío SA de CV',
+            'rfc' => 'ABA010101AB'.random_int(1, 9),
+            'telefono' => '3312345678',
+            'calle' => 'Av. Vallarta', 'numero_exterior' => '100', 'colonia' => 'Americana',
+            'codigo_postal' => '44160', 'estado_id' => $estado->id, 'municipio_id' => $municipio->id,
+        ]);
     }
 
     /**
@@ -68,6 +83,48 @@ class NotasPagoTest extends TestCase
             ->assertForbidden();
     }
 
+    public function test_el_listado_requiere_algun_permiso_de_notas_de_pago(): void
+    {
+        $this->actingAs(User::factory()->create(['es_admin' => false]))
+            ->get(route('notas-pago.index'))
+            ->assertForbidden();
+
+        $user = User::factory()->create(['es_admin' => false]);
+        $user->permisosGranulares()->create(['clave' => 'facturacion.modificar_facturas']);
+
+        $this->actingAs($user)
+            ->get(route('notas-pago.index'))
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page->component('NotasPago/Index')->where('puede.crear', false));
+    }
+
+    public function test_el_listado_muestra_las_notas_y_filtra_por_folio_y_pagada(): void
+    {
+        $cliente = $this->cliente();
+        $base = ['cliente_id' => $cliente->id, 'concepto' => 'Laboratorios', 'tipo_pago' => 'Contado',
+            'subtotal' => 100, 'iva_porcentaje' => 16, 'iva_monto' => 16, 'total' => 116];
+        NotaPago::create($base + ['folio' => 7777, 'pagada' => true]);
+        NotaPago::create($base + ['folio' => 8888, 'pagada' => false]);
+
+        $admin = $this->admin();
+
+        $this->actingAs($admin)
+            ->get(route('notas-pago.index'))
+            ->assertInertia(fn ($page) => $page
+                ->component('NotasPago/Index')
+                ->has('notas.data', 2)
+                ->where('notas.data.0.folio', 8888)
+                ->where('notas.data.0.cliente.nombre', $cliente->nombre));
+
+        $this->actingAs($admin)
+            ->get(route('notas-pago.index', ['buscar' => '7777']))
+            ->assertInertia(fn ($page) => $page->has('notas.data', 1)->where('notas.data.0.folio', 7777));
+
+        $this->actingAs($admin)
+            ->get(route('notas-pago.index', ['pagada' => '0']))
+            ->assertInertia(fn ($page) => $page->has('notas.data', 1)->where('notas.data.0.folio', 8888));
+    }
+
     public function test_un_admin_puede_ver_el_formulario(): void
     {
         ParametroOperacion::create(['iva_porcentaje' => 16, 'proximo_folio' => 55351]);
@@ -88,7 +145,7 @@ class NotasPagoTest extends TestCase
 
         $response = $this->actingAs($this->admin())
             ->post(route('notas-pago.store'), [
-                'propietario_id' => $propietario->id,
+                'cliente_id' => $this->cliente()->id,
                 'concepto' => 'Laboratorios',
                 'tipo_pago' => 'Contado',
                 'pagada' => true,
@@ -99,7 +156,7 @@ class NotasPagoTest extends TestCase
 
         $this->assertDatabaseHas('notas_pago', [
             'folio' => 100,
-            'propietario_id' => $propietario->id,
+            'propietario_id' => null,
             'subtotal' => 200,
             'iva_porcentaje' => 16,
             'iva_monto' => 32,
@@ -126,7 +183,7 @@ class NotasPagoTest extends TestCase
 
         $this->actingAs($this->admin())
             ->post(route('notas-pago.store'), [
-                'propietario_id' => $propietario->id,
+                'cliente_id' => $this->cliente()->id,
                 'concepto' => 'Laboratorios',
                 'tipo_pago' => 'Contado',
                 'historia_clinica_ids' => [$historia->id],
@@ -145,6 +202,47 @@ class NotasPagoTest extends TestCase
         $this->assertDatabaseMissing('nota_pago_conceptos', ['cantidad' => 999]);
     }
 
+    public function test_respeta_la_cantidad_ajustada_pero_no_el_precio(): void
+    {
+        ParametroOperacion::create(['iva_porcentaje' => 16, 'proximo_folio' => 1]);
+        $producto = Producto::create(['nombre' => 'ANTIBIOGRAMA', 'precio_unitario' => 100, 'activo' => true]);
+        [$historia] = $this->historiaConMuestra('Antibiograma', 1, $producto->id);
+        $muestra = $historia->muestras()->first();
+
+        $this->actingAs($this->admin())
+            ->post(route('notas-pago.store'), [
+                'cliente_id' => $this->cliente()->id,
+                'concepto' => 'Laboratorios',
+                'tipo_pago' => 'Contado',
+                'historia_clinica_ids' => [$historia->id],
+                'cantidades' => [$muestra->id => 3],
+            ])
+            ->assertSessionHasNoErrors();
+
+        $this->assertDatabaseHas('nota_pago_conceptos', ['cantidad' => 3, 'precio_unitario' => 100, 'importe' => 300]);
+        $this->assertDatabaseHas('notas_pago', ['subtotal' => 300, 'total' => 348]);
+        // La muestra de la historia clínica no cambia.
+        $this->assertSame(1, (int) $muestra->fresh()->cantidad);
+    }
+
+    public function test_rechaza_cantidades_menores_a_uno(): void
+    {
+        [$historia] = $this->historiaConMuestra('Antibiograma', 1);
+        $muestra = $historia->muestras()->first();
+
+        $this->actingAs($this->admin())
+            ->post(route('notas-pago.store'), [
+                'cliente_id' => $this->cliente()->id,
+                'concepto' => 'Laboratorios',
+                'tipo_pago' => 'Contado',
+                'historia_clinica_ids' => [$historia->id],
+                'cantidades' => [$muestra->id => 0],
+            ])
+            ->assertSessionHasErrors("cantidades.{$muestra->id}");
+
+        $this->assertDatabaseCount('notas_pago', 0);
+    }
+
     public function test_ignora_el_iva_enviado_por_el_cliente_y_usa_el_de_parametros_operacion(): void
     {
         ParametroOperacion::create(['iva_porcentaje' => 8, 'proximo_folio' => 1]);
@@ -153,7 +251,7 @@ class NotasPagoTest extends TestCase
 
         $this->actingAs($this->admin())
             ->post(route('notas-pago.store'), [
-                'propietario_id' => $propietario->id,
+                'cliente_id' => $this->cliente()->id,
                 'concepto' => 'Laboratorios',
                 'tipo_pago' => 'Contado',
                 'historia_clinica_ids' => [$historia->id],
@@ -178,7 +276,7 @@ class NotasPagoTest extends TestCase
 
         $this->actingAs($this->admin())
             ->post(route('notas-pago.store'), [
-                'propietario_id' => $propietario->id,
+                'cliente_id' => $this->cliente()->id,
                 'concepto' => 'Laboratorios',
                 'tipo_pago' => 'Contado',
                 'historia_clinica_ids' => [$historia->id],
@@ -193,11 +291,9 @@ class NotasPagoTest extends TestCase
 
     public function test_requiere_al_menos_una_historia_clinica(): void
     {
-        $propietario = $this->propietario();
-
         $this->actingAs($this->admin())
             ->post(route('notas-pago.store'), [
-                'propietario_id' => $propietario->id,
+                'cliente_id' => $this->cliente()->id,
                 'concepto' => 'Laboratorios',
                 'tipo_pago' => 'Contado',
                 'historia_clinica_ids' => [],
@@ -209,14 +305,14 @@ class NotasPagoTest extends TestCase
     {
         [$historia, $propietario] = $this->historiaConMuestra('Antibiograma');
         $notaExistente = NotaPago::create([
-            'folio' => 1, 'propietario_id' => $propietario->id,
+            'folio' => 1, 'cliente_id' => $this->cliente()->id,
             'concepto' => 'Laboratorios', 'tipo_pago' => 'Contado',
         ]);
         $notaExistente->historiasClinicas()->attach($historia->id);
 
         $this->actingAs($this->admin())
             ->post(route('notas-pago.store'), [
-                'propietario_id' => $propietario->id,
+                'cliente_id' => $this->cliente()->id,
                 'concepto' => 'Laboratorios',
                 'tipo_pago' => 'Contado',
                 'historia_clinica_ids' => [$historia->id],
@@ -248,7 +344,7 @@ class NotasPagoTest extends TestCase
 
         $notaExistente = NotaPago::create([
             'folio' => 1,
-            'propietario_id' => $propietario->id,
+            'cliente_id' => $this->cliente()->id,
             'concepto' => 'Laboratorios',
             'tipo_pago' => 'Contado',
         ]);
@@ -293,6 +389,29 @@ class NotasPagoTest extends TestCase
         );
     }
 
+    /**
+     * La historia clínica ya no captura producto: el precio sale del producto
+     * asociado al servicio de la muestra (el primero activo dado de alta).
+     */
+    public function test_sin_producto_en_la_muestra_usa_el_producto_activo_del_servicio(): void
+    {
+        [$historia] = $this->historiaConMuestra('Coprológico', 2);
+        $servicio = $historia->muestras()->first()->servicio;
+
+        Producto::create(['nombre' => 'COPRO INACTIVO', 'servicio_id' => $servicio->id, 'precio_unitario' => 999, 'activo' => false]);
+        $copro = Producto::create(['nombre' => 'COPROLOGICO', 'servicio_id' => $servicio->id, 'precio_unitario' => 120, 'activo' => true]);
+        Producto::create(['nombre' => 'COPRO URGENTE', 'servicio_id' => $servicio->id, 'precio_unitario' => 200, 'activo' => true]);
+
+        $concepto = $this->actingAs($this->admin())
+            ->getJson(route('notas-pago.conceptos-de-historias', ['historia_clinica_ids' => [$historia->id]]))
+            ->assertOk()
+            ->json('conceptos.0');
+
+        $this->assertSame($copro->id, $concepto['producto_id']);
+        $this->assertSame('COPROLOGICO', $concepto['descripcion']);
+        $this->assertSame('120.00', $concepto['precio_unitario']);
+    }
+
     public function test_guarda_la_relacion_con_varias_historias_clinicas_seleccionadas(): void
     {
         [$historiaUno, $propietario] = $this->historiaConMuestra('ANTIBIOGRAMA');
@@ -300,7 +419,7 @@ class NotasPagoTest extends TestCase
 
         $this->actingAs($this->admin())
             ->post(route('notas-pago.store'), [
-                'propietario_id' => $propietario->id,
+                'cliente_id' => $this->cliente()->id,
                 'concepto' => 'Laboratorios',
                 'tipo_pago' => 'Contado',
                 'historia_clinica_ids' => [$historiaUno->id, $historiaDos->id],
@@ -333,7 +452,7 @@ class NotasPagoTest extends TestCase
         [$miaYaLigada, $propietario] = $this->historiaConMuestra('Antibiograma');
         $miaYaLigada->update(['created_by' => $admin->id]);
         $notaExistente = NotaPago::create([
-            'folio' => 1, 'propietario_id' => $propietario->id,
+            'folio' => 1, 'cliente_id' => $this->cliente()->id,
             'concepto' => 'Laboratorios', 'tipo_pago' => 'Contado',
         ]);
         $notaExistente->historiasClinicas()->attach($miaYaLigada->id);
@@ -353,6 +472,97 @@ class NotasPagoTest extends TestCase
             ->assertInertia(fn ($page) => $page
                 ->component('NotasPago/Create')
                 ->where('historias_preseleccionadas', null));
+    }
+
+    public function test_la_nota_de_pago_requiere_un_cliente(): void
+    {
+        [$historia] = $this->historiaConMuestra('Antibiograma');
+
+        $this->actingAs($this->admin())
+            ->post(route('notas-pago.store'), [
+                'concepto' => 'Laboratorios',
+                'tipo_pago' => 'Contado',
+                'historia_clinica_ids' => [$historia->id],
+            ])
+            ->assertSessionHasErrors('cliente_id');
+
+        $this->assertSame(0, NotaPago::count());
+    }
+
+    public function test_guarda_el_cliente_en_la_nota_de_pago(): void
+    {
+        [$historia] = $this->historiaConMuestra('Antibiograma');
+        $cliente = $this->cliente();
+
+        $this->actingAs($this->admin())
+            ->post(route('notas-pago.store'), [
+                'cliente_id' => $cliente->id,
+                'concepto' => 'Laboratorios',
+                'tipo_pago' => 'Contado',
+                'historia_clinica_ids' => [$historia->id],
+            ])
+            ->assertSessionHasNoErrors();
+
+        $this->assertSame($cliente->id, NotaPago::firstOrFail()->cliente_id);
+    }
+
+    public function test_el_alta_de_cliente_exige_todos_sus_datos(): void
+    {
+        $this->actingAs($this->admin())
+            ->postJson(route('notas-pago.store-cliente'), ['nombre' => 'Sin datos'])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors([
+                'rfc', 'telefono', 'calle', 'numero_exterior', 'colonia',
+                'codigo_postal', 'estado_id', 'municipio_id',
+            ])
+            ->assertJsonMissingValidationErrors(['numero_interior']);
+
+        $this->assertSame(0, Cliente::count());
+    }
+
+    public function test_crea_un_cliente_con_todos_sus_datos(): void
+    {
+        $estado = Estado::where('clave', 'JAL')->firstOrFail();
+        $municipio = Municipio::firstOrCreate(['nombre' => 'Zapopan', 'estado_id' => $estado->id]);
+
+        $this->actingAs($this->admin())
+            ->postJson(route('notas-pago.store-cliente'), [
+                'nombre' => 'Granja La Esperanza',
+                'rfc' => 'gle990101ab1',
+                'telefono' => '3311223344',
+                'calle' => 'Camino Real', 'numero_exterior' => '5', 'colonia' => 'Centro',
+                'codigo_postal' => '45100', 'estado_id' => $estado->id, 'municipio_id' => $municipio->id,
+            ])
+            ->assertCreated()
+            ->assertJsonPath('rfc', 'GLE990101AB1')
+            ->assertJsonPath('municipio.nombre', 'Zapopan');
+    }
+
+    public function test_rechaza_un_municipio_que_no_pertenece_al_estado(): void
+    {
+        $jalisco = Estado::where('clave', 'JAL')->firstOrFail();
+        $otroEstado = Estado::where('id', '!=', $jalisco->id)->firstOrFail();
+        $municipioAjeno = Municipio::firstOrCreate(['nombre' => 'Municipio ajeno', 'estado_id' => $otroEstado->id]);
+
+        $this->actingAs($this->admin())
+            ->postJson(route('notas-pago.store-cliente'), [
+                'nombre' => 'Granja', 'rfc' => 'GRA990101AB1', 'telefono' => '3311223344',
+                'calle' => 'Calle', 'numero_exterior' => '1', 'colonia' => 'Centro',
+                'codigo_postal' => '45100', 'estado_id' => $jalisco->id, 'municipio_id' => $municipioAjeno->id,
+            ])
+            ->assertJsonValidationErrors('municipio_id');
+    }
+
+    public function test_no_elimina_un_cliente_con_notas_de_pago(): void
+    {
+        $cliente = $this->cliente();
+        NotaPago::create(['folio' => 1, 'cliente_id' => $cliente->id, 'concepto' => 'Laboratorios', 'tipo_pago' => 'Contado']);
+
+        $this->actingAs($this->admin())
+            ->deleteJson(route('notas-pago.destroy-cliente', $cliente))
+            ->assertUnprocessable();
+
+        $this->assertModelExists($cliente);
     }
 
     /**

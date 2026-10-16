@@ -12,10 +12,12 @@ import { useState } from 'react';
 
 const selectClass = 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500';
 const EDAD_UNIDADES = ['Dias', 'Meses', 'Años', 'NR', 'NA'];
-const MUESTRA_VACIA = { servicio_id: '', cantidad: 1, producto_id: '', notas: '' };
+const MUESTRA_VACIA = { servicio_id: '', cantidad: 1, tipo_muestra_id: '', notas: '' };
 
 function formatDireccion(dir) {
-    return `${dir.calle} ${dir.numero_exterior}, ${dir.colonia}, ${dir.municipio?.nombre ?? ''}`;
+    const lugar = [dir.municipio?.nombre, dir.estado?.nombre].filter(Boolean).join(', ');
+
+    return [`${dir.calle} ${dir.numero_exterior}`, dir.colonia, lugar].filter(Boolean).join(', ');
 }
 
 function formatExplotacion(explotacion, estados) {
@@ -47,7 +49,7 @@ function Modal({ title, onClose, children }) {
     );
 }
 
-export default function Create({ propietarios: initPropietarios, direcciones: initDirecciones, explotaciones: initExplotaciones, especies: initEspecies, razas: initRazas, estados, municipios, servicios, productos, funciones_zootecnicas: initFunciones, preguntas = [] }) {
+export default function Create({ propietarios: initPropietarios, direcciones: initDirecciones, explotaciones: initExplotaciones, especies: initEspecies, razas: initRazas, estados, municipios, servicios, funciones_zootecnicas: initFunciones, preguntas = [] }) {
     const [propietarios, setPropietarios]   = useState(initPropietarios);
     const [direcciones, setDirecciones]     = useState(initDirecciones);
     const [explotaciones, setExplotaciones] = useState(initExplotaciones);
@@ -122,7 +124,7 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
 
     function updateMuestra(index, field, value) {
         const patch = { [field]: value };
-        if (field === 'servicio_id') patch.producto_id = '';
+        if (field === 'servicio_id') patch.tipo_muestra_id = '';
         const updated = data.muestras.map((m, i) => i === index ? { ...m, ...patch } : m);
         setData('muestras', updated);
     }
@@ -1074,21 +1076,20 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
                                             <div>
                                                 <InputLabel value="Tipo de muestra" />
                                                 <select
-                                                    value={muestra.producto_id}
-                                                    onChange={(e) => updateMuestra(index, 'producto_id', e.target.value)}
+                                                    value={muestra.tipo_muestra_id}
+                                                    onChange={(e) => updateMuestra(index, 'tipo_muestra_id', e.target.value)}
                                                     disabled={!muestra.servicio_id}
                                                     className={selectClass}
                                                 >
                                                     <option value="">— Selecciona —</option>
-                                                    {productos
-                                                        .filter((p) => String(p.servicio_id) === String(muestra.servicio_id))
-                                                        .map((p) => (
-                                                            <option key={p.id} value={p.id}>{p.nombre} (${Number(p.precio_unitario).toFixed(2)})</option>
+                                                    {(servicios.find((s) => String(s.id) === String(muestra.servicio_id))?.tipos_muestra ?? [])
+                                                        .map((t) => (
+                                                            <option key={t.id} value={t.id}>{t.nombre}</option>
                                                         ))
                                                     }
                                                 </select>
-                                                {errors[`muestras.${index}.producto_id`] && (
-                                                    <p className="mt-1 text-sm text-red-600">{errors[`muestras.${index}.producto_id`]}</p>
+                                                {errors[`muestras.${index}.tipo_muestra_id`] && (
+                                                    <p className="mt-1 text-sm text-red-600">{errors[`muestras.${index}.tipo_muestra_id`]}</p>
                                                 )}
                                             </div>
                                         </div>
@@ -1258,7 +1259,7 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
                             {/* Propietario */}
                             <div>
                                 <div className="flex items-center justify-between">
-                                    <InputLabel htmlFor="propietario_id" value="Propietario" />
+                                    <InputLabel htmlFor="propietario_id" value="Propietario" required />
                                     <FieldActions
                                         etiqueta="propietario"
                                         seleccionado={!!data.propietario_id}
@@ -1284,7 +1285,7 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
                             {/* Dirección */}
                             <div>
                                 <div className="flex items-center justify-between">
-                                    <InputLabel htmlFor="direccion_id" value="Dirección" />
+                                    <InputLabel htmlFor="direccion_id" value="Dirección" required />
                                     <FieldActions
                                         etiqueta="dirección"
                                         disabled={!data.propietario_id}
