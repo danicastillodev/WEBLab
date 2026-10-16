@@ -1,0 +1,254 @@
+[
+    {
+        "servicio_id": 6,
+        "norma_id": 9
+    },
+    {
+        "servicio_id": 6,
+        "norma_id": 20
+    },
+    {
+        "servicio_id": 7,
+        "norma_id": 9
+    },
+    {
+        "servicio_id": 7,
+        "norma_id": 20
+    },
+    {
+        "servicio_id": 8,
+        "norma_id": 9
+    },
+    {
+        "servicio_id": 8,
+        "norma_id": 20
+    },
+    {
+        "servicio_id": 9,
+        "norma_id": 9
+    },
+    {
+        "servicio_id": 9,
+        "norma_id": 20
+    },
+    {
+        "servicio_id": 29,
+        "norma_id": 5
+    },
+    {
+        "servicio_id": 29,
+        "norma_id": 8
+    },
+    {
+        "servicio_id": 41,
+        "norma_id": 6
+    },
+    {
+        "servicio_id": 41,
+        "norma_id": 15
+    },
+    {
+        "servicio_id": 50,
+        "norma_id": 5
+    },
+    {
+        "servicio_id": 50,
+        "norma_id": 8
+    },
+    {
+        "servicio_id": 52,
+        "norma_id": 12
+    },
+    {
+        "servicio_id": 52,
+        "norma_id": 16
+    },
+    {
+        "servicio_id": 53,
+        "norma_id": 12
+    },
+    {
+        "servicio_id": 53,
+        "norma_id": 16
+    },
+    {
+        "servicio_id": 53,
+        "norma_id": 29
+    },
+    {
+        "servicio_id": 54,
+        "norma_id": 12
+    },
+    {
+        "servicio_id": 54,
+        "norma_id": 16
+    },
+    {
+        "servicio_id": 54,
+        "norma_id": 28
+    },
+    {
+        "servicio_id": 55,
+        "norma_id": 12
+    },
+    {
+        "servicio_id": 55,
+        "norma_id": 16
+    },
+    {
+        "servicio_id": 55,
+        "norma_id": 27
+    },
+    {
+        "servicio_id": 56,
+        "norma_id": 14
+    },
+    {
+        "servicio_id": 57,
+        "norma_id": 7
+    },
+    {
+        "servicio_id": 57,
+        "norma_id": 17
+    },
+    {
+        "servicio_id": 58,
+        "norma_id": 5
+    },
+    {
+        "servicio_id": 59,
+        "norma_id": 6
+    },
+    {
+        "servicio_id": 59,
+        "norma_id": 15
+    },
+    {
+        "servicio_id": 63,
+        "norma_id": 23
+    },
+    {
+        "servicio_id": 64,
+        "norma_id": 22
+    },
+    {
+        "servicio_id": 69,
+        "norma_id": 11
+    },
+    {
+        "servicio_id": 69,
+        "norma_id": 18
+    },
+    {
+        "servicio_id": 78,
+        "norma_id": 21
+    },
+    {
+        "servicio_id": 79,
+        "norma_id": 24
+    },
+    {
+        "servicio_id": 80,
+        "norma_id": 25
+    },
+    {
+        "servicio_id": 81,
+        "norma_id": 21
+    },
+    {
+        "servicio_id": 85,
+        "norma_id": 10
+    },
+    {
+        "servicio_id": 85,
+        "norma_id": 19
+    },
+    {
+        "servicio_id": 90,
+        "norma_id": 6
+    },
+    {
+        "servicio_id": 90,
+        "norma_id": 15
+    },
+    {
+        "servicio_id": 91,
+        "norma_id": 3
+    },
+    {
+        "servicio_id": 91,
+        "norma_id": 5
+    },
+    {
+        "servicio_id": 91,
+        "norma_id": 8
+    },
+    {
+        "servicio_id": 92,
+        "norma_id": 4
+    },
+    {
+        "servicio_id": 92,
+        "norma_id": 5
+    },
+    {
+        "servicio_id": 92,
+        "norma_id": 8
+    },
+    {
+        "servicio_id": 94,
+        "norma_id": 14
+    },
+    {
+        "servicio_id": 96,
+        "norma_id": 11
+    },
+    {
+        "servicio_id": 96,
+        "norma_id": 18
+    },
+    {
+        "servicio_id": 97,
+        "norma_id": 10
+    },
+    {
+        "servicio_id": 97,
+        "norma_id": 19
+    },
+    {
+        "servicio_id": 98,
+        "norma_id": 11
+    },
+    {
+        "servicio_id": 98,
+        "norma_id": 18
+    },
+    {
+        "servicio_id": 99,
+        "norma_id": 11
+    },
+    {
+        "servicio_id": 99,
+        "norma_id": 18
+    },
+    {
+        "servicio_id": 100,
+        "norma_id": 11
+    },
+    {
+        "servicio_id": 100,
+        "norma_id": 18
+    },
+    {
+        "servicio_id": 100,
+        "norma_id": 26
+    },
+    {
+        "servicio_id": 101,
+        "norma_id": 10
+    },
+    {
+        "servicio_id": 101,
+        "norma_id": 19
+    }
+]

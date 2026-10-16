@@ -1,0 +1,226 @@
+[
+    {
+        "id": 1,
+        "nombre": "Aguascalientes",
+        "clave": "AGS",
+        "created_at": "2026-09-29 06:32:11",
+        "updated_at": "2026-09-29 06:32:11"
+    },
+    {
+        "id": 2,
+        "nombre": "Baja California",
+        "clave": "BC",
+        "created_at": "2026-09-29 06:32:11",
+        "updated_at": "2026-09-29 06:32:11"
+    },
+    {
+        "id": 3,
+        "nombre": "Baja California Sur",
+        "clave": "BCS",
+        "created_at": "2026-09-29 06:32:11",
+        "updated_at": "2026-09-29 06:32:11"
+    },
+    {
+        "id": 4,
+        "nombre": "Campeche",
+        "clave": "CAMP",
+        "created_at": "2026-09-29 06:32:11",
+        "updated_at": "2026-09-29 06:32:11"
+    },
+    {
+        "id": 5,
+        "nombre": "Chiapas",
+        "clave": "CHIS",
+        "created_at": "2026-09-29 06:32:11",
+        "updated_at": "2026-09-29 06:32:11"
+    },
+    {
+        "id": 6,
+        "nombre": "Chihuahua",
+        "clave": "CHIH",
+        "created_at": "2026-09-29 06:32:11",
+        "updated_at": "2026-09-29 06:32:11"
+    },
+    {
+        "id": 7,
+        "nombre": "Ciudad de México",
+        "clave": "CDMX",
+        "created_at": "2026-09-29 06:32:11",
+        "updated_at": "2026-09-29 06:32:11"
+    },
+    {
+        "id": 8,
+        "nombre": "Coahuila",
+        "clave": "COAH",
+        "created_at": "2026-09-29 06:32:11",
+        "updated_at": "2026-09-29 06:32:11"
+    },
+    {
+        "id": 9,
+        "nombre": "Colima",
+        "clave": "COL",
+        "created_at": "2026-09-29 06:32:11",
+        "updated_at": "2026-09-29 06:32:11"
+    },
+    {
+        "id": 10,
+        "nombre": "Durango",
+        "clave": "DGO",
+        "created_at": "2026-09-29 06:32:11",
+        "updated_at": "2026-09-29 06:32:11"
+    },
+    {
+        "id": 11,
+        "nombre": "Estado de México",
+        "clave": "MEX",
+        "created_at": "2026-09-29 06:32:11",
+        "updated_at": "2026-09-29 06:32:11"
+    },
+    {
+        "id": 12,
+        "nombre": "Guanajuato",
+        "clave": "GTO",
+        "created_at": "2026-09-29 06:32:11",
+        "updated_at": "2026-09-29 06:32:11"
+    },
+    {
+        "id": 13,
+        "nombre": "Guerrero",
+        "clave": "GRO",
+        "created_at": "2026-09-29 06:32:11",
+        "updated_at": "2026-09-29 06:32:11"
+    },
+    {
+        "id": 14,
+        "nombre": "Hidalgo",
+        "clave": "HGO",
+        "created_at": "2026-09-29 06:32:11",
+        "updated_at": "2026-09-29 06:32:11"
+    },
+    {
+        "id": 15,
+        "nombre": "Jalisco",
+        "clave": "JAL",
+        "created_at": "2026-09-29 06:32:11",
+        "updated_at": "2026-09-29 06:32:11"
+    },
+    {
+        "id": 16,
+        "nombre": "Michoacán",
+        "clave": "MICH",
+        "created_at": "2026-09-29 06:32:11",
+        "updated_at": "2026-09-29 06:32:11"
+    },
+    {
+        "id": 17,
+        "nombre": "Morelos",
+        "clave": "MOR",
+        "created_at": "2026-09-29 06:32:11",
+        "updated_at": "2026-09-29 06:32:11"
+    },
+    {
+        "id": 18,
+        "nombre": "Nayarit",
+        "clave": "NAY",
+        "created_at": "2026-09-29 06:32:11",
+        "updated_at": "2026-09-29 06:32:11"
+    },
+    {
+        "id": 19,
+        "nombre": "Nuevo León",
+        "clave": "NL",
+        "created_at": "2026-09-29 06:32:11",
+        "updated_at": "2026-09-29 06:32:11"
+    },
+    {
+        "id": 20,
+        "nombre": "Oaxaca",
+        "clave": "OAX",
+        "created_at": "2026-09-29 06:32:11",
+        "updated_at": "2026-09-29 06:32:11"
+    },
+    {
+        "id": 21,
+        "nombre": "Puebla",
+        "clave": "PUE",
+        "created_at": "2026-09-29 06:32:11",
+        "updated_at": "2026-09-29 06:32:11"
+    },
+    {
+        "id": 22,
+        "nombre": "Querétaro",
+        "clave": "QRO",
+        "created_at": "2026-09-29 06:32:11",
+        "updated_at": "2026-09-29 06:32:11"
+    },
+    {
+        "id": 23,
+        "nombre": "Quintana Roo",
+        "clave": "QROO",
+        "created_at": "2026-09-29 06:32:11",
+        "updated_at": "2026-09-29 06:32:11"
+    },
+    {
+        "id": 24,
+        "nombre": "San Luis Potosí",
+        "clave": "SLP",
+        "created_at": "2026-09-29 06:32:11",
+        "updated_at": "2026-09-29 06:32:11"
+    },
+    {
+        "id": 25,
+        "nombre": "Sinaloa",
+        "clave": "SIN",
+        "created_at": "2026-09-29 06:32:11",
+        "updated_at": "2026-09-29 06:32:11"
+    },
+    {
+        "id": 26,
+        "nombre": "Sonora",
+        "clave": "SON",
+        "created_at": "2026-09-29 06:32:11",
+        "updated_at": "2026-09-29 06:32:11"
+    },
+    {
+        "id": 27,
+        "nombre": "Tabasco",
+        "clave": "TAB",
+        "created_at": "2026-09-29 06:32:11",
+        "updated_at": "2026-09-29 06:32:11"
+    },
+    {
+        "id": 28,
+        "nombre": "Tamaulipas",
+        "clave": "TAMPS",
+        "created_at": "2026-09-29 06:32:11",
+        "updated_at": "2026-09-29 06:32:11"
+    },
+    {
+        "id": 29,
+        "nombre": "Tlaxcala",
+        "clave": "TLAX",
+        "created_at": "2026-09-29 06:32:11",
+        "updated_at": "2026-09-29 06:32:11"
+    },
+    {
+        "id": 30,
+        "nombre": "Veracruz",
+        "clave": "VER",
+        "created_at": "2026-09-29 06:32:11",
+        "updated_at": "2026-09-29 06:32:11"
+    },
+    {
+        "id": 31,
+        "nombre": "Yucatán",
+        "clave": "YUC",
+        "created_at": "2026-09-29 06:32:11",
+        "updated_at": "2026-09-29 06:32:11"
+    },
+    {
+        "id": 32,
+        "nombre": "Zacatecas",
+        "clave": "ZAC",
+        "created_at": "2026-09-29 06:32:11",
+        "updated_at": "2026-09-29 06:32:11"
+    }
+]

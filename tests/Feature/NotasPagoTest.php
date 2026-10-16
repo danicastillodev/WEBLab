@@ -22,6 +22,8 @@ class NotasPagoTest extends TestCase
 {
     use RefreshDatabase;
 
+    private int $rfcConsecutivo = 0;
+
     private function admin(): User
     {
         return User::factory()->create(['es_admin' => true]);
@@ -39,7 +41,8 @@ class NotasPagoTest extends TestCase
 
         return Cliente::create($datos + [
             'nombre' => 'Agropecuaria del Bajío SA de CV',
-            'rfc' => 'ABA010101AB'.random_int(1, 9),
+            // Consecutivo para no chocar con el índice único de clientes.rfc.
+            'rfc' => 'ABA010101'.str_pad((string) ++$this->rfcConsecutivo, 3, '0', STR_PAD_LEFT),
             'telefono' => '3312345678',
             'calle' => 'Av. Vallarta', 'numero_exterior' => '100', 'colonia' => 'Americana',
             'codigo_postal' => '44160', 'estado_id' => $estado->id, 'municipio_id' => $municipio->id,
@@ -152,7 +155,7 @@ class NotasPagoTest extends TestCase
                 'historia_clinica_ids' => [$historia->id],
             ]);
 
-        $response->assertRedirect(route('notas-pago.create'));
+        $response->assertRedirect(route('notas-pago.index'));
 
         $this->assertDatabaseHas('notas_pago', [
             'folio' => 100,

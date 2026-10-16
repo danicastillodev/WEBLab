@@ -1,0 +1,422 @@
+[
+    {
+        "id": 54,
+        "prueba_id": null,
+        "nombre": "ABSCESO",
+        "created_at": "2026-10-15 23:38:51",
+        "updated_at": "2026-10-15 23:38:51"
+    },
+    {
+        "id": 55,
+        "prueba_id": null,
+        "nombre": "ADHERENCIA",
+        "created_at": "2026-10-15 23:38:51",
+        "updated_at": "2026-10-15 23:38:51"
+    },
+    {
+        "id": 56,
+        "prueba_id": null,
+        "nombre": "AGUA",
+        "created_at": "2026-10-15 23:38:51",
+        "updated_at": "2026-10-15 23:38:51"
+    },
+    {
+        "id": 57,
+        "prueba_id": null,
+        "nombre": "ALIMENTO",
+        "created_at": "2026-10-15 23:38:51",
+        "updated_at": "2026-10-15 23:38:51"
+    },
+    {
+        "id": 61,
+        "prueba_id": null,
+        "nombre": "HECES",
+        "created_at": "2026-10-16 00:18:32",
+        "updated_at": "2026-10-16 00:18:32"
+    },
+    {
+        "id": 62,
+        "prueba_id": null,
+        "nombre": "SUERO SANGUINEO",
+        "created_at": "2026-10-16 00:18:32",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 64,
+        "prueba_id": null,
+        "nombre": "ENCEFALO",
+        "created_at": "2026-10-16 00:18:32",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 68,
+        "prueba_id": null,
+        "nombre": "ORINA",
+        "created_at": "2026-10-16 00:18:33",
+        "updated_at": "2026-10-16 00:18:33"
+    },
+    {
+        "id": 69,
+        "prueba_id": null,
+        "nombre": "TONSILA",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 70,
+        "prueba_id": null,
+        "nombre": "ESPECIMEN VIVO",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 71,
+        "prueba_id": null,
+        "nombre": "ESPECIMEN MUERTO",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 72,
+        "prueba_id": null,
+        "nombre": "RASPADO DE PIEL",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 73,
+        "prueba_id": null,
+        "nombre": "PELO",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 74,
+        "prueba_id": null,
+        "nombre": "ORGANO(S)",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 75,
+        "prueba_id": null,
+        "nombre": "LINFONODULO",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 76,
+        "prueba_id": null,
+        "nombre": "ILEON",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 77,
+        "prueba_id": null,
+        "nombre": "AVE(S)",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 78,
+        "prueba_id": null,
+        "nombre": "HIGADO",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 79,
+        "prueba_id": null,
+        "nombre": "BAZO",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 80,
+        "prueba_id": null,
+        "nombre": "PULMON",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 81,
+        "prueba_id": null,
+        "nombre": "VESICULA BILIAR",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 82,
+        "prueba_id": null,
+        "nombre": "FLUIDO",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 83,
+        "prueba_id": null,
+        "nombre": "BILIS",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 84,
+        "prueba_id": null,
+        "nombre": "PANCREAS",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 85,
+        "prueba_id": null,
+        "nombre": "OVARIO",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 86,
+        "prueba_id": null,
+        "nombre": "TESTICULO",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 87,
+        "prueba_id": null,
+        "nombre": "SACO VITELINO",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 88,
+        "prueba_id": null,
+        "nombre": "MEDULA OSEA",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 89,
+        "prueba_id": null,
+        "nombre": "HISOPO(S)",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 90,
+        "prueba_id": null,
+        "nombre": "SANGRE",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 91,
+        "prueba_id": null,
+        "nombre": "SEMEN",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 92,
+        "prueba_id": null,
+        "nombre": "LECHE",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 93,
+        "prueba_id": null,
+        "nombre": "FETO",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 94,
+        "prueba_id": null,
+        "nombre": "HUEVO",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 95,
+        "prueba_id": null,
+        "nombre": "MEDIO DE CULTIVO",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 96,
+        "prueba_id": null,
+        "nombre": "LAVADO PREPUCIAL",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 97,
+        "prueba_id": null,
+        "nombre": "CONTENIDO",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 98,
+        "prueba_id": null,
+        "nombre": "TRAQUEA",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 99,
+        "prueba_id": null,
+        "nombre": "UTERO",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 100,
+        "prueba_id": null,
+        "nombre": "RIÑON",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 101,
+        "prueba_id": null,
+        "nombre": "ESTOMAGO",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 102,
+        "prueba_id": null,
+        "nombre": "OJO",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 103,
+        "prueba_id": null,
+        "nombre": "OREJA",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 104,
+        "prueba_id": null,
+        "nombre": "MUSCULO",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 105,
+        "prueba_id": null,
+        "nombre": "CEREBRO",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 106,
+        "prueba_id": null,
+        "nombre": "CABEZA",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 107,
+        "prueba_id": null,
+        "nombre": "DUODENO",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 108,
+        "prueba_id": null,
+        "nombre": "YEYUNO",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 109,
+        "prueba_id": null,
+        "nombre": "CEPA AISLADA",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 110,
+        "prueba_id": null,
+        "nombre": "RETINA",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 111,
+        "prueba_id": null,
+        "nombre": "TEJIDO PARAFINADO",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 112,
+        "prueba_id": null,
+        "nombre": "CAMA",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 113,
+        "prueba_id": null,
+        "nombre": "OTRO",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 114,
+        "prueba_id": null,
+        "nombre": "HISOPO(S) DE ARRASTRE",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 115,
+        "prueba_id": null,
+        "nombre": "LAMINILLAS",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 116,
+        "prueba_id": null,
+        "nombre": "MUSCULO CONGELADO",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 117,
+        "prueba_id": null,
+        "nombre": "BIOLOGICO",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 118,
+        "prueba_id": null,
+        "nombre": "MACERADO",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 119,
+        "prueba_id": null,
+        "nombre": "RPBI",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    },
+    {
+        "id": 120,
+        "prueba_id": null,
+        "nombre": "N\/A",
+        "created_at": "2026-10-16 08:36:19",
+        "updated_at": "2026-10-16 08:36:19"
+    }
+]

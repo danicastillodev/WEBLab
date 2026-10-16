@@ -1,0 +1,28 @@
+{
+    "firma": "e60261fd7613e4f93d14fccb53129fb919ab9eb84a24df1acd2d2fd0d57cb350",
+    "tablas": {
+        "estados": 32,
+        "municipios": 2478,
+        "datos_generales": 1,
+        "parametros_operacion": 0,
+        "areas": 9,
+        "analistas": 14,
+        "categorias": 1,
+        "metodos": 33,
+        "normas": 30,
+        "productos": 78,
+        "pruebas": 44,
+        "especies": 39,
+        "razas": 1203,
+        "funcion_zootecnicas": 32,
+        "preguntas": 5,
+        "tipo_muestras": 60,
+        "servicios": 100,
+        "norma_servicio": 63,
+        "servicio_tipo_muestra": 207,
+        "propietarios": 501,
+        "direcciones": 507,
+        "explotaciones": 1504,
+        "clientes": 100
+    }
+}

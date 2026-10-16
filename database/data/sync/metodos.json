@@ -1,0 +1,200 @@
+[
+    {
+        "id": 1,
+        "nombre": "NUMERO MAS PROBABLE",
+        "created_at": "2026-10-01 21:47:13",
+        "updated_at": "2026-10-01 21:47:13"
+    },
+    {
+        "id": 2,
+        "nombre": "KIRBY BAUER",
+        "created_at": "2026-10-01 21:47:13",
+        "updated_at": "2026-10-01 21:47:13"
+    },
+    {
+        "id": 3,
+        "nombre": "BACTERIOLOGICO",
+        "created_at": "2026-10-01 21:47:13",
+        "updated_at": "2026-10-01 21:47:13"
+    },
+    {
+        "id": 4,
+        "nombre": "MICROSCOPIA DIRECTA",
+        "created_at": "2026-10-01 21:47:13",
+        "updated_at": "2026-10-01 21:47:13"
+    },
+    {
+        "id": 5,
+        "nombre": "CENTRIFUGADO",
+        "created_at": "2026-10-01 21:47:13",
+        "updated_at": "2026-10-01 21:47:13"
+    },
+    {
+        "id": 6,
+        "nombre": "FLOTACION\/SEDIMENTACION",
+        "created_at": "2026-10-01 21:47:13",
+        "updated_at": "2026-10-01 21:47:13"
+    },
+    {
+        "id": 7,
+        "nombre": "TINCION DE WRIGHT",
+        "created_at": "2026-10-01 21:47:13",
+        "updated_at": "2026-10-01 21:47:13"
+    },
+    {
+        "id": 8,
+        "nombre": "NECROPSIA",
+        "created_at": "2026-10-01 21:47:13",
+        "updated_at": "2026-10-01 21:47:13"
+    },
+    {
+        "id": 9,
+        "nombre": "N\/A",
+        "created_at": "2026-10-01 21:47:13",
+        "updated_at": "2026-10-01 21:47:13"
+    },
+    {
+        "id": 10,
+        "nombre": "INSPECCION VISUAL",
+        "created_at": "2026-10-01 21:47:13",
+        "updated_at": "2026-10-01 21:47:13"
+    },
+    {
+        "id": 11,
+        "nombre": "PCR",
+        "created_at": "2026-10-01 21:47:13",
+        "updated_at": "2026-10-01 21:47:13"
+    },
+    {
+        "id": 12,
+        "nombre": "HIDROLISIS ALCALINA",
+        "created_at": "2026-10-01 21:47:13",
+        "updated_at": "2026-10-01 21:47:13"
+    },
+    {
+        "id": 13,
+        "nombre": "RECOLECCION",
+        "created_at": "2026-10-01 21:47:13",
+        "updated_at": "2026-10-01 21:47:13"
+    },
+    {
+        "id": 14,
+        "nombre": "TINCION H\/E",
+        "created_at": "2026-10-01 21:47:13",
+        "updated_at": "2026-10-01 21:47:13"
+    },
+    {
+        "id": 15,
+        "nombre": "INMUNOFLUORESCENCIA",
+        "created_at": "2026-10-01 21:47:13",
+        "updated_at": "2026-10-01 21:47:13"
+    },
+    {
+        "id": 16,
+        "nombre": "TINCION ESPECIAL",
+        "created_at": "2026-10-01 21:47:13",
+        "updated_at": "2026-10-01 21:47:13"
+    },
+    {
+        "id": 17,
+        "nombre": "NECROPSIA-HISTOPATOLOGIA",
+        "created_at": "2026-10-01 21:47:13",
+        "updated_at": "2026-10-01 21:47:13"
+    },
+    {
+        "id": 18,
+        "nombre": "TINCIONES H\/E Y Z\/N",
+        "created_at": "2026-10-01 21:47:13",
+        "updated_at": "2026-10-01 21:47:13"
+    },
+    {
+        "id": 19,
+        "nombre": "ELISA",
+        "created_at": "2026-10-01 21:47:13",
+        "updated_at": "2026-10-01 21:47:13"
+    },
+    {
+        "id": 20,
+        "nombre": "FIJACION DE COMPLEMENTO",
+        "created_at": "2026-10-01 21:47:13",
+        "updated_at": "2026-10-01 21:47:13"
+    },
+    {
+        "id": 21,
+        "nombre": "AGLUTINACION ROSA DE BENGALA",
+        "created_at": "2026-10-01 21:47:13",
+        "updated_at": "2026-10-01 21:47:13"
+    },
+    {
+        "id": 22,
+        "nombre": "PRECIPITACION POR RIVANOL",
+        "created_at": "2026-10-01 21:47:13",
+        "updated_at": "2026-10-01 21:47:13"
+    },
+    {
+        "id": 23,
+        "nombre": "INMUNODIFUSION DOBLE",
+        "created_at": "2026-10-01 21:47:13",
+        "updated_at": "2026-10-01 21:47:13"
+    },
+    {
+        "id": 24,
+        "nombre": "INMUNODIFUSION RADIAL",
+        "created_at": "2026-10-01 21:47:13",
+        "updated_at": "2026-10-01 21:47:13"
+    },
+    {
+        "id": 25,
+        "nombre": "INHIBICION DE LA HEMOAGLUTINACION",
+        "created_at": "2026-10-01 21:47:13",
+        "updated_at": "2026-10-01 21:47:13"
+    },
+    {
+        "id": 26,
+        "nombre": "MICROAGLUTINACION",
+        "created_at": "2026-10-01 21:47:13",
+        "updated_at": "2026-10-01 21:47:13"
+    },
+    {
+        "id": 27,
+        "nombre": "INMUNOPEROXIDASA",
+        "created_at": "2026-10-01 21:47:13",
+        "updated_at": "2026-10-01 21:47:13"
+    },
+    {
+        "id": 28,
+        "nombre": "BIOQUIMICO",
+        "created_at": "2026-10-01 21:47:13",
+        "updated_at": "2026-10-01 21:47:13"
+    },
+    {
+        "id": 29,
+        "nombre": "AISLAMIENTO EN EMBRION DE POLLO",
+        "created_at": "2026-10-16 08:30:41",
+        "updated_at": "2026-10-16 08:30:41"
+    },
+    {
+        "id": 30,
+        "nombre": "MAC MASTER",
+        "created_at": "2026-10-16 08:30:41",
+        "updated_at": "2026-10-16 08:30:41"
+    },
+    {
+        "id": 31,
+        "nombre": "OBSERV. DIRECTA",
+        "created_at": "2026-10-16 08:30:41",
+        "updated_at": "2026-10-16 08:30:41"
+    },
+    {
+        "id": 32,
+        "nombre": "AGLUTINACION",
+        "created_at": "2026-10-16 08:30:41",
+        "updated_at": "2026-10-16 08:30:41"
+    },
+    {
+        "id": 33,
+        "nombre": "METODO CLASICO",
+        "created_at": "2026-10-16 08:30:41",
+        "updated_at": "2026-10-16 08:30:41"
+    }
+]

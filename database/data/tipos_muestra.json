@@ -1,0 +1,437 @@
+{
+    "tipos": [
+        "SUERO SANGUINEO",
+        "TONSILA",
+        "ESPECIMEN VIVO",
+        "ESPECIMEN MUERTO",
+        "RASPADO DE PIEL",
+        "PELO",
+        "ORGANO(S)",
+        "LINFONODULO",
+        "ILEON",
+        "AVE(S)",
+        "HIGADO",
+        "BAZO",
+        "PULMON",
+        "ENCEFALO",
+        "VESICULA BILIAR",
+        "FLUIDO",
+        "BILIS",
+        "PANCREAS",
+        "OVARIO",
+        "TESTICULO",
+        "SACO VITELINO",
+        "MEDULA OSEA",
+        "HISOPO(S)",
+        "AGUA",
+        "SANGRE",
+        "ORINA",
+        "SEMEN",
+        "LECHE",
+        "FETO",
+        "HUEVO",
+        "ADHERENCIA",
+        "ALIMENTO",
+        "ABSCESO",
+        "MEDIO DE CULTIVO",
+        "LAVADO PREPUCIAL",
+        "CONTENIDO",
+        "HECES",
+        "TRAQUEA",
+        "UTERO",
+        "RIÑON",
+        "ESTOMAGO",
+        "OJO",
+        "OREJA",
+        "MUSCULO",
+        "CEREBRO",
+        "CABEZA",
+        "DUODENO",
+        "YEYUNO",
+        "CEPA AISLADA",
+        "RETINA",
+        "TEJIDO PARAFINADO",
+        "CAMA",
+        "OTRO",
+        "HISOPO(S) DE ARRASTRE",
+        "LAMINILLAS",
+        "MUSCULO CONGELADO",
+        "BIOLOGICO",
+        "MACERADO",
+        "RPBI",
+        "N/A"
+    ],
+    "servicios": {
+        "SEE01": [
+            "SUERO SANGUINEO",
+            "AGUA"
+        ],
+        "SEE02": [
+            "SUERO SANGUINEO"
+        ],
+        "SEE03": [
+            "SUERO SANGUINEO"
+        ],
+        "SEE04": [
+            "SUERO SANGUINEO"
+        ],
+        "SEE08": [
+            "SUERO SANGUINEO"
+        ],
+        "SEM06": [
+            "SUERO SANGUINEO"
+        ],
+        "SEE07": [
+            "SUERO SANGUINEO",
+            "AGUA"
+        ],
+        "SEA09": [
+            "SUERO SANGUINEO"
+        ],
+        "SEE50": [
+            "SUERO SANGUINEO"
+        ],
+        "SEE51": [
+            "SUERO SANGUINEO"
+        ],
+        "SEE52": [
+            "SUERO SANGUINEO"
+        ],
+        "SEE53": [
+            "SUERO SANGUINEO"
+        ],
+        "SEE54": [
+            "SUERO SANGUINEO"
+        ],
+        "SEE11": [
+            "SUERO SANGUINEO"
+        ],
+        "PTN28": [
+            "ESPECIMEN MUERTO",
+            "ESPECIMEN VIVO"
+        ],
+        "PAO33": [
+            "RASPADO DE PIEL",
+            "PELO",
+            "MUSCULO"
+        ],
+        "PTH29": [
+            "ORGANO(S)"
+        ],
+        "PTT31": [
+            "ORGANO(S)",
+            "LINFONODULO",
+            "LAMINILLAS",
+            "TEJIDO PARAFINADO"
+        ],
+        "SEE10": [
+            "SUERO SANGUINEO",
+            "OREJA"
+        ],
+        "PTI30": [
+            "TONSILA",
+            "ORGANO(S)",
+            "ILEON",
+            "LINFONODULO"
+        ],
+        "BTG23": [
+            "ORGANO(S)",
+            "RASPADO DE PIEL",
+            "ABSCESO",
+            "ADHERENCIA",
+            "AGUA",
+            "ALIMENTO",
+            "BAZO",
+            "BILIS",
+            "CABEZA",
+            "CEREBRO",
+            "CONTENIDO",
+            "DUODENO",
+            "ESTOMAGO",
+            "FETO",
+            "FLUIDO",
+            "HECES",
+            "HIGADO",
+            "HISOPO(S)",
+            "HUEVO",
+            "ILEON",
+            "LAVADO PREPUCIAL",
+            "LECHE",
+            "LINFONODULO",
+            "MEDIO DE CULTIVO",
+            "MEDULA OSEA",
+            "MUSCULO",
+            "OJO",
+            "OREJA",
+            "ORINA",
+            "OVARIO",
+            "PANCREAS",
+            "PELO",
+            "PULMON",
+            "RIÑON",
+            "SACO VITELINO",
+            "SANGRE",
+            "SEMEN",
+            "SUERO SANGUINEO",
+            "TESTICULO",
+            "TONSILA",
+            "TRAQUEA",
+            "UTERO",
+            "YEYUNO",
+            "ESPECIMEN MUERTO",
+            "ESPECIMEN VIVO",
+            "MUSCULO CONGELADO",
+            "BIOLOGICO"
+        ],
+        "BTA24": [
+            "AGUA"
+        ],
+        "SEB58": [
+            "SUERO SANGUINEO",
+            "HISOPO(S)",
+            "AGUA"
+        ],
+        "VRN26": [
+            "ORGANO(S)",
+            "HISOPO(S)"
+        ],
+        "VRI27": [
+            "HISOPO(S)",
+            "HISOPO(S) DE ARRASTRE"
+        ],
+        "TBA21": [
+            "ORGANO(S)",
+            "LINFONODULO",
+            "CEPA AISLADA",
+            "MACERADO"
+        ],
+        "SEE05": [
+            "SUERO SANGUINEO"
+        ],
+        "SEB12": [
+            "SUERO SANGUINEO"
+        ],
+        "SEB13": [
+            "SUERO SANGUINEO"
+        ],
+        "SEI14": [
+            "SUERO SANGUINEO"
+        ],
+        "SEE15": [
+            "SUERO SANGUINEO"
+        ],
+        "SEE16": [
+            "SUERO SANGUINEO"
+        ],
+        "CLH19": [
+            "SANGRE"
+        ],
+        "CLH2O": [
+            "SANGRE"
+        ],
+        "TXC32": [
+            "RETINA",
+            "HIGADO",
+            "SUERO SANGUINEO",
+            "ORINA",
+            "MUSCULO",
+            "SANGRE",
+            "OTRO"
+        ],
+        "SEE18": [
+            "SUERO SANGUINEO"
+        ],
+        "SEE19": [
+            "SUERO SANGUINEO"
+        ],
+        "SEE20": [
+            "SUERO SANGUINEO"
+        ],
+        "SEE21": [
+            "SUERO SANGUINEO"
+        ],
+        "PTN42": [
+            "ESPECIMEN VIVO",
+            "ESPECIMEN MUERTO"
+        ],
+        "PTN43": [
+            "ESPECIMEN MUERTO",
+            "ESPECIMEN VIVO"
+        ],
+        "PTN44": [
+            "ESPECIMEN MUERTO",
+            "ESPECIMEN VIVO"
+        ],
+        "PTE46": [
+            "ESPECIMEN MUERTO",
+            "BIOLOGICO",
+            "ALIMENTO"
+        ],
+        "PTE47": [
+            "ESPECIMEN MUERTO",
+            "ALIMENTO",
+            "BIOLOGICO",
+            "CAMA"
+        ],
+        "PTE48": [
+            "ESPECIMEN MUERTO",
+            "ALIMENTO",
+            "BIOLOGICO",
+            "CAMA"
+        ],
+        "PTL49": [
+            "ORGANO(S)"
+        ],
+        "PTH45": [
+            "ORGANO(S)"
+        ],
+        "PTL55": [
+            "ORGANO(S)"
+        ],
+        "PTR56": [
+            "CABEZA",
+            "ESPECIMEN MUERTO",
+            "CEREBRO",
+            "ENCEFALO",
+            "ESPECIMEN VIVO"
+        ],
+        "TBT57": [
+            "CEPA AISLADA"
+        ],
+        "SEB59": [
+            "SUERO SANGUINEO"
+        ],
+        "PCR60": [
+            "CEPA AISLADA",
+            "TEJIDO PARAFINADO"
+        ],
+        "SEE61": [
+            "SUERO SANGUINEO"
+        ],
+        "BTS22": [
+            "ESPECIMEN VIVO",
+            "AVE(S)"
+        ],
+        "BTS23": [
+            "HISOPO(S)"
+        ],
+        "TXC62": [
+            "HIGADO",
+            "MUSCULO",
+            "OJO",
+            "ORINA",
+            "PELO",
+            "ALIMENTO",
+            "RETINA",
+            "SANGRE",
+            "SUERO SANGUINEO",
+            "OTRO"
+        ],
+        "CLC63": [
+            "HECES",
+            "CAMA"
+        ],
+        "VRN67": [
+            "ORGANO(S)"
+        ],
+        "VRN65": [
+            "ESPECIMEN VIVO"
+        ],
+        "BTS68": [
+            "ORGANO(S)"
+        ],
+        "VRN": [
+            "AVE(S)",
+            "HISOPO(S)",
+            "ORGANO(S)"
+        ],
+        "BTS": [
+            "AVE(S)",
+            "CEPA AISLADA",
+            "HISOPO(S)",
+            "ORGANO(S)"
+        ],
+        "SEB": [
+            "SUERO SANGUINEO"
+        ],
+        "BTA25": [
+            "OTRO",
+            "CEPA AISLADA"
+        ],
+        "VRI": [
+            "HISOPO(S)",
+            "ORGANO(S)",
+            "AVE(S)",
+            "HISOPO(S) DE ARRASTRE"
+        ],
+        "CENT": [
+            "SANGRE",
+            "SUERO SANGUINEO"
+        ],
+        "SEE55": [
+            "SUERO SANGUINEO"
+        ],
+        "PTE49": [
+            "ESPECIMEN MUERTO",
+            "ALIMENTO",
+            "BIOLOGICO",
+            "CAMA"
+        ],
+        "SEE56": [
+            "SUERO SANGUINEO"
+        ],
+        "SEE57": [
+            "SUERO SANGUINEO"
+        ],
+        "SEE58": [
+            "SUERO SANGUINEO"
+        ],
+        "SEE59": [
+            "SUERO SANGUINEO"
+        ],
+        "PTH50": [
+            "ORGANO(S)"
+        ],
+        "PTH51": [
+            "ORGANO(S)"
+        ],
+        "PTC52": [
+            "ABSCESO",
+            "HISOPO(S)",
+            "LAMINILLAS",
+            "LAVADO PREPUCIAL",
+            "LINFONODULO",
+            "MEDULA OSEA",
+            "RASPADO DE PIEL",
+            "OTRO"
+        ],
+        "SEE60": [
+            "SUERO SANGUINEO"
+        ],
+        "SEE63": [
+            "SUERO SANGUINEO"
+        ],
+        "SEE64": [
+            "SUERO SANGUINEO"
+        ],
+        "BTM69": [
+            "ALIMENTO",
+            "CAMA",
+            "PELO",
+            "RASPADO DE PIEL"
+        ],
+        "PTE70": [
+            "RPBI"
+        ],
+        "PTE71": [
+            "N/A"
+        ],
+        "MTM01": [
+            "N/A"
+        ],
+        "EEE": [
+            "ESPECIMEN MUERTO",
+            "ESPECIMEN VIVO"
+        ]
+    }
+}

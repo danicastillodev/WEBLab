@@ -1,0 +1,236 @@
+[
+    {
+        "id": 8,
+        "nombre": "Bovinos",
+        "created_at": "2026-09-29 19:56:20",
+        "updated_at": "2026-09-29 19:56:20"
+    },
+    {
+        "id": 9,
+        "nombre": "Caprinos",
+        "created_at": "2026-09-29 19:56:20",
+        "updated_at": "2026-09-29 19:56:20"
+    },
+    {
+        "id": 10,
+        "nombre": "Ovinos",
+        "created_at": "2026-09-29 19:56:20",
+        "updated_at": "2026-09-29 19:56:20"
+    },
+    {
+        "id": 11,
+        "nombre": "Equinos",
+        "created_at": "2026-09-29 19:56:20",
+        "updated_at": "2026-09-29 19:56:20"
+    },
+    {
+        "id": 12,
+        "nombre": "Porcinos",
+        "created_at": "2026-09-29 19:56:20",
+        "updated_at": "2026-09-29 19:56:20"
+    },
+    {
+        "id": 13,
+        "nombre": "Aves",
+        "created_at": "2026-09-29 19:56:20",
+        "updated_at": "2026-09-29 19:56:20"
+    },
+    {
+        "id": 14,
+        "nombre": "Leche",
+        "created_at": "2026-10-16 08:15:05",
+        "updated_at": "2026-10-16 08:15:05"
+    },
+    {
+        "id": 15,
+        "nombre": "Agua",
+        "created_at": "2026-10-16 08:15:05",
+        "updated_at": "2026-10-16 08:15:05"
+    },
+    {
+        "id": 16,
+        "nombre": "Felino",
+        "created_at": "2026-10-16 08:15:05",
+        "updated_at": "2026-10-16 08:15:05"
+    },
+    {
+        "id": 17,
+        "nombre": "Alimento",
+        "created_at": "2026-10-16 08:15:05",
+        "updated_at": "2026-10-16 08:15:05"
+    },
+    {
+        "id": 18,
+        "nombre": "Ciervo",
+        "created_at": "2026-10-16 08:15:05",
+        "updated_at": "2026-10-16 08:15:05"
+    },
+    {
+        "id": 19,
+        "nombre": "Roedor",
+        "created_at": "2026-10-16 08:15:05",
+        "updated_at": "2026-10-16 08:15:05"
+    },
+    {
+        "id": 20,
+        "nombre": "N\/A",
+        "created_at": "2026-10-16 08:15:05",
+        "updated_at": "2026-10-16 08:15:05"
+    },
+    {
+        "id": 21,
+        "nombre": "Canino",
+        "created_at": "2026-10-16 08:15:05",
+        "updated_at": "2026-10-16 08:15:05"
+    },
+    {
+        "id": 22,
+        "nombre": "Antílope",
+        "created_at": "2026-10-16 08:15:05",
+        "updated_at": "2026-10-16 08:15:05"
+    },
+    {
+        "id": 23,
+        "nombre": "Exótico",
+        "created_at": "2026-10-16 08:15:05",
+        "updated_at": "2026-10-16 08:15:05"
+    },
+    {
+        "id": 24,
+        "nombre": "Nutria",
+        "created_at": "2026-10-16 08:15:05",
+        "updated_at": "2026-10-16 08:15:05"
+    },
+    {
+        "id": 25,
+        "nombre": "Hurón",
+        "created_at": "2026-10-16 08:15:05",
+        "updated_at": "2026-10-16 08:15:05"
+    },
+    {
+        "id": 26,
+        "nombre": "Tlacuache",
+        "created_at": "2026-10-16 08:15:05",
+        "updated_at": "2026-10-16 08:15:05"
+    },
+    {
+        "id": 27,
+        "nombre": "Oryx cimitarra",
+        "created_at": "2026-10-16 08:15:05",
+        "updated_at": "2026-10-16 08:15:05"
+    },
+    {
+        "id": 28,
+        "nombre": "Reptil",
+        "created_at": "2026-10-16 08:15:05",
+        "updated_at": "2026-10-16 08:15:05"
+    },
+    {
+        "id": 29,
+        "nombre": "Primate",
+        "created_at": "2026-10-16 08:15:05",
+        "updated_at": "2026-10-16 08:15:05"
+    },
+    {
+        "id": 30,
+        "nombre": "Zorro",
+        "created_at": "2026-10-16 08:15:05",
+        "updated_at": "2026-10-16 08:15:05"
+    },
+    {
+        "id": 31,
+        "nombre": "Pez",
+        "created_at": "2026-10-16 08:15:05",
+        "updated_at": "2026-10-16 08:15:05"
+    },
+    {
+        "id": 32,
+        "nombre": "Hiénido",
+        "created_at": "2026-10-16 08:15:05",
+        "updated_at": "2026-10-16 08:15:05"
+    },
+    {
+        "id": 33,
+        "nombre": "Faisán",
+        "created_at": "2026-10-16 08:15:05",
+        "updated_at": "2026-10-16 08:15:05"
+    },
+    {
+        "id": 34,
+        "nombre": "Venado",
+        "created_at": "2026-10-16 08:15:05",
+        "updated_at": "2026-10-16 08:15:05"
+    },
+    {
+        "id": 35,
+        "nombre": "Cisne",
+        "created_at": "2026-10-16 08:15:05",
+        "updated_at": "2026-10-16 08:15:05"
+    },
+    {
+        "id": 36,
+        "nombre": "Canguro",
+        "created_at": "2026-10-16 08:15:05",
+        "updated_at": "2026-10-16 08:15:05"
+    },
+    {
+        "id": 37,
+        "nombre": "Quiróptero",
+        "created_at": "2026-10-16 08:15:05",
+        "updated_at": "2026-10-16 08:15:05"
+    },
+    {
+        "id": 38,
+        "nombre": "Otro",
+        "created_at": "2026-10-16 08:15:05",
+        "updated_at": "2026-10-16 08:15:05"
+    },
+    {
+        "id": 39,
+        "nombre": "Búfalo",
+        "created_at": "2026-10-16 08:15:05",
+        "updated_at": "2026-10-16 08:15:05"
+    },
+    {
+        "id": 40,
+        "nombre": "Asno",
+        "created_at": "2026-10-16 08:15:05",
+        "updated_at": "2026-10-16 08:15:05"
+    },
+    {
+        "id": 41,
+        "nombre": "Conejo",
+        "created_at": "2026-10-16 08:15:05",
+        "updated_at": "2026-10-16 08:15:05"
+    },
+    {
+        "id": 42,
+        "nombre": "Burro",
+        "created_at": "2026-10-16 08:15:05",
+        "updated_at": "2026-10-16 08:15:05"
+    },
+    {
+        "id": 43,
+        "nombre": "Rana",
+        "created_at": "2026-10-16 08:15:05",
+        "updated_at": "2026-10-16 08:15:05"
+    },
+    {
+        "id": 44,
+        "nombre": "Cobayo",
+        "created_at": "2026-10-16 08:15:05",
+        "updated_at": "2026-10-16 08:15:05"
+    },
+    {
+        "id": 45,
+        "nombre": "Ovinos y caprinos",
+        "created_at": "2026-10-16 08:15:05",
+        "updated_at": "2026-10-16 08:15:05"
+    },
+    {
+        "id": 46,
+        "nombre": "Humano",
+        "created_at": "2026-10-16 08:15:05",
+        "updated_at": "2026-10-16 08:15:05"
+    }
+]

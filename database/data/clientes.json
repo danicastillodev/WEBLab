@@ -1,0 +1,1405 @@
+[
+    {
+        "ids_anteriores": [
+            5
+        ],
+        "nombre": "COMITE ESTATAL PARA EL FOM. Y PROTECCION PECUARIA DEL EDO DE JAL S.C",
+        "rfc": "CEF900510L46",
+        "telefono": "36953820",
+        "calle": "AV.SOLIDARIDAD IBEROAMERICANA",
+        "numero_exterior": "7069",
+        "colonia": "LAS PINTAS",
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "El Salto"
+    },
+    {
+        "ids_anteriores": [
+            6
+        ],
+        "nombre": "BOEHRINGER INGELHEIM VETMEDICA SA DE CV",
+        "rfc": "BIV971223UC4",
+        "telefono": "36688000",
+        "calle": "CALLE 30",
+        "numero_exterior": "2614",
+        "colonia": "ZONA INDUSTRIAL",
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Guadalajara"
+    },
+    {
+        "ids_anteriores": [
+            17
+        ],
+        "nombre": "JOSE ENCARNACION GARCIA ALCARAZ",
+        "rfc": null,
+        "telefono": "3313861342",
+        "calle": "HERRERA Y CAIRO",
+        "numero_exterior": "79",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Zapotlanejo"
+    },
+    {
+        "ids_anteriores": [
+            68
+        ],
+        "nombre": "JOSE MARIA CHAVEZ DEL TORO",
+        "rfc": "CATM621029ST4",
+        "telefono": "3714182106",
+        "calle": "JOSE MARIA CHAVEZ",
+        "numero_exterior": "6",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Tecalitlán"
+    },
+    {
+        "ids_anteriores": [
+            90
+        ],
+        "nombre": "BIO-ZOO S.A DE C.V",
+        "rfc": "BZO830622U56",
+        "telefono": "32831200",
+        "calle": "CARRETERA A SANTA ANA TEPETITLAN 2200",
+        "numero_exterior": "S/N",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Zapopan"
+    },
+    {
+        "ids_anteriores": [
+            100
+        ],
+        "nombre": "JOSE CRUZ GOMEZ COVARRUBIAS",
+        "rfc": null,
+        "telefono": "3334882719",
+        "calle": "ALVARO OBREGON",
+        "numero_exterior": "60",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Tuxcueca"
+    },
+    {
+        "ids_anteriores": [
+            133
+        ],
+        "nombre": "SERGIO RAFAEL LOPEZ PAINO",
+        "rfc": "LOP3560829DC9",
+        "telefono": "3331771140",
+        "calle": "HECTOR BERLIOS",
+        "numero_exterior": "5671",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Mascota"
+    },
+    {
+        "ids_anteriores": [
+            205
+        ],
+        "nombre": "JOSE DE JESUS GONZALEZ CAMACHO",
+        "rfc": "GOCJ7704028B7",
+        "telefono": "1373734736",
+        "calle": "ABAZOLO",
+        "numero_exterior": "258",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Ixtlahuacán del Río"
+    },
+    {
+        "ids_anteriores": [
+            222
+        ],
+        "nombre": "OMAR INDALECIO GARCIA SALAZAR",
+        "rfc": "GASO7211194Q4",
+        "telefono": "1316371147",
+        "calle": "TOLUCA",
+        "numero_exterior": "25",
+        "colonia": "NORTE",
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Unión de Tula"
+    },
+    {
+        "ids_anteriores": [
+            233
+        ],
+        "nombre": "ROMAN ALFARO CARRION",
+        "rfc": null,
+        "telefono": "4138934",
+        "calle": "RUBEN FUENTES",
+        "numero_exterior": "9",
+        "colonia": "JARDINES DE ZAPOTLAN",
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Zapotlán el Grande"
+    },
+    {
+        "ids_anteriores": [
+            254
+        ],
+        "nombre": "ANTONIO HERNANDEZ",
+        "rfc": null,
+        "telefono": "36597995",
+        "calle": "ENRIQUE A. DEL CASTILLO",
+        "numero_exterior": "405",
+        "colonia": "LOMAS DEL TAPATIO",
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "San Pedro Tlaquepaque"
+    },
+    {
+        "ids_anteriores": [
+            314
+        ],
+        "nombre": "HESIQUIO RENTERIA ZUÑIGA",
+        "rfc": "REZH7101093S9",
+        "telefono": "3867540402",
+        "calle": "20 DE NOVIEMBRE",
+        "numero_exterior": "12",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "San Juanito de Escobedo"
+    },
+    {
+        "ids_anteriores": [
+            331
+        ],
+        "nombre": "ERNESTO BECERRA SANCHEZ",
+        "rfc": "BESE791207SI3",
+        "telefono": null,
+        "calle": "CANAL DE RIEGO",
+        "numero_exterior": "151",
+        "colonia": null,
+        "codigo_postal": "45495",
+        "estado": "JAL",
+        "municipio": "Cuquío"
+    },
+    {
+        "ids_anteriores": [
+            474
+        ],
+        "nombre": "ROBERTO CARLOS MEDRANO BARAJAS",
+        "rfc": "MEBR801115JP4",
+        "telefono": "3338147973",
+        "calle": "PRIVADA EMILIANO ZAPATA",
+        "numero_exterior": "S/N",
+        "colonia": "CENTRO",
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Valle de Juárez"
+    },
+    {
+        "ids_anteriores": [
+            544
+        ],
+        "nombre": "ALEJANDRO LUPERCIO ALMARAZ",
+        "rfc": "LUAA5202205M4",
+        "telefono": "3787084420",
+        "calle": "GONZALO CURIEL",
+        "numero_exterior": "772",
+        "colonia": "LA GLORIA",
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Tepatitlán de Morelos"
+    },
+    {
+        "ids_anteriores": [
+            645
+        ],
+        "nombre": "RAUL ALVAREZ CARDENAS",
+        "rfc": "AACR550625",
+        "telefono": "3497710169",
+        "calle": "5 DE MAYO",
+        "numero_exterior": "17",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Atengo"
+    },
+    {
+        "ids_anteriores": [
+            836
+        ],
+        "nombre": "JORGE BEJINES SOTO",
+        "rfc": "BESJ651008PX1",
+        "telefono": "3757603690",
+        "calle": "DR. IGNACIO ALCARAZ DEL RIO",
+        "numero_exterior": "104",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Zapotlán el Grande"
+    },
+    {
+        "ids_anteriores": [
+            884
+        ],
+        "nombre": "RAFAEL LARA ALONZO",
+        "rfc": "LAAR660213MI7",
+        "telefono": "3310616253",
+        "calle": "JUAREZ",
+        "numero_exterior": "121",
+        "colonia": "SAN MARCOS EVANGELISTA",
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Zacoalco de Torres"
+    },
+    {
+        "ids_anteriores": [
+            963
+        ],
+        "nombre": "JOSE ANGEL FLETES RAMOS",
+        "rfc": "FERA7201195XA",
+        "telefono": "3857337107",
+        "calle": "EMILIANO ZAPATA",
+        "numero_exterior": "69",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "San Martín Hidalgo"
+    },
+    {
+        "ids_anteriores": [
+            1058,
+            4156
+        ],
+        "nombre": "MARIA GLORIA GUERRERO DE LEON",
+        "rfc": "GUL67912207Y6",
+        "telefono": "36809108",
+        "calle": "TULIPAN NORTE",
+        "numero_exterior": "13",
+        "colonia": "EL MORAL",
+        "codigo_postal": "45418",
+        "estado": "JAL",
+        "municipio": "Tonalá"
+    },
+    {
+        "ids_anteriores": [
+            1168
+        ],
+        "nombre": "MIGUEL ANGEL BORJA ELIZARRARAZ",
+        "rfc": "BOEM760107E40",
+        "telefono": "31200802",
+        "calle": "CALLE JAZMINEZ",
+        "numero_exterior": "1A",
+        "colonia": "EN EL CAPULIN",
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Ayotlán"
+    },
+    {
+        "ids_anteriores": [
+            1236
+        ],
+        "nombre": "JOSE ARMANDO DELGADILLO VIZCARRA",
+        "rfc": "DEVA7703156D6",
+        "telefono": "36143947",
+        "calle": "JAVIER MINA",
+        "numero_exterior": "3599",
+        "colonia": "LA AURORA",
+        "codigo_postal": "44790",
+        "estado": "JAL",
+        "municipio": "Guadalajara"
+    },
+    {
+        "ids_anteriores": [
+            1473
+        ],
+        "nombre": "HECTOR JOSE MAGAÑA DUEÑAS",
+        "rfc": "MADH630518MR4",
+        "telefono": "3887368565",
+        "calle": "REVOLUCION",
+        "numero_exterior": "5",
+        "colonia": "CENTRO",
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Atenguillo"
+    },
+    {
+        "ids_anteriores": [
+            2285,
+            1643
+        ],
+        "nombre": "MARIA VIRGINIA ROJAS SIORDIA",
+        "rfc": "ROSV7801312V4",
+        "telefono": "3333802889",
+        "calle": "CALLE 16 DE SEPTIEMBRE",
+        "numero_exterior": "2",
+        "colonia": "CASA BLANCA",
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Poncitlán"
+    },
+    {
+        "ids_anteriores": [
+            1715
+        ],
+        "nombre": "PORFIRIO GABRIEL ZUÑIGA",
+        "rfc": null,
+        "telefono": "3171087696",
+        "calle": "AV. EL ZAPOTILLO",
+        "numero_exterior": "7",
+        "colonia": "ZAPOTILLO",
+        "codigo_postal": "48930",
+        "estado": "JAL",
+        "municipio": "Casimiro Castillo"
+    },
+    {
+        "ids_anteriores": [
+            1725
+        ],
+        "nombre": "FELIPE DE JESUS MUÑOZ NAVARRO",
+        "rfc": "MUNF620906KV9",
+        "telefono": "3334566235",
+        "calle": "CUITLAHUAC",
+        "numero_exterior": "18",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Acatlán de Juárez"
+    },
+    {
+        "ids_anteriores": [
+            1838
+        ],
+        "nombre": "AMADO VILLEGAS LORETO",
+        "rfc": null,
+        "telefono": "3747450718",
+        "calle": "EMILIO HERNANDEZ YERA",
+        "numero_exterior": "1",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Amatitán"
+    },
+    {
+        "ids_anteriores": [
+            1896
+        ],
+        "nombre": "HUGO ISRAEL VALDEZ GARCIA",
+        "rfc": "VAGH87090392",
+        "telefono": "33646906",
+        "calle": "JUAN MANUEL",
+        "numero_exterior": "126",
+        "colonia": "ZAPOPAN CENTRO",
+        "codigo_postal": "45100",
+        "estado": "JAL",
+        "municipio": "Zapopan"
+    },
+    {
+        "ids_anteriores": [
+            2005
+        ],
+        "nombre": "MARGARITA SOLIS VALDOVINOS",
+        "rfc": "SOVM560308",
+        "telefono": null,
+        "calle": "RAMON CORONA",
+        "numero_exterior": "4",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Tenamaxtlán"
+    },
+    {
+        "ids_anteriores": [
+            2231
+        ],
+        "nombre": "AARON COBARRUBIAS CONTLA",
+        "rfc": "COCA681108",
+        "telefono": "3751004400",
+        "calle": "JUAN VALLE",
+        "numero_exterior": "15A",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Tenamaxtlán"
+    },
+    {
+        "ids_anteriores": [
+            2248
+        ],
+        "nombre": "RICARDO MONTOYA URIBE",
+        "rfc": "MOUR600722V10",
+        "telefono": "11998569",
+        "calle": "MARINA PUERTO PEÑASCO",
+        "numero_exterior": "102",
+        "colonia": "RESIDENCIAL CTA. MARGARITA",
+        "codigo_postal": "45130",
+        "estado": "JAL",
+        "municipio": "Zapopan"
+    },
+    {
+        "ids_anteriores": [
+            2331
+        ],
+        "nombre": "COMITE ESTATAL DE SANIDAD E INOCUIDAD ACUICOLA DE JALISCO, .A.C",
+        "rfc": "CESO60313860",
+        "telefono": null,
+        "calle": "CALLE ORION",
+        "numero_exterior": "1152",
+        "colonia": "JARDINES DEL BOSQUE",
+        "codigo_postal": "44510",
+        "estado": "JAL",
+        "municipio": "Guadalajara"
+    },
+    {
+        "ids_anteriores": [
+            2395
+        ],
+        "nombre": "ENRIQUE GUADALUPE HERNANDEZ GUTIERREZ",
+        "rfc": null,
+        "telefono": null,
+        "calle": "AV. HISTORIADORES",
+        "numero_exterior": "2881",
+        "colonia": "JARDINES DE LA PAZ",
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Guadalajara"
+    },
+    {
+        "ids_anteriores": [
+            2422
+        ],
+        "nombre": "ENRIQUE OROZCO AMADOR",
+        "rfc": "OOAE701207FH3",
+        "telefono": "3310440550",
+        "calle": "LAUREL",
+        "numero_exterior": "2020",
+        "colonia": "MARIANO OTERO",
+        "codigo_postal": "45067",
+        "estado": "JAL",
+        "municipio": "Zapopan"
+    },
+    {
+        "ids_anteriores": [
+            2549
+        ],
+        "nombre": "ALEJANDRO GARCIA RODRIGUEZ",
+        "rfc": null,
+        "telefono": null,
+        "calle": "ZARAGOZA",
+        "numero_exterior": "191",
+        "colonia": "CENTRO",
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Zapotiltic"
+    },
+    {
+        "ids_anteriores": [
+            2701
+        ],
+        "nombre": "SUBCOMITE DE AVICULTORES DE MICHOACAN, A.C",
+        "rfc": "SAM951208CY4",
+        "telefono": "4433198282",
+        "calle": "AV. ACUEDUCTO",
+        "numero_exterior": "1093-B",
+        "colonia": "MATAMOROS",
+        "codigo_postal": "58240",
+        "estado": "MICH",
+        "municipio": "Morelia"
+    },
+    {
+        "ids_anteriores": [
+            2720
+        ],
+        "nombre": "JOSE LUIS GONZALEZ CASTORENA",
+        "rfc": "GOCL670426Q79",
+        "telefono": "3313000860",
+        "calle": "CUITLAHUAC",
+        "numero_exterior": "124",
+        "colonia": "PANTEON",
+        "codigo_postal": "45480",
+        "estado": "JAL",
+        "municipio": "Cuquío"
+    },
+    {
+        "ids_anteriores": [
+            3001
+        ],
+        "nombre": "JOSE ALONSO CAMARENA VILLEGAS",
+        "rfc": "CAVA880819PJ9",
+        "telefono": "3751058226",
+        "calle": "FRANCISCO VILLA",
+        "numero_exterior": "3",
+        "colonia": null,
+        "codigo_postal": "48530",
+        "estado": "JAL",
+        "municipio": "Cocula"
+    },
+    {
+        "ids_anteriores": [
+            3007
+        ],
+        "nombre": "LEHUDITH ADRIANA RESENDIZ MORA",
+        "rfc": "REML811028C22",
+        "telefono": "36726181",
+        "calle": "BAÑUELOS GUARDADO",
+        "numero_exterior": "24",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Zapopan"
+    },
+    {
+        "ids_anteriores": [
+            3134
+        ],
+        "nombre": "MANUEL GONZALEZ HERMANDEZ",
+        "rfc": null,
+        "telefono": null,
+        "calle": "JAVIER MINA",
+        "numero_exterior": "598",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Arandas"
+    },
+    {
+        "ids_anteriores": [
+            3139
+        ],
+        "nombre": "RAFAEL LOPEZ PAINO",
+        "rfc": null,
+        "telefono": null,
+        "calle": "CONOCIDO AYUTLA",
+        "numero_exterior": "S/N",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Ayutla"
+    },
+    {
+        "ids_anteriores": [
+            3144
+        ],
+        "nombre": "COMITE ESTATAL PARA EL FOMENTO Y PROTECCION PECUARIA DE COLIMA S.C",
+        "rfc": "CEF900504H55",
+        "telefono": "1312313558",
+        "calle": "KM 1.5 CARRTETERA",
+        "numero_exterior": "S/N",
+        "colonia": "IMA-COQUIMATLAN",
+        "codigo_postal": null,
+        "estado": "COL",
+        "municipio": "Coquimatlán"
+    },
+    {
+        "ids_anteriores": [
+            3157
+        ],
+        "nombre": "BRISEIDA TAYLOR MEZA",
+        "rfc": null,
+        "telefono": null,
+        "calle": "JUAN ALVAREZ",
+        "numero_exterior": "22",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "El Salto"
+    },
+    {
+        "ids_anteriores": [
+            3213
+        ],
+        "nombre": "EMMANUEL PARRA",
+        "rfc": null,
+        "telefono": null,
+        "calle": "ESCOBEDO",
+        "numero_exterior": "159",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Etzatlán"
+    },
+    {
+        "ids_anteriores": [
+            3244
+        ],
+        "nombre": "ABEL ALANIS TELLEZ",
+        "rfc": null,
+        "telefono": null,
+        "calle": "MORELOS",
+        "numero_exterior": "115-A",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Tala"
+    },
+    {
+        "ids_anteriores": [
+            3256
+        ],
+        "nombre": "HUGO ERNESTO CISNEROS COVARRUBIA",
+        "rfc": null,
+        "telefono": null,
+        "calle": "MELCHOR OCAMPO",
+        "numero_exterior": "32",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Autlán de Navarro"
+    },
+    {
+        "ids_anteriores": [
+            3270
+        ],
+        "nombre": "ANA LUISA MURGUIA GONZALEZ",
+        "rfc": "MUGA700911L17",
+        "telefono": "3314659871",
+        "calle": "RAMON CORONA",
+        "numero_exterior": "79",
+        "colonia": "CENTRO",
+        "codigo_postal": "45988",
+        "estado": "JAL",
+        "municipio": "Zapotlán del Rey"
+    },
+    {
+        "ids_anteriores": [
+            3370
+        ],
+        "nombre": "ARNULFO GONZALEZ MONTES",
+        "rfc": null,
+        "telefono": null,
+        "calle": "CONOSIDO ATOYAC",
+        "numero_exterior": "S/N",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Atoyac"
+    },
+    {
+        "ids_anteriores": [
+            3415
+        ],
+        "nombre": "ADLER PHARMA S DE RL DE CV",
+        "rfc": "APH100929Q58",
+        "telefono": "31338595",
+        "calle": "MIGUEL ALEMAN",
+        "numero_exterior": "6926",
+        "colonia": "FRANCISCO SARABIA",
+        "codigo_postal": "45235",
+        "estado": "JAL",
+        "municipio": "Zapopan"
+    },
+    {
+        "ids_anteriores": [
+            3422
+        ],
+        "nombre": "VICTOR MANUEL TEJEDA LEAL",
+        "rfc": null,
+        "telefono": null,
+        "calle": "CONOCIDO EN TEQUILA",
+        "numero_exterior": "S/N",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Tequila"
+    },
+    {
+        "ids_anteriores": [
+            3976,
+            3559
+        ],
+        "nombre": "ROSIO VIVIANA PEREZ ORANDAY",
+        "rfc": "PEOR730308NF1",
+        "telefono": null,
+        "calle": "CEDRO",
+        "numero_exterior": "321",
+        "colonia": "ALAMEDA",
+        "codigo_postal": "47381",
+        "estado": "JAL",
+        "municipio": "Valle de Guadalupe"
+    },
+    {
+        "ids_anteriores": [
+            3561
+        ],
+        "nombre": "CLAUDIA GALAN MARTINEZ",
+        "rfc": null,
+        "telefono": null,
+        "calle": "BATALLA DE ZACATECAS",
+        "numero_exterior": "3320",
+        "colonia": "REVOLUCION",
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "San Pedro Tlaquepaque"
+    },
+    {
+        "ids_anteriores": [
+            3566
+        ],
+        "nombre": "GABRIELA HUITRON NIETO",
+        "rfc": "HUNG740517B3",
+        "telefono": null,
+        "calle": "ITURBIDE NORTE",
+        "numero_exterior": "188-A",
+        "colonia": null,
+        "codigo_postal": "47381",
+        "estado": "JAL",
+        "municipio": "Valle de Guadalupe"
+    },
+    {
+        "ids_anteriores": [
+            3594
+        ],
+        "nombre": "ADOLFO RAMIREZ ESTEBAN",
+        "rfc": null,
+        "telefono": null,
+        "calle": "CD GUZMAN",
+        "numero_exterior": "S/N",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Zapotlán el Grande"
+    },
+    {
+        "ids_anteriores": [
+            3675
+        ],
+        "nombre": "RAMIRO PADILLA OROPEZA",
+        "rfc": "PAOR371112DF8",
+        "telefono": null,
+        "calle": "PRIVADA JUSTO SIERRA",
+        "numero_exterior": "565",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Tepatitlán de Morelos"
+    },
+    {
+        "ids_anteriores": [
+            3723
+        ],
+        "nombre": "ALFONZO ZUÑIGA FIERRO",
+        "rfc": null,
+        "telefono": "3317961373",
+        "calle": "JUAREZ",
+        "numero_exterior": "5",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Ocotlán"
+    },
+    {
+        "ids_anteriores": [
+            3790
+        ],
+        "nombre": "ALFONSO ZUÑIGA",
+        "rfc": null,
+        "telefono": null,
+        "calle": "JUAREZ",
+        "numero_exterior": "5",
+        "colonia": "EL JOCONOSTLE",
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Ocotlán"
+    },
+    {
+        "ids_anteriores": [
+            3809
+        ],
+        "nombre": "ABEL ROSAS ZARCO",
+        "rfc": "ROZA650805CY2",
+        "telefono": null,
+        "calle": "CJON. PELAXTITLA",
+        "numero_exterior": "8",
+        "colonia": "EN BARRIO LA ASUNCION",
+        "codigo_postal": "16040",
+        "estado": "CDMX",
+        "municipio": "Xochimilco"
+    },
+    {
+        "ids_anteriores": [
+            3881
+        ],
+        "nombre": "MAURICIO ROBLES",
+        "rfc": null,
+        "telefono": null,
+        "calle": "CONOCIDO",
+        "numero_exterior": "S/N",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Zapopan"
+    },
+    {
+        "ids_anteriores": [
+            3900
+        ],
+        "nombre": "JOSE VAZQUEZ SALCEDO",
+        "rfc": null,
+        "telefono": null,
+        "calle": "CONOCIDO",
+        "numero_exterior": "S/N",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Tizapán el Alto"
+    },
+    {
+        "ids_anteriores": [
+            3931
+        ],
+        "nombre": "GERARDO GONZALEZ ALDACO",
+        "rfc": null,
+        "telefono": null,
+        "calle": "CONOCIDO",
+        "numero_exterior": "S/N",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Guadalajara"
+    },
+    {
+        "ids_anteriores": [
+            3972
+        ],
+        "nombre": "JOSE ROBERTO ROBLES VARGAS",
+        "rfc": null,
+        "telefono": null,
+        "calle": "ROBLES",
+        "numero_exterior": "54",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Autlán de Navarro"
+    },
+    {
+        "ids_anteriores": [
+            3988
+        ],
+        "nombre": "FIDEICOMISO DE LA ALIANZA PARA EL CAMPO EN EL ESTADO DE JALISCO",
+        "rfc": "FACO31020DAA",
+        "telefono": null,
+        "calle": "IGNACIO L. VALLARTA",
+        "numero_exterior": "1440",
+        "colonia": "AMERICANA",
+        "codigo_postal": "44160",
+        "estado": "JAL",
+        "municipio": "Guadalajara"
+    },
+    {
+        "ids_anteriores": [
+            4018
+        ],
+        "nombre": "DAVID EDUARDO MARTINEZ BARBA",
+        "rfc": "MABD801018AA2",
+        "telefono": null,
+        "calle": "JUAN GIL PRECIADO",
+        "numero_exterior": "4065",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Zapopan"
+    },
+    {
+        "ids_anteriores": [
+            4061
+        ],
+        "nombre": "HUMBERTO BAZAN ALVAREZ",
+        "rfc": null,
+        "telefono": null,
+        "calle": "SANTA MARIA",
+        "numero_exterior": "31",
+        "colonia": "LA PROVIDENCIA",
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Zapotlán el Grande"
+    },
+    {
+        "ids_anteriores": [
+            4065
+        ],
+        "nombre": "JUAN JOSE MENDEZ HERNANDEZ",
+        "rfc": "MEHJ9109132JA",
+        "telefono": "3867520477",
+        "calle": "JUAREZ",
+        "numero_exterior": "313",
+        "colonia": "5 DE MAYO",
+        "codigo_postal": "46730",
+        "estado": "JAL",
+        "municipio": "Ahualulco de Mercado"
+    },
+    {
+        "ids_anteriores": [
+            4141
+        ],
+        "nombre": "OMAR GUERRERO ORNELAS",
+        "rfc": null,
+        "telefono": null,
+        "calle": "SAN JUAN",
+        "numero_exterior": "5",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Ahualulco de Mercado"
+    },
+    {
+        "ids_anteriores": [
+            4154
+        ],
+        "nombre": "19 HERMANOS",
+        "rfc": null,
+        "telefono": null,
+        "calle": "KM 5 CARRETERA TOTOTLAN ATOTONILCO",
+        "numero_exterior": "S/N",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Tototlán"
+    },
+    {
+        "ids_anteriores": [
+            4253
+        ],
+        "nombre": "MIGUEL ALEJANDRO PRECIADO MENDOZA",
+        "rfc": null,
+        "telefono": null,
+        "calle": "CONOCIDO",
+        "numero_exterior": "S/N",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "La Manzanilla de la Paz"
+    },
+    {
+        "ids_anteriores": [
+            4406
+        ],
+        "nombre": "CESAR JUAN DE LA TORRE LOPEZ",
+        "rfc": "TOLC800511UA0",
+        "telefono": null,
+        "calle": "ALDAMA",
+        "numero_exterior": "183",
+        "colonia": "CENTRO",
+        "codigo_postal": "45470",
+        "estado": "JAL",
+        "municipio": "Acatic"
+    },
+    {
+        "ids_anteriores": [
+            4454
+        ],
+        "nombre": "JOSE REYES AYALA ESTRADA",
+        "rfc": null,
+        "telefono": null,
+        "calle": "CONOCIDO",
+        "numero_exterior": "S/N",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Tlajomulco de Zúñiga"
+    },
+    {
+        "ids_anteriores": [
+            4486
+        ],
+        "nombre": "JAVIER RANGEL",
+        "rfc": null,
+        "telefono": null,
+        "calle": "BETHESDA",
+        "numero_exterior": "S/N",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Tonalá"
+    },
+    {
+        "ids_anteriores": [
+            4578
+        ],
+        "nombre": "JORGE LOPEZ ROLON",
+        "rfc": null,
+        "telefono": null,
+        "calle": "CONOCIDO",
+        "numero_exterior": "S/N",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Tecalitlán"
+    },
+    {
+        "ids_anteriores": [
+            4601
+        ],
+        "nombre": "PAZ LOPEZ ORTEGA",
+        "rfc": null,
+        "telefono": null,
+        "calle": "CONOCIDO",
+        "numero_exterior": "S/N",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Poncitlán"
+    },
+    {
+        "ids_anteriores": [
+            4606
+        ],
+        "nombre": "VIVIANA PEREZ ORANDAY",
+        "rfc": null,
+        "telefono": null,
+        "calle": "CONOCIDO",
+        "numero_exterior": "S/N",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Tepatitlán de Morelos"
+    },
+    {
+        "ids_anteriores": [
+            4607
+        ],
+        "nombre": "MVZ. JAVIER RANGEL",
+        "rfc": null,
+        "telefono": null,
+        "calle": "CONOCIDO",
+        "numero_exterior": "S/N",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Tonalá"
+    },
+    {
+        "ids_anteriores": [
+            4608
+        ],
+        "nombre": "EMMANUEL PARRA DE LA TORRE",
+        "rfc": null,
+        "telefono": null,
+        "calle": "CONOCIDO",
+        "numero_exterior": "S/N",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Zapopan"
+    },
+    {
+        "ids_anteriores": [
+            4609
+        ],
+        "nombre": "ENRIQUE A LA TORRE",
+        "rfc": null,
+        "telefono": null,
+        "calle": "ZUÑIGA",
+        "numero_exterior": "7",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Tlajomulco de Zúñiga"
+    },
+    {
+        "ids_anteriores": [
+            4610
+        ],
+        "nombre": "ARMIDA MEJIA",
+        "rfc": null,
+        "telefono": null,
+        "calle": "CONOCIDO",
+        "numero_exterior": "S/N",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Guadalajara"
+    },
+    {
+        "ids_anteriores": [
+            4611
+        ],
+        "nombre": "LORENA NIÑO",
+        "rfc": null,
+        "telefono": null,
+        "calle": "CONOCIDO",
+        "numero_exterior": "S/N",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Guadalajara"
+    },
+    {
+        "ids_anteriores": [
+            4612
+        ],
+        "nombre": "JENNIFER CARDENAS MUÑOZ",
+        "rfc": null,
+        "telefono": null,
+        "calle": "CONOCIDO",
+        "numero_exterior": "S/N",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Guadalajara"
+    },
+    {
+        "ids_anteriores": [
+            4613
+        ],
+        "nombre": "ALEJANDRA PEREZ BARBA",
+        "rfc": null,
+        "telefono": null,
+        "calle": "CONOCIDO",
+        "numero_exterior": "S/N",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Guadalajara"
+    },
+    {
+        "ids_anteriores": [
+            4614
+        ],
+        "nombre": "RAFAEL CARRILLO CARRILLO",
+        "rfc": null,
+        "telefono": null,
+        "calle": "CONOCIDO",
+        "numero_exterior": "S/N",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Magdalena"
+    },
+    {
+        "ids_anteriores": [
+            4615
+        ],
+        "nombre": "AGRICOLA Y GANADERA LA BARAÑA",
+        "rfc": "AGL1003013H6",
+        "telefono": null,
+        "calle": "CONOCIDO",
+        "numero_exterior": "S/N",
+        "colonia": "ON # 361",
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Etzatlán"
+    },
+    {
+        "ids_anteriores": [
+            4616
+        ],
+        "nombre": "EDY VIRGEN",
+        "rfc": null,
+        "telefono": null,
+        "calle": "CONOCIDO",
+        "numero_exterior": "S/N",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Zapopan"
+    },
+    {
+        "ids_anteriores": [
+            4617
+        ],
+        "nombre": "FERNANDO GALLOS ACEVES",
+        "rfc": null,
+        "telefono": null,
+        "calle": "AV. REVOLUCION",
+        "numero_exterior": "2193",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Guadalajara"
+    },
+    {
+        "ids_anteriores": [
+            4618
+        ],
+        "nombre": "CLAUDIA GALAN",
+        "rfc": null,
+        "telefono": null,
+        "calle": "BATALLA DE ZACATECAS",
+        "numero_exterior": "3320",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "San Pedro Tlaquepaque"
+    },
+    {
+        "ids_anteriores": [
+            4619
+        ],
+        "nombre": "KATRINA MICHELLE",
+        "rfc": null,
+        "telefono": null,
+        "calle": "CONOCIDO",
+        "numero_exterior": "S/N",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Tlajomulco de Zúñiga"
+    },
+    {
+        "ids_anteriores": [
+            4620
+        ],
+        "nombre": "JONATHAN PAREDES",
+        "rfc": null,
+        "telefono": null,
+        "calle": "CONOCIDO",
+        "numero_exterior": "S/N",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "San Pedro Tlaquepaque"
+    },
+    {
+        "ids_anteriores": [
+            4621
+        ],
+        "nombre": "HECTOR EDUARDO ZAMBRANO",
+        "rfc": null,
+        "telefono": null,
+        "calle": "CONOCIDO",
+        "numero_exterior": "S/N",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Zapopan"
+    },
+    {
+        "ids_anteriores": [
+            4622
+        ],
+        "nombre": "ARNOLDO OCHOA LOPEZ",
+        "rfc": null,
+        "telefono": null,
+        "calle": "CONOCIDO",
+        "numero_exterior": "S/N",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Tamazula de Gordiano"
+    },
+    {
+        "ids_anteriores": [
+            4623
+        ],
+        "nombre": "ROSA ROSARIO RAYGOZA",
+        "rfc": null,
+        "telefono": null,
+        "calle": "CONOCIDO",
+        "numero_exterior": "S/N",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Guadalajara"
+    },
+    {
+        "ids_anteriores": [
+            4624
+        ],
+        "nombre": "ARTURO CESEÑA CAYEROS",
+        "rfc": null,
+        "telefono": null,
+        "calle": "CONOCIDO",
+        "numero_exterior": "S/N",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Zapopan"
+    },
+    {
+        "ids_anteriores": [
+            4625
+        ],
+        "nombre": "FABIAN NUÑO",
+        "rfc": null,
+        "telefono": null,
+        "calle": "CONOCIDO",
+        "numero_exterior": "S/N",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Guadalajara"
+    },
+    {
+        "ids_anteriores": [
+            4626
+        ],
+        "nombre": "ANTONIO URZUA",
+        "rfc": null,
+        "telefono": null,
+        "calle": "CONOCIDO",
+        "numero_exterior": "S/N",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Chapala"
+    },
+    {
+        "ids_anteriores": [
+            4627
+        ],
+        "nombre": "PEDRO HERIBERTO GARCIA MUNGUIA",
+        "rfc": null,
+        "telefono": null,
+        "calle": "CONOCIDO",
+        "numero_exterior": "S/N",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Tamazula de Gordiano"
+    },
+    {
+        "ids_anteriores": [
+            4628
+        ],
+        "nombre": "JOSE GUADALUPE VELAZQUEZ",
+        "rfc": null,
+        "telefono": null,
+        "calle": "CALLE SILVESTRE ARANDA",
+        "numero_exterior": "3520",
+        "colonia": "JARDINEZ DE LA BARRANCA",
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Guadalajara"
+    },
+    {
+        "ids_anteriores": [
+            4629
+        ],
+        "nombre": "JOSE GONZALEZ",
+        "rfc": null,
+        "telefono": null,
+        "calle": "CONOCIDO",
+        "numero_exterior": "S/N",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Ixtlahuacán del Río"
+    },
+    {
+        "ids_anteriores": [
+            4630
+        ],
+        "nombre": "CENTRO INTEGRAL VETERINARIO",
+        "rfc": null,
+        "telefono": null,
+        "calle": "ISLA GOMERA",
+        "numero_exterior": "3415",
+        "colonia": null,
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Zapopan"
+    },
+    {
+        "ids_anteriores": [
+            4631
+        ],
+        "nombre": "JAIME BARAJAS",
+        "rfc": null,
+        "telefono": null,
+        "calle": "KM. 3 CARRETERA SANTA FE",
+        "numero_exterior": "S/N",
+        "colonia": "LA MORA",
+        "codigo_postal": null,
+        "estado": "JAL",
+        "municipio": "Zapotlanejo"
+    }
+]

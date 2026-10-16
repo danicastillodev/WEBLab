@@ -1,0 +1,782 @@
+[
+    {
+        "id": 1,
+        "nombre": "ACTINOBACILLUS PP.",
+        "servicio_id": 51,
+        "precio_unitario": "129.31",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:35:34"
+    },
+    {
+        "id": 2,
+        "nombre": "ANTIBIOGRAMA",
+        "servicio_id": 2,
+        "precio_unitario": "172.41",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 3,
+        "nombre": "APP PCR",
+        "servicio_id": 26,
+        "precio_unitario": "646.55",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 4,
+        "nombre": "BACTERIOLOGIA AGUA",
+        "servicio_id": 1,
+        "precio_unitario": "344.83",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 5,
+        "nombre": "BACTERIOLOGICO GRAL",
+        "servicio_id": 3,
+        "precio_unitario": "344.83",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 6,
+        "nombre": "BACTERIOLOGICO GRAL MIEL",
+        "servicio_id": 4,
+        "precio_unitario": "1475.50",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 7,
+        "nombre": "BRUCELA FIJACION DE COMPLEMENTO",
+        "servicio_id": 52,
+        "precio_unitario": "155.17",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 8,
+        "nombre": "BRUCELA OVIS",
+        "servicio_id": 55,
+        "precio_unitario": "129.31",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 9,
+        "nombre": "BRUCELA RIVANOL",
+        "servicio_id": 54,
+        "precio_unitario": "25.86",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 10,
+        "nombre": "BRUCELA TARJETA",
+        "servicio_id": 53,
+        "precio_unitario": "13.79",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 11,
+        "nombre": "BRUCELA TARJETA (TUBO)",
+        "servicio_id": 53,
+        "precio_unitario": "15.52",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 12,
+        "nombre": "CENTRIFUGADO",
+        "servicio_id": 10,
+        "precio_unitario": "8.62",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 13,
+        "nombre": "CIRCOVIRUS",
+        "servicio_id": 82,
+        "precio_unitario": "104.31",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 14,
+        "nombre": "CIRCOVIRUS PORCINO PCR",
+        "servicio_id": 23,
+        "precio_unitario": "732.76",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 15,
+        "nombre": "CITOLOGIA",
+        "servicio_id": 30,
+        "precio_unitario": "215.52",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 16,
+        "nombre": "CONTENEDOR PUNZO-CORTANTES",
+        "servicio_id": 36,
+        "precio_unitario": "90.52",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 17,
+        "nombre": "COPROPARASITOSCOPICO FLOT.\/SEDIM.",
+        "servicio_id": 11,
+        "precio_unitario": "112.07",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 18,
+        "nombre": "DIARREA EPIDEMICA PORCINA PCR",
+        "servicio_id": 22,
+        "precio_unitario": "732.76",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 19,
+        "nombre": "DIARREA VIRAL BOVINA",
+        "servicio_id": 63,
+        "precio_unitario": "172.41",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 20,
+        "nombre": "ELIMINACION DE CADAVER 10 A 20 KG.",
+        "servicio_id": 32,
+        "precio_unitario": "336.21",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 21,
+        "nombre": "ELIMINACION DE CADAVER 20 A 100 KG.",
+        "servicio_id": 33,
+        "precio_unitario": "594.83",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 22,
+        "nombre": "ELIMINACION DE CADAVER MAS DE 100 KG.",
+        "servicio_id": 34,
+        "precio_unitario": "853.45",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 23,
+        "nombre": "ELIMINACION DE CADAVER MENOR A 10 KG.",
+        "servicio_id": 31,
+        "precio_unitario": "172.41",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 24,
+        "nombre": "ELIMINACION DE RPBI (BIDONES)",
+        "servicio_id": 35,
+        "precio_unitario": "517.24",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 25,
+        "nombre": "ELIMINACION DE RPBI KG CAMPAÑAS",
+        "servicio_id": 35,
+        "precio_unitario": "43.10",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 26,
+        "nombre": "ERISIPELA PORCINA PCR",
+        "servicio_id": 25,
+        "precio_unitario": "1120.69",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 27,
+        "nombre": "ERYSIPELA",
+        "servicio_id": 62,
+        "precio_unitario": "172.41",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 28,
+        "nombre": "ERYSIPELA CAMPAÑA",
+        "servicio_id": 62,
+        "precio_unitario": "517.24",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 29,
+        "nombre": "EXTRACCION Y ENVIO DE ENCEFALO",
+        "servicio_id": 14,
+        "precio_unitario": "144.83",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 30,
+        "nombre": "GASTROENTERITIS TRANS.",
+        "servicio_id": 72,
+        "precio_unitario": "56.03",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 31,
+        "nombre": "HAEMOPHILUS PARASUIS",
+        "servicio_id": 75,
+        "precio_unitario": "163.79",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 32,
+        "nombre": "HAEMOPHILUS PARASUIS PCR",
+        "servicio_id": 27,
+        "precio_unitario": "646.55",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 33,
+        "nombre": "HEMOGRAMA",
+        "servicio_id": 12,
+        "precio_unitario": "129.31",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 34,
+        "nombre": "HEMOPARASITOS",
+        "servicio_id": 13,
+        "precio_unitario": "103.45",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 35,
+        "nombre": "HISTOPATOLOGICO 1 A 3 ORGANOS",
+        "servicio_id": 37,
+        "precio_unitario": "301.72",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 36,
+        "nombre": "HISTOPATOLOGICO 7 A 9 ORGANOS",
+        "servicio_id": 39,
+        "precio_unitario": "862.07",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 37,
+        "nombre": "HISTOPATOLOGICO 10 A 12 ORGANOS",
+        "servicio_id": 40,
+        "precio_unitario": "1206.90",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 38,
+        "nombre": "HISTOPATOLOGICO 4 A 6 ORGANOS",
+        "servicio_id": 38,
+        "precio_unitario": "603.45",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 39,
+        "nombre": "ILEITIS\/ELISA BOHERINGER",
+        "servicio_id": 83,
+        "precio_unitario": "21.00",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 40,
+        "nombre": "INFLUENZA AVIAR",
+        "servicio_id": 85,
+        "precio_unitario": "34.48",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 41,
+        "nombre": "INFLUENZA AVIAR AVES",
+        "servicio_id": null,
+        "precio_unitario": "431.03",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 42,
+        "nombre": "INFLUENZA AVIAR HISOPOS",
+        "servicio_id": null,
+        "precio_unitario": "431.03",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 43,
+        "nombre": "INFLUENZA AVIAR PCR",
+        "servicio_id": 28,
+        "precio_unitario": "991.38",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 44,
+        "nombre": "INFLUENZA PORCINA",
+        "servicio_id": 84,
+        "precio_unitario": "86.21",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 45,
+        "nombre": "INFLUENZA PORCINA PCR",
+        "servicio_id": 21,
+        "precio_unitario": "560.34",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 46,
+        "nombre": "LAMINILLAS EXTRAS",
+        "servicio_id": null,
+        "precio_unitario": "86.21",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 47,
+        "nombre": "LEPTOSPIRA",
+        "servicio_id": 88,
+        "precio_unitario": "129.31",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 48,
+        "nombre": "LEUCOSIS BOVINA",
+        "servicio_id": 78,
+        "precio_unitario": "94.83",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 49,
+        "nombre": "MEDIO DE TRANSPORTE",
+        "servicio_id": 15,
+        "precio_unitario": "25.86",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 50,
+        "nombre": "MEDIO DE TRANSPORTE PBS",
+        "servicio_id": 16,
+        "precio_unitario": "50.00",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 51,
+        "nombre": "MICROSCOPIA DIRECTA",
+        "servicio_id": 17,
+        "precio_unitario": "86.21",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 52,
+        "nombre": "MICROSCOPIA DIRECTA BACTER.",
+        "servicio_id": 5,
+        "precio_unitario": "86.21",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 53,
+        "nombre": "MYCOBACTERIUM AISLAMIENTO",
+        "servicio_id": 91,
+        "precio_unitario": "508.62",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 54,
+        "nombre": "MYCOBACTERIUM BOVIS TIPIFICACION",
+        "servicio_id": 92,
+        "precio_unitario": "413.79",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:45",
+        "updated_at": "2026-10-01 21:15:45"
+    },
+    {
+        "id": 55,
+        "nombre": "MYCOBACTERIUM HISTO\/TB",
+        "servicio_id": 50,
+        "precio_unitario": "318.97",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:46",
+        "updated_at": "2026-10-01 21:15:46"
+    },
+    {
+        "id": 56,
+        "nombre": "MYCOPLASMA",
+        "servicio_id": 61,
+        "precio_unitario": "68.97",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:46",
+        "updated_at": "2026-10-01 21:15:46"
+    },
+    {
+        "id": 57,
+        "nombre": "NECROPSIA DE 1 A 10 KILOS",
+        "servicio_id": 46,
+        "precio_unitario": "517.24",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:46",
+        "updated_at": "2026-10-01 21:15:46"
+    },
+    {
+        "id": 58,
+        "nombre": "NECROPSIA DE 10 A 100 KILOS",
+        "servicio_id": 47,
+        "precio_unitario": "732.76",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:46",
+        "updated_at": "2026-10-01 21:15:46"
+    },
+    {
+        "id": 59,
+        "nombre": "NECROPSIA DE MAS DE 100 KILOS",
+        "servicio_id": 48,
+        "precio_unitario": "1724.14",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:46",
+        "updated_at": "2026-10-01 21:15:46"
+    },
+    {
+        "id": 60,
+        "nombre": "NEWCASTLE",
+        "servicio_id": 69,
+        "precio_unitario": "60.00",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:46",
+        "updated_at": "2026-10-01 21:15:46"
+    },
+    {
+        "id": 61,
+        "nombre": "NEWCASTLE AISL. AVES",
+        "servicio_id": null,
+        "precio_unitario": "302.59",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:46",
+        "updated_at": "2026-10-01 21:15:46"
+    },
+    {
+        "id": 62,
+        "nombre": "NEWCASTLE AISL. HISOPOS U ORGANOS",
+        "servicio_id": null,
+        "precio_unitario": "211.21",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:46",
+        "updated_at": "2026-10-01 21:15:46"
+    },
+    {
+        "id": 63,
+        "nombre": "OJO AZUL (EOA)\/HI",
+        "servicio_id": 89,
+        "precio_unitario": "172.41",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:46",
+        "updated_at": "2026-10-01 21:15:46"
+    },
+    {
+        "id": 64,
+        "nombre": "OJO AZUL PCR",
+        "servicio_id": 20,
+        "precio_unitario": "732.76",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:46",
+        "updated_at": "2026-10-01 21:15:46"
+    },
+    {
+        "id": 65,
+        "nombre": "PARATUBERCULOSIS",
+        "servicio_id": 80,
+        "precio_unitario": "137.93",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:46",
+        "updated_at": "2026-10-01 21:15:46"
+    },
+    {
+        "id": 66,
+        "nombre": "PARVOVIRUS PORCINO",
+        "servicio_id": 60,
+        "precio_unitario": "130.00",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:46",
+        "updated_at": "2026-10-01 21:15:46"
+    },
+    {
+        "id": 67,
+        "nombre": "PRRS",
+        "servicio_id": 58,
+        "precio_unitario": "172.41",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:46",
+        "updated_at": "2026-10-01 21:15:46"
+    },
+    {
+        "id": 68,
+        "nombre": "PRRS FLUIDO ORAL",
+        "servicio_id": 71,
+        "precio_unitario": "146.55",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:46",
+        "updated_at": "2026-10-01 21:15:46"
+    },
+    {
+        "id": 69,
+        "nombre": "PRRS PCR",
+        "servicio_id": 19,
+        "precio_unitario": "732.76",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:46",
+        "updated_at": "2026-10-01 21:15:46"
+    },
+    {
+        "id": 70,
+        "nombre": "PRRS PROYECTO",
+        "servicio_id": 58,
+        "precio_unitario": "137.94",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:46",
+        "updated_at": "2026-10-01 21:15:46"
+    },
+    {
+        "id": 71,
+        "nombre": "RABIA",
+        "servicio_id": 49,
+        "precio_unitario": "144.83",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:46",
+        "updated_at": "2026-10-01 21:15:46"
+    },
+    {
+        "id": 72,
+        "nombre": "RINOTRAQUEITIS INFECCIOSA",
+        "servicio_id": 64,
+        "precio_unitario": "172.41",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:46",
+        "updated_at": "2026-10-01 21:15:46"
+    },
+    {
+        "id": 73,
+        "nombre": "SALMONELLA",
+        "servicio_id": 76,
+        "precio_unitario": "71.55",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:46",
+        "updated_at": "2026-10-01 21:15:46"
+    },
+    {
+        "id": 74,
+        "nombre": "SALMONELLA PORCINA PCR",
+        "servicio_id": 24,
+        "precio_unitario": "732.76",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:46",
+        "updated_at": "2026-10-01 21:15:46"
+    },
+    {
+        "id": 75,
+        "nombre": "TINCION ESPECIAL (LAMINILLAS)",
+        "servicio_id": 44,
+        "precio_unitario": "172.41",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:46",
+        "updated_at": "2026-10-01 21:15:46"
+    },
+    {
+        "id": 76,
+        "nombre": "TUBO 15 ML CON MEDIO DE TRANSPORTE",
+        "servicio_id": 15,
+        "precio_unitario": "50.00",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:46",
+        "updated_at": "2026-10-01 21:15:46"
+    },
+    {
+        "id": 77,
+        "nombre": "TUBO 50 ML CON MEDIO DE TRANSPORTE",
+        "servicio_id": 15,
+        "precio_unitario": "50.00",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:46",
+        "updated_at": "2026-10-01 21:15:46"
+    },
+    {
+        "id": 78,
+        "nombre": "VARROSIS",
+        "servicio_id": 18,
+        "precio_unitario": "103.45",
+        "unidad_precio": "muestra",
+        "activo": 1,
+        "created_at": "2026-10-01 21:15:46",
+        "updated_at": "2026-10-01 21:15:46"
+    }
+]

@@ -1,0 +1,16 @@
+[
+    {
+        "id": 1,
+        "razon_social": "Diagnósticos y Servicios Integrales en Sanidad Animal, S.C.",
+        "nombre_laboratorio": "Laboratorio Regional de Patología Animal de El Salto, Jal",
+        "direccion": "Calz. Solidaridad Iberoamericana No. 7069",
+        "colonia": "Delegación Las Pintas, C.P. 45690",
+        "estado_id": 15,
+        "municipio_id": 69,
+        "telefono": "3312312312",
+        "email": "email@cefppj.org.mx",
+        "jefe_laboratorio": "MVZ. Mauricio García Calderón",
+        "created_at": "2026-09-29 20:53:02",
+        "updated_at": "2026-09-29 20:55:07"
+    }
+]

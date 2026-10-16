@@ -476,7 +476,7 @@ export default function Create({
                                     >
                                         <option value="">— Selecciona un cliente —</option>
                                         {clientes.map((c) => (
-                                            <option key={c.id} value={c.id}>{c.nombre} — {c.rfc}</option>
+                                            <option key={c.id} value={c.id}>{c.rfc ? `${c.nombre} — ${c.rfc}` : c.nombre}</option>
                                         ))}
                                     </select>
                                     <InputError message={errors.cliente_id} className="mt-2" />

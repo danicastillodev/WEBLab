@@ -1,0 +1,354 @@
+[
+    {
+        "id": 1,
+        "nombre": "Brucelosis tarjeta (Rosa de Bengala)",
+        "especie_id": 8,
+        "producto_id": null,
+        "created_at": "2026-09-29 19:56:23",
+        "updated_at": "2026-10-06 19:44:46"
+    },
+    {
+        "id": 2,
+        "nombre": "Brucelosis FPA",
+        "especie_id": 8,
+        "producto_id": null,
+        "created_at": "2026-09-29 19:56:23",
+        "updated_at": "2026-09-29 19:56:23"
+    },
+    {
+        "id": 3,
+        "nombre": "Brucelosis 2-Mercaptoetanol",
+        "especie_id": 8,
+        "producto_id": null,
+        "created_at": "2026-09-29 19:56:23",
+        "updated_at": "2026-09-29 19:56:23"
+    },
+    {
+        "id": 4,
+        "nombre": "Tuberculosis PPD",
+        "especie_id": 8,
+        "producto_id": null,
+        "created_at": "2026-09-29 19:56:23",
+        "updated_at": "2026-09-29 19:56:23"
+    },
+    {
+        "id": 5,
+        "nombre": "Leucosis Bovina AGID",
+        "especie_id": 8,
+        "producto_id": null,
+        "created_at": "2026-09-29 19:56:23",
+        "updated_at": "2026-10-06 19:44:46"
+    },
+    {
+        "id": 6,
+        "nombre": "Leucosis Bovina ELISA",
+        "especie_id": 8,
+        "producto_id": null,
+        "created_at": "2026-09-29 19:56:23",
+        "updated_at": "2026-10-06 19:44:46"
+    },
+    {
+        "id": 7,
+        "nombre": "Leptospirosis MAT",
+        "especie_id": 8,
+        "producto_id": null,
+        "created_at": "2026-09-29 19:56:23",
+        "updated_at": "2026-10-06 19:44:46"
+    },
+    {
+        "id": 8,
+        "nombre": "IBR ELISA",
+        "especie_id": 8,
+        "producto_id": null,
+        "created_at": "2026-09-29 19:56:23",
+        "updated_at": "2026-10-06 19:44:46"
+    },
+    {
+        "id": 9,
+        "nombre": "DVB ELISA",
+        "especie_id": 8,
+        "producto_id": null,
+        "created_at": "2026-09-29 19:56:23",
+        "updated_at": "2026-10-06 19:44:46"
+    },
+    {
+        "id": 10,
+        "nombre": "Neosporosis ELISA",
+        "especie_id": 8,
+        "producto_id": null,
+        "created_at": "2026-09-29 19:56:23",
+        "updated_at": "2026-09-29 19:56:23"
+    },
+    {
+        "id": 11,
+        "nombre": "Mastitis CMT",
+        "especie_id": 8,
+        "producto_id": null,
+        "created_at": "2026-09-29 19:56:23",
+        "updated_at": "2026-10-06 19:33:02"
+    },
+    {
+        "id": 12,
+        "nombre": "Paratuberculosis ELISA",
+        "especie_id": 8,
+        "producto_id": null,
+        "created_at": "2026-09-29 19:56:23",
+        "updated_at": "2026-10-06 19:44:46"
+    },
+    {
+        "id": 13,
+        "nombre": "Brucelosis tarjeta (Rosa de Bengala)",
+        "especie_id": 9,
+        "producto_id": null,
+        "created_at": "2026-09-29 19:56:23",
+        "updated_at": "2026-10-06 19:44:46"
+    },
+    {
+        "id": 14,
+        "nombre": "Brucelosis FPA",
+        "especie_id": 9,
+        "producto_id": null,
+        "created_at": "2026-09-29 19:56:23",
+        "updated_at": "2026-09-29 19:56:23"
+    },
+    {
+        "id": 15,
+        "nombre": "CAEV AGID",
+        "especie_id": 9,
+        "producto_id": null,
+        "created_at": "2026-09-29 19:56:23",
+        "updated_at": "2026-09-29 19:56:23"
+    },
+    {
+        "id": 16,
+        "nombre": "CAEV ELISA",
+        "especie_id": 9,
+        "producto_id": null,
+        "created_at": "2026-09-29 19:56:23",
+        "updated_at": "2026-09-29 19:56:23"
+    },
+    {
+        "id": 17,
+        "nombre": "Leptospirosis MAT",
+        "especie_id": 9,
+        "producto_id": null,
+        "created_at": "2026-09-29 19:56:23",
+        "updated_at": "2026-10-06 19:44:46"
+    },
+    {
+        "id": 18,
+        "nombre": "Brucelosis tarjeta (Rosa de Bengala)",
+        "especie_id": 10,
+        "producto_id": null,
+        "created_at": "2026-09-29 19:56:23",
+        "updated_at": "2026-10-06 19:44:46"
+    },
+    {
+        "id": 19,
+        "nombre": "Brucelosis FPA",
+        "especie_id": 10,
+        "producto_id": null,
+        "created_at": "2026-09-29 19:56:23",
+        "updated_at": "2026-09-29 19:56:23"
+    },
+    {
+        "id": 20,
+        "nombre": "Maedi-Visna AGID",
+        "especie_id": 10,
+        "producto_id": null,
+        "created_at": "2026-09-29 19:56:23",
+        "updated_at": "2026-09-29 19:56:23"
+    },
+    {
+        "id": 21,
+        "nombre": "Lengua Azul ELISA",
+        "especie_id": 10,
+        "producto_id": null,
+        "created_at": "2026-09-29 19:56:23",
+        "updated_at": "2026-09-29 19:56:23"
+    },
+    {
+        "id": 22,
+        "nombre": "Leptospirosis MAT",
+        "especie_id": 10,
+        "producto_id": null,
+        "created_at": "2026-09-29 19:56:23",
+        "updated_at": "2026-10-06 19:44:46"
+    },
+    {
+        "id": 23,
+        "nombre": "Anemia Infecciosa Equina AGID",
+        "especie_id": 11,
+        "producto_id": null,
+        "created_at": "2026-09-29 19:56:23",
+        "updated_at": "2026-09-29 19:56:23"
+    },
+    {
+        "id": 24,
+        "nombre": "Arteritis Viral Equina SN",
+        "especie_id": 11,
+        "producto_id": null,
+        "created_at": "2026-09-29 19:56:23",
+        "updated_at": "2026-09-29 19:56:23"
+    },
+    {
+        "id": 25,
+        "nombre": "Muermo FC",
+        "especie_id": 11,
+        "producto_id": null,
+        "created_at": "2026-09-29 19:56:23",
+        "updated_at": "2026-09-29 19:56:23"
+    },
+    {
+        "id": 26,
+        "nombre": "Influenza Equina HI",
+        "especie_id": 11,
+        "producto_id": null,
+        "created_at": "2026-09-29 19:56:23",
+        "updated_at": "2026-09-29 19:56:23"
+    },
+    {
+        "id": 27,
+        "nombre": "Herpesvirus Equino ELISA",
+        "especie_id": 11,
+        "producto_id": null,
+        "created_at": "2026-09-29 19:56:23",
+        "updated_at": "2026-09-29 19:56:23"
+    },
+    {
+        "id": 28,
+        "nombre": "Leptospirosis MAT",
+        "especie_id": 11,
+        "producto_id": null,
+        "created_at": "2026-09-29 19:56:23",
+        "updated_at": "2026-10-06 19:44:46"
+    },
+    {
+        "id": 29,
+        "nombre": "PRRS ELISA",
+        "especie_id": 12,
+        "producto_id": null,
+        "created_at": "2026-09-29 19:56:23",
+        "updated_at": "2026-10-06 19:44:46"
+    },
+    {
+        "id": 30,
+        "nombre": "Peste Porcina Clásica ELISA",
+        "especie_id": 12,
+        "producto_id": null,
+        "created_at": "2026-09-29 19:56:23",
+        "updated_at": "2026-09-29 19:56:23"
+    },
+    {
+        "id": 31,
+        "nombre": "Brucelosis tarjeta (Rosa de Bengala)",
+        "especie_id": 12,
+        "producto_id": null,
+        "created_at": "2026-09-29 19:56:23",
+        "updated_at": "2026-10-06 19:44:46"
+    },
+    {
+        "id": 32,
+        "nombre": "Enfermedad de Aujeszky ELISA",
+        "especie_id": 12,
+        "producto_id": null,
+        "created_at": "2026-09-29 19:56:23",
+        "updated_at": "2026-09-29 19:56:23"
+    },
+    {
+        "id": 33,
+        "nombre": "Leptospirosis MAT",
+        "especie_id": 12,
+        "producto_id": null,
+        "created_at": "2026-09-29 19:56:23",
+        "updated_at": "2026-10-06 19:44:46"
+    },
+    {
+        "id": 34,
+        "nombre": "Influenza Porcina HI",
+        "especie_id": 12,
+        "producto_id": null,
+        "created_at": "2026-09-29 19:56:23",
+        "updated_at": "2026-10-06 19:44:46"
+    },
+    {
+        "id": 35,
+        "nombre": "Influenza Aviar AGID",
+        "especie_id": 13,
+        "producto_id": null,
+        "created_at": "2026-09-29 19:56:23",
+        "updated_at": "2026-09-29 19:56:23"
+    },
+    {
+        "id": 36,
+        "nombre": "Influenza Aviar HI",
+        "especie_id": 13,
+        "producto_id": null,
+        "created_at": "2026-09-29 19:56:23",
+        "updated_at": "2026-09-29 19:56:23"
+    },
+    {
+        "id": 37,
+        "nombre": "Newcastle HI",
+        "especie_id": 13,
+        "producto_id": null,
+        "created_at": "2026-09-29 19:56:23",
+        "updated_at": "2026-10-06 19:44:46"
+    },
+    {
+        "id": 38,
+        "nombre": "Newcastle ELISA",
+        "especie_id": 13,
+        "producto_id": null,
+        "created_at": "2026-09-29 19:56:23",
+        "updated_at": "2026-10-06 19:44:46"
+    },
+    {
+        "id": 39,
+        "nombre": "Bronquitis Infecciosa HI",
+        "especie_id": 13,
+        "producto_id": null,
+        "created_at": "2026-09-29 19:56:23",
+        "updated_at": "2026-09-29 19:56:23"
+    },
+    {
+        "id": 40,
+        "nombre": "Mycoplasma gallisepticum ELISA",
+        "especie_id": 13,
+        "producto_id": null,
+        "created_at": "2026-09-29 19:56:23",
+        "updated_at": "2026-10-06 19:44:46"
+    },
+    {
+        "id": 41,
+        "nombre": "Mycoplasma synoviae ELISA",
+        "especie_id": 13,
+        "producto_id": null,
+        "created_at": "2026-09-29 19:56:23",
+        "updated_at": "2026-10-06 19:44:46"
+    },
+    {
+        "id": 42,
+        "nombre": "Salmonella aglutinación",
+        "especie_id": 13,
+        "producto_id": null,
+        "created_at": "2026-09-29 19:56:23",
+        "updated_at": "2026-10-06 19:44:46"
+    },
+    {
+        "id": 43,
+        "nombre": "Laringotraqueítis ELISA",
+        "especie_id": 13,
+        "producto_id": null,
+        "created_at": "2026-09-29 19:56:23",
+        "updated_at": "2026-09-29 19:56:23"
+    },
+    {
+        "id": 44,
+        "nombre": "Marek PCR",
+        "especie_id": 13,
+        "producto_id": null,
+        "created_at": "2026-09-29 19:56:23",
+        "updated_at": "2026-09-29 19:56:23"
+    }
+]
