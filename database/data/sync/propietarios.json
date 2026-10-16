@@ -1,0 +1,5012 @@
+[
+    {
+        "id": 6,
+        "nombre": "BOEHRINGER INGELHEIM VETMEDICA S.A DE C.V",
+        "apellidos": "",
+        "telefono": "36687552",
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 7,
+        "nombre": "IGNACIO",
+        "apellidos": "PADILLA GARCIA",
+        "telefono": "3787083496",
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 8,
+        "nombre": "DIEGO",
+        "apellidos": "RAMIREZ GOMEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 9,
+        "nombre": "JOSE",
+        "apellidos": "ARMANDO DELGADILLO",
+        "telefono": "36088263",
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 10,
+        "nombre": "RUBEN",
+        "apellidos": "AGUIRRE ESTRADA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 11,
+        "nombre": "ALBERTO",
+        "apellidos": "OCEGUEDA MURILLO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 12,
+        "nombre": "ANTONIO",
+        "apellidos": "PONCE AGUIRRE",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 13,
+        "nombre": "JOSE DE JESUS",
+        "apellidos": "GONZALEZ GONZALEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 14,
+        "nombre": "RASTRO MUNICIPAL DE TONAYA",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 15,
+        "nombre": "RAFAEL",
+        "apellidos": "PADILLA MACIAS",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 16,
+        "nombre": "RASTRO MUNICIPAL DE HUEJUCAR",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 17,
+        "nombre": "EZEQUIEL",
+        "apellidos": "GONZALEZ CERDA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 18,
+        "nombre": "EUFEMIO",
+        "apellidos": "DE LA TORRE CASTELLANOS",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 19,
+        "nombre": "BIO-ZOO",
+        "apellidos": "",
+        "telefono": "3332831200",
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 20,
+        "nombre": "ALFONSO",
+        "apellidos": "RUIZ REYNOSO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 21,
+        "nombre": "JUAN PEDRO",
+        "apellidos": "RODRIGUEZ GUTIERREZ",
+        "telefono": "37209454",
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 22,
+        "nombre": "OCTAVIO",
+        "apellidos": "VILLALOBOS PEREZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 23,
+        "nombre": "ANTONIO",
+        "apellidos": "HERNANDEZ",
+        "telefono": "36597995",
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 24,
+        "nombre": "JOSE LUIS",
+        "apellidos": "GONZALEZ CASTORENA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 25,
+        "nombre": "AGRICOLA Y GANADERA LA GARITA S.P.R. DE R.L",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 26,
+        "nombre": "OSWALDO",
+        "apellidos": "BRISEÑO YEPES",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 27,
+        "nombre": "JOSE MANUEL",
+        "apellidos": "RODRIGUEZ DEL TORO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 28,
+        "nombre": "CIRILO",
+        "apellidos": "CARBAJAL MARQUEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 29,
+        "nombre": "RAUL",
+        "apellidos": "ALVAREZ CARDENAS",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 30,
+        "nombre": "GUSTAVO",
+        "apellidos": "LOZANO HERNANDEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 31,
+        "nombre": "ARMANDO",
+        "apellidos": "ARROYO MOYA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 32,
+        "nombre": "MIGUEL",
+        "apellidos": "CAMACHO GARCIA",
+        "telefono": "3314138553",
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 33,
+        "nombre": "MIGUEL",
+        "apellidos": "CASTELLANOS PEÑA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 34,
+        "nombre": "PABLO LUNA OLEA Y\/O HIJO JOEL",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 35,
+        "nombre": "EZEQUIEL",
+        "apellidos": "SALCEDO ROA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 36,
+        "nombre": "JORGE RODRIGO",
+        "apellidos": "JAUREGUI HERNANDEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 37,
+        "nombre": "JAVIER",
+        "apellidos": "DE ANDA TINAJERO",
+        "telefono": "3310662757",
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 38,
+        "nombre": "HILARIO",
+        "apellidos": "CASILLAS FRANCO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 39,
+        "nombre": "JOSE RODOLFO",
+        "apellidos": "MORQUECHO MACIAS",
+        "telefono": "16144555",
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 40,
+        "nombre": "RODOLFO",
+        "apellidos": "VENEGAS ESTRADA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 41,
+        "nombre": "RAUL",
+        "apellidos": "IÑIGUEZ DE LA TORRE",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 42,
+        "nombre": "HECTOR",
+        "apellidos": "RUELAS ARANA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 43,
+        "nombre": "J. JESUS",
+        "apellidos": "RUELAS SANTANA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 44,
+        "nombre": "G.M. SOC. GANADERA DE SAN JOSE S. DE R.L. DE C.V",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 45,
+        "nombre": "JAVIER",
+        "apellidos": "MACIAS CASTELLANOS",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 46,
+        "nombre": "RAFAEL",
+        "apellidos": "DE LA TORRE PEREZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 47,
+        "nombre": "JOAQUIN",
+        "apellidos": "RIVERA GONZALEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 48,
+        "nombre": "VICENTE",
+        "apellidos": "CAMPOS HERNANDEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 49,
+        "nombre": "LUIS",
+        "apellidos": "HERNANDEZ MORENO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 50,
+        "nombre": "TOMAS",
+        "apellidos": "ESPARZA MOLINA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 51,
+        "nombre": "BENITO",
+        "apellidos": "ZARATE SANTOS",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 52,
+        "nombre": "SEBASTIAN",
+        "apellidos": "CERVANTES NERI",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 53,
+        "nombre": "JESUS",
+        "apellidos": "ABUNDIS LOZANO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 54,
+        "nombre": "FRANCISCO JAVIER",
+        "apellidos": "RAMIREZ DE LA MORA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 55,
+        "nombre": "FRANCISCO JAVIER",
+        "apellidos": "BRAMBILA SOLIS",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 56,
+        "nombre": "RAFAEL",
+        "apellidos": "COVARRUBIAS FLETES",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 57,
+        "nombre": "ENRIQUE",
+        "apellidos": "PARTIDA ONTIVERO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 58,
+        "nombre": "GREGORIO",
+        "apellidos": "VALENZUELA GOMEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 59,
+        "nombre": "HECTOR JOSE",
+        "apellidos": "MAGAÑA DUEÑAS",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 60,
+        "nombre": "SALOMON",
+        "apellidos": "RUBIO MOLINA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 61,
+        "nombre": "EMERIO",
+        "apellidos": "SANTILLAS CONTRERAS",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 62,
+        "nombre": "GANADERIA ETZATLAN, S.A. DE C.V",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 63,
+        "nombre": "EVERARDO",
+        "apellidos": "FLORES ESCOTO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 64,
+        "nombre": "ANTONIO",
+        "apellidos": "GARCIA JIMENES",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 65,
+        "nombre": "JESUS ALEJANDRO",
+        "apellidos": "ALVAREZ GONZALEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 66,
+        "nombre": "FRANCISCO JAVIER",
+        "apellidos": "CAMPOS BARRAGAN",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 67,
+        "nombre": "HUGO ISRAEL",
+        "apellidos": "VALDEZ GARCIA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 68,
+        "nombre": "ANGEL",
+        "apellidos": "VELASCO MONTAÑO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 69,
+        "nombre": "SERGIO",
+        "apellidos": "HERNANDEZ GARCIA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 70,
+        "nombre": "ENRIQUE",
+        "apellidos": "GUADALUPE HERNANDEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 71,
+        "nombre": "CLAUDIA LILIANA",
+        "apellidos": "ORNELAS YDE",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 72,
+        "nombre": "MARGARITA",
+        "apellidos": "SOLIS VALDOVINOS",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 73,
+        "nombre": "MARIO ALBERTO",
+        "apellidos": "BARBA MALDONADO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 74,
+        "nombre": "MARTIN",
+        "apellidos": "SAHAGUN MONTES",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 75,
+        "nombre": "RASTRO MUNICIPAL DE MEZQUITIC",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 76,
+        "nombre": "MARTHA LILIA MARTIN",
+        "apellidos": "DEL CAMPO CUENCAS",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 77,
+        "nombre": "MIGUEL",
+        "apellidos": "PEREZ NAVARRO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 78,
+        "nombre": "BLAZA",
+        "apellidos": "ZARATE HERNANDEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 79,
+        "nombre": "JUNIOR ABELARDO",
+        "apellidos": "RODRIGUEZ SANCHEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 80,
+        "nombre": "JOSE DE JESUS",
+        "apellidos": "GONZALEZ NAVARRO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 81,
+        "nombre": "RASTRO MUNICIPAL VILLA GUERRERO",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 82,
+        "nombre": "RASTRO MUNICIPAL DE TOTATICHE",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 83,
+        "nombre": "GABRIEL",
+        "apellidos": "TRINIDAD CASTRO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 84,
+        "nombre": "SERGIO",
+        "apellidos": "MORALES SANDOVAL",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 85,
+        "nombre": "RICARDO",
+        "apellidos": "BRAMBILA PELAYO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 86,
+        "nombre": "ESTHER",
+        "apellidos": "PELAYO BRAMBILA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 87,
+        "nombre": "RASTRO MUNICIPAL DE CIHUATLAN",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 88,
+        "nombre": "ABEL DIAZ REYNOSO E IGNACIO DIAZ",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 89,
+        "nombre": "RASTRO MUNICIPAL DE CASIMIRO CASTILLO",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 90,
+        "nombre": "RASTRO MUNICIPAL DE TENAMAXTLAN",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 91,
+        "nombre": "RASTRO MUNICIPAL DE PUERTO VALLARTA",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 92,
+        "nombre": "CAPTURA CAMPAÑA RABIA",
+        "apellidos": "",
+        "telefono": "38370770146",
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 93,
+        "nombre": "RASTRO MUNICIPAL DE UNION DE TULA",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 94,
+        "nombre": "RASTRO MUNICIPAL DE COLOTLAN",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 95,
+        "nombre": "JOSE",
+        "apellidos": "MARTINEZ JASSO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 96,
+        "nombre": "SALVADOR",
+        "apellidos": "RABAGO CORNEJO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 97,
+        "nombre": "ANA CATALINA",
+        "apellidos": "VAZQUEZ GONZALEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 98,
+        "nombre": "CARLOS ALEJANDRO",
+        "apellidos": "OROZCO GOMEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 99,
+        "nombre": "RASTRO MUNICIPAL DE HUEJUQUILLA EL ALTO",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 100,
+        "nombre": "RASTRO MUNICIPAL DE HOSTOTIPAQUILLO",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 101,
+        "nombre": "OLEGARIO",
+        "apellidos": "RAZO TAPIA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 102,
+        "nombre": "RAFAEL",
+        "apellidos": "IÑIGUEZ RODRIGUEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 103,
+        "nombre": "LEONCIO",
+        "apellidos": "GUAPO DUEÑAS",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 104,
+        "nombre": "EPIFANIO",
+        "apellidos": "BRAMBILA SOLIS",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 105,
+        "nombre": "ROBERTO",
+        "apellidos": "RAMIREZ OLIVA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 106,
+        "nombre": "RUBEN",
+        "apellidos": "TRUJILLO GARCIA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 107,
+        "nombre": "INDUSTRIAS PECUARIAS SAN PEDRO S.A DE C.V",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 108,
+        "nombre": "JOSE LUIS",
+        "apellidos": "GAVILAN VAZQUEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 109,
+        "nombre": "DARIO GEOVANI",
+        "apellidos": "TORRES NUÑO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 110,
+        "nombre": "RODOLFO JAZAHEL",
+        "apellidos": "JIMENEZ CASILLAS",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 111,
+        "nombre": "BLANCA RUTH",
+        "apellidos": "COVARRUBIAS FLETES",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 112,
+        "nombre": "JUAN PABLO",
+        "apellidos": "COVARRUBIAS COVARRUBIAS",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 113,
+        "nombre": "RASTRO MUNICIPAL DE TALPA DE ALLENDE",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 114,
+        "nombre": "LUIS ABRAHAM",
+        "apellidos": "MARTINEZ GONZALEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 115,
+        "nombre": "RUBEN",
+        "apellidos": "CASILLA CASILLAS",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 116,
+        "nombre": "JUAN PABLO",
+        "apellidos": "CERVANTES ZARAGOZA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 117,
+        "nombre": "RASTRO MUNICIPAL DE EL GRULLO",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 118,
+        "nombre": "RASTRO MUNICIPAL DE CHIQUILISTLAN",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 119,
+        "nombre": "RASTRO MUNICIPAL DE CUAUTLA",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 120,
+        "nombre": "RASTRO MUNICIPAL DE AYUTLA",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 121,
+        "nombre": "RASTRO MUNICIPAL DE TECOLOTLAN",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 122,
+        "nombre": "JOSE FELIX BECERRA SANCHEZ Y\/O AURELIO TEJEDA VARGAS",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 123,
+        "nombre": "RASTRO MUNICIPAL DE VILLA PURIFICACION",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 124,
+        "nombre": "RASTRO MUNICIPAL DE TOMATLAN",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 125,
+        "nombre": "RASTRO MUNICIPAL DE MASCOTA",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 126,
+        "nombre": "SALVADOR",
+        "apellidos": "HERNANDEZ HERNANDEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 127,
+        "nombre": "RUBEN",
+        "apellidos": "GOMEZ SAHAGUN",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 128,
+        "nombre": "ISIDRO",
+        "apellidos": "CHAVEZ SOTO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 129,
+        "nombre": "JAVIER",
+        "apellidos": "OROZCO HERNANDEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 130,
+        "nombre": "JORGE",
+        "apellidos": "SANCHEZ BAUTISTA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 131,
+        "nombre": "GRACIELA",
+        "apellidos": "MARTINEZ LOPEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 132,
+        "nombre": "RAUL GERARDO",
+        "apellidos": "LOZANO GUZMAN",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 133,
+        "nombre": "JORGE",
+        "apellidos": "CHAVEZ GONZALEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 134,
+        "nombre": "RASTRO MUNICIPAL DE EJUTLA",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 135,
+        "nombre": "MIGUEL OSCAR",
+        "apellidos": "MARTIN SERRANO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 136,
+        "nombre": "RUBEN",
+        "apellidos": "RODRIGUEZ CARDENAS",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 137,
+        "nombre": "ANTELMO",
+        "apellidos": "LIMÓN BECERRA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 138,
+        "nombre": "FERMIN",
+        "apellidos": "SANDOVAL FRANCO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 139,
+        "nombre": "RASTRO DE AUTLAN",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 140,
+        "nombre": "RASTRO MUNICIPAL DE EL LIMON",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 141,
+        "nombre": "JOSE LUIS",
+        "apellidos": "VALDOVINOS TORRES",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 142,
+        "nombre": "RODRIGO",
+        "apellidos": "RAMOS RENTERIA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 143,
+        "nombre": "PEDRO",
+        "apellidos": "RAMOS RENTERIA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 144,
+        "nombre": "JOSE DE JESUS",
+        "apellidos": "HERNANDEZ RAMOS",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 145,
+        "nombre": "GUILLERMO",
+        "apellidos": "GARCIA PADILLA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 146,
+        "nombre": "ELEAZAR",
+        "apellidos": "SANCHEZ ZEPEDA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 147,
+        "nombre": "LUIS",
+        "apellidos": "CHAVEZ MARTINEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 148,
+        "nombre": "LEOPOLDO HERNANDEZ LOPEZ Y\/O FELIPE DE JESUS HERNANDEZ CARBAJAL",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 149,
+        "nombre": "JULIAN",
+        "apellidos": "HERNANDEZ GONZALEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 150,
+        "nombre": "EDUARDO",
+        "apellidos": "RON RAMOS",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 151,
+        "nombre": "BLADIMIRO",
+        "apellidos": "MIRANDA CARDENAS",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 152,
+        "nombre": "MANUEL",
+        "apellidos": "ACEVES FONSECA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 153,
+        "nombre": "ALFONSO",
+        "apellidos": "VALDIVIA OROZCO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 154,
+        "nombre": "MARTIN BENJAMIN",
+        "apellidos": "OCHOA CASTELLANOS",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 155,
+        "nombre": "RAMON",
+        "apellidos": "JIMENEZ GUTIERREZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 156,
+        "nombre": "JORGE LUIS",
+        "apellidos": "PADILLA AGUILAR",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 157,
+        "nombre": "JAIME ARMANDO",
+        "apellidos": "MACIAS HERNANDEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 158,
+        "nombre": "ADOLFO",
+        "apellidos": "DURAN NUÑEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 159,
+        "nombre": "ERNESTO ALFONSO",
+        "apellidos": "ALVAREZ GONZALEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 160,
+        "nombre": "ABEL",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 161,
+        "nombre": "ABEL",
+        "apellidos": "DURAN AMEZQUITA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 162,
+        "nombre": "EUSEBIO",
+        "apellidos": "MARTINEZ RODRIGUEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 163,
+        "nombre": "CLAUDIA",
+        "apellidos": "GALAN MARTINEZ",
+        "telefono": "10295353",
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 164,
+        "nombre": "RASTRO MUNICIPAL DE SAN GABRIEL",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 165,
+        "nombre": "RAMIRO",
+        "apellidos": "LOYOLA ESPINOZA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 166,
+        "nombre": "2",
+        "apellidos": "OTATES NAYARIT",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 167,
+        "nombre": "RASTRO MUNICIPAL LA HUERTA",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 168,
+        "nombre": "OCTAVIO CESAR",
+        "apellidos": "LOMELI BERNAL",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 169,
+        "nombre": "OSVALDO",
+        "apellidos": "ACEVEDO CHAVEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 170,
+        "nombre": "JOSE LUIS",
+        "apellidos": "AVALOS GOMEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 171,
+        "nombre": "ALFONSO ERNESTO",
+        "apellidos": "ALVAREZ GONZALEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 172,
+        "nombre": "RAMIRO",
+        "apellidos": "BARBA MALDONADO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 173,
+        "nombre": "JUAN MANUEL",
+        "apellidos": "PEREZ SANCHEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 174,
+        "nombre": "JAVIER",
+        "apellidos": "CAMPOS",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 175,
+        "nombre": "MARIA DEL CARMEN",
+        "apellidos": "RUVALCABA JIMENEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 176,
+        "nombre": "ENRIQUE",
+        "apellidos": "MEDINA GARCIA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 177,
+        "nombre": "RAMIRO",
+        "apellidos": "RAMIREZ AVENDAÑO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 178,
+        "nombre": "JAVIER",
+        "apellidos": "MARTIN GARCIA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 179,
+        "nombre": "MARTIN OLEA SANCHEZ E HIJOS",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 180,
+        "nombre": "SERGIO",
+        "apellidos": "GOMEZ GONZALEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 181,
+        "nombre": "LUIS ALEJANDRO",
+        "apellidos": "LOPEZ MORALES",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 182,
+        "nombre": "JOSE",
+        "apellidos": "GARCIA CAMARENA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 183,
+        "nombre": "OCTAVIO",
+        "apellidos": "GONZALEZ RUVALCABA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 184,
+        "nombre": "MARCOS",
+        "apellidos": "AGREDANO GOMEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 185,
+        "nombre": "ARMANDO",
+        "apellidos": "NUÑEZ CARRILLO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 186,
+        "nombre": "JOSE SANTOS",
+        "apellidos": "HERNANDEZ GUERRERO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 187,
+        "nombre": "LUIS",
+        "apellidos": "MEZA FRIAS",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 188,
+        "nombre": "JOSE HONORIO",
+        "apellidos": "RUEZGA GONZALEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 189,
+        "nombre": "RIGOBERTO",
+        "apellidos": "JAUREGUI FLORES",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 190,
+        "nombre": "RASTRO MUNICIPAL DE EL TUITO",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 191,
+        "nombre": "RAUL",
+        "apellidos": "CARDENAS FRUTOS",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 192,
+        "nombre": "RAMIRO",
+        "apellidos": "RICO GARCIA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 193,
+        "nombre": "RAMIRO",
+        "apellidos": "RICO SANCHEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 194,
+        "nombre": "FRANCISCO JAVIER",
+        "apellidos": "MONTES FLORES",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 195,
+        "nombre": "GUSTAVO",
+        "apellidos": "FONSECA FONSECA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 196,
+        "nombre": "JOSE DE JESUS",
+        "apellidos": "VARGAS TAPIA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 197,
+        "nombre": "TEQUILERA",
+        "apellidos": "GARCIA OTEGUI",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 198,
+        "nombre": "JOSE ANTONIO",
+        "apellidos": "ALMARAZ GONZALEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 199,
+        "nombre": "ISIDRO",
+        "apellidos": "LOPEZ GONZALEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 200,
+        "nombre": "DAVID EDUARDO",
+        "apellidos": "MARTINES BARBA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 201,
+        "nombre": "MANUEL CHAVEZ PINTO Y\/O MIGUEL ANGEL CHAVEZ RODRIGUEZ",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 202,
+        "nombre": "RICARDO",
+        "apellidos": "PEREZ GONZALEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 203,
+        "nombre": "GILBERTO",
+        "apellidos": "JIMENEZ YAVER",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 204,
+        "nombre": "JUAN CARLOS",
+        "apellidos": "ECHEVERRIA SANCHEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 205,
+        "nombre": "RAMIRO",
+        "apellidos": "RAMIREZ GONZALEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 206,
+        "nombre": "OFELIA",
+        "apellidos": "ANAYA PEREZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 207,
+        "nombre": "JAIME",
+        "apellidos": "PEÑA GARCIA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 208,
+        "nombre": "RANCHO EL ERMITAÑO",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 209,
+        "nombre": "JUAN FRANCISCO",
+        "apellidos": "INCLAN RUIZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 210,
+        "nombre": "J. JESUS",
+        "apellidos": "VALDIVIA OROZCO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 211,
+        "nombre": "SALVADOR",
+        "apellidos": "ESPINOZA NUÑO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 212,
+        "nombre": "DORA ELIZABETH",
+        "apellidos": "MUÑOS LOPEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 213,
+        "nombre": "ANA ANGELICA",
+        "apellidos": "ALVAREZ FONSECA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 214,
+        "nombre": "MANUEL",
+        "apellidos": "ALVAREZ SANCHEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 215,
+        "nombre": "ANTONIO",
+        "apellidos": "VEGA OROZCO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 216,
+        "nombre": "MARCO ANTONIO",
+        "apellidos": "GARCIA JAUREGUI",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 217,
+        "nombre": "ANA BERTHA",
+        "apellidos": "GARCIA JAUREGUI",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 218,
+        "nombre": "RAFAEL",
+        "apellidos": "SANCHEZ VAZQUEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 219,
+        "nombre": "JUAN MANUEL",
+        "apellidos": "GARCIA GOMEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 220,
+        "nombre": "PEDRO",
+        "apellidos": "LLAMAS SERRANO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 221,
+        "nombre": "ISRAEL",
+        "apellidos": "LLAMAS RODRIGUEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 222,
+        "nombre": "OSCAR OMAR ALVAREZ GONZALEZ Y\/O RUBEN CHAVEZ SANCHEZ",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 223,
+        "nombre": "PEDRO",
+        "apellidos": "BARRERA RIVAS",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 224,
+        "nombre": "MARTIN",
+        "apellidos": "GARCIA DIAZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 225,
+        "nombre": "MANUEL",
+        "apellidos": "GONZALEZ BAUTISTA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 226,
+        "nombre": "ALBERTO JOAQUIN",
+        "apellidos": "CUELLAR MADRIGAL",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 227,
+        "nombre": "MIGUEL",
+        "apellidos": "RENTERIA FONSECA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 228,
+        "nombre": "RICARDO",
+        "apellidos": "ECHEVERRIA TRUJILLO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 229,
+        "nombre": "SANTIAGO",
+        "apellidos": "VAZQUEZ GONZALEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 230,
+        "nombre": "SERGIO",
+        "apellidos": "AGUIRRE VASQUEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 231,
+        "nombre": "FRANCISCO",
+        "apellidos": "AGUIRRE MARTINEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 232,
+        "nombre": "SERGIO",
+        "apellidos": "DEL TORO VARGAS",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 233,
+        "nombre": "JUAN",
+        "apellidos": "RUIZ RIVERA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 234,
+        "nombre": "JESUS",
+        "apellidos": "LOPEZ LOPEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 235,
+        "nombre": "FRANCISCO JAVIER",
+        "apellidos": "HERRERA BENAVIDES",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 236,
+        "nombre": "LUIS",
+        "apellidos": "MONTES CAMARENA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 237,
+        "nombre": "RAMON",
+        "apellidos": "CARRILLO BECERRA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 238,
+        "nombre": "MARIA ELBA BRAMBILA SOLIS Y\/O JOSE ANTONIO RUELAS PEREZ",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 239,
+        "nombre": "JUAN ERNESTO",
+        "apellidos": "MOYA ORTIZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 240,
+        "nombre": "RICARDO",
+        "apellidos": "AMEZOLA MENDEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 241,
+        "nombre": "MIGUEL",
+        "apellidos": "LOZA HERNANDEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 242,
+        "nombre": "MIGUEL ANGEL",
+        "apellidos": "VELAZCO SERRATOS",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 243,
+        "nombre": "CARLOS ALFONSO",
+        "apellidos": "GONZALEZ JIMENEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 244,
+        "nombre": "TEODORO",
+        "apellidos": "RIOS BARBA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 245,
+        "nombre": "ANTONIO",
+        "apellidos": "JIMENEZ GONZALEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 246,
+        "nombre": "JOSE REYES",
+        "apellidos": "AYALA ESTRADA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 247,
+        "nombre": "CANDIDO",
+        "apellidos": "GONZALEZ SANDOVAL",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 248,
+        "nombre": "OSWALDO",
+        "apellidos": "BARAJAS NAVARRO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 249,
+        "nombre": "MARIA DE LOURDES",
+        "apellidos": "DIAZ DIAZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 250,
+        "nombre": "JOSE DOLORES MACIAS CARDENAS Y\/O JOEL MACIAS SILVA",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 251,
+        "nombre": "JAVIER",
+        "apellidos": "DE ALBA VALLE",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 252,
+        "nombre": "ENRIQUE",
+        "apellidos": "ANAYA MORENO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 253,
+        "nombre": "CARLOS HUMBERTO",
+        "apellidos": "MARTINEZ ONTIVEROS",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 254,
+        "nombre": "PABLO",
+        "apellidos": "GUTIERREZ VELAZCO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 255,
+        "nombre": "ARCELIA",
+        "apellidos": "ALCALA CORTES",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 256,
+        "nombre": "RASTRO MPAL DE ZAPOTITLAN DE VADILLO",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 257,
+        "nombre": "DIEGO",
+        "apellidos": "OROZCO HERNANDEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 258,
+        "nombre": "HIPOLITO",
+        "apellidos": "VENEGA SOLORIO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 259,
+        "nombre": "VETERINARIA ECOPET",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 260,
+        "nombre": "JOB DANIEL",
+        "apellidos": "AVALOS RAMIREZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 261,
+        "nombre": "BENJAMIN ZARATE ARREOLA Y\/O BENJAMIN ORLANDO ZARATE ZARATE",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 262,
+        "nombre": "JOSE LUIS",
+        "apellidos": "VEGA CORTEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 263,
+        "nombre": "SALVADOR",
+        "apellidos": "GONZALEZ ALBA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 264,
+        "nombre": "JAVIER",
+        "apellidos": "RANGEL",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 265,
+        "nombre": "ABEL",
+        "apellidos": "DE DIOS GONZALEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 266,
+        "nombre": "MIGUEL ANGEL",
+        "apellidos": "ALVAREZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 267,
+        "nombre": "MAGDALENO",
+        "apellidos": "TORRES IBAÑEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 268,
+        "nombre": "MVZ",
+        "apellidos": "JAVIER RANGEL",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 269,
+        "nombre": "BENJAMIN",
+        "apellidos": "RIVERA PADILLA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 270,
+        "nombre": "ADLER PHARMA, S DE RL DE CV",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 271,
+        "nombre": "ANTONIO",
+        "apellidos": "LOPEZ MELENDEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 272,
+        "nombre": "ALBERTO AVALOS CARDENAS, GREGORIO AVALOS MARTINEZ Y\/O JOSE JAIME LOPEZ LOPEZ",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 273,
+        "nombre": "OSCAR",
+        "apellidos": "OLIVARES JIMENEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 274,
+        "nombre": "JOSE LUIS",
+        "apellidos": "SILVA BECERRA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 275,
+        "nombre": "VICTOR MANUEL",
+        "apellidos": "GOMEZ ARAIZA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 276,
+        "nombre": "REYES",
+        "apellidos": "AYALA ZARAGOZA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 277,
+        "nombre": "JORGE ARMANDO",
+        "apellidos": "CARRILLO PALOMAR",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 278,
+        "nombre": "HIGINIO",
+        "apellidos": "ROMERO GODINEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 279,
+        "nombre": "GUILLERMO",
+        "apellidos": "CARRILLO CERVANTES",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 280,
+        "nombre": "JOSE",
+        "apellidos": "ROMO REYES",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 281,
+        "nombre": "EL PORVENIR DE BRAN SC DE RL DE CV",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 282,
+        "nombre": "JOSE MANUEL",
+        "apellidos": "CASILLAS ALCALA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 283,
+        "nombre": "HECTOR",
+        "apellidos": "RODRIGUEZ DELGADILLO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 284,
+        "nombre": "SALVADOR",
+        "apellidos": "FONSECA SOLIS",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 285,
+        "nombre": "FELIPE DE JESUS",
+        "apellidos": "RAMIREZ DIAZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 286,
+        "nombre": "LUIS EDUARDO",
+        "apellidos": "REYES JAIME",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 287,
+        "nombre": "FELIPE",
+        "apellidos": "GOMEZ ZERMEÑO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 288,
+        "nombre": "SILVIANO",
+        "apellidos": "MIRANDA GUTIERREZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 289,
+        "nombre": "JOSE MANUEL",
+        "apellidos": "ALVAREZ MIRANDA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 290,
+        "nombre": "LORENZO",
+        "apellidos": "HERNANDEZ LOPEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 291,
+        "nombre": "JUAN MANUEL",
+        "apellidos": "IÑIGUEZ RODRIGUEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 292,
+        "nombre": "ELBA LORENA",
+        "apellidos": "OLIVA ESTRELLA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 293,
+        "nombre": "ANGEL ASUNCION",
+        "apellidos": "DE LA TORRE GONZALEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 294,
+        "nombre": "PAZ",
+        "apellidos": "LOPEZ ORTEGA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 295,
+        "nombre": "MARCOS",
+        "apellidos": "LOPEZ VALENCIA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 296,
+        "nombre": "EVERARDO",
+        "apellidos": "OROZCO DE LA TORRE",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 297,
+        "nombre": "JOSE ANTONIO",
+        "apellidos": "HERNANDEZ RODRIGUEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 298,
+        "nombre": "MIGUEL",
+        "apellidos": "VELAZQUEZ GASCON",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 299,
+        "nombre": "MARIA DE JESUS",
+        "apellidos": "VELAZQUEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 300,
+        "nombre": "GUSTAVO",
+        "apellidos": "HERNANDEZ MORALES",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 301,
+        "nombre": "UNION TEPATITLAN SA DE CV",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 302,
+        "nombre": "VICTORIANO",
+        "apellidos": "SANCHEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 303,
+        "nombre": "SERGIO",
+        "apellidos": "MEDINA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 304,
+        "nombre": "CESAR",
+        "apellidos": "GARCIA FIGUEROA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 305,
+        "nombre": "J. ASUNCION",
+        "apellidos": "RUELAS SANTANA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 306,
+        "nombre": "JUAN SIERRA",
+        "apellidos": "ONORATO PEREZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 307,
+        "nombre": "GIL CASTRO",
+        "apellidos": "Y RAMON GAMES",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 308,
+        "nombre": "ARTURO SIERRA, ALFREDO GAMES, ALFREDO Y ROBERTO LLAMAS",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 309,
+        "nombre": "ANTONIO",
+        "apellidos": "REYES Y PEDRO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 310,
+        "nombre": "ADRIAN QUIÑONES",
+        "apellidos": "Y FELIPE ESPARZA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 311,
+        "nombre": "GIL SIERRA",
+        "apellidos": "Y CARLOS ESPARZA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 312,
+        "nombre": "RAMON",
+        "apellidos": "CEJA REYES",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 313,
+        "nombre": "JOSE",
+        "apellidos": "VERA CAMPOS",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 314,
+        "nombre": "ESTEBAN",
+        "apellidos": "NERI BEJARANO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 315,
+        "nombre": "EMMANUEL",
+        "apellidos": "PARRA DE LA TORRE",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 316,
+        "nombre": "JOSE DE JESUS",
+        "apellidos": "HERNANDEZ MARTIN",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 317,
+        "nombre": "AURORA",
+        "apellidos": "MUÑOZ SANCHEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 318,
+        "nombre": "ENRIQUE",
+        "apellidos": "A LA TORRE",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 319,
+        "nombre": "ENRRIQUE",
+        "apellidos": "HERNADEZ CARMONA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 320,
+        "nombre": "PATRICIA",
+        "apellidos": "RODRIGUEZ RENTERIA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 321,
+        "nombre": "ALBERTO",
+        "apellidos": "RODRIGUEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 322,
+        "nombre": "AGROPECUARIA EL TEPETATILLO, S.A. DE C.V",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 323,
+        "nombre": "J. ROSALIO",
+        "apellidos": "CARRILLO CERVANTES",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 324,
+        "nombre": "MARIA GUADALUPE",
+        "apellidos": "ESTRADA ESTRADA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 325,
+        "nombre": "EDUARDO",
+        "apellidos": "SANTIAGO GONZALEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 326,
+        "nombre": "CARLOS",
+        "apellidos": "SANTIAGO GONZALEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 327,
+        "nombre": "J. JESUS",
+        "apellidos": "VELAZCO GODINEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 328,
+        "nombre": "ERICK",
+        "apellidos": "RAMIREZ PRIETO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 329,
+        "nombre": "RANCHO RASTROJO SPR DE RL",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 330,
+        "nombre": "LUCIANO",
+        "apellidos": "GARCIA SOLORIO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 331,
+        "nombre": "ALEJANDRA",
+        "apellidos": "PEREZ BARBA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 332,
+        "nombre": "JENNIFER",
+        "apellidos": "CARDENAS MUÑOZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 333,
+        "nombre": "LORENA",
+        "apellidos": "NIÑO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 334,
+        "nombre": "MARCOS FRANCISCO",
+        "apellidos": "DIAZ ALVAREZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 335,
+        "nombre": "RAFAEL",
+        "apellidos": "CARRILLO CARRILLO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 336,
+        "nombre": "ROSARIO",
+        "apellidos": "FRANCO PATIÑO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 337,
+        "nombre": "GUADALUPE",
+        "apellidos": "CARRILLO BECERRA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 338,
+        "nombre": "ISAC",
+        "apellidos": "GOMEZ GOMEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 339,
+        "nombre": "ISMAEL",
+        "apellidos": "IÑIGUEZ RAMIREZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 340,
+        "nombre": "TIBURCIO",
+        "apellidos": "GUTIERREZ GUTIERREZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 341,
+        "nombre": "RAFAEL",
+        "apellidos": "YSLAS GOMEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 342,
+        "nombre": "JOSE LUIS",
+        "apellidos": "DIAZ DIAZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 343,
+        "nombre": "ABEL",
+        "apellidos": "DIAZ DIAZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 344,
+        "nombre": "ANTONIO DE JESUS",
+        "apellidos": "DE LA TORRE RIZO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 345,
+        "nombre": "PABLO",
+        "apellidos": "LIMON RUBALCABA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 346,
+        "nombre": "JOSE ARMANDO",
+        "apellidos": "SANCHEZ MORAN",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 347,
+        "nombre": "JOSE DE JESUS",
+        "apellidos": "NAVARRO ACEVES",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 348,
+        "nombre": "JOSE",
+        "apellidos": "GOMEZ MARTINEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 349,
+        "nombre": "EDY",
+        "apellidos": "VIRGEN",
+        "telefono": "3331195193",
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 350,
+        "nombre": "EVERARDO",
+        "apellidos": "MUÑOZ PANTOJA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 351,
+        "nombre": "SERGIO RAFAEL",
+        "apellidos": "LOPEZ PAINO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 352,
+        "nombre": "RICARDO",
+        "apellidos": "ESQUEDA GARCIA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 353,
+        "nombre": "JOVANNI",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 354,
+        "nombre": "MIGUEL",
+        "apellidos": "RUBIO HERNADEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 355,
+        "nombre": "FRANCISCO",
+        "apellidos": "GONZALEZ RAMIREZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 356,
+        "nombre": "MEJIA SANCHEZ JOSE\/ LOPEZ CANO ALICIA",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 357,
+        "nombre": "CARLOS",
+        "apellidos": "MONTAÑO ZEPEDA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 358,
+        "nombre": "FERNANDO",
+        "apellidos": "GALOOS ACEVES",
+        "telefono": "36355665",
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 359,
+        "nombre": "FCO",
+        "apellidos": "GLEZ. RAMIREZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 360,
+        "nombre": "JULIO CESAR",
+        "apellidos": "GARCIA R",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 361,
+        "nombre": "MARIA",
+        "apellidos": "HERRERA BENAVIDES",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 362,
+        "nombre": "PEDRO",
+        "apellidos": "SEGOVIANO RAZO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 363,
+        "nombre": "JOSE",
+        "apellidos": "MENDOZA VAZQUEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 364,
+        "nombre": "GERARDO",
+        "apellidos": "RAZO ALVAREZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 365,
+        "nombre": "MARTIN",
+        "apellidos": "PADILLA CAMPO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 366,
+        "nombre": "ERMILA",
+        "apellidos": "BARAJAS RUELAS",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 367,
+        "nombre": "ALFREDO",
+        "apellidos": "LOPEZ HERRERA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 368,
+        "nombre": "RIGOBERTO",
+        "apellidos": "ESQUIVEL SAAVEDRA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 369,
+        "nombre": "DAVID",
+        "apellidos": "LOPEZ PEREZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 370,
+        "nombre": "JOSE",
+        "apellidos": "REYES TORIBIO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 371,
+        "nombre": "JOSE ALBERTO",
+        "apellidos": "LOPEZ NAVARRO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 372,
+        "nombre": "ADOLFO",
+        "apellidos": "HERNANDEZ AYALA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 373,
+        "nombre": "CLAUDIA",
+        "apellidos": "GALAN",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 374,
+        "nombre": "RASTRO LA CAPONERA",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 375,
+        "nombre": "AURELIO",
+        "apellidos": "BARAJAS CORNEJO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 376,
+        "nombre": "CARLOS",
+        "apellidos": "SALCEDO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 377,
+        "nombre": "ROBERTO",
+        "apellidos": "DADO GLMORE",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 378,
+        "nombre": "JUAN",
+        "apellidos": "DE ANDA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 379,
+        "nombre": "RAMON",
+        "apellidos": "ARECHIGA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 380,
+        "nombre": "CARLOS",
+        "apellidos": "MALDONADO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 381,
+        "nombre": "JANIO",
+        "apellidos": "GONZALEZ GONZALEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 382,
+        "nombre": "AMADOR",
+        "apellidos": "ALCANTAR",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 383,
+        "nombre": "FELIX",
+        "apellidos": "SENDIX",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 384,
+        "nombre": "MIGUEL",
+        "apellidos": "SALCEDO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 385,
+        "nombre": "ROBERTO",
+        "apellidos": "SALCEDO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 386,
+        "nombre": "JESUS",
+        "apellidos": "CAZARES",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 387,
+        "nombre": "MARTIN",
+        "apellidos": "SALCEDO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 388,
+        "nombre": "RAMON",
+        "apellidos": "PALOMERA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 389,
+        "nombre": "SERGIO",
+        "apellidos": "SANCHEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 390,
+        "nombre": "AMPARO",
+        "apellidos": "RAMOS",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 391,
+        "nombre": "JOSE DE JESUS",
+        "apellidos": "RAMIREZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 392,
+        "nombre": "JOSE",
+        "apellidos": "LOPEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 393,
+        "nombre": "AGUSTIN",
+        "apellidos": "PEÑA PULIDO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 394,
+        "nombre": "ORLANDO",
+        "apellidos": "GARCIA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 395,
+        "nombre": "JOSE",
+        "apellidos": "OROZCO PEREZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 396,
+        "nombre": "JOSE DE JESUS",
+        "apellidos": "OROZCO RUIZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 397,
+        "nombre": "ESTHER",
+        "apellidos": "RAMIREZ OLIVAREZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 398,
+        "nombre": "HUGO",
+        "apellidos": "MARTINEZ AVALOS",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 399,
+        "nombre": "ASENCION",
+        "apellidos": "TELLEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 400,
+        "nombre": "REFUGIO",
+        "apellidos": "ESCOBAR COCULA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 401,
+        "nombre": "RAUL",
+        "apellidos": "PALOMO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 402,
+        "nombre": "DAVID",
+        "apellidos": "SAHAGUN",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 403,
+        "nombre": "ISIDRO",
+        "apellidos": "ZAMORA CARDENAS",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 404,
+        "nombre": "JUAN JOSE",
+        "apellidos": "BENITEZ CONECHE",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 405,
+        "nombre": "MARTHA",
+        "apellidos": "PLASCENCIA MUNGUIA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 406,
+        "nombre": "ESTEBAN",
+        "apellidos": "ESPINOZA TORRES",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 407,
+        "nombre": "ROBERTO",
+        "apellidos": "FRANCO LOPEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 408,
+        "nombre": "JESUS",
+        "apellidos": "GUTIERREZ LIMON",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 409,
+        "nombre": "RUBEN",
+        "apellidos": "PEREZ DELGADO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 410,
+        "nombre": "CONSTANCIO",
+        "apellidos": "PACAS LARES",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 411,
+        "nombre": "MARTIN",
+        "apellidos": "VELAZQUEZ GASCON",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 412,
+        "nombre": "JESUS",
+        "apellidos": "VELAZQUEZ GASCON",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 413,
+        "nombre": "ADAN",
+        "apellidos": "AVALOS CARVAJAL",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 414,
+        "nombre": "ALFONSO",
+        "apellidos": "ARZATE TRUJILLO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 415,
+        "nombre": "HECTOR",
+        "apellidos": "EDUARDO ZAMBRANO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 416,
+        "nombre": "ARNOLDO",
+        "apellidos": "OCHOA LOPEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 417,
+        "nombre": "JOSE",
+        "apellidos": "AGUSTIN DE LA CRUZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 418,
+        "nombre": "GABRIEL",
+        "apellidos": "GUERRERO ROSAS",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 419,
+        "nombre": "ERIBERTO",
+        "apellidos": "PEREZ LOPEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 420,
+        "nombre": "VICTOR",
+        "apellidos": "CORONA TERRIQUEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 421,
+        "nombre": "JESUS JOSE",
+        "apellidos": "ARTEAGA TAPIA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 422,
+        "nombre": "GANADERIA EL CITRINO",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 423,
+        "nombre": "HACIENDA",
+        "apellidos": "SANTA QUITERIA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 424,
+        "nombre": "ROSA",
+        "apellidos": "ROSARIO RAYGOZA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 425,
+        "nombre": "ARTURO",
+        "apellidos": "BRAMBILA REGALADO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 426,
+        "nombre": "ROMULO EMANUEL",
+        "apellidos": "LEDEZMA HEREDIA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 427,
+        "nombre": "VICTOR",
+        "apellidos": "MARQUEZ MUÑOZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 428,
+        "nombre": "ARMANDO",
+        "apellidos": "NUÑEZ RAMOS",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 429,
+        "nombre": "OSCAR RAMON FLORES VARGAS\/ ROGELIO FLORES VARGAS",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 430,
+        "nombre": "JUVENAL",
+        "apellidos": "DURAN CHAVEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 431,
+        "nombre": "JAIME",
+        "apellidos": "DURAN CHAVEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 432,
+        "nombre": "CRISTIAN EDUARDO",
+        "apellidos": "RIVERA CASTAÑEDA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 433,
+        "nombre": "RAFAEL",
+        "apellidos": "MACIAS PADILLA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 434,
+        "nombre": "JOSE LUIS",
+        "apellidos": "MEDINA RAMIREZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 435,
+        "nombre": "ARTURO",
+        "apellidos": "CESEÑA CAYEROS",
+        "telefono": "3331055356",
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 436,
+        "nombre": "OSWALDO",
+        "apellidos": "RODRIGUEZ GUTIERREZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 437,
+        "nombre": "FABIAN",
+        "apellidos": "NUÑO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 438,
+        "nombre": "MANUEL",
+        "apellidos": "RAMIREZ TELLEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 439,
+        "nombre": "ANTONIO",
+        "apellidos": "URZUA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 440,
+        "nombre": "JOSE ANTONIO",
+        "apellidos": "MUÑOZ LEONER",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 441,
+        "nombre": "ALEJANDRO",
+        "apellidos": "RAMOS RENTERIA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 442,
+        "nombre": "JOSE MANUEL",
+        "apellidos": "CARRILLO HUERTA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 443,
+        "nombre": "ADIEL",
+        "apellidos": "BRAMBILA PELAYO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 444,
+        "nombre": "TEODOLO IRINEO",
+        "apellidos": "JAUREGUI REYES",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 445,
+        "nombre": "CARLOTA",
+        "apellidos": "ABONZA NAVARRO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 446,
+        "nombre": "ISAAC ALONSO",
+        "apellidos": "TORRES R",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 447,
+        "nombre": "MA. DE JESUS",
+        "apellidos": "NAVARRO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 448,
+        "nombre": "GUSTAVO",
+        "apellidos": "JIMENEZ MOJICA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 449,
+        "nombre": "RUBEN",
+        "apellidos": "CABRERA BEJAR",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 450,
+        "nombre": "NESTOR",
+        "apellidos": "REAL CEDEÑO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 451,
+        "nombre": "MARCO ANTONIO",
+        "apellidos": "DEL TORO GONZALEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 452,
+        "nombre": "PEDRO HERIBERTO",
+        "apellidos": "GARCIA MUNGUIA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 453,
+        "nombre": "MARTHA",
+        "apellidos": "MARRON TAMAYO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 454,
+        "nombre": "HUMBERTO",
+        "apellidos": "NUÑEZ SANCHEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 455,
+        "nombre": "HORACIO RAFAEL",
+        "apellidos": "FARIAS RUIZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 456,
+        "nombre": "JOSE GUADALUPE",
+        "apellidos": "VELEZQUEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 457,
+        "nombre": "CARMEN ANGELICA",
+        "apellidos": "VALDOVINOS TORRES",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 458,
+        "nombre": "ANTONIO",
+        "apellidos": "GONZALEZ DE LA MORA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 459,
+        "nombre": "AGRO-GANADERA HA SPR DE RL Y\/O PRODUCTORA GANADERA DE ETZATLAN SPR DE RL",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 460,
+        "nombre": "MARTHA ALICIA",
+        "apellidos": "GONZALEZ BECERRA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 461,
+        "nombre": "MIGUEL",
+        "apellidos": "GARCIA DURAN",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 462,
+        "nombre": "RUBEN",
+        "apellidos": "GOMEZ GOMEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 463,
+        "nombre": "MIGUEL",
+        "apellidos": "MARTINEZ TELLEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 464,
+        "nombre": "SALVADOR",
+        "apellidos": "MENDOZA GUTIERREZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 465,
+        "nombre": "SERGIO",
+        "apellidos": "ARTEAGA TORRES",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 466,
+        "nombre": "JOSE ANTONIO",
+        "apellidos": "ROMERO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 467,
+        "nombre": "GILBERTO",
+        "apellidos": "GUILLEN ROMERO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 468,
+        "nombre": "JUAN ANTONIO",
+        "apellidos": "PADILLA MONTERO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 469,
+        "nombre": "J. REFUGIO",
+        "apellidos": "RUELAS MARTINEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 470,
+        "nombre": "EDUARDO",
+        "apellidos": "OLIVARES JIMENEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 471,
+        "nombre": "ARNULFO",
+        "apellidos": "CASTILLO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 472,
+        "nombre": "PEDRO",
+        "apellidos": "CERVANTES ZARAGOZA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 473,
+        "nombre": "EDUARDO",
+        "apellidos": "SANTANA MONROY",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 474,
+        "nombre": "AURELIANO",
+        "apellidos": "DE LA TORRE LOPEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 475,
+        "nombre": "RODOLFO",
+        "apellidos": "FIGUEROA ESTRADA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 476,
+        "nombre": "RIGOBERTO",
+        "apellidos": "PULIDO URIBE",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 477,
+        "nombre": "RAUL",
+        "apellidos": "PONCE RODRIGUEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 478,
+        "nombre": "LUIS MANUEL",
+        "apellidos": "MARQUEZ MARAVEL",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 479,
+        "nombre": "LUIS",
+        "apellidos": "RODRIGUEZ GONZALEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 480,
+        "nombre": "JESUS",
+        "apellidos": "CAMPOS CASTRO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 481,
+        "nombre": "JOSE JAVIER",
+        "apellidos": "ROJO QUINTERO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 482,
+        "nombre": "LEOPOLDO",
+        "apellidos": "HARO CORONADO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 483,
+        "nombre": "MARIO",
+        "apellidos": "ROMERO OCEGUEDA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 484,
+        "nombre": "ENRIQUE",
+        "apellidos": "VELAZQUEZ OROZCO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 485,
+        "nombre": "JOSE",
+        "apellidos": "TINAJERO VALENCIA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 486,
+        "nombre": "CENTRO INTEGRAL VETERINARIO JARDINES DEL SUR",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 487,
+        "nombre": "RICARDO",
+        "apellidos": "TAPIA PLASCENCIA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 488,
+        "nombre": "ZEFERINO ALVARADO GONZALEZ Y\/O JOSE MANUEL ALVARADO OROZCO",
+        "apellidos": "",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 489,
+        "nombre": "MARTIN",
+        "apellidos": "DE ALBA CORONADO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 490,
+        "nombre": "JOSE LUIS",
+        "apellidos": "GARCIA VAZQUEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 491,
+        "nombre": "ERICK",
+        "apellidos": "MARTIN RODRIGUEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 492,
+        "nombre": "JESUS",
+        "apellidos": "GUZMAN MARQUEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 493,
+        "nombre": "GERARDO",
+        "apellidos": "SOTO GAMON",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 494,
+        "nombre": "RUBEN",
+        "apellidos": "RODRIGUEZ RIVERA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 495,
+        "nombre": "JAIME",
+        "apellidos": "BARAJAS",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 496,
+        "nombre": "JOSE",
+        "apellidos": "SANCHEZ GODINEZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 497,
+        "nombre": "GUSTAVO",
+        "apellidos": "NUÑO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 498,
+        "nombre": "HECTOR",
+        "apellidos": "MANUEL DIAZ",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 499,
+        "nombre": "EFRAIN",
+        "apellidos": "OROZCO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 500,
+        "nombre": "JUAN CESAR",
+        "apellidos": "AMADOR BARAJAS",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 501,
+        "nombre": "OMAR",
+        "apellidos": "CRUZ ZEPEDA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 502,
+        "nombre": "J. CRUZ",
+        "apellidos": "FLORES PELAYO",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 503,
+        "nombre": "EDITH",
+        "apellidos": "FLORES VENEGAS",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 504,
+        "nombre": "FRANCISCO JAVIER",
+        "apellidos": "CHAGOLLA PIMIENTA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 505,
+        "nombre": "MIGUEL",
+        "apellidos": "CHAGOLLA HORTA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    },
+    {
+        "id": 506,
+        "nombre": "GREGORIO",
+        "apellidos": "AGUILAR OLIVERA",
+        "telefono": null,
+        "curp": null,
+        "rfc": null,
+        "created_at": "2026-10-16 08:44:21",
+        "updated_at": "2026-10-16 08:44:21"
+    }
+]

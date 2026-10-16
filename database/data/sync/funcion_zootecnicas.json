@@ -1,0 +1,226 @@
+[
+    {
+        "id": 1,
+        "nombre": "Carne",
+        "especie_id": 8,
+        "created_at": "2026-09-29 19:56:22",
+        "updated_at": "2026-09-29 19:56:22"
+    },
+    {
+        "id": 2,
+        "nombre": "Leche",
+        "especie_id": 8,
+        "created_at": "2026-09-29 19:56:22",
+        "updated_at": "2026-09-29 19:56:22"
+    },
+    {
+        "id": 3,
+        "nombre": "Doble propósito",
+        "especie_id": 8,
+        "created_at": "2026-09-29 19:56:22",
+        "updated_at": "2026-09-29 19:56:22"
+    },
+    {
+        "id": 4,
+        "nombre": "Reproducción",
+        "especie_id": 8,
+        "created_at": "2026-09-29 19:56:22",
+        "updated_at": "2026-09-29 19:56:22"
+    },
+    {
+        "id": 5,
+        "nombre": "Pie de cría",
+        "especie_id": 8,
+        "created_at": "2026-09-29 19:56:22",
+        "updated_at": "2026-09-29 19:56:22"
+    },
+    {
+        "id": 6,
+        "nombre": "Trabajo",
+        "especie_id": 8,
+        "created_at": "2026-09-29 19:56:22",
+        "updated_at": "2026-09-29 19:56:22"
+    },
+    {
+        "id": 7,
+        "nombre": "Carne",
+        "especie_id": 9,
+        "created_at": "2026-09-29 19:56:22",
+        "updated_at": "2026-09-29 19:56:22"
+    },
+    {
+        "id": 8,
+        "nombre": "Leche",
+        "especie_id": 9,
+        "created_at": "2026-09-29 19:56:22",
+        "updated_at": "2026-09-29 19:56:22"
+    },
+    {
+        "id": 9,
+        "nombre": "Doble propósito",
+        "especie_id": 9,
+        "created_at": "2026-09-29 19:56:22",
+        "updated_at": "2026-09-29 19:56:22"
+    },
+    {
+        "id": 10,
+        "nombre": "Pie de cría",
+        "especie_id": 9,
+        "created_at": "2026-09-29 19:56:22",
+        "updated_at": "2026-09-29 19:56:22"
+    },
+    {
+        "id": 11,
+        "nombre": "Fibra",
+        "especie_id": 9,
+        "created_at": "2026-09-29 19:56:22",
+        "updated_at": "2026-09-29 19:56:22"
+    },
+    {
+        "id": 12,
+        "nombre": "Carne",
+        "especie_id": 10,
+        "created_at": "2026-09-29 19:56:22",
+        "updated_at": "2026-09-29 19:56:22"
+    },
+    {
+        "id": 13,
+        "nombre": "Lana",
+        "especie_id": 10,
+        "created_at": "2026-09-29 19:56:22",
+        "updated_at": "2026-09-29 19:56:22"
+    },
+    {
+        "id": 14,
+        "nombre": "Leche",
+        "especie_id": 10,
+        "created_at": "2026-09-29 19:56:22",
+        "updated_at": "2026-09-29 19:56:22"
+    },
+    {
+        "id": 15,
+        "nombre": "Doble propósito",
+        "especie_id": 10,
+        "created_at": "2026-09-29 19:56:22",
+        "updated_at": "2026-09-29 19:56:22"
+    },
+    {
+        "id": 16,
+        "nombre": "Pie de cría",
+        "especie_id": 10,
+        "created_at": "2026-09-29 19:56:22",
+        "updated_at": "2026-09-29 19:56:22"
+    },
+    {
+        "id": 17,
+        "nombre": "Trabajo",
+        "especie_id": 11,
+        "created_at": "2026-09-29 19:56:22",
+        "updated_at": "2026-09-29 19:56:22"
+    },
+    {
+        "id": 18,
+        "nombre": "Deporte",
+        "especie_id": 11,
+        "created_at": "2026-09-29 19:56:22",
+        "updated_at": "2026-09-29 19:56:22"
+    },
+    {
+        "id": 19,
+        "nombre": "Reproducción",
+        "especie_id": 11,
+        "created_at": "2026-09-29 19:56:22",
+        "updated_at": "2026-09-29 19:56:22"
+    },
+    {
+        "id": 20,
+        "nombre": "Pie de cría",
+        "especie_id": 11,
+        "created_at": "2026-09-29 19:56:22",
+        "updated_at": "2026-09-29 19:56:22"
+    },
+    {
+        "id": 21,
+        "nombre": "Recreación",
+        "especie_id": 11,
+        "created_at": "2026-09-29 19:56:22",
+        "updated_at": "2026-09-29 19:56:22"
+    },
+    {
+        "id": 22,
+        "nombre": "Carga",
+        "especie_id": 11,
+        "created_at": "2026-09-29 19:56:22",
+        "updated_at": "2026-09-29 19:56:22"
+    },
+    {
+        "id": 23,
+        "nombre": "Engorda",
+        "especie_id": 12,
+        "created_at": "2026-09-29 19:56:22",
+        "updated_at": "2026-09-29 19:56:22"
+    },
+    {
+        "id": 24,
+        "nombre": "Reproducción",
+        "especie_id": 12,
+        "created_at": "2026-09-29 19:56:22",
+        "updated_at": "2026-09-29 19:56:22"
+    },
+    {
+        "id": 25,
+        "nombre": "Pie de cría",
+        "especie_id": 12,
+        "created_at": "2026-09-29 19:56:22",
+        "updated_at": "2026-09-29 19:56:22"
+    },
+    {
+        "id": 26,
+        "nombre": "Carne",
+        "especie_id": 12,
+        "created_at": "2026-09-29 19:56:22",
+        "updated_at": "2026-09-29 19:56:22"
+    },
+    {
+        "id": 27,
+        "nombre": "Postura",
+        "especie_id": 13,
+        "created_at": "2026-09-29 19:56:22",
+        "updated_at": "2026-09-29 19:56:22"
+    },
+    {
+        "id": 28,
+        "nombre": "Engorda",
+        "especie_id": 13,
+        "created_at": "2026-09-29 19:56:22",
+        "updated_at": "2026-09-29 19:56:22"
+    },
+    {
+        "id": 29,
+        "nombre": "Pie de cría",
+        "especie_id": 13,
+        "created_at": "2026-09-29 19:56:22",
+        "updated_at": "2026-09-29 19:56:22"
+    },
+    {
+        "id": 30,
+        "nombre": "Doble propósito",
+        "especie_id": 13,
+        "created_at": "2026-09-29 19:56:22",
+        "updated_at": "2026-09-29 19:56:22"
+    },
+    {
+        "id": 31,
+        "nombre": "Reproducción",
+        "especie_id": 13,
+        "created_at": "2026-09-29 19:56:22",
+        "updated_at": "2026-09-29 19:56:22"
+    },
+    {
+        "id": 32,
+        "nombre": "Ornamental",
+        "especie_id": 13,
+        "created_at": "2026-09-29 19:56:22",
+        "updated_at": "2026-09-29 19:56:22"
+    }
+]

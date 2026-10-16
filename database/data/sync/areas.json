@@ -1,0 +1,56 @@
+[
+    {
+        "id": 1,
+        "nombre": "Bacteriología",
+        "created_at": "2026-10-01 20:40:39",
+        "updated_at": "2026-10-01 20:40:39"
+    },
+    {
+        "id": 2,
+        "nombre": "Brucella",
+        "created_at": "2026-10-01 20:40:39",
+        "updated_at": "2026-10-01 20:40:39"
+    },
+    {
+        "id": 3,
+        "nombre": "Patología",
+        "created_at": "2026-10-01 20:40:39",
+        "updated_at": "2026-10-01 20:40:39"
+    },
+    {
+        "id": 4,
+        "nombre": "PCR",
+        "created_at": "2026-10-01 20:40:39",
+        "updated_at": "2026-10-01 20:40:39"
+    },
+    {
+        "id": 5,
+        "nombre": "Recepción",
+        "created_at": "2026-10-01 20:40:39",
+        "updated_at": "2026-10-01 20:40:39"
+    },
+    {
+        "id": 6,
+        "nombre": "Serología",
+        "created_at": "2026-10-01 20:40:39",
+        "updated_at": "2026-10-01 20:40:39"
+    },
+    {
+        "id": 7,
+        "nombre": "Toxicología",
+        "created_at": "2026-10-01 20:40:39",
+        "updated_at": "2026-10-01 20:40:39"
+    },
+    {
+        "id": 8,
+        "nombre": "Tuberculosis",
+        "created_at": "2026-10-01 20:40:39",
+        "updated_at": "2026-10-01 20:40:39"
+    },
+    {
+        "id": 9,
+        "nombre": "Virología",
+        "created_at": "2026-10-01 20:40:39",
+        "updated_at": "2026-10-01 20:40:39"
+    }
+]

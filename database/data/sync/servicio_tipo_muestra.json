@@ -1,0 +1,830 @@
+[
+    {
+        "servicio_id": 1,
+        "tipo_muestra_id": 56
+    },
+    {
+        "servicio_id": 2,
+        "tipo_muestra_id": 109
+    },
+    {
+        "servicio_id": 2,
+        "tipo_muestra_id": 113
+    },
+    {
+        "servicio_id": 3,
+        "tipo_muestra_id": 54
+    },
+    {
+        "servicio_id": 3,
+        "tipo_muestra_id": 55
+    },
+    {
+        "servicio_id": 3,
+        "tipo_muestra_id": 56
+    },
+    {
+        "servicio_id": 3,
+        "tipo_muestra_id": 57
+    },
+    {
+        "servicio_id": 3,
+        "tipo_muestra_id": 61
+    },
+    {
+        "servicio_id": 3,
+        "tipo_muestra_id": 62
+    },
+    {
+        "servicio_id": 3,
+        "tipo_muestra_id": 68
+    },
+    {
+        "servicio_id": 3,
+        "tipo_muestra_id": 69
+    },
+    {
+        "servicio_id": 3,
+        "tipo_muestra_id": 70
+    },
+    {
+        "servicio_id": 3,
+        "tipo_muestra_id": 71
+    },
+    {
+        "servicio_id": 3,
+        "tipo_muestra_id": 72
+    },
+    {
+        "servicio_id": 3,
+        "tipo_muestra_id": 73
+    },
+    {
+        "servicio_id": 3,
+        "tipo_muestra_id": 74
+    },
+    {
+        "servicio_id": 3,
+        "tipo_muestra_id": 75
+    },
+    {
+        "servicio_id": 3,
+        "tipo_muestra_id": 76
+    },
+    {
+        "servicio_id": 3,
+        "tipo_muestra_id": 78
+    },
+    {
+        "servicio_id": 3,
+        "tipo_muestra_id": 79
+    },
+    {
+        "servicio_id": 3,
+        "tipo_muestra_id": 80
+    },
+    {
+        "servicio_id": 3,
+        "tipo_muestra_id": 82
+    },
+    {
+        "servicio_id": 3,
+        "tipo_muestra_id": 83
+    },
+    {
+        "servicio_id": 3,
+        "tipo_muestra_id": 84
+    },
+    {
+        "servicio_id": 3,
+        "tipo_muestra_id": 85
+    },
+    {
+        "servicio_id": 3,
+        "tipo_muestra_id": 86
+    },
+    {
+        "servicio_id": 3,
+        "tipo_muestra_id": 87
+    },
+    {
+        "servicio_id": 3,
+        "tipo_muestra_id": 88
+    },
+    {
+        "servicio_id": 3,
+        "tipo_muestra_id": 89
+    },
+    {
+        "servicio_id": 3,
+        "tipo_muestra_id": 90
+    },
+    {
+        "servicio_id": 3,
+        "tipo_muestra_id": 91
+    },
+    {
+        "servicio_id": 3,
+        "tipo_muestra_id": 92
+    },
+    {
+        "servicio_id": 3,
+        "tipo_muestra_id": 93
+    },
+    {
+        "servicio_id": 3,
+        "tipo_muestra_id": 94
+    },
+    {
+        "servicio_id": 3,
+        "tipo_muestra_id": 95
+    },
+    {
+        "servicio_id": 3,
+        "tipo_muestra_id": 96
+    },
+    {
+        "servicio_id": 3,
+        "tipo_muestra_id": 97
+    },
+    {
+        "servicio_id": 3,
+        "tipo_muestra_id": 98
+    },
+    {
+        "servicio_id": 3,
+        "tipo_muestra_id": 99
+    },
+    {
+        "servicio_id": 3,
+        "tipo_muestra_id": 100
+    },
+    {
+        "servicio_id": 3,
+        "tipo_muestra_id": 101
+    },
+    {
+        "servicio_id": 3,
+        "tipo_muestra_id": 102
+    },
+    {
+        "servicio_id": 3,
+        "tipo_muestra_id": 103
+    },
+    {
+        "servicio_id": 3,
+        "tipo_muestra_id": 104
+    },
+    {
+        "servicio_id": 3,
+        "tipo_muestra_id": 105
+    },
+    {
+        "servicio_id": 3,
+        "tipo_muestra_id": 106
+    },
+    {
+        "servicio_id": 3,
+        "tipo_muestra_id": 107
+    },
+    {
+        "servicio_id": 3,
+        "tipo_muestra_id": 108
+    },
+    {
+        "servicio_id": 3,
+        "tipo_muestra_id": 116
+    },
+    {
+        "servicio_id": 3,
+        "tipo_muestra_id": 117
+    },
+    {
+        "servicio_id": 5,
+        "tipo_muestra_id": 57
+    },
+    {
+        "servicio_id": 5,
+        "tipo_muestra_id": 72
+    },
+    {
+        "servicio_id": 5,
+        "tipo_muestra_id": 73
+    },
+    {
+        "servicio_id": 5,
+        "tipo_muestra_id": 112
+    },
+    {
+        "servicio_id": 6,
+        "tipo_muestra_id": 74
+    },
+    {
+        "servicio_id": 6,
+        "tipo_muestra_id": 77
+    },
+    {
+        "servicio_id": 6,
+        "tipo_muestra_id": 89
+    },
+    {
+        "servicio_id": 6,
+        "tipo_muestra_id": 109
+    },
+    {
+        "servicio_id": 7,
+        "tipo_muestra_id": 70
+    },
+    {
+        "servicio_id": 7,
+        "tipo_muestra_id": 77
+    },
+    {
+        "servicio_id": 8,
+        "tipo_muestra_id": 89
+    },
+    {
+        "servicio_id": 9,
+        "tipo_muestra_id": 74
+    },
+    {
+        "servicio_id": 10,
+        "tipo_muestra_id": 62
+    },
+    {
+        "servicio_id": 10,
+        "tipo_muestra_id": 90
+    },
+    {
+        "servicio_id": 11,
+        "tipo_muestra_id": 61
+    },
+    {
+        "servicio_id": 11,
+        "tipo_muestra_id": 112
+    },
+    {
+        "servicio_id": 12,
+        "tipo_muestra_id": 90
+    },
+    {
+        "servicio_id": 13,
+        "tipo_muestra_id": 90
+    },
+    {
+        "servicio_id": 14,
+        "tipo_muestra_id": 70
+    },
+    {
+        "servicio_id": 14,
+        "tipo_muestra_id": 71
+    },
+    {
+        "servicio_id": 15,
+        "tipo_muestra_id": 120
+    },
+    {
+        "servicio_id": 17,
+        "tipo_muestra_id": 72
+    },
+    {
+        "servicio_id": 17,
+        "tipo_muestra_id": 73
+    },
+    {
+        "servicio_id": 17,
+        "tipo_muestra_id": 104
+    },
+    {
+        "servicio_id": 29,
+        "tipo_muestra_id": 109
+    },
+    {
+        "servicio_id": 29,
+        "tipo_muestra_id": 111
+    },
+    {
+        "servicio_id": 30,
+        "tipo_muestra_id": 54
+    },
+    {
+        "servicio_id": 30,
+        "tipo_muestra_id": 72
+    },
+    {
+        "servicio_id": 30,
+        "tipo_muestra_id": 75
+    },
+    {
+        "servicio_id": 30,
+        "tipo_muestra_id": 88
+    },
+    {
+        "servicio_id": 30,
+        "tipo_muestra_id": 89
+    },
+    {
+        "servicio_id": 30,
+        "tipo_muestra_id": 96
+    },
+    {
+        "servicio_id": 30,
+        "tipo_muestra_id": 113
+    },
+    {
+        "servicio_id": 30,
+        "tipo_muestra_id": 115
+    },
+    {
+        "servicio_id": 31,
+        "tipo_muestra_id": 57
+    },
+    {
+        "servicio_id": 31,
+        "tipo_muestra_id": 71
+    },
+    {
+        "servicio_id": 31,
+        "tipo_muestra_id": 117
+    },
+    {
+        "servicio_id": 32,
+        "tipo_muestra_id": 57
+    },
+    {
+        "servicio_id": 32,
+        "tipo_muestra_id": 71
+    },
+    {
+        "servicio_id": 32,
+        "tipo_muestra_id": 112
+    },
+    {
+        "servicio_id": 32,
+        "tipo_muestra_id": 117
+    },
+    {
+        "servicio_id": 33,
+        "tipo_muestra_id": 57
+    },
+    {
+        "servicio_id": 33,
+        "tipo_muestra_id": 71
+    },
+    {
+        "servicio_id": 33,
+        "tipo_muestra_id": 112
+    },
+    {
+        "servicio_id": 33,
+        "tipo_muestra_id": 117
+    },
+    {
+        "servicio_id": 34,
+        "tipo_muestra_id": 57
+    },
+    {
+        "servicio_id": 34,
+        "tipo_muestra_id": 71
+    },
+    {
+        "servicio_id": 34,
+        "tipo_muestra_id": 112
+    },
+    {
+        "servicio_id": 34,
+        "tipo_muestra_id": 117
+    },
+    {
+        "servicio_id": 35,
+        "tipo_muestra_id": 119
+    },
+    {
+        "servicio_id": 36,
+        "tipo_muestra_id": 120
+    },
+    {
+        "servicio_id": 37,
+        "tipo_muestra_id": 74
+    },
+    {
+        "servicio_id": 38,
+        "tipo_muestra_id": 74
+    },
+    {
+        "servicio_id": 39,
+        "tipo_muestra_id": 74
+    },
+    {
+        "servicio_id": 40,
+        "tipo_muestra_id": 74
+    },
+    {
+        "servicio_id": 41,
+        "tipo_muestra_id": 69
+    },
+    {
+        "servicio_id": 41,
+        "tipo_muestra_id": 74
+    },
+    {
+        "servicio_id": 41,
+        "tipo_muestra_id": 75
+    },
+    {
+        "servicio_id": 41,
+        "tipo_muestra_id": 76
+    },
+    {
+        "servicio_id": 42,
+        "tipo_muestra_id": 74
+    },
+    {
+        "servicio_id": 43,
+        "tipo_muestra_id": 74
+    },
+    {
+        "servicio_id": 45,
+        "tipo_muestra_id": 70
+    },
+    {
+        "servicio_id": 45,
+        "tipo_muestra_id": 71
+    },
+    {
+        "servicio_id": 46,
+        "tipo_muestra_id": 70
+    },
+    {
+        "servicio_id": 46,
+        "tipo_muestra_id": 71
+    },
+    {
+        "servicio_id": 47,
+        "tipo_muestra_id": 70
+    },
+    {
+        "servicio_id": 47,
+        "tipo_muestra_id": 71
+    },
+    {
+        "servicio_id": 48,
+        "tipo_muestra_id": 70
+    },
+    {
+        "servicio_id": 48,
+        "tipo_muestra_id": 71
+    },
+    {
+        "servicio_id": 49,
+        "tipo_muestra_id": 64
+    },
+    {
+        "servicio_id": 49,
+        "tipo_muestra_id": 70
+    },
+    {
+        "servicio_id": 49,
+        "tipo_muestra_id": 71
+    },
+    {
+        "servicio_id": 49,
+        "tipo_muestra_id": 105
+    },
+    {
+        "servicio_id": 49,
+        "tipo_muestra_id": 106
+    },
+    {
+        "servicio_id": 50,
+        "tipo_muestra_id": 74
+    },
+    {
+        "servicio_id": 50,
+        "tipo_muestra_id": 75
+    },
+    {
+        "servicio_id": 50,
+        "tipo_muestra_id": 111
+    },
+    {
+        "servicio_id": 50,
+        "tipo_muestra_id": 115
+    },
+    {
+        "servicio_id": 51,
+        "tipo_muestra_id": 62
+    },
+    {
+        "servicio_id": 52,
+        "tipo_muestra_id": 62
+    },
+    {
+        "servicio_id": 53,
+        "tipo_muestra_id": 62
+    },
+    {
+        "servicio_id": 54,
+        "tipo_muestra_id": 62
+    },
+    {
+        "servicio_id": 55,
+        "tipo_muestra_id": 56
+    },
+    {
+        "servicio_id": 55,
+        "tipo_muestra_id": 62
+    },
+    {
+        "servicio_id": 55,
+        "tipo_muestra_id": 89
+    },
+    {
+        "servicio_id": 56,
+        "tipo_muestra_id": 62
+    },
+    {
+        "servicio_id": 57,
+        "tipo_muestra_id": 56
+    },
+    {
+        "servicio_id": 57,
+        "tipo_muestra_id": 62
+    },
+    {
+        "servicio_id": 58,
+        "tipo_muestra_id": 62
+    },
+    {
+        "servicio_id": 59,
+        "tipo_muestra_id": 62
+    },
+    {
+        "servicio_id": 60,
+        "tipo_muestra_id": 62
+    },
+    {
+        "servicio_id": 61,
+        "tipo_muestra_id": 56
+    },
+    {
+        "servicio_id": 61,
+        "tipo_muestra_id": 62
+    },
+    {
+        "servicio_id": 62,
+        "tipo_muestra_id": 62
+    },
+    {
+        "servicio_id": 63,
+        "tipo_muestra_id": 62
+    },
+    {
+        "servicio_id": 63,
+        "tipo_muestra_id": 103
+    },
+    {
+        "servicio_id": 64,
+        "tipo_muestra_id": 62
+    },
+    {
+        "servicio_id": 65,
+        "tipo_muestra_id": 62
+    },
+    {
+        "servicio_id": 66,
+        "tipo_muestra_id": 62
+    },
+    {
+        "servicio_id": 67,
+        "tipo_muestra_id": 62
+    },
+    {
+        "servicio_id": 68,
+        "tipo_muestra_id": 62
+    },
+    {
+        "servicio_id": 69,
+        "tipo_muestra_id": 62
+    },
+    {
+        "servicio_id": 70,
+        "tipo_muestra_id": 62
+    },
+    {
+        "servicio_id": 72,
+        "tipo_muestra_id": 62
+    },
+    {
+        "servicio_id": 73,
+        "tipo_muestra_id": 62
+    },
+    {
+        "servicio_id": 74,
+        "tipo_muestra_id": 62
+    },
+    {
+        "servicio_id": 75,
+        "tipo_muestra_id": 62
+    },
+    {
+        "servicio_id": 76,
+        "tipo_muestra_id": 62
+    },
+    {
+        "servicio_id": 77,
+        "tipo_muestra_id": 62
+    },
+    {
+        "servicio_id": 78,
+        "tipo_muestra_id": 62
+    },
+    {
+        "servicio_id": 79,
+        "tipo_muestra_id": 62
+    },
+    {
+        "servicio_id": 80,
+        "tipo_muestra_id": 62
+    },
+    {
+        "servicio_id": 81,
+        "tipo_muestra_id": 62
+    },
+    {
+        "servicio_id": 82,
+        "tipo_muestra_id": 62
+    },
+    {
+        "servicio_id": 83,
+        "tipo_muestra_id": 62
+    },
+    {
+        "servicio_id": 84,
+        "tipo_muestra_id": 62
+    },
+    {
+        "servicio_id": 85,
+        "tipo_muestra_id": 62
+    },
+    {
+        "servicio_id": 86,
+        "tipo_muestra_id": 62
+    },
+    {
+        "servicio_id": 87,
+        "tipo_muestra_id": 62
+    },
+    {
+        "servicio_id": 88,
+        "tipo_muestra_id": 62
+    },
+    {
+        "servicio_id": 89,
+        "tipo_muestra_id": 62
+    },
+    {
+        "servicio_id": 90,
+        "tipo_muestra_id": 62
+    },
+    {
+        "servicio_id": 91,
+        "tipo_muestra_id": 74
+    },
+    {
+        "servicio_id": 91,
+        "tipo_muestra_id": 75
+    },
+    {
+        "servicio_id": 91,
+        "tipo_muestra_id": 109
+    },
+    {
+        "servicio_id": 91,
+        "tipo_muestra_id": 118
+    },
+    {
+        "servicio_id": 92,
+        "tipo_muestra_id": 109
+    },
+    {
+        "servicio_id": 93,
+        "tipo_muestra_id": 62
+    },
+    {
+        "servicio_id": 93,
+        "tipo_muestra_id": 68
+    },
+    {
+        "servicio_id": 93,
+        "tipo_muestra_id": 78
+    },
+    {
+        "servicio_id": 93,
+        "tipo_muestra_id": 90
+    },
+    {
+        "servicio_id": 93,
+        "tipo_muestra_id": 104
+    },
+    {
+        "servicio_id": 93,
+        "tipo_muestra_id": 110
+    },
+    {
+        "servicio_id": 93,
+        "tipo_muestra_id": 113
+    },
+    {
+        "servicio_id": 94,
+        "tipo_muestra_id": 57
+    },
+    {
+        "servicio_id": 94,
+        "tipo_muestra_id": 62
+    },
+    {
+        "servicio_id": 94,
+        "tipo_muestra_id": 68
+    },
+    {
+        "servicio_id": 94,
+        "tipo_muestra_id": 73
+    },
+    {
+        "servicio_id": 94,
+        "tipo_muestra_id": 78
+    },
+    {
+        "servicio_id": 94,
+        "tipo_muestra_id": 90
+    },
+    {
+        "servicio_id": 94,
+        "tipo_muestra_id": 102
+    },
+    {
+        "servicio_id": 94,
+        "tipo_muestra_id": 104
+    },
+    {
+        "servicio_id": 94,
+        "tipo_muestra_id": 110
+    },
+    {
+        "servicio_id": 94,
+        "tipo_muestra_id": 113
+    },
+    {
+        "servicio_id": 96,
+        "tipo_muestra_id": 74
+    },
+    {
+        "servicio_id": 96,
+        "tipo_muestra_id": 89
+    },
+    {
+        "servicio_id": 97,
+        "tipo_muestra_id": 89
+    },
+    {
+        "servicio_id": 97,
+        "tipo_muestra_id": 114
+    },
+    {
+        "servicio_id": 98,
+        "tipo_muestra_id": 70
+    },
+    {
+        "servicio_id": 99,
+        "tipo_muestra_id": 74
+    },
+    {
+        "servicio_id": 100,
+        "tipo_muestra_id": 74
+    },
+    {
+        "servicio_id": 100,
+        "tipo_muestra_id": 77
+    },
+    {
+        "servicio_id": 100,
+        "tipo_muestra_id": 89
+    },
+    {
+        "servicio_id": 101,
+        "tipo_muestra_id": 74
+    },
+    {
+        "servicio_id": 101,
+        "tipo_muestra_id": 77
+    },
+    {
+        "servicio_id": 101,
+        "tipo_muestra_id": 89
+    },
+    {
+        "servicio_id": 101,
+        "tipo_muestra_id": 114
+    }
+]

@@ -1,0 +1,212 @@
+[
+    {
+        "id": 1,
+        "nombre": "ACUERDO CAMPAÑA TB",
+        "descripcion": null,
+        "created_at": "2026-10-15 23:38:51",
+        "updated_at": "2026-10-15 23:38:51"
+    },
+    {
+        "id": 2,
+        "nombre": "ACUERDO TB 2024\/12\/30",
+        "descripcion": null,
+        "created_at": "2026-10-15 23:38:51",
+        "updated_at": "2026-10-15 23:38:51"
+    },
+    {
+        "id": 3,
+        "nombre": "EMA BACTER TB",
+        "descripcion": "LABORATORIO ACREDITADO POR ema, PARA EL ENSAYO DE BACTERIOLOGIA TB N°DE ACREDITACION SA-053-005\/11",
+        "created_at": "2026-10-15 23:38:51",
+        "updated_at": "2026-10-15 23:38:51"
+    },
+    {
+        "id": 4,
+        "nombre": "EMA BIOQUIMICA",
+        "descripcion": "LABORATORIO ACREDITADO POR ema, PARA EL ENSAYO DE BIOQUIMICA N°DE ACREDITACION SA-053-005\/11",
+        "created_at": "2026-10-15 23:38:51",
+        "updated_at": "2026-10-15 23:38:51"
+    },
+    {
+        "id": 5,
+        "nombre": "NOM-056 \/ TB",
+        "descripcion": "NOM-056-ZOO-1995 ESPECIFICACIONES TECNICAS PARA LAS PRUEBAS DIAGNOSTICAS QUE REALIZAN LOS LABORATORIOS DE PRUEBAS APROBADOS EN MATERIA ZOOSANITARIA. INDICE 13.",
+        "created_at": "2026-10-16 08:30:41",
+        "updated_at": "2026-10-16 08:30:41"
+    },
+    {
+        "id": 6,
+        "nombre": "NOM-037-ZOO-1995",
+        "descripcion": "NOM-037-ZOO-1995 CAMPAÑA NACIONAL CONTRA LA FIEBRE PORCINA CLASICA. INDICE 8",
+        "created_at": "2026-10-16 08:30:41",
+        "updated_at": "2026-10-16 08:30:41"
+    },
+    {
+        "id": 7,
+        "nombre": "NOM-007-ZOO-1994",
+        "descripcion": "NOM-007-ZOO-1994 CAMPAÑA NACIONAL CONTRA LA ENFERMEDAD DE AUJESZKY. INDICE 11.",
+        "created_at": "2026-10-16 08:30:41",
+        "updated_at": "2026-10-16 08:30:41"
+    },
+    {
+        "id": 8,
+        "nombre": "NOM-031-ZOO-1995",
+        "descripcion": "NOM-031-ZOO-1995 CAMPAÑA NACIONAL CONTRA LA TUBERCULOSIS BOVINA. INDICE 7",
+        "created_at": "2026-10-16 08:30:41",
+        "updated_at": "2026-10-16 08:30:41"
+    },
+    {
+        "id": 9,
+        "nombre": "NOM-005-ZOO-1993",
+        "descripcion": "NOM-005-ZOO-1993 CAMPAÑA NACIONAL CONTRA LA SALMONELOSIS AVIAR. INDICE 7",
+        "created_at": "2026-10-16 08:30:41",
+        "updated_at": "2026-10-16 08:30:41"
+    },
+    {
+        "id": 10,
+        "nombre": "ACUERDO DOF 21\/06\/20011",
+        "descripcion": "ACUERDO POR EL QUE SE DA A CONOCER LA CAMPAÑA Y LAS MEDIDAS ZOOSANITARIAS QUE DEBERAN APLICARSE PARA EL DIAGNOSTICO, PREVENCION, CONTROL Y ERRADICACION DE LA INFLUENZA AVIAR NOTIFICABLE, EN LAS ZONAS DEL TERRITORIO DE LOS ESTADOS UNIDOS MEXICANOS EN LAS QUE SE ENCUENTRE PRESENTE ESTA ENFERMEDAD.",
+        "created_at": "2026-10-16 08:30:41",
+        "updated_at": "2026-10-16 08:30:41"
+    },
+    {
+        "id": 11,
+        "nombre": "NOM-013-ZOO-1994",
+        "descripcion": "NOM-013-ZOO-1994 CAMPAÑA NACIONAL CONTRA LA ENFERMEDAD DE NEWCASTLE PRESENTACION VELOGENICA. INDICE 7",
+        "created_at": "2026-10-16 08:30:41",
+        "updated_at": "2026-10-16 08:30:41"
+    },
+    {
+        "id": 12,
+        "nombre": "NOM-041-ZOO-1995",
+        "descripcion": "NOM-041-ZOO-1995 CAMPAÑA NACIONAL CONTRA LA BRUCELOSIS EN LOS ANIMALES. INDICE 7",
+        "created_at": "2026-10-16 08:30:41",
+        "updated_at": "2026-10-16 08:30:41"
+    },
+    {
+        "id": 13,
+        "nombre": "NOM-EM-015-ZOO-2002",
+        "descripcion": "NOM-EM-015-ZOO-2002",
+        "created_at": "2026-10-16 08:30:41",
+        "updated_at": "2026-10-16 08:30:41"
+    },
+    {
+        "id": 14,
+        "nombre": "INIFAP\/SAGARPA",
+        "descripcion": null,
+        "created_at": "2026-10-16 08:30:41",
+        "updated_at": "2026-10-16 08:30:41"
+    },
+    {
+        "id": 15,
+        "nombre": "NOM-056 \/ FPC",
+        "descripcion": "NOM-056-ZOO-1995 ESPECIFICACIONES TECNICAS PARA LAS PRUEBAS DIAGNOSTICAS QUE REALIZAN LOS LABORATORIOS DE PRUEBAS APROBADOS EN MATERIA ZOOSANITARIA. INDICE 15.",
+        "created_at": "2026-10-16 08:30:41",
+        "updated_at": "2026-10-16 08:30:41"
+    },
+    {
+        "id": 16,
+        "nombre": "NOM-056 \/ BR",
+        "descripcion": "NOM-056-ZOO-1995 ESPECIFICACIONES TECNICAS PARA LAS PRUEBAS DIAGNOSTICAS QUE REALIZAN LOS LABORATORIOS DE PRUEBAS APROBADOS EN MATERIA ZOOSANITARIA. INDICE 11.",
+        "created_at": "2026-10-16 08:30:41",
+        "updated_at": "2026-10-16 08:30:41"
+    },
+    {
+        "id": 17,
+        "nombre": "NOM-056 \/ EA",
+        "descripcion": "NOM-056-ZOO-1995 ESPECIFICACIONES TECNICAS PARA LAS PRUEBAS DIAGNOSTICAS QUE REALIZAN LOS LABORATORIOS DE PRUEBAS APROBADOS EN MATERIA ZOOSANITARIA. INDICE 14.",
+        "created_at": "2026-10-16 08:30:41",
+        "updated_at": "2026-10-16 08:30:41"
+    },
+    {
+        "id": 18,
+        "nombre": "NOM-056 \/ ENC",
+        "descripcion": "NOM-056-ZOO-1995 ESPECIFICACIONES TECNICAS PARA LAS PRUEBAS DIAGNOSTICAS QUE REALIZAN LOS LABORATORIOS DE PRUEBAS APROBADOS EN MATERIA ZOOSANITARIA. INDICE 7.",
+        "created_at": "2026-10-16 08:30:41",
+        "updated_at": "2026-10-16 08:30:41"
+    },
+    {
+        "id": 19,
+        "nombre": "NOM-056 \/ IA",
+        "descripcion": "NOM-056-ZOO-1995 ESPECIFICACIONES TECNICAS PARA LAS PRUEBAS DIAGNOSTICAS QUE REALIZAN LOS LABORATORIOS DE PRUEBAS APROBADOS EN MATERIA ZOOSANITARIA. INDICE 8.",
+        "created_at": "2026-10-16 08:30:41",
+        "updated_at": "2026-10-16 08:30:41"
+    },
+    {
+        "id": 20,
+        "nombre": "NOM-056 \/ SAL",
+        "descripcion": "NOM-056-ZOO-1995 ESPECIFICACIONES TECNICAS PARA LAS PRUEBAS DIAGNOSTICAS QUE REALIZAN LOS LABORATORIOS DE PRUEBAS APROBADOS EN MATERIA ZOOSANITARIA. INDICE 9.",
+        "created_at": "2026-10-16 08:30:41",
+        "updated_at": "2026-10-16 08:30:41"
+    },
+    {
+        "id": 21,
+        "nombre": "OIE 2008 CAPITULO 2.4.11",
+        "descripcion": "MANUAL DE LAS PRUEBAS DE DIAGNOSTICO Y DE LAS VACUNAS PARA LOS ANIMALES TERRESTRES 2008. CAPITULO 2.4.11.",
+        "created_at": "2026-10-16 08:30:41",
+        "updated_at": "2026-10-16 08:30:41"
+    },
+    {
+        "id": 22,
+        "nombre": "OIE 2008 CAPITULO 2.4.13.",
+        "descripcion": "MANUAL DE LAS PRUEBAS DE DIAGNOSTICO Y DE LAS VACUNAS PARA LOS ANIMALES TERRESTRES 2008. CAPITULO 2.4.13.",
+        "created_at": "2026-10-16 08:30:41",
+        "updated_at": "2026-10-16 08:30:41"
+    },
+    {
+        "id": 23,
+        "nombre": "OIE 2008 CAPITULO 2.4.8",
+        "descripcion": "MANUAL DE LAS PRUEBAS DE DIAGNOSTICO Y DE LAS VACUNAS PARA LOS ANIMALES TERRESTRES 2008. CAPITULO 2.4.8.",
+        "created_at": "2026-10-16 08:30:41",
+        "updated_at": "2026-10-16 08:30:41"
+    },
+    {
+        "id": 24,
+        "nombre": "OIE 2008 CAPITULO 2.1.3",
+        "descripcion": "MANUAL DE LAS PRUEBAS DE DIAGNOSTICO Y DE LAS VACUNAS PARA LOS ANIMALES TERRESTRES 2008. CAPITULO 2.1.3.",
+        "created_at": "2026-10-16 08:30:41",
+        "updated_at": "2026-10-16 08:30:41"
+    },
+    {
+        "id": 25,
+        "nombre": "OIE 2008 CAPITULO 2.1.11",
+        "descripcion": "MANUAL DE LAS PRUEBAS DE DIAGNOSTICO Y DE LAS VACUNAS PARA LOS ANIMALES TERRESTRES 2008. CAPITULO 2.1.11.",
+        "created_at": "2026-10-16 08:30:41",
+        "updated_at": "2026-10-16 08:30:41"
+    },
+    {
+        "id": 26,
+        "nombre": "ema NEWCASTLE",
+        "descripcion": "LABORATORIO ACREDITADO POR ema, PARA EL ENSAYO DE NEWCASTLE N°DE ACREDITACION SA-053-005\/11",
+        "created_at": "2026-10-16 08:30:41",
+        "updated_at": "2026-10-16 08:30:41"
+    },
+    {
+        "id": 27,
+        "nombre": "ema BRUCELLA OVIS",
+        "descripcion": "LABORATORIO ACREDITADO POR ema, PARA EL ENSAYO DE BRUCELLA OVIS N°DE ACREDITACION SA-053-005\/11",
+        "created_at": "2026-10-16 08:30:41",
+        "updated_at": "2026-10-16 08:30:41"
+    },
+    {
+        "id": 28,
+        "nombre": "ema BRUCELLA RIVANOL",
+        "descripcion": "LABORATORIO ACREDITADO POR ema, PARA EL ENSAYO DE BRUCELLA RIVANOL N°DE ACREDITACION SA-053-005\/11",
+        "created_at": "2026-10-16 08:30:41",
+        "updated_at": "2026-10-16 08:30:41"
+    },
+    {
+        "id": 29,
+        "nombre": "ema BRUCELLA TARJETA",
+        "descripcion": "LABORATORIO ACREDITADO POR ema, PARA EL ENSAYO DE BRUCELLA TARJETA N°DE ACREDITACION SA-053-005\/11",
+        "created_at": "2026-10-16 08:30:41",
+        "updated_at": "2026-10-16 08:30:41"
+    },
+    {
+        "id": 30,
+        "nombre": "ema HISTO TB",
+        "descripcion": "LABORATORIO ACREDITADO POR ema, PARA EL ENSAYO DE HISTOPATOLOGIA TB N°DE ACREDITACION SA-053-005\/11",
+        "created_at": "2026-10-16 08:30:41",
+        "updated_at": "2026-10-16 08:30:41"
+    }
+]
