@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Schema;
@@ -69,7 +70,7 @@ class ImportarDatos extends Command
         // entre tablas no importa y las referencias se resuelven al terminar.
         Schema::disableForeignKeyConstraints();
         try {
-            DB::transaction(function () use ($tablas, $datos) {
+            DB::transaction(function () use ($tablas, $datos, $referencias) {
                 foreach ($tablas as $tabla) {
                     $this->line(sprintf('  %-24s %6d filas', $tabla, count($datos[$tabla])));
                     $columnas = Schema::getColumnListing($tabla);
@@ -86,7 +87,23 @@ class ImportarDatos extends Command
                     foreach (array_chunk($datos[$tabla], 500) as $lote) {
                         $lote = array_map(fn ($f) => array_intersect_key($f, array_flip($columnas)), $lote);
                         $actualizar = array_values(array_diff(array_keys($lote[0]), ['id']));
-                        DB::table($tabla)->upsert($lote, ['id'], $actualizar);
+                        try {
+                            DB::table($tabla)->upsert($lote, ['id'], $actualizar);
+                        } catch (UniqueConstraintViolationException) {
+                            // Alguna fila choca con un índice único (p. ej. el
+                            // mismo nombre con otro id en el servidor). Se
+                            // resuelve fila por fila, fusionando la del servidor.
+                            foreach ($lote as $fila) {
+                                $viejos = $this->apartarDuplicados($tabla, $fila);
+                                DB::table($tabla)->upsert([$fila], ['id'], $actualizar);
+                                foreach ($viejos as $viejo) {
+                                    foreach ($referencias[$tabla] ?? [] as $r) {
+                                        $this->repuntar($r['tabla'], $r['columna'], $viejo, $fila['id']);
+                                    }
+                                    DB::table($tabla)->where('id', $viejo)->delete();
+                                }
+                            }
+                        }
                     }
                 }
             });
@@ -98,6 +115,57 @@ class ImportarDatos extends Command
         $this->info('Snapshot importado'.($conservadas ? " ({$conservadas} filas en uso se conservaron)" : '').'.');
 
         return self::SUCCESS;
+    }
+
+    /**
+     * Si en el servidor hay otra fila (con otro id) que tiene los mismos
+     * valores que $fila en algún índice único, es el mismo registro dado de
+     * alta por separado. Se le cambian esos valores para que $fila pueda
+     * entrar, y se devuelve su id: el llamador pasa sus referencias al id
+     * local y la borra.
+     *
+     * @param  array<string, mixed>  $fila
+     * @return list<int>
+     */
+    private function apartarDuplicados(string $tabla, array $fila): array
+    {
+        $viejos = [];
+        $unicos = collect(Schema::getIndexes($tabla))->filter(fn ($i) => $i['unique'] && ! $i['primary']);
+        foreach ($unicos as $indice) {
+            $valores = array_intersect_key($fila, array_flip($indice['columns']));
+            if (count($valores) !== count($indice['columns']) || in_array(null, $valores, true)) {
+                continue;
+            }
+            foreach (DB::table($tabla)->where($valores)->where('id', '!=', $fila['id'])->pluck('id') as $viejo) {
+                DB::table($tabla)->where('id', $viejo)->update(
+                    array_map(fn () => "~fusion-{$viejo}", array_flip($indice['columns']))
+                );
+                $viejos[] = $viejo;
+            }
+        }
+
+        return array_values(array_unique($viejos));
+    }
+
+    /**
+     * Cambia $columna de $viejo a $nuevo. Si con eso una fila queda repetida
+     * en un índice único (una pivote que ya tenía las dos), sobra y se borra.
+     */
+    private function repuntar(string $tabla, string $columna, int $viejo, int $nuevo): void
+    {
+        try {
+            DB::table($tabla)->where($columna, $viejo)->update([$columna => $nuevo]);
+        } catch (UniqueConstraintViolationException) {
+            $clave = Schema::hasColumn($tabla, 'id') ? 'id' : $columna;
+            foreach (DB::table($tabla)->where($columna, $viejo)->get() as $fila) {
+                $filtro = $clave === 'id' ? ['id' => $fila->id] : (array) $fila;
+                try {
+                    DB::table($tabla)->where($filtro)->update([$columna => $nuevo]);
+                } catch (UniqueConstraintViolationException) {
+                    DB::table($tabla)->where($filtro)->delete();
+                }
+            }
+        }
     }
 
     /**

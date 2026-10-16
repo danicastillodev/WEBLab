@@ -37,6 +37,24 @@ class SincronizacionDatosTest extends TestCase
         parent::tearDown();
     }
 
+    public function test_fusiona_el_mismo_registro_dado_de_alta_con_otro_id(): void
+    {
+        $local = DB::table('areas')->insertGetId(['nombre' => 'CENASA', 'created_at' => now(), 'updated_at' => now()]);
+        $this->artisan('datos:exportar', ['--sin-migracion' => true])->assertSuccessful();
+
+        // En el "servidor", CENASA tiene otro id y un usuario la tiene asignada.
+        DB::table('areas')->where('id', $local)->delete();
+        $otro = DB::table('areas')->insertGetId(['id' => $local + 50, 'nombre' => 'CENASA', 'created_at' => now(), 'updated_at' => now()]);
+        $usuario = User::factory()->create();
+        DB::table('area_user')->insert(['area_id' => $otro, 'user_id' => $usuario->id, 'created_at' => now(), 'updated_at' => now()]);
+
+        $this->artisan('datos:importar')->assertSuccessful();
+
+        $this->assertDatabaseHas('areas', ['id' => $local, 'nombre' => 'CENASA']);
+        $this->assertDatabaseMissing('areas', ['id' => $otro]);
+        $this->assertDatabaseHas('area_user', ['area_id' => $local, 'user_id' => $usuario->id]);
+    }
+
     public function test_no_exporta_seguridad_historias_ni_notas_de_pago(): void
     {
         foreach (['users', 'roles_usuario', 'user_permissions', 'user_permisos_granulares', 'area_user',
