@@ -30,6 +30,7 @@ class NotaPago extends Model
 
     protected $fillable = [
         'folio',
+        'cliente_id',
         'propietario_id',
         'direccion_id',
         'concepto',
@@ -66,6 +67,11 @@ class NotaPago extends Model
         }
 
         return $folio;
+    }
+
+    public function cliente(): BelongsTo
+    {
+        return $this->belongsTo(Cliente::class);
     }
 
     public function propietario(): BelongsTo

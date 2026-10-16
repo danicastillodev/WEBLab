@@ -8,6 +8,7 @@ import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { CLIENTE_VACIO, clienteNuevo } from '@/Pages/Catalogos/Clientes/Partials/ClienteForm';
 
 const selectClass = 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500';
 
@@ -15,9 +16,10 @@ function dinero(valor) {
     return `$${Number(valor || 0).toFixed(2)}`;
 }
 
-function formatDireccion(dir) {
-    if (!dir) return '';
-    return `${dir.calle} ${dir.numero_exterior}, ${dir.colonia}`;
+function formatDomicilio(cliente) {
+    if (!cliente) return '';
+    const interior = cliente.numero_interior ? ` int. ${cliente.numero_interior}` : '';
+    return `${cliente.calle} ${cliente.numero_exterior}${interior}, ${cliente.colonia}, C.P. ${cliente.codigo_postal}`;
 }
 
 function Modal({ title, onClose, children }) {
@@ -35,8 +37,7 @@ function Modal({ title, onClose, children }) {
 }
 
 export default function Create({
-    propietarios: initPropietarios,
-    direcciones: initDirecciones,
+    clientes: initClientes,
     estados,
     municipios,
     conceptos_opciones: conceptosOpciones,
@@ -45,12 +46,10 @@ export default function Create({
     historias_preseleccionadas: historiasPreseleccionadas,
 }) {
     const { flash } = usePage().props;
-    const [propietarios, setPropietarios] = useState(initPropietarios);
-    const [direcciones, setDirecciones] = useState(initDirecciones);
+    const [clientes, setClientes] = useState(initClientes);
 
-    const { data, setData, post, processing, errors, reset } = useForm({
-        propietario_id: '',
-        direccion_id: '',
+    const { data, setData, post, processing, errors, reset, transform } = useForm({
+        cliente_id: '',
         historia_clinica_ids: [],
         concepto: conceptosOpciones[0] ?? '',
         tipo_pago: tiposPago[0] ?? '',
@@ -59,9 +58,9 @@ export default function Create({
     });
 
     // Los conceptos sólo se agregan automáticamente al seleccionar historias
-    // clínicas (ver "Seleccionar Historias Clínicas" más abajo) y no son
-    // editables: el servidor los recalcula de la misma forma al guardar, así
-    // que esto es sólo una vista previa.
+    // clínicas (ver "Seleccionar Historias Clínicas" más abajo). Sólo la
+    // cantidad es editable: el servidor recalcula producto y precio al
+    // guardar y aplica las cantidades enviadas en `cantidades`.
     const [conceptos, setConceptos] = useState(historiasPreseleccionadas?.conceptos ?? []);
     const [historiasSeleccionadas, setHistoriasSeleccionadas] = useState(historiasPreseleccionadas?.historias ?? []); // [{id, numero_caso}]
 
@@ -74,28 +73,22 @@ export default function Create({
 
         setData((prev) => ({
             ...prev,
-            propietario_id: prev.propietario_id || String(historiasPreseleccionadas.propietario_id ?? ''),
-            direccion_id: prev.direccion_id || (historiasPreseleccionadas.direccion_id ? String(historiasPreseleccionadas.direccion_id) : ''),
             historia_clinica_ids: [...new Set([...prev.historia_clinica_ids, ...historiasPreseleccionadas.historias.map((h) => h.id)])],
         }));
         // Sólo debe aplicarse una vez, al cargar la página con la preselección.
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const propietarioSel = propietarios.find((p) => String(p.id) === String(data.propietario_id));
-    const direccionSel = direcciones.find((d) => String(d.id) === String(data.direccion_id));
-    const direccionesPropietario = direcciones.filter(
-        (d) => String(d.propietario_id) === String(data.propietario_id),
-    );
-
-    function onPropietarioChange(id) {
-        setData((prev) => ({ ...prev, propietario_id: id, direccion_id: '' }));
-    }
+    const clienteSel = clientes.find((c) => String(c.id) === String(data.cliente_id));
 
     function quitarHistoriaSeleccionada(historiaId) {
         setConceptos((prev) => prev.filter((c) => c.historia_clinica_id !== historiaId));
         setHistoriasSeleccionadas((prev) => prev.filter((h) => h.id !== historiaId));
         setData('historia_clinica_ids', data.historia_clinica_ids.filter((id) => id !== historiaId));
+    }
+
+    function cambiarCantidad(muestraId, valor) {
+        setConceptos((prev) => prev.map((c) => (c.muestra_id === muestraId ? { ...c, cantidad: valor } : c)));
     }
 
     const conceptosCalculados = conceptos.map((c) => {
@@ -110,6 +103,10 @@ export default function Create({
 
     function submit(e) {
         e.preventDefault();
+        transform((datos) => ({
+            ...datos,
+            cantidades: Object.fromEntries(conceptos.map((c) => [c.muestra_id, c.cantidad])),
+        }));
         post(route('notas-pago.store'), {
             onSuccess: () => {
                 reset();
@@ -178,8 +175,6 @@ export default function Create({
             setHistoriasSeleccionadas((prev) => [...prev, ...resultado.historias]);
             setData((prev) => ({
                 ...prev,
-                propietario_id: prev.propietario_id || String(resultado.propietario_id ?? ''),
-                direccion_id: prev.direccion_id || (resultado.direccion_id ? String(resultado.direccion_id) : ''),
                 historia_clinica_ids: [...new Set([...prev.historia_clinica_ids, ...resultado.historias.map((h) => h.id)])],
             }));
             setShowSelectorHistorias(false);
@@ -190,65 +185,63 @@ export default function Create({
         }
     }
 
-    /* ── Propietario modal ── */
-    const [showPropModal, setShowPropModal] = useState(false);
-    const [propForm, setPropForm] = useState({ nombre: '', apellidos: '', curp: '', rfc: '', telefono: '' });
-    const [propErrors, setPropErrors] = useState({});
-    const [propSaving, setPropSaving] = useState(false);
+    /* ── Cliente modal (alta y edición) ── */
+    // El cliente es a quien se le emite la nota — distinto al propietario de
+    // la historia clínica — y debe quedar con todos sus datos capturados.
+    const [showClienteModal, setShowClienteModal] = useState(false);
+    const [clienteEditando, setClienteEditando] = useState(null);
+    const [clienteForm, setClienteForm] = useState(() => clienteNuevo(estados));
+    const [clienteErrors, setClienteErrors] = useState({});
+    const [clienteSaving, setClienteSaving] = useState(false);
 
-    function openPropModal() {
-        setPropForm({ nombre: '', apellidos: '', curp: '', rfc: '', telefono: '' });
-        setPropErrors({});
-        setShowPropModal(true);
+    const municipiosFiltrados = municipios.filter((m) => String(m.estado_id) === String(clienteForm.estado_id));
+
+    function openClienteModal(cliente = null) {
+        setClienteEditando(cliente);
+        setClienteForm(cliente
+            ? Object.fromEntries(Object.keys(CLIENTE_VACIO).map((k) => [k, cliente[k] == null ? '' : String(cliente[k])]))
+            : clienteNuevo(estados));
+        setClienteErrors({});
+        setShowClienteModal(true);
     }
 
-    async function submitPropietario(e) {
+    function campoCliente(campo, valor) {
+        setClienteForm((prev) => ({ ...prev, [campo]: valor }));
+    }
+
+    async function submitCliente(e) {
         e.preventDefault();
-        setPropSaving(true);
-        setPropErrors({});
+        setClienteSaving(true);
+        setClienteErrors({});
         try {
-            const { data: nuevo } = await axios.post(route('historias-clinicas.store-propietario'), propForm);
-            setPropietarios((prev) => [...prev, nuevo].sort((a, b) => a.apellidos.localeCompare(b.apellidos)));
-            setData((prev) => ({ ...prev, propietario_id: String(nuevo.id), direccion_id: '' }));
-            setShowPropModal(false);
+            const { data: guardado } = clienteEditando
+                ? await axios.patch(route('notas-pago.update-cliente', clienteEditando.id), clienteForm)
+                : await axios.post(route('notas-pago.store-cliente'), clienteForm);
+            setClientes((prev) => [...prev.filter((c) => c.id !== guardado.id), guardado]
+                .sort((a, b) => a.nombre.localeCompare(b.nombre)));
+            setData('cliente_id', String(guardado.id));
+            setShowClienteModal(false);
         } catch (err) {
-            if (err.response?.status === 422) setPropErrors(err.response.data.errors);
+            if (err.response?.status === 422) setClienteErrors(err.response.data.errors);
         } finally {
-            setPropSaving(false);
+            setClienteSaving(false);
         }
     }
 
-    /* ── Dirección modal ── */
-    const DIR_VACIA = { calle: '', numero_exterior: '', numero_interior: '', colonia: '', estado_id: '', municipio_id: '', codigo_postal: '' };
-    const [showDirModal, setShowDirModal] = useState(false);
-    const [dirForm, setDirForm] = useState(DIR_VACIA);
-    const [dirErrors, setDirErrors] = useState({});
-    const [dirSaving, setDirSaving] = useState(false);
-
-    const municipiosFiltrados = municipios.filter((m) => String(m.estado_id) === String(dirForm.estado_id));
-
-    function openDirModal() {
-        setDirForm(DIR_VACIA);
-        setDirErrors({});
-        setShowDirModal(true);
-    }
-
-    async function submitDireccion(e) {
-        e.preventDefault();
-        setDirSaving(true);
-        setDirErrors({});
+    async function eliminarCliente() {
+        if (!clienteSel || !window.confirm(`¿Eliminar al cliente ${clienteSel.nombre}?`)) return;
         try {
-            const payload = { ...dirForm, propietario_id: data.propietario_id };
-            const { data: nueva } = await axios.post(route('historias-clinicas.store-direccion'), payload);
-            setDirecciones((prev) => [...prev, nueva]);
-            setData((prev) => ({ ...prev, direccion_id: String(nueva.id) }));
-            setShowDirModal(false);
+            await axios.delete(route('notas-pago.destroy-cliente', clienteSel.id));
+            setClientes((prev) => prev.filter((c) => c.id !== clienteSel.id));
+            setData('cliente_id', '');
         } catch (err) {
-            if (err.response?.status === 422) setDirErrors(err.response.data.errors);
-        } finally {
-            setDirSaving(false);
+            window.alert(err.response?.data?.message ?? 'No se pudo eliminar el cliente.');
         }
     }
+
+    const errorCliente = (campo) => clienteErrors[campo] && (
+        <p className="mt-1 text-sm text-red-600">{clienteErrors[campo][0]}</p>
+    );
 
     return (
         <AuthenticatedLayout
@@ -256,143 +249,126 @@ export default function Create({
         >
             <Head title="Nueva nota de pago" />
 
-            {/* ── Propietario modal ── */}
-            {showPropModal && (
-                <Modal title="Nuevo cliente" onClose={() => setShowPropModal(false)}>
-                    <form onSubmit={submitPropietario} className="space-y-4">
+            {/* ── Cliente modal ── */}
+            {showClienteModal && (
+                <Modal title={clienteEditando ? 'Editar cliente' : 'Nuevo cliente'} onClose={() => setShowClienteModal(false)}>
+                    <form onSubmit={submitCliente} className="space-y-4">
                         <div>
-                            <InputLabel value="Nombre" />
+                            <InputLabel value="Nombre o razón social" required />
                             <TextInput
-                                value={propForm.nombre}
-                                onChange={(e) => setPropForm((p) => ({ ...p, nombre: e.target.value }))}
+                                value={clienteForm.nombre}
+                                onChange={(e) => campoCliente('nombre', e.target.value)}
                                 className="mt-1 block w-full"
                                 autoFocus
                             />
-                            {propErrors.nombre && <p className="mt-1 text-sm text-red-600">{propErrors.nombre[0]}</p>}
-                        </div>
-                        <div>
-                            <InputLabel value="Apellidos" />
-                            <TextInput
-                                value={propForm.apellidos}
-                                onChange={(e) => setPropForm((p) => ({ ...p, apellidos: e.target.value }))}
-                                className="mt-1 block w-full"
-                            />
-                            {propErrors.apellidos && <p className="mt-1 text-sm text-red-600">{propErrors.apellidos[0]}</p>}
-                        </div>
-                        <div>
-                            <InputLabel value="Teléfono" />
-                            <TextInput
-                                value={propForm.telefono}
-                                onChange={(e) => setPropForm((p) => ({ ...p, telefono: e.target.value.replace(/\D/g, '') }))}
-                                className="mt-1 block w-full"
-                                inputMode="numeric"
-                                maxLength={10}
-                                placeholder="Opcional — 10 dígitos"
-                            />
-                            {propErrors.telefono && <p className="mt-1 text-sm text-red-600">{propErrors.telefono[0]}</p>}
-                        </div>
-                        <div>
-                            <InputLabel value="RFC" />
-                            <TextInput
-                                value={propForm.rfc}
-                                onChange={(e) => setPropForm((p) => ({ ...p, rfc: e.target.value.toUpperCase() }))}
-                                className="mt-1 block w-full font-mono uppercase"
-                                maxLength={13}
-                                placeholder="Opcional"
-                            />
-                            {propErrors.rfc && <p className="mt-1 text-sm text-red-600">{propErrors.rfc[0]}</p>}
-                        </div>
-                        <div className="flex justify-end gap-3 pt-2">
-                            <button type="button" onClick={() => setShowPropModal(false)} className="text-sm text-gray-600 hover:text-gray-900">Cancelar</button>
-                            <PrimaryButton disabled={propSaving}>Guardar</PrimaryButton>
-                        </div>
-                    </form>
-                </Modal>
-            )}
-
-            {/* ── Dirección modal ── */}
-            {showDirModal && (
-                <Modal title="Nueva dirección" onClose={() => setShowDirModal(false)}>
-                    <form onSubmit={submitDireccion} className="space-y-4">
-                        <div>
-                            <InputLabel value="Calle" />
-                            <TextInput
-                                value={dirForm.calle}
-                                onChange={(e) => setDirForm((p) => ({ ...p, calle: e.target.value }))}
-                                className="mt-1 block w-full"
-                                autoFocus
-                            />
-                            {dirErrors.calle && <p className="mt-1 text-sm text-red-600">{dirErrors.calle[0]}</p>}
+                            {errorCliente('nombre')}
                         </div>
                         <div className="grid grid-cols-2 gap-3">
                             <div>
-                                <InputLabel value="Núm. exterior" />
+                                <InputLabel value="RFC" required />
                                 <TextInput
-                                    value={dirForm.numero_exterior}
-                                    onChange={(e) => setDirForm((p) => ({ ...p, numero_exterior: e.target.value }))}
+                                    value={clienteForm.rfc}
+                                    onChange={(e) => campoCliente('rfc', e.target.value.toUpperCase())}
+                                    className="mt-1 block w-full font-mono uppercase"
+                                    maxLength={13}
+                                />
+                                {errorCliente('rfc')}
+                            </div>
+                            <div>
+                                <InputLabel value="Teléfono" required />
+                                <TextInput
+                                    value={clienteForm.telefono}
+                                    onChange={(e) => campoCliente('telefono', e.target.value.replace(/\D/g, ''))}
+                                    className="mt-1 block w-full"
+                                    inputMode="numeric"
+                                    maxLength={10}
+                                    placeholder="10 dígitos"
+                                />
+                                {errorCliente('telefono')}
+                            </div>
+                        </div>
+                        <div>
+                            <InputLabel value="Calle" required />
+                            <TextInput
+                                value={clienteForm.calle}
+                                onChange={(e) => campoCliente('calle', e.target.value)}
+                                className="mt-1 block w-full"
+                            />
+                            {errorCliente('calle')}
+                        </div>
+                        <div className="grid grid-cols-2 gap-3">
+                            <div>
+                                <InputLabel value="Núm. exterior" required />
+                                <TextInput
+                                    value={clienteForm.numero_exterior}
+                                    onChange={(e) => campoCliente('numero_exterior', e.target.value)}
                                     className="mt-1 block w-full"
                                 />
-                                {dirErrors.numero_exterior && <p className="mt-1 text-sm text-red-600">{dirErrors.numero_exterior[0]}</p>}
+                                {errorCliente('numero_exterior')}
                             </div>
                             <div>
                                 <InputLabel value="Núm. interior" />
                                 <TextInput
-                                    value={dirForm.numero_interior}
-                                    onChange={(e) => setDirForm((p) => ({ ...p, numero_interior: e.target.value }))}
+                                    value={clienteForm.numero_interior}
+                                    onChange={(e) => campoCliente('numero_interior', e.target.value)}
                                     className="mt-1 block w-full"
                                     placeholder="Opcional"
                                 />
+                                {errorCliente('numero_interior')}
                             </div>
-                        </div>
-                        <div>
-                            <InputLabel value="Colonia" />
-                            <TextInput
-                                value={dirForm.colonia}
-                                onChange={(e) => setDirForm((p) => ({ ...p, colonia: e.target.value }))}
-                                className="mt-1 block w-full"
-                            />
-                            {dirErrors.colonia && <p className="mt-1 text-sm text-red-600">{dirErrors.colonia[0]}</p>}
                         </div>
                         <div className="grid grid-cols-2 gap-3">
                             <div>
-                                <InputLabel value="Estado" />
+                                <InputLabel value="Colonia" required />
+                                <TextInput
+                                    value={clienteForm.colonia}
+                                    onChange={(e) => campoCliente('colonia', e.target.value)}
+                                    className="mt-1 block w-full"
+                                />
+                                {errorCliente('colonia')}
+                            </div>
+                            <div>
+                                <InputLabel value="Código postal" required />
+                                <TextInput
+                                    value={clienteForm.codigo_postal}
+                                    onChange={(e) => campoCliente('codigo_postal', e.target.value.replace(/\D/g, ''))}
+                                    className="mt-1 block w-full"
+                                    inputMode="numeric"
+                                    maxLength={5}
+                                />
+                                {errorCliente('codigo_postal')}
+                            </div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-3">
+                            <div>
+                                <InputLabel value="Estado" required />
                                 <select
-                                    value={dirForm.estado_id}
-                                    onChange={(e) => setDirForm((p) => ({ ...p, estado_id: e.target.value, municipio_id: '' }))}
+                                    value={clienteForm.estado_id}
+                                    onChange={(e) => setClienteForm((p) => ({ ...p, estado_id: e.target.value, municipio_id: '' }))}
                                     className={selectClass}
                                 >
                                     <option value="">— Selecciona —</option>
                                     {estados.map((e) => <option key={e.id} value={e.id}>{e.nombre}</option>)}
                                 </select>
-                                {dirErrors.estado_id && <p className="mt-1 text-sm text-red-600">{dirErrors.estado_id[0]}</p>}
+                                {errorCliente('estado_id')}
                             </div>
                             <div>
-                                <InputLabel value="Municipio" />
+                                <InputLabel value="Municipio" required />
                                 <select
-                                    value={dirForm.municipio_id}
-                                    onChange={(e) => setDirForm((p) => ({ ...p, municipio_id: e.target.value }))}
-                                    disabled={!dirForm.estado_id}
+                                    value={clienteForm.municipio_id}
+                                    onChange={(e) => campoCliente('municipio_id', e.target.value)}
+                                    disabled={!clienteForm.estado_id}
                                     className={selectClass}
                                 >
                                     <option value="">— Selecciona —</option>
                                     {municipiosFiltrados.map((m) => <option key={m.id} value={m.id}>{m.nombre}</option>)}
                                 </select>
-                                {dirErrors.municipio_id && <p className="mt-1 text-sm text-red-600">{dirErrors.municipio_id[0]}</p>}
+                                {errorCliente('municipio_id')}
                             </div>
                         </div>
-                        <div>
-                            <InputLabel value="Código postal" />
-                            <TextInput
-                                value={dirForm.codigo_postal}
-                                onChange={(e) => setDirForm((p) => ({ ...p, codigo_postal: e.target.value }))}
-                                className="mt-1 block w-full"
-                                maxLength={10}
-                            />
-                            {dirErrors.codigo_postal && <p className="mt-1 text-sm text-red-600">{dirErrors.codigo_postal[0]}</p>}
-                        </div>
                         <div className="flex justify-end gap-3 pt-2">
-                            <button type="button" onClick={() => setShowDirModal(false)} className="text-sm text-gray-600 hover:text-gray-900">Cancelar</button>
-                            <PrimaryButton disabled={dirSaving}>Guardar</PrimaryButton>
+                            <button type="button" onClick={() => setShowClienteModal(false)} className="text-sm text-gray-600 hover:text-gray-900">Cancelar</button>
+                            <PrimaryButton disabled={clienteSaving}>Guardar</PrimaryButton>
                         </div>
                     </form>
                 </Modal>
@@ -410,7 +386,7 @@ export default function Create({
                                 value={busquedaHistorias}
                                 onChange={(e) => setBusquedaHistorias(e.target.value)}
                                 onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); buscarHistorias(busquedaHistorias); } }}
-                                placeholder="Número de caso o nombre del cliente"
+                                placeholder="Número de caso o nombre del propietario"
                                 className="block w-full"
                                 autoFocus
                             />
@@ -482,63 +458,48 @@ export default function Create({
                                 Datos del cliente
                             </h3>
                             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                                <div>
+                                <div className="sm:col-span-2">
                                     <div className="flex items-center justify-between">
-                                        <InputLabel value="Nombre" required />
-                                        <FieldActions etiqueta="cliente" seleccionado={false} onAdd={openPropModal} onEdit={() => {}} onDelete={() => {}} />
-                                    </div>
-                                    <select
-                                        value={data.propietario_id}
-                                        onChange={(e) => onPropietarioChange(e.target.value)}
-                                        className={selectClass}
-                                    >
-                                        <option value="">— Selecciona un cliente —</option>
-                                        {propietarios.map((p) => (
-                                            <option key={p.id} value={p.id}>{p.nombre} {p.apellidos}</option>
-                                        ))}
-                                    </select>
-                                    <InputError message={errors.propietario_id} className="mt-2" />
-                                </div>
-                                <div>
-                                    <div className="flex items-center justify-between">
-                                        <InputLabel value="Dirección" />
+                                        <InputLabel value="Cliente" required />
                                         <FieldActions
-                                            etiqueta="dirección"
-                                            disabled={!data.propietario_id}
-                                            seleccionado={false}
-                                            onAdd={openDirModal}
-                                            onEdit={() => {}}
-                                            onDelete={() => {}}
+                                            etiqueta="cliente"
+                                            seleccionado={!!clienteSel}
+                                            onAdd={() => openClienteModal()}
+                                            onEdit={() => openClienteModal(clienteSel)}
+                                            onDelete={eliminarCliente}
                                         />
                                     </div>
                                     <select
-                                        value={data.direccion_id}
-                                        onChange={(e) => setData('direccion_id', e.target.value)}
-                                        disabled={!data.propietario_id}
+                                        value={data.cliente_id}
+                                        onChange={(e) => setData('cliente_id', e.target.value)}
                                         className={selectClass}
                                     >
-                                        <option value="">— Selecciona una dirección —</option>
-                                        {direccionesPropietario.map((d) => (
-                                            <option key={d.id} value={d.id}>{formatDireccion(d)}</option>
+                                        <option value="">— Selecciona un cliente —</option>
+                                        {clientes.map((c) => (
+                                            <option key={c.id} value={c.id}>{c.nombre} — {c.rfc}</option>
                                         ))}
                                     </select>
-                                    <InputError message={errors.direccion_id} className="mt-2" />
+                                    <InputError message={errors.cliente_id} className="mt-2" />
+                                </div>
+                                <div className="sm:col-span-2">
+                                    <InputLabel value="Dirección" />
+                                    <TextInput value={formatDomicilio(clienteSel)} readOnly className="mt-1 block w-full bg-gray-100" />
                                 </div>
                                 <div>
                                     <InputLabel value="Teléfono" />
-                                    <TextInput value={propietarioSel?.telefono ?? ''} readOnly className="mt-1 block w-full bg-gray-100" />
+                                    <TextInput value={clienteSel?.telefono ?? ''} readOnly className="mt-1 block w-full bg-gray-100" />
                                 </div>
                                 <div>
                                     <InputLabel value="RFC" />
-                                    <TextInput value={propietarioSel?.rfc ?? ''} readOnly className="mt-1 block w-full bg-gray-100" />
+                                    <TextInput value={clienteSel?.rfc ?? ''} readOnly className="mt-1 block w-full bg-gray-100" />
                                 </div>
                                 <div>
                                     <InputLabel value="Estado" />
-                                    <TextInput value={direccionSel?.estado?.nombre ?? ''} readOnly className="mt-1 block w-full bg-gray-100" />
+                                    <TextInput value={clienteSel?.estado?.nombre ?? ''} readOnly className="mt-1 block w-full bg-gray-100" />
                                 </div>
                                 <div>
                                     <InputLabel value="Municipio" />
-                                    <TextInput value={direccionSel?.municipio?.nombre ?? ''} readOnly className="mt-1 block w-full bg-gray-100" />
+                                    <TextInput value={clienteSel?.municipio?.nombre ?? ''} readOnly className="mt-1 block w-full bg-gray-100" />
                                 </div>
                             </div>
                         </div>
@@ -597,8 +558,20 @@ export default function Create({
                                         </thead>
                                         <tbody className="divide-y divide-gray-100">
                                             {conceptosCalculados.map((concepto, index) => (
-                                                <tr key={index}>
-                                                    <td className="py-2 pr-2 align-top text-gray-700">{concepto.cantidad}</td>
+                                                <tr key={concepto.muestra_id ?? index}>
+                                                    <td className="py-2 pr-2 align-top">
+                                                        <input
+                                                            type="number"
+                                                            min="1"
+                                                            step="1"
+                                                            value={concepto.cantidad}
+                                                            onChange={(e) => cambiarCantidad(concepto.muestra_id, e.target.value)}
+                                                            className="w-16 rounded-md border border-gray-300 px-2 py-1 text-sm shadow-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
+                                                        />
+                                                        {errors[`cantidades.${concepto.muestra_id}`] && (
+                                                            <p className="mt-0.5 text-xs text-red-600">{errors[`cantidades.${concepto.muestra_id}`]}</p>
+                                                        )}
+                                                    </td>
                                                     <td className="py-2 pr-2 align-top text-gray-700">
                                                         {concepto.descripcion}
                                                         <span className="ml-2 text-xs text-gray-400">(caso {concepto.numero_caso})</span>

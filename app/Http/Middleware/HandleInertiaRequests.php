@@ -44,6 +44,7 @@ class HandleInertiaRequests extends Middleware
             ],
             'flash' => [
                 'success' => session('success'),
+                'error' => session('error'),
                 'numero_caso' => session('numero_caso'),
                 'historia_id' => session('historia_id'),
             ],

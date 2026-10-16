@@ -18,7 +18,7 @@ function formatFecha(valor) {
 
 function formatDireccion(dir) {
     if (!dir) return '—';
-    return `${dir.calle} ${dir.numero_exterior}${dir.numero_interior ? ` Int. ${dir.numero_interior}` : ''}, ${dir.colonia}, ${dir.municipio?.nombre ?? ''}, C.P. ${dir.codigo_postal}`;
+    return `${dir.calle} ${dir.numero_exterior}${dir.numero_interior ? ` Int. ${dir.numero_interior}` : ''}, ${dir.colonia}, ${[dir.municipio?.nombre, dir.estado?.nombre].filter(Boolean).join(', ')}, C.P. ${dir.codigo_postal}`;
 }
 
 function formatEdad(historia) {
@@ -138,7 +138,7 @@ export default function Show({ historia }) {
                                         <dl className="grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-3">
                                             <Campo etiqueta="Análisis">{muestra.servicio?.descripcion}</Campo>
                                             <Campo etiqueta="Cantidad">{muestra.cantidad}</Campo>
-                                            <Campo etiqueta="Tipo de muestra">{muestra.producto?.nombre}</Campo>
+                                            <Campo etiqueta="Tipo de muestra">{muestra.tipo_muestra?.nombre}</Campo>
                                             {muestra.notas && (
                                                 <div className="sm:col-span-3">
                                                     <Campo etiqueta="Notas">{muestra.notas}</Campo>

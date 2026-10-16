@@ -11,7 +11,6 @@ use App\Models\FuncionZootecnica;
 use App\Models\HistoriaClinica;
 use App\Models\Municipio;
 use App\Models\Pregunta;
-use App\Models\Producto;
 use App\Models\Propietario;
 use App\Models\Prueba;
 use App\Models\Raza;
@@ -21,6 +20,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -84,14 +84,18 @@ class HistoriasClinicasController extends Controller
     {
         return Inertia::render('HistoriasClinicas/Create', [
             'propietarios' => Propietario::orderBy('apellidos')->orderBy('nombre')->get(['id', 'nombre', 'apellidos', 'telefono', 'curp', 'rfc']),
-            'direcciones' => Direccion::with('municipio')->get(['id', 'propietario_id', 'calle', 'numero_exterior', 'numero_interior', 'colonia', 'municipio_id', 'codigo_postal', 'caseta', 'lote', 'parvada']),
+            'direcciones' => Direccion::with(['municipio', 'estado'])->get(['id', 'propietario_id', 'calle', 'numero_exterior', 'numero_interior', 'colonia', 'municipio_id', 'estado_id', 'codigo_postal', 'caseta', 'lote', 'parvada']),
             'explotaciones' => Explotacion::with('municipio')->get(['id', 'propietario_id', 'nombre', 'direccion', 'estado_id', 'municipio_id', 'caseta', 'lote', 'parvada']),
             'especies' => Especie::orderBy('nombre')->get(['id', 'nombre']),
             'razas' => Raza::orderBy('nombre')->get(['id', 'nombre', 'especie_id']),
             'estados' => Estado::orderBy('nombre')->get(['id', 'nombre']),
             'municipios' => Municipio::orderBy('nombre')->get(['id', 'nombre', 'estado_id']),
-            'servicios' => Servicio::where('activo', true)->orderBy('descripcion')->get(['id', 'clave', 'descripcion']),
-            'productos' => Producto::where('activo', true)->orderBy('nombre')->get(['id', 'nombre', 'servicio_id', 'precio_unitario']),
+            // Cada servicio trae los tipos de muestra elegidos en su alta del
+            // catálogo de análisis: son las únicas opciones de "Tipo de muestra".
+            'servicios' => Servicio::where('activo', true)
+                ->with(['tiposMuestra' => fn ($q) => $q->orderBy('nombre')->select('tipo_muestras.id', 'tipo_muestras.nombre')])
+                ->orderBy('descripcion')
+                ->get(['id', 'clave', 'descripcion']),
             'funciones_zootecnicas' => FuncionZootecnica::orderBy('nombre')->get(['id', 'nombre', 'especie_id']),
             'preguntas' => Pregunta::vigentes()->get(['id', 'texto', 'tipo']),
         ]);
@@ -428,11 +432,13 @@ class HistoriasClinicasController extends Controller
             'muestras' => ['required', 'array', 'min:1'],
             'muestras.*.servicio_id' => ['required', 'integer', 'exists:servicios,id'],
             'muestras.*.cantidad' => ['required', 'integer', 'min:1'],
-            'muestras.*.producto_id' => ['nullable', 'integer', 'exists:productos,id'],
+            'muestras.*.tipo_muestra_id' => ['nullable', 'integer', 'exists:tipo_muestras,id'],
             'muestras.*.notas' => ['nullable', 'string', 'max:1000'],
             'respuestas' => ['nullable', 'array'],
             'respuestas.*' => ['nullable', 'string', 'max:2000'],
         ]);
+
+        $this->validarTiposMuestraDelServicio($validated['muestras']);
 
         if (in_array($validated['edad_unidad'] ?? null, ['NR', 'NA'], true)) {
             $validated['edad_valor'] = null;
@@ -464,13 +470,14 @@ class HistoriasClinicasController extends Controller
             'historia' => $historiaClinica->load([
                 'propietario',
                 'direccion.municipio',
+                'direccion.estado',
                 'explotacion.municipio',
                 'especie',
                 'raza',
                 'funcionZootecnica',
                 'creadoPor',
                 'muestras.servicio',
-                'muestras.producto',
+                'muestras.tipoMuestra',
                 'respuestas.pregunta',
             ]),
         ]);
@@ -492,7 +499,7 @@ class HistoriasClinicasController extends Controller
                 'raza',
                 'creadoPor',
                 'muestras.servicio',
-                'muestras.producto',
+                'muestras.tipoMuestra',
             ]),
             'datosGenerales' => DatosGeneral::first(),
         ]);
@@ -531,9 +538,9 @@ class HistoriasClinicasController extends Controller
     public function edit(HistoriaClinica $historiaClinica): Response
     {
         return Inertia::render('HistoriasClinicas/Edit', [
-            'historia' => $historiaClinica->load(['propietario', 'direccion.municipio', 'especie', 'raza']),
+            'historia' => $historiaClinica->load(['propietario', 'direccion.municipio', 'direccion.estado', 'especie', 'raza']),
             'propietarios' => Propietario::orderBy('apellidos')->orderBy('nombre')->get(['id', 'nombre', 'apellidos', 'telefono', 'curp', 'rfc']),
-            'direcciones' => Direccion::with('municipio')->get(['id', 'propietario_id', 'calle', 'numero_exterior', 'numero_interior', 'colonia', 'municipio_id', 'codigo_postal', 'caseta', 'lote', 'parvada']),
+            'direcciones' => Direccion::with(['municipio', 'estado'])->get(['id', 'propietario_id', 'calle', 'numero_exterior', 'numero_interior', 'colonia', 'municipio_id', 'estado_id', 'codigo_postal', 'caseta', 'lote', 'parvada']),
             'especies' => Especie::orderBy('nombre')->get(['id', 'nombre']),
             'razas' => Raza::orderBy('nombre')->get(['id', 'nombre', 'especie_id']),
         ]);
@@ -566,6 +573,33 @@ class HistoriasClinicasController extends Controller
         $historiaClinica->delete();
 
         return $this->redirectAlIndiceConFiltrosHoy()->with('success', 'Historia clínica eliminada.');
+    }
+
+    /**
+     * El tipo de muestra de cada análisis tiene que ser uno de los que se
+     * eligieron para ese servicio en el catálogo de análisis.
+     *
+     * @param  list<array<string, mixed>>  $muestras
+     */
+    private function validarTiposMuestraDelServicio(array $muestras): void
+    {
+        $permitidos = DB::table('servicio_tipo_muestra')
+            ->whereIn('servicio_id', array_column($muestras, 'servicio_id'))
+            ->get(['servicio_id', 'tipo_muestra_id'])
+            ->groupBy('servicio_id')
+            ->map(fn ($filas) => $filas->pluck('tipo_muestra_id')->all());
+
+        $errores = [];
+        foreach ($muestras as $i => $muestra) {
+            $tipo = $muestra['tipo_muestra_id'] ?? null;
+            if ($tipo !== null && ! in_array((int) $tipo, $permitidos->get($muestra['servicio_id'], []), false)) {
+                $errores["muestras.{$i}.tipo_muestra_id"] = 'El tipo de muestra no corresponde al análisis seleccionado.';
+            }
+        }
+
+        if ($errores) {
+            throw ValidationException::withMessages($errores);
+        }
     }
 
     /**

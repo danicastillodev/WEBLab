@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Producto extends Model
 {
-    protected $fillable = ['nombre', 'servicio_id', 'precio_unitario', 'activo'];
+    public const UNIDADES_PRECIO = ['muestra', 'grupo', 'analisis'];
+
+    protected $fillable = ['nombre', 'servicio_id', 'precio_unitario', 'unidad_precio', 'activo'];
 
     protected $casts = [
         'precio_unitario' => 'decimal:2',

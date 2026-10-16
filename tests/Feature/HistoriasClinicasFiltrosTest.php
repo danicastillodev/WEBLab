@@ -115,6 +115,31 @@ class HistoriasClinicasFiltrosTest extends TestCase
     }
 
     /**
+     * El botón "Todas" manda los filtros vacíos: no debe redirigir al filtro
+     * de hoy, sino listar todas las historias, paginadas.
+     */
+    public function test_con_los_filtros_vacios_lista_todas_paginadas(): void
+    {
+        $historias = collect(range(1, 16))->map(fn ($i) => $this->historia([
+            'fecha_recepcion' => now()->subDays($i)->toDateString(),
+            'impreso' => $i % 2 ? HistoriaClinica::IMPRESO_NO : HistoriaClinica::IMPRESO_PARCIAL,
+        ]));
+
+        $filtrosVacios = array_fill_keys([
+            'fecha_desde', 'fecha_hasta', 'propietario', 'numero_caso',
+            'especie_id', 'ejercicio', 'estado', 'impreso',
+        ], '');
+
+        $respuesta = $this->actingAs(User::factory()->create(['es_admin' => true]))
+            ->get(route('historias-clinicas.index', $filtrosVacios))
+            ->assertOk();
+
+        $pagina = $respuesta->viewData('page')['props']['historias'];
+        $this->assertSame($historias->count(), $pagina['total']);
+        $this->assertCount(15, $pagina['data']);
+    }
+
+    /**
      * Sin parámetros, la primera visita redirige con los valores por defecto:
      * hoy, el ejercicio en curso y "No" en impreso.
      */

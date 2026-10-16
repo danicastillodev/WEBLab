@@ -68,13 +68,26 @@ export default function Index({ historias, filtros, especies }) {
     }
 
     function filtrarHoy() {
-        const hoy = new Date().toISOString().slice(0, 10);
+        // Fecha local (formato sueco = AAAA-MM-DD). toISOString() da la fecha
+        // en UTC, que por la tarde-noche en México ya es la de mañana.
+        const hoy = new Date().toLocaleDateString('sv');
         const hoyFiltro = {
             fecha_desde: hoy, fecha_hasta: hoy, propietario: '', numero_caso: '',
             especie_id: '', ejercicio: ejercicioActual, estado: '', impreso: 'no',
         };
         setForm(hoyFiltro);
         router.get(route('historias-clinicas.index'), hoyFiltro, { preserveState: true, replace: true });
+    }
+
+    // Se mandan los filtros vacíos (no omitidos): sin ningún parámetro el
+    // controlador redirige al filtro de hoy.
+    function mostrarTodas() {
+        const todasFiltro = {
+            fecha_desde: '', fecha_hasta: '', propietario: '', numero_caso: '',
+            especie_id: '', ejercicio: '', estado: '', impreso: '',
+        };
+        setForm(todasFiltro);
+        router.get(route('historias-clinicas.index'), todasFiltro, { preserveState: true, replace: true });
     }
 
     function handleCancel(historia) {
@@ -209,6 +222,13 @@ export default function Index({ historias, filtros, especies }) {
                                 className="rounded-md border border-gray-300 px-4 py-1.5 text-sm font-medium text-gray-600 hover:bg-gray-50"
                             >
                                 Hoy
+                            </button>
+                            <button
+                                type="button"
+                                onClick={mostrarTodas}
+                                className="rounded-md border border-gray-300 px-4 py-1.5 text-sm font-medium text-gray-600 hover:bg-gray-50"
+                            >
+                                Todas
                             </button>
                             <button
                                 type="button"
@@ -355,12 +375,13 @@ export default function Index({ historias, filtros, especies }) {
                             ¿Desea crear una nota de pago para esta historia clínica?
                         </p>
                         <div className="mt-3 flex gap-3">
-                            <button
-                                onClick={() => setModalNotaPago(false)}
+                            {/* Sin nota de pago se sigue capturando: se abre el alta de otra historia. */}
+                            <Link
+                                href={route('historias-clinicas.create')}
                                 className="flex-1 rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
                             >
                                 No
-                            </button>
+                            </Link>
                             <Link
                                 href={route('notas-pago.create', { preseleccionar_hoy: 1 })}
                                 className="flex-1 rounded-md bg-brand px-4 py-2 text-sm font-medium text-white hover:bg-brand-hover"

@@ -28,8 +28,10 @@ return [
         'pruebas' => 'Pruebas',
         'funcion-zootecnicas' => 'Funciones Zootécnicas',
         'metodos' => 'Métodos',
-        'servicios' => 'Servicios',
+        'tipos-muestra' => 'Tipos de Muestra',
+        'servicios' => 'Análisis',
         'productos' => 'Productos',
+        'clientes' => 'Clientes',
         'users' => 'Usuarios',
         'roles' => 'Roles',
     ],
@@ -48,7 +50,7 @@ return [
         ],
         'notas-pago' => [
             'etiqueta' => 'Notas de pago',
-            'modulos' => ['productos'],
+            'modulos' => ['productos', 'clientes'],
             'grupos_granulares' => ['facturacion'],
         ],
         'diagnosticos' => [
@@ -57,7 +59,7 @@ return [
             'grupos_granulares' => ['diagnosticos'],
         ],
         'servicios' => [
-            'etiqueta' => 'Servicios',
+            'etiqueta' => 'Análisis',
             'modulos' => ['servicios'],
             'grupos_granulares' => [],
         ],
@@ -70,7 +72,7 @@ return [
             'etiqueta' => 'Catálogos',
             'modulos' => [
                 'propietarios', 'municipios', 'estados', 'especies',
-                'razas', 'pruebas', 'funcion-zootecnicas', 'metodos',
+                'razas', 'pruebas', 'funcion-zootecnicas', 'metodos', 'tipos-muestra',
             ],
             'grupos_granulares' => [],
         ],

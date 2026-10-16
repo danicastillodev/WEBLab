@@ -10,6 +10,7 @@ export default function AuthenticatedLayout({ header, children }) {
     const puedeVer   = (modulo) => !!permisos?.[modulo]?.ver;
     const puedeCrear = (modulo) => !!permisos?.[modulo]?.crear;
     const puedeGranular = (clave) => !!permisosGranulares?.[clave];
+    const puedeListarNotasPago = ['facturacion.agregar_facturas', 'facturacion.modificar_facturas', 'facturacion.cancelar_factura'].some(puedeGranular);
 
     const catalogos = [
         ['propietarios',       'Propietarios',           'propietarios.*'],
@@ -20,6 +21,7 @@ export default function AuthenticatedLayout({ header, children }) {
         ['pruebas',            'Pruebas',                'pruebas.index'],
         ['funcion-zootecnicas','Funciones Zootécnicas',  'funcion-zootecnicas.*'],
         ['metodos',            'Métodos',                'metodos.*'],
+        ['tipos-muestra',      'Tipos de Muestra',       'tipos-muestra.*'],
     ].filter(([modulo]) => puedeVer(modulo));
 
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
@@ -30,7 +32,7 @@ export default function AuthenticatedLayout({ header, children }) {
         'propietarios.index', 'propietarios.create', 'propietarios.edit',
         'municipios.index', 'estados.index', 'especies.index',
         'razas.index', 'pruebas.index', 'funcion-zootecnicas.index',
-        'metodos.index',
+        'metodos.index', 'tipos-muestra.*',
     ];
     const [catalogosOpen, setCatalogosOpen] = useState(
         catalogosRoutes.some((r) => route().current(r)),
@@ -44,12 +46,10 @@ export default function AuthenticatedLayout({ header, children }) {
 
     const [diagnosticosOpen, setDiagnosticosOpen] = useState(false);
 
-    const [serviciosOpen, setServiciosOpen] = useState(false);
-
     const [reportesOpen, setReportesOpen] = useState(false);
 
     const [configuracionOpen, setConfiguracionOpen] = useState(
-        route().current('areas.*'),
+        route().current('areas.*') || route().current('servicios.*'),
     );
 
     const chevron = (open) => (
@@ -132,8 +132,42 @@ export default function AuthenticatedLayout({ header, children }) {
                 {/* Nav links */}
                 <nav className="flex-1 space-y-1 overflow-y-auto px-4 py-4">
                     <NavLink href={route('dashboard')} active={route().current('dashboard')}>
-                        Panel
+                        Inicio
                     </NavLink>
+
+                    {/* Configuración General */}
+                    <div>
+                        {groupBtn('Configuración General', configuracionOpen, () => setConfiguracionOpen((v) => !v), route().current('areas.*') || route().current('datos-generales.*') || route().current('parametros-operacion.*') || route().current('mantenimiento-base-datos.*') || route().current('servicios.*'))}
+                        {configuracionOpen && (
+                            <div className="ms-3 mt-1 flex flex-col items-start space-y-1 border-l border-gray-200 ps-3">
+                                {puedeVer('datos-generales') ? (
+                                    <NavLink href={route('datos-generales.edit')} active={route().current('datos-generales.*')}>Datos generales</NavLink>
+                                ) : (
+                                    <NavLink href="#" active={false}>Datos generales</NavLink>
+                                )}
+                                {puedeVer('mantenimiento-base-datos') ? (
+                                    <NavLink href={route('mantenimiento-base-datos.index')} active={route().current('mantenimiento-base-datos.*')}>Mantenimiento de la base de datos</NavLink>
+                                ) : (
+                                    <NavLink href="#" active={false}>Mantenimiento de la base de datos</NavLink>
+                                )}
+                                {puedeVer('parametros-operacion') ? (
+                                    <NavLink href={route('parametros-operacion.edit')} active={route().current('parametros-operacion.*')}>Parámetros de Operación</NavLink>
+                                ) : (
+                                    <NavLink href="#" active={false}>Parámetros de Operación</NavLink>
+                                )}
+                                {puedeVer('areas') ? (
+                                    <NavLink href={route('areas.index')} active={route().current('areas.*')}>Catálogo de Áreas</NavLink>
+                                ) : (
+                                    <NavLink href="#" active={false}>Catálogo de Áreas</NavLink>
+                                )}
+                                {puedeVer('servicios') ? (
+                                    <NavLink href={route('servicios.index')} active={route().current('servicios.index') || route().current('servicios.edit')}>Catálogo de análisis</NavLink>
+                                ) : (
+                                    <NavLink href="#" active={false}>Catálogo de análisis</NavLink>
+                                )}
+                            </div>
+                        )}
+                    </div>
 
                     {/* Historias Clínicas */}
                     {puedeVer('historias-clinicas') && (
@@ -158,35 +192,6 @@ export default function AuthenticatedLayout({ header, children }) {
                         </div>
                     )}
 
-                    {/* Notas de pago */}
-                    <div>
-                        {groupBtn('Notas de pago', facturacionOpen, () => setFacturacionOpen((v) => !v), route().current('productos.*') || route().current('notas-pago.*'))}
-                        {facturacionOpen && (
-                            <div className="ms-3 mt-1 flex flex-col items-start space-y-1 border-l border-gray-200 ps-3">
-                                {puedeGranular('facturacion.agregar_facturas') ? (
-                                    <NavLink href={route('notas-pago.create')} active={route().current('notas-pago.create')}>Nueva nota de pago</NavLink>
-                                ) : (
-                                    <NavLink href="#" active={false}>Nueva nota de pago</NavLink>
-                                )}
-                                {enlacePendiente('Listado notas de pago')}
-                                {enlacePendiente('Nueva nota de abono')}
-                                {enlacePendiente('Listado Notas de abono')}
-                                {puedeVer('productos') ? (
-                                    <NavLink href={route('productos.index')} active={route().current('productos.index') || route().current('productos.edit')}>Catálogo de productos</NavLink>
-                                ) : (
-                                    <NavLink href="#" active={false}>Catálogo de productos</NavLink>
-                                )}
-                                {puedeCrear('productos') ? (
-                                    <NavLink href={route('productos.create')} active={route().current('productos.create')}>Agregar producto</NavLink>
-                                ) : (
-                                    <NavLink href="#" active={false}>Agregar producto</NavLink>
-                                )}
-                                {enlacePendiente('Listado clientes')}
-                                {enlacePendiente('Estado de cuenta')}
-                            </div>
-                        )}
-                    </div>
-
                     {/* Diagnósticos */}
                     <div>
                         {groupBtn('Diagnósticos', diagnosticosOpen, () => setDiagnosticosOpen((v) => !v), false, true)}
@@ -198,21 +203,39 @@ export default function AuthenticatedLayout({ header, children }) {
                         )}
                     </div>
 
-                    {/* Servicios */}
+                    {/* Notas de pago */}
                     <div>
-                        {groupBtn('Servicios', serviciosOpen, () => setServiciosOpen((v) => !v), route().current('servicios.*'))}
-                        {serviciosOpen && (
+                        {groupBtn('Notas de pago', facturacionOpen, () => setFacturacionOpen((v) => !v), route().current('productos.*') || route().current('notas-pago.*') || route().current('clientes.*'))}
+                        {facturacionOpen && (
                             <div className="ms-3 mt-1 flex flex-col items-start space-y-1 border-l border-gray-200 ps-3">
-                                {puedeVer('servicios') ? (
-                                    <NavLink href={route('servicios.index')} active={route().current('servicios.index') || route().current('servicios.edit')}>Catálogo de servicios</NavLink>
+                                {puedeGranular('facturacion.agregar_facturas') ? (
+                                    <NavLink href={route('notas-pago.create')} active={route().current('notas-pago.create')}>Nueva nota de pago</NavLink>
                                 ) : (
-                                    <NavLink href="#" active={false}>Catálogo de servicios</NavLink>
+                                    <NavLink href="#" active={false}>Nueva nota de pago</NavLink>
                                 )}
-                                {puedeCrear('servicios') ? (
-                                    <NavLink href={route('servicios.create')} active={route().current('servicios.create')}>Agregar servicio</NavLink>
+                                {puedeListarNotasPago ? (
+                                    <NavLink href={route('notas-pago.index')} active={route().current('notas-pago.index')}>Listado notas de pago</NavLink>
                                 ) : (
-                                    <NavLink href="#" active={false}>Agregar servicio</NavLink>
+                                    <NavLink href="#" active={false}>Listado notas de pago</NavLink>
                                 )}
+                                {enlacePendiente('Nueva nota de abono')}
+                                {enlacePendiente('Listado Notas de abono')}
+                                {puedeVer('productos') ? (
+                                    <NavLink href={route('productos.index')} active={route().current('productos.index') || route().current('productos.edit')}>Listado de productos</NavLink>
+                                ) : (
+                                    <NavLink href="#" active={false}>Listado de productos</NavLink>
+                                )}
+                                {puedeCrear('productos') ? (
+                                    <NavLink href={route('productos.create')} active={route().current('productos.create')}>Agregar producto</NavLink>
+                                ) : (
+                                    <NavLink href="#" active={false}>Agregar producto</NavLink>
+                                )}
+                                {puedeVer('clientes') ? (
+                                    <NavLink href={route('clientes.index')} active={route().current('clientes.*')}>Listado clientes</NavLink>
+                                ) : (
+                                    <NavLink href="#" active={false}>Listado clientes</NavLink>
+                                )}
+                                {enlacePendiente('Estado de cuenta')}
                             </div>
                         )}
                     </div>
@@ -257,40 +280,6 @@ export default function AuthenticatedLayout({ header, children }) {
                             )}
                         </div>
                     )}
-
-                    {/* Configuración General */}
-                    <div>
-                        {groupBtn('Configuración General', configuracionOpen, () => setConfiguracionOpen((v) => !v), route().current('areas.*') || route().current('datos-generales.*') || route().current('parametros-operacion.*') || route().current('mantenimiento-base-datos.*'))}
-                        {configuracionOpen && (
-                            <div className="ms-3 mt-1 flex flex-col items-start space-y-1 border-l border-gray-200 ps-3">
-                                {puedeVer('datos-generales') ? (
-                                    <NavLink href={route('datos-generales.edit')} active={route().current('datos-generales.*')}>Datos generales</NavLink>
-                                ) : (
-                                    <NavLink href="#" active={false}>Datos generales</NavLink>
-                                )}
-                                {puedeVer('mantenimiento-base-datos') ? (
-                                    <NavLink href={route('mantenimiento-base-datos.index')} active={route().current('mantenimiento-base-datos.*')}>Mantenimiento de la base de datos</NavLink>
-                                ) : (
-                                    <NavLink href="#" active={false}>Mantenimiento de la base de datos</NavLink>
-                                )}
-                                {puedeVer('parametros-operacion') ? (
-                                    <NavLink href={route('parametros-operacion.edit')} active={route().current('parametros-operacion.*')}>Parámetros de Operación</NavLink>
-                                ) : (
-                                    <NavLink href="#" active={false}>Parámetros de Operación</NavLink>
-                                )}
-                                {puedeVer('areas') ? (
-                                    <NavLink href={route('areas.index')} active={route().current('areas.*')}>Catálogo de Áreas</NavLink>
-                                ) : (
-                                    <NavLink href="#" active={false}>Catálogo de Áreas</NavLink>
-                                )}
-                                {puedeVer('servicios') ? (
-                                    <NavLink href={route('servicios.index')} active={route().current('servicios.index') || route().current('servicios.edit')}>Catálogo de servicios</NavLink>
-                                ) : (
-                                    <NavLink href="#" active={false}>Catálogo de servicios</NavLink>
-                                )}
-                            </div>
-                        )}
-                    </div>
 
                     {/* Seguridad */}
                     {(puedeVer('users') || puedeVer('roles')) && (
@@ -358,7 +347,35 @@ export default function AuthenticatedLayout({ header, children }) {
                 {showingNavigationDropdown && (
                     <div className="bg-white sm:hidden">
                         <div className="space-y-1 pb-3 pt-2">
-                            <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>Panel</ResponsiveNavLink>
+                            <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>Inicio</ResponsiveNavLink>
+                            <>
+                                <div className="px-4 py-1 text-xs font-semibold uppercase tracking-wider text-gray-400">Configuración General</div>
+                                {puedeVer('datos-generales') ? (
+                                    <ResponsiveNavLink href={route('datos-generales.edit')} active={route().current('datos-generales.*')}>Datos generales</ResponsiveNavLink>
+                                ) : (
+                                    <ResponsiveNavLink href="#" active={false}>Datos generales</ResponsiveNavLink>
+                                )}
+                                {puedeVer('mantenimiento-base-datos') ? (
+                                    <ResponsiveNavLink href={route('mantenimiento-base-datos.index')} active={route().current('mantenimiento-base-datos.*')}>Mantenimiento de la base de datos</ResponsiveNavLink>
+                                ) : (
+                                    <ResponsiveNavLink href="#" active={false}>Mantenimiento de la base de datos</ResponsiveNavLink>
+                                )}
+                                {puedeVer('parametros-operacion') ? (
+                                    <ResponsiveNavLink href={route('parametros-operacion.edit')} active={route().current('parametros-operacion.*')}>Parámetros de Operación</ResponsiveNavLink>
+                                ) : (
+                                    <ResponsiveNavLink href="#" active={false}>Parámetros de Operación</ResponsiveNavLink>
+                                )}
+                                {puedeVer('areas') ? (
+                                    <ResponsiveNavLink href={route('areas.index')} active={route().current('areas.*')}>Catálogo de Áreas</ResponsiveNavLink>
+                                ) : (
+                                    <ResponsiveNavLink href="#" active={false}>Catálogo de Áreas</ResponsiveNavLink>
+                                )}
+                                {puedeVer('servicios') ? (
+                                    <ResponsiveNavLink href={route('servicios.index')} active={route().current('servicios.index') || route().current('servicios.edit')}>Catálogo de análisis</ResponsiveNavLink>
+                                ) : (
+                                    <ResponsiveNavLink href="#" active={false}>Catálogo de análisis</ResponsiveNavLink>
+                                )}
+                            </>
                             {puedeVer('historias-clinicas') && (
                                 <>
                                     <div className="px-4 py-1 text-xs font-semibold uppercase tracking-wider text-gray-400">Historias Clínicas</div>
@@ -372,29 +389,6 @@ export default function AuthenticatedLayout({ header, children }) {
                                 </>
                             )}
                             <>
-                                <div className="px-4 py-1 text-xs font-semibold uppercase tracking-wider text-gray-400">Notas de pago</div>
-                                {puedeGranular('facturacion.agregar_facturas') ? (
-                                    <ResponsiveNavLink href={route('notas-pago.create')} active={route().current('notas-pago.create')}>Nueva nota de pago</ResponsiveNavLink>
-                                ) : (
-                                    <ResponsiveNavLink href="#" active={false}>Nueva nota de pago</ResponsiveNavLink>
-                                )}
-                                {enlacePendienteMovil('Listado notas de pago')}
-                                {enlacePendienteMovil('Nueva nota de abono')}
-                                {enlacePendienteMovil('Listado Notas de abono')}
-                                {puedeVer('productos') ? (
-                                    <ResponsiveNavLink href={route('productos.index')} active={route().current('productos.index') || route().current('productos.edit')}>Catálogo de productos</ResponsiveNavLink>
-                                ) : (
-                                    <ResponsiveNavLink href="#" active={false}>Catálogo de productos</ResponsiveNavLink>
-                                )}
-                                {puedeCrear('productos') ? (
-                                    <ResponsiveNavLink href={route('productos.create')} active={route().current('productos.create')}>Agregar producto</ResponsiveNavLink>
-                                ) : (
-                                    <ResponsiveNavLink href="#" active={false}>Agregar producto</ResponsiveNavLink>
-                                )}
-                                {enlacePendienteMovil('Listado clientes')}
-                                {enlacePendienteMovil('Estado de cuenta')}
-                            </>
-                            <>
                                 <div className="flex items-center px-4 py-1 text-xs font-semibold uppercase tracking-wider text-gray-400">
                                     Diagnósticos
                                     {insigniaPendiente}
@@ -403,17 +397,35 @@ export default function AuthenticatedLayout({ header, children }) {
                                 {enlacePendienteMovil('Listado de diagnósticos')}
                             </>
                             <>
-                                <div className="px-4 py-1 text-xs font-semibold uppercase tracking-wider text-gray-400">Servicios</div>
-                                {puedeVer('servicios') ? (
-                                    <ResponsiveNavLink href={route('servicios.index')} active={route().current('servicios.index') || route().current('servicios.edit')}>Catálogo de servicios</ResponsiveNavLink>
+                                <div className="px-4 py-1 text-xs font-semibold uppercase tracking-wider text-gray-400">Notas de pago</div>
+                                {puedeGranular('facturacion.agregar_facturas') ? (
+                                    <ResponsiveNavLink href={route('notas-pago.create')} active={route().current('notas-pago.create')}>Nueva nota de pago</ResponsiveNavLink>
                                 ) : (
-                                    <ResponsiveNavLink href="#" active={false}>Catálogo de servicios</ResponsiveNavLink>
+                                    <ResponsiveNavLink href="#" active={false}>Nueva nota de pago</ResponsiveNavLink>
                                 )}
-                                {puedeCrear('servicios') ? (
-                                    <ResponsiveNavLink href={route('servicios.create')} active={route().current('servicios.create')}>Agregar servicio</ResponsiveNavLink>
+                                {puedeListarNotasPago ? (
+                                    <ResponsiveNavLink href={route('notas-pago.index')} active={route().current('notas-pago.index')}>Listado notas de pago</ResponsiveNavLink>
                                 ) : (
-                                    <ResponsiveNavLink href="#" active={false}>Agregar servicio</ResponsiveNavLink>
+                                    <ResponsiveNavLink href="#" active={false}>Listado notas de pago</ResponsiveNavLink>
                                 )}
+                                {enlacePendienteMovil('Nueva nota de abono')}
+                                {enlacePendienteMovil('Listado Notas de abono')}
+                                {puedeVer('productos') ? (
+                                    <ResponsiveNavLink href={route('productos.index')} active={route().current('productos.index') || route().current('productos.edit')}>Listado de productos</ResponsiveNavLink>
+                                ) : (
+                                    <ResponsiveNavLink href="#" active={false}>Listado de productos</ResponsiveNavLink>
+                                )}
+                                {puedeCrear('productos') ? (
+                                    <ResponsiveNavLink href={route('productos.create')} active={route().current('productos.create')}>Agregar producto</ResponsiveNavLink>
+                                ) : (
+                                    <ResponsiveNavLink href="#" active={false}>Agregar producto</ResponsiveNavLink>
+                                )}
+                                {puedeVer('clientes') ? (
+                                    <ResponsiveNavLink href={route('clientes.index')} active={route().current('clientes.*')}>Listado clientes</ResponsiveNavLink>
+                                ) : (
+                                    <ResponsiveNavLink href="#" active={false}>Listado clientes</ResponsiveNavLink>
+                                )}
+                                {enlacePendienteMovil('Estado de cuenta')}
                             </>
                             <>
                                 <div className="flex items-center px-4 py-1 text-xs font-semibold uppercase tracking-wider text-gray-400">
@@ -442,34 +454,6 @@ export default function AuthenticatedLayout({ header, children }) {
                                     ))}
                                 </>
                             )}
-                            <>
-                                <div className="px-4 py-1 text-xs font-semibold uppercase tracking-wider text-gray-400">Configuración General</div>
-                                {puedeVer('datos-generales') ? (
-                                    <ResponsiveNavLink href={route('datos-generales.edit')} active={route().current('datos-generales.*')}>Datos generales</ResponsiveNavLink>
-                                ) : (
-                                    <ResponsiveNavLink href="#" active={false}>Datos generales</ResponsiveNavLink>
-                                )}
-                                {puedeVer('mantenimiento-base-datos') ? (
-                                    <ResponsiveNavLink href={route('mantenimiento-base-datos.index')} active={route().current('mantenimiento-base-datos.*')}>Mantenimiento de la base de datos</ResponsiveNavLink>
-                                ) : (
-                                    <ResponsiveNavLink href="#" active={false}>Mantenimiento de la base de datos</ResponsiveNavLink>
-                                )}
-                                {puedeVer('parametros-operacion') ? (
-                                    <ResponsiveNavLink href={route('parametros-operacion.edit')} active={route().current('parametros-operacion.*')}>Parámetros de Operación</ResponsiveNavLink>
-                                ) : (
-                                    <ResponsiveNavLink href="#" active={false}>Parámetros de Operación</ResponsiveNavLink>
-                                )}
-                                {puedeVer('areas') ? (
-                                    <ResponsiveNavLink href={route('areas.index')} active={route().current('areas.*')}>Catálogo de Áreas</ResponsiveNavLink>
-                                ) : (
-                                    <ResponsiveNavLink href="#" active={false}>Catálogo de Áreas</ResponsiveNavLink>
-                                )}
-                                {puedeVer('servicios') ? (
-                                    <ResponsiveNavLink href={route('servicios.index')} active={route().current('servicios.index') || route().current('servicios.edit')}>Catálogo de servicios</ResponsiveNavLink>
-                                ) : (
-                                    <ResponsiveNavLink href="#" active={false}>Catálogo de servicios</ResponsiveNavLink>
-                                )}
-                            </>
                             {(puedeVer('users') || puedeVer('roles')) && (
                                 <>
                                     <div className="px-4 py-1 text-xs font-semibold uppercase tracking-wider text-gray-400">Seguridad</div>

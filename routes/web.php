@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AreasController;
+use App\Http\Controllers\ClientesController;
 use App\Http\Controllers\CuestionarioController;
 use App\Http\Controllers\DatosGeneralesController;
 use App\Http\Controllers\EspeciesController;
@@ -19,6 +20,7 @@ use App\Http\Controllers\PruebasController;
 use App\Http\Controllers\RazasController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\ServiciosController;
+use App\Http\Controllers\TiposMuestraController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -73,15 +75,37 @@ Route::middleware('auth')->group(function () {
     Route::resource('pruebas', PruebasController::class)->except(['show']);
     Route::resource('funcion-zootecnicas', FuncionZootecnicasController::class)->except(['show']);
     Route::resource('metodos', MetodosController::class)->except(['show']);
-    Route::resource('servicios', ServiciosController::class)->except(['show']);
+    Route::resource('tipos-muestra', TiposMuestraController::class)
+        ->except(['show'])
+        ->parameters(['tipos-muestra' => 'tipo_muestra']);
+    // Alta rápida de catálogos (método, categoría, área...) desde el formulario del análisis.
+    Route::post('servicios/catalogo/{catalogo}', [ServiciosController::class, 'storeCatalogo'])
+        ->name('servicios.store-catalogo');
+    // Modificar y eliminar desde el formulario; el permiso se revisa en el controlador.
+    Route::patch('servicios/catalogo/{catalogo}/{id}', [ServiciosController::class, 'updateCatalogo'])
+        ->whereNumber('id')
+        ->name('servicios.update-catalogo');
+    Route::delete('servicios/catalogo/{catalogo}/{id}', [ServiciosController::class, 'destroyCatalogo'])
+        ->whereNumber('id')
+        ->name('servicios.destroy-catalogo');
+    // Activar/desactivar; el permiso se revisa en el controlador.
+    Route::patch('servicios/{servicio}/activo', [ServiciosController::class, 'updateActivo'])
+        ->name('servicios.update-activo');
+    // Los análisis no se eliminan, sólo se desactivan.
+    Route::resource('servicios', ServiciosController::class)->except(['show', 'destroy']);
     Route::resource('productos', ProductosController::class)->except(['show', 'destroy']);
+    Route::resource('clientes', ClientesController::class)->except(['show']);
 
     Route::controller(NotasPagoController::class)
         ->prefix('notas-pago')
         ->name('notas-pago.')
         ->group(function () {
+            Route::get('/', 'index')->name('index');
             Route::get('nueva', 'create')->name('create');
             Route::post('/', 'store')->name('store');
+            Route::post('clientes', 'storeCliente')->name('store-cliente');
+            Route::patch('clientes/{cliente}', 'updateCliente')->name('update-cliente');
+            Route::delete('clientes/{cliente}', 'destroyCliente')->name('destroy-cliente');
             Route::get('historias-clinicas', 'buscarHistorias')->name('buscar-historias');
             Route::get('historias-clinicas/conceptos', 'conceptosDeHistorias')->name('conceptos-de-historias');
         });

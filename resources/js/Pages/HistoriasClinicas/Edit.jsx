@@ -10,7 +10,9 @@ const selectClass = 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focu
 const EDAD_UNIDADES = ['Dias', 'Meses', 'Años', 'NR', 'NA'];
 
 function formatDireccion(dir) {
-    return `${dir.calle} ${dir.numero_exterior}, ${dir.colonia}, ${dir.municipio?.nombre ?? ''}`;
+    const lugar = [dir.municipio?.nombre, dir.estado?.nombre].filter(Boolean).join(', ');
+
+    return [`${dir.calle} ${dir.numero_exterior}`, dir.colonia, lugar].filter(Boolean).join(', ');
 }
 
 export default function Edit({ historia, propietarios, direcciones, especies, razas }) {
