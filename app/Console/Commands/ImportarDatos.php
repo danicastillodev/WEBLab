@@ -131,15 +131,26 @@ class ImportarDatos extends Command
     {
         $viejos = [];
         $unicos = collect(Schema::getIndexes($tabla))->filter(fn ($i) => $i['unique'] && ! $i['primary']);
+        $columnas = collect(Schema::getColumns($tabla))->keyBy('name')->all();
         foreach ($unicos as $indice) {
             $valores = array_intersect_key($fila, array_flip($indice['columns']));
             if (count($valores) !== count($indice['columns']) || in_array(null, $valores, true)) {
                 continue;
             }
             foreach (DB::table($tabla)->where($valores)->where('id', '!=', $fila['id'])->pluck('id') as $viejo) {
-                DB::table($tabla)->where('id', $viejo)->update(
-                    array_map(fn () => "~fusion-{$viejo}", array_flip($indice['columns']))
-                );
+                // Un valor que no puede chocar: NULL si la columna lo admite
+                // (los índices únicos permiten varios), uno mayor que todos en
+                // las numéricas (servicios.numero es unsigned) y una marca en
+                // las de texto.
+                $apartado = [];
+                foreach ($indice['columns'] as $columna) {
+                    $apartado[$columna] = match (true) {
+                        $columnas[$columna]['nullable'] => null,
+                        (bool) preg_match('/int|dec|num|float|double|real/i', $columnas[$columna]['type_name']) => (int) DB::table($tabla)->max($columna) + 1,
+                        default => "~fusion-{$viejo}",
+                    };
+                }
+                DB::table($tabla)->where('id', $viejo)->update($apartado);
                 $viejos[] = $viejo;
             }
         }

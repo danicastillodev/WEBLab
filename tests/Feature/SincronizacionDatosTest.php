@@ -55,6 +55,21 @@ class SincronizacionDatosTest extends TestCase
         $this->assertDatabaseHas('area_user', ['area_id' => $local, 'user_id' => $usuario->id]);
     }
 
+    public function test_fusiona_duplicados_en_indices_unicos_numericos(): void
+    {
+        $fila = ['clave' => 'S-1', 'descripcion' => 'Serología', 'numero' => 7, 'created_at' => now(), 'updated_at' => now()];
+        $local = DB::table('servicios')->insertGetId($fila);
+        $this->artisan('datos:exportar', ['--sin-migracion' => true])->assertSuccessful();
+
+        DB::table('servicios')->where('id', $local)->delete();
+        $otro = DB::table('servicios')->insertGetId(['id' => $local + 50, 'clave' => 'S-9'] + $fila);
+
+        $this->artisan('datos:importar')->assertSuccessful();
+
+        $this->assertDatabaseHas('servicios', ['id' => $local, 'numero' => 7, 'clave' => 'S-1']);
+        $this->assertDatabaseMissing('servicios', ['id' => $otro]);
+    }
+
     public function test_no_exporta_seguridad_historias_ni_notas_de_pago(): void
     {
         foreach (['users', 'roles_usuario', 'user_permissions', 'user_permisos_granulares', 'area_user',
