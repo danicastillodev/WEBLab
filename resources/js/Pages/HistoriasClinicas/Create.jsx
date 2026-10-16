@@ -89,7 +89,7 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
         (r) => String(r.especie_id) === String(data.especie_id),
     );
     const funcionesFiltradas = funciones.filter(
-        (f) => String(f.especie_id) === String(data.especie_id),
+        (f) => f.especie_ids.includes(Number(data.especie_id)),
     );
 
     function onPropietarioChange(id) {
@@ -342,7 +342,8 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
             } else {
                 const payload = { ...funcForm, especie_id: data.especie_id };
                 const { data: nueva } = await axios.post(route('historias-clinicas.store-funcion-zootecnica'), payload);
-                setFunciones((prev) => [...prev, nueva].sort(porNombre));
+                // Si ya existía con ese nombre, el servidor solo le agrega la especie.
+                setFunciones((prev) => (prev.some((f) => f.id === nueva.id) ? reemplazar(prev, nueva) : [...prev, nueva]).sort(porNombre));
                 setData((prev) => ({ ...prev, funcion_zootecnica_id: String(nueva.id) }));
             }
             setShowFuncModal(false);

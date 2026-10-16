@@ -2,13 +2,12 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
+import SeleccionMultiple from '@/Components/SeleccionMultiple';
 import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
 
-const selectClass = 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500';
-
 export default function Create({ especies }) {
-    const { data, setData, post, processing, errors } = useForm({ especie_id: '', nombre: '' });
+    const { data, setData, post, processing, errors } = useForm({ nombre: '', especie_ids: [] });
 
     function submit(e) {
         e.preventDefault();
@@ -26,21 +25,6 @@ export default function Create({ especies }) {
                     <div className="overflow-hidden bg-white p-6 shadow-sm sm:rounded-lg">
                         <form onSubmit={submit} className="space-y-6">
                             <div>
-                                <InputLabel htmlFor="especie_id" value="Especie" />
-                                <select
-                                    id="especie_id"
-                                    value={data.especie_id}
-                                    onChange={(e) => setData('especie_id', e.target.value)}
-                                    className={selectClass}
-                                >
-                                    <option value="">— Selecciona una especie —</option>
-                                    {especies.map((e) => (
-                                        <option key={e.id} value={e.id}>{e.nombre}</option>
-                                    ))}
-                                </select>
-                                <InputError message={errors.especie_id} className="mt-2" />
-                            </div>
-                            <div>
                                 <InputLabel htmlFor="nombre" value="Nombre" />
                                 <TextInput
                                     id="nombre"
@@ -50,6 +34,19 @@ export default function Create({ especies }) {
                                     autoFocus
                                 />
                                 <InputError message={errors.nombre} className="mt-2" />
+                            </div>
+                            <div>
+                                <InputLabel value="Especies" />
+                                <p className="mt-1 text-xs text-gray-500">
+                                    La función se ofrece al capturar historias clínicas de estas especies.
+                                </p>
+                                <SeleccionMultiple
+                                    opciones={especies}
+                                    value={data.especie_ids}
+                                    onChange={(ids) => setData('especie_ids', ids)}
+                                    placeholder="Buscar especie…"
+                                />
+                                <InputError message={errors.especie_ids} className="mt-2" />
                             </div>
                             <div className="flex items-center gap-4">
                                 <PrimaryButton disabled={processing}>Crear</PrimaryButton>

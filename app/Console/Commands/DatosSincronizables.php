@@ -30,6 +30,7 @@ final class DatosSincronizables
         'especies',
         'razas',
         'funcion_zootecnicas',
+        'especie_funcion_zootecnica',
         'preguntas',
         'tipo_muestras',
         'servicios',
