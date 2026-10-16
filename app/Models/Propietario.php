@@ -13,4 +13,9 @@ class Propietario extends Model
     {
         return $this->hasMany(Direccion::class);
     }
+
+    public function explotaciones(): HasMany
+    {
+        return $this->hasMany(Explotacion::class);
+    }
 }

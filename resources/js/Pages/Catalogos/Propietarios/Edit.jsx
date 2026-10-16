@@ -2,6 +2,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
+import ExplotacionesPropietario, { explotacionDelServidor } from '@/Components/ExplotacionesPropietario';
 import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
 
@@ -30,6 +31,7 @@ export default function Edit({ propietario, estados, municipios }) {
         rfc: propietario.rfc ?? '',
         telefono: propietario.telefono ?? '',
         direcciones: propietario.direcciones.map((d) => ({
+            id: d.id,
             calle: d.calle,
             numero_exterior: d.numero_exterior,
             numero_interior: d.numero_interior ?? '',
@@ -41,6 +43,7 @@ export default function Edit({ propietario, estados, municipios }) {
             lote: d.lote ?? '',
             parvada: d.parvada ?? '',
         })),
+        explotaciones: propietario.explotaciones.map(explotacionDelServidor),
     });
 
     function submit(e) {
@@ -313,6 +316,16 @@ export default function Edit({ propietario, estados, municipios }) {
                                     })}
                                 </div>
                             </div>
+
+
+                            <ExplotacionesPropietario
+                                value={data.explotaciones}
+                                onChange={(lista) => setData('explotaciones', lista)}
+                                estados={estados}
+                                municipios={municipios}
+                                errors={errors}
+                                estadoDefault={estadoDefault}
+                            />
 
                             <div className="flex items-center gap-4">
                                 <PrimaryButton disabled={processing}>Guardar</PrimaryButton>
