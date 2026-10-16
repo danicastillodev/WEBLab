@@ -40,7 +40,11 @@ class DatabaseSeeder extends Seeder
         $this->call(AreasSeeder::class);
         $this->call(CatalogosServicioSeeder::class);
         $this->call(ServiciosSeeder::class);
+        $this->call(ServiciosSistemaAnteriorSeeder::class);
         $this->call(TiposMuestraServiciosSeeder::class);
         $this->call(ProductosSeeder::class);
+        $this->call(PropietariosSistemaAnteriorSeeder::class);
+        $this->call(ExplotacionesSistemaAnteriorSeeder::class);
+        $this->call(ClientesSistemaAnteriorSeeder::class);
     }
 }

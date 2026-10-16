@@ -267,13 +267,13 @@ class CatalogoEnLineaTest extends TestCase
 
     public function test_edita_un_registro_en_linea(): void
     {
-        $especie = Especie::create(['nombre' => 'Canino']);
+        $especie = Especie::create(['nombre' => 'Especie de prueba']);
 
         $this->actingAs($this->admin())
-            ->patchJson(route('historias-clinicas.update-especie', $especie->id), ['nombre' => 'Felino'])
+            ->patchJson(route('historias-clinicas.update-especie', $especie->id), ['nombre' => 'Especie renombrada'])
             ->assertOk()
-            ->assertJsonPath('nombre', 'Felino');
+            ->assertJsonPath('nombre', 'Especie renombrada');
 
-        $this->assertDatabaseHas('especies', ['id' => $especie->id, 'nombre' => 'Felino']);
+        $this->assertDatabaseHas('especies', ['id' => $especie->id, 'nombre' => 'Especie renombrada']);
     }
 }

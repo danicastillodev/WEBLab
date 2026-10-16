@@ -189,7 +189,7 @@ class NotasPagoController extends Controller
             return $notaPago;
         });
 
-        return redirect()->route('notas-pago.create')
+        return redirect()->route('notas-pago.index')
             ->with('success', "Nota de pago folio {$notaPago->folio} creada.");
     }
 

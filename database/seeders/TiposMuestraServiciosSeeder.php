@@ -2,69 +2,107 @@
 
 namespace Database\Seeders;
 
-use App\Models\Servicio;
-use App\Models\TipoMuestra;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 /**
- * Tipos de muestra de ejemplo para cada análisis, de forma que el selector
- * "Tipo de muestra" del alta de historias clínicas tenga opciones. Se asignan
- * por la clave del servicio; el que no coincida con ninguna regla recibe
- * ÓRGANOS. Solo agrega: no quita lo que ya se haya elegido en el catálogo.
+ * Deja el catálogo de tipos de muestra y su relación con los análisis igual
+ * que en el sistema anterior.
+ *
+ * Los datos viven en database/data/tipos_muestra.json y salen de
+ * `catalogostiposmuestras` y `catalogosserviciostiposmuestras` en
+ * docs/old_db.sql; la relación va por la clave del servicio.
  */
 class TiposMuestraServiciosSeeder extends Seeder
 {
-    /**
-     * Expresión sobre la clave del servicio => tipos de muestra. Gana la
-     * primera regla que coincida.
-     *
-     * @var array<string, list<string>>
-     */
-    private const REGLAS = [
-        '/^BTA24$/' => ['AGUA'],
-        '/^BTA25$/' => ['ABSCESO', 'HISOPO'],
-        '/^BTG23$/' => ['ABSCESO', 'ÓRGANOS', 'HISOPO'],
-        '/^BTGM$/' => ['MIEL'],
-        '/^BTM69$/' => ['ABSCESO', 'HISOPO'],
-        '/^BTS(22)?$/' => ['HECES', 'ALIMENTO'],
-        '/^BTS23$/' => ['HISOPO'],
-        '/^BTS68$/' => ['ÓRGANOS'],
-        '/^CENT$/' => ['SUERO SANGUÍNEO'],
-        '/^CLC63$/' => ['HECES'],
-        '/^CLH(19|20)$/' => ['SANGRE CON EDTA'],
-        '/^(EEE|PTR56)$/' => ['ENCÉFALO'],
-        '/^(MTM01|MTPB)$/' => ['HISOPO'],
-        '/^PAO33$/' => ['ABSCESO', 'HISOPO'],
-        '/^PAS18$/' => ['ABEJAS EN ALCOHOL'],
-        '/^PCR/' => ['HISOPO', 'ÓRGANOS'],
-        '/^PTC52$/' => ['ADHERENCIA', 'ABSCESO'],
-        '/^PTE/' => ['RESIDUOS BIOLÓGICOS'],
-        '/^PTN/' => ['ANIMAL COMPLETO'],
-        '/^(PTH|PTL|PTI|PTT|TBA|TBT)/' => ['ÓRGANOS'],
-        '/^SEE4$/' => ['FLUIDOS ORALES'],
-        '/^SE/' => ['SUERO SANGUÍNEO'],
-        '/^TXC/' => ['ORINA', 'ALIMENTO'],
-    ];
-
-    private const POR_DEFECTO = ['ÓRGANOS'];
-
     public function run(): void
     {
-        $tipos = [];
-        $tipoId = function (string $nombre) use (&$tipos): int {
-            return $tipos[$nombre] ??= TipoMuestra::firstOrCreate(['nombre' => $nombre, 'prueba_id' => null])->id;
-        };
+        self::sembrar();
+    }
 
-        foreach (Servicio::all() as $servicio) {
-            $nombres = self::POR_DEFECTO;
-            foreach (self::REGLAS as $patron => $asignados) {
-                if (preg_match($patron, $servicio->clave)) {
-                    $nombres = $asignados;
-                    break;
+    /**
+     * Los tipos que ya existan con el mismo nombre (sin importar mayúsculas ni
+     * acentos) se renombran en lugar de duplicarse, así conservan su id. Los
+     * demás se borran, salvo que alguna muestra los use.
+     *
+     * A cada servicio del sistema anterior se le reemplazan sus tipos de
+     * muestra por los de entonces; los servicios que solo existen en el
+     * sistema actual conservan los suyos si sobrevivieron.
+     *
+     * @return array{agregados: int, borrados: int, conservados: int, relaciones: int}
+     */
+    public static function sembrar(): array
+    {
+        $catalogo = json_decode(
+            file_get_contents(database_path('data/tipos_muestra.json')),
+            true,
+            512,
+            JSON_THROW_ON_ERROR
+        );
+
+        $anteriores = DB::table('tipo_muestras')->whereNull('prueba_id')->get(['id', 'nombre'])
+            ->keyBy(fn ($t) => self::clave($t->nombre));
+        $todos = DB::table('tipo_muestras')->pluck('id');
+
+        $now = now();
+        $ids = [];
+        $agregados = 0;
+
+        foreach ($catalogo['tipos'] as $nombre) {
+            if ($existente = $anteriores->get(self::clave($nombre))) {
+                if ($existente->nombre !== $nombre) {
+                    DB::table('tipo_muestras')->where('id', $existente->id)
+                        ->update(['nombre' => $nombre, 'updated_at' => $now]);
                 }
+                $ids[$nombre] = $existente->id;
+
+                continue;
             }
 
-            $servicio->tiposMuestra()->syncWithoutDetaching(array_map($tipoId, $nombres));
+            $ids[$nombre] = DB::table('tipo_muestras')->insertGetId([
+                'nombre' => $nombre,
+                'prueba_id' => null,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ]);
+            $agregados++;
         }
+
+        $servicios = DB::table('servicios')->pluck('id', 'clave');
+        $relaciones = [];
+
+        foreach ($catalogo['servicios'] as $clave => $tipos) {
+            $servicioId = $servicios[ServiciosSistemaAnteriorSeeder::ALIAS_CLAVES[$clave] ?? $clave] ?? null;
+
+            if (! $servicioId) {
+                continue;
+            }
+
+            DB::table('servicio_tipo_muestra')->where('servicio_id', $servicioId)->delete();
+
+            foreach ($tipos as $nombre) {
+                $relaciones[] = ['servicio_id' => $servicioId, 'tipo_muestra_id' => $ids[$nombre]];
+            }
+        }
+
+        DB::table('servicio_tipo_muestra')->insertOrIgnore($relaciones);
+
+        $sobrantes = $todos->diff(array_values($ids));
+        $enUso = DB::table('muestras')->whereIn('tipo_muestra_id', $sobrantes)
+            ->distinct()->pluck('tipo_muestra_id');
+        $borrados = DB::table('tipo_muestras')->whereIn('id', $sobrantes->diff($enUso))->delete();
+
+        return [
+            'agregados' => $agregados,
+            'borrados' => $borrados,
+            'conservados' => $enUso->count(),
+            'relaciones' => count($relaciones),
+        ];
+    }
+
+    private static function clave(string $nombre): string
+    {
+        return mb_strtolower(Str::ascii(trim($nombre)));
     }
 }
