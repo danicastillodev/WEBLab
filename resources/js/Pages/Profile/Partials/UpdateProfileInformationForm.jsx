@@ -1,3 +1,4 @@
+import FormErrorAlert from '@/Components/FormErrorAlert';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -37,6 +38,7 @@ export default function UpdateProfileInformation({
             </header>
 
             <form onSubmit={submit} className="mt-6 space-y-6">
+                <FormErrorAlert errors={errors} />
                 <div>
                     <InputLabel htmlFor="name" value="Name" />
 

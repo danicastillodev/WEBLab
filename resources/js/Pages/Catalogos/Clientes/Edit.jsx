@@ -1,4 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import FormErrorAlert from '@/Components/FormErrorAlert';
 import PrimaryButton from '@/Components/PrimaryButton';
 import { Head, Link, useForm } from '@inertiajs/react';
 import ClienteForm, { CLIENTE_VACIO } from './Partials/ClienteForm';
@@ -23,6 +24,7 @@ export default function Edit({ cliente, estados, municipios }) {
                 <div className="mx-auto max-w-2xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden bg-white p-6 shadow-sm sm:rounded-lg">
                         <form onSubmit={submit} className="space-y-6">
+                            <FormErrorAlert errors={errors} />
                             <ClienteForm data={data} setData={setData} errors={errors} estados={estados} municipios={municipios} />
                             <div className="flex items-center gap-4">
                                 <PrimaryButton disabled={processing}>Guardar cambios</PrimaryButton>

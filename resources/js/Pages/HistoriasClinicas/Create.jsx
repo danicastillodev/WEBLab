@@ -2,6 +2,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import DatePickerInput from '@/Components/DatePickerInput';
 import EstadoBadge from '@/Components/EstadoBadge';
 import FieldActions from '@/Components/FieldActions';
+import FormErrorAlert, { erroresDeAxios } from '@/Components/FormErrorAlert';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -196,7 +197,7 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
             }
             setShowPropModal(false);
         } catch (err) {
-            if (err.response?.status === 422) setPropErrors(err.response.data.errors);
+            setPropErrors(erroresDeAxios(err));
         } finally {
             setPropSaving(false);
         }
@@ -247,7 +248,7 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
             }
             setShowEspModal(false);
         } catch (err) {
-            if (err.response?.status === 422) setEspErrors(err.response.data.errors);
+            setEspErrors(erroresDeAxios(err));
         } finally {
             setEspSaving(false);
         }
@@ -297,7 +298,7 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
             }
             setShowRazaModal(false);
         } catch (err) {
-            if (err.response?.status === 422) setRazaErrors(err.response.data.errors);
+            setRazaErrors(erroresDeAxios(err));
         } finally {
             setRazaSaving(false);
         }
@@ -348,7 +349,7 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
             }
             setShowFuncModal(false);
         } catch (err) {
-            if (err.response?.status === 422) setFuncErrors(err.response.data.errors);
+            setFuncErrors(erroresDeAxios(err));
         } finally {
             setFuncSaving(false);
         }
@@ -424,7 +425,7 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
             }
             setShowDirModal(false);
         } catch (err) {
-            if (err.response?.status === 422) setDirErrors(err.response.data.errors);
+            setDirErrors(erroresDeAxios(err));
         } finally {
             setDirSaving(false);
         }
@@ -494,7 +495,7 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
             }
             setShowExplModal(false);
         } catch (err) {
-            if (err.response?.status === 422) setExplErrors(err.response.data.errors);
+            setExplErrors(erroresDeAxios(err));
         } finally {
             setExplSaving(false);
         }
@@ -526,6 +527,7 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
             {showFuncModal && (
                 <Modal title={funcEditId ? 'Editar función zootécnica' : 'Nueva función zootécnica'} onClose={() => setShowFuncModal(false)}>
                     <form onSubmit={submitFuncion} className="space-y-4">
+                        <FormErrorAlert errors={funcErrors} serverErrors={false} />
                         <div>
                             <InputLabel value="Nombre" />
                             <TextInput
@@ -549,6 +551,7 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
             {showEspModal && (
                 <Modal title={espEditId ? 'Editar especie' : 'Nueva especie'} onClose={() => setShowEspModal(false)}>
                     <form onSubmit={submitEspecie} className="space-y-4">
+                        <FormErrorAlert errors={espErrors} serverErrors={false} />
                         <div>
                             <InputLabel value="Nombre" />
                             <TextInput
@@ -571,6 +574,7 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
             {showRazaModal && (
                 <Modal title={razaEditId ? 'Editar raza' : 'Nueva raza'} onClose={() => setShowRazaModal(false)}>
                     <form onSubmit={submitRaza} className="space-y-4">
+                        <FormErrorAlert errors={razaErrors} serverErrors={false} />
                         <div>
                             <InputLabel value="Nombre" />
                             <TextInput
@@ -652,6 +656,7 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
             {showPropModal && (
                 <Modal title={propEditId ? 'Editar propietario' : 'Nuevo propietario'} onClose={() => setShowPropModal(false)}>
                     <form onSubmit={submitPropietario} className="space-y-4">
+                        <FormErrorAlert errors={propErrors} serverErrors={false} />
                         <div>
                             <InputLabel value="Nombre" />
                             <TextInput
@@ -717,6 +722,7 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
             {showDirModal && (
                 <Modal title={dirEditId ? 'Editar dirección' : 'Nueva dirección'} onClose={() => setShowDirModal(false)}>
                     <form onSubmit={submitDireccion} className="space-y-4">
+                        <FormErrorAlert errors={dirErrors} serverErrors={false} />
                         <div>
                             <InputLabel value="Calle" />
                             <TextInput
@@ -831,6 +837,7 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
             {showExplModal && (
                 <Modal title={explEditId ? 'Editar explotación' : 'Nueva explotación'} onClose={() => setShowExplModal(false)}>
                     <form onSubmit={submitExplotacion} className="space-y-4">
+                        <FormErrorAlert errors={explErrors} serverErrors={false} />
                         <div>
                             <InputLabel value="Nombre" />
                             <TextInput
@@ -916,6 +923,7 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
                 <div className="mx-auto max-w-2xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden bg-white p-6 shadow-sm sm:rounded-lg">
                         <form onSubmit={submit} className="space-y-6">
+                            <FormErrorAlert errors={errors} />
                             {Object.keys(errors).length > 0 && (
                                 <div className="rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-700">
                                     Hay errores en el formulario. Revisa los campos marcados antes de guardar.

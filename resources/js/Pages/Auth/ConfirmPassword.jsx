@@ -1,3 +1,4 @@
+import FormErrorAlert from '@/Components/FormErrorAlert';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -28,6 +29,7 @@ export default function ConfirmPassword() {
             </div>
 
             <form onSubmit={submit}>
+                <FormErrorAlert errors={errors} className="mb-4" />
                 <div className="mt-4">
                     <InputLabel htmlFor="password" value="Password" />
 

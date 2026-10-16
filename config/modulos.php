@@ -104,6 +104,8 @@ return [
         'edit' => 'editar',
         'update' => 'editar',
         'destroy' => 'eliminar',
+        // users.borrar-contrasena: dejar la contraseña en blanco es editar al usuario.
+        'borrar-contrasena' => 'editar',
     ],
 
     'dias' => [

@@ -4,6 +4,7 @@ use App\Http\Controllers\AreasController;
 use App\Http\Controllers\ClientesController;
 use App\Http\Controllers\CuestionarioController;
 use App\Http\Controllers\DatosGeneralesController;
+use App\Http\Controllers\DatosPersonalesController;
 use App\Http\Controllers\EspeciesController;
 use App\Http\Controllers\EstadosController;
 use App\Http\Controllers\FuncionZootecnicasController;
@@ -41,7 +42,13 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    Route::get('seguridad/datos-personales', [DatosPersonalesController::class, 'edit'])->name('datos-personales.edit');
+    Route::put('seguridad/datos-personales', [DatosPersonalesController::class, 'update'])->name('datos-personales.update');
+    Route::put('seguridad/datos-personales/contrasena', [DatosPersonalesController::class, 'updatePassword'])->name('datos-personales.update-password');
+
     Route::resource('users', UserController::class);
+    Route::patch('users/{user}/borrar-contrasena', [UserController::class, 'borrarContrasena'])
+        ->name('users.borrar-contrasena');
     // Str::singular('roles') da 'role', que no coincide con el argumento $rol.
     Route::resource('roles', RolController::class)
         ->except(['show'])

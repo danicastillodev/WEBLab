@@ -1,3 +1,4 @@
+import FormErrorAlert from '@/Components/FormErrorAlert';
 import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
@@ -32,6 +33,7 @@ export default function ForgotPassword({ status }) {
             )}
 
             <form onSubmit={submit}>
+                <FormErrorAlert errors={errors} className="mb-4" />
                 <TextInput
                     id="email"
                     type="email"

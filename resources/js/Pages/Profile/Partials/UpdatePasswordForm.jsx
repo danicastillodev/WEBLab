@@ -1,3 +1,4 @@
+import FormErrorAlert from '@/Components/FormErrorAlert';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -58,6 +59,7 @@ export default function UpdatePasswordForm({ className = '' }) {
             </header>
 
             <form onSubmit={updatePassword} className="mt-6 space-y-6">
+                <FormErrorAlert errors={errors} serverErrors={false} />
                 <div>
                     <InputLabel
                         htmlFor="current_password"

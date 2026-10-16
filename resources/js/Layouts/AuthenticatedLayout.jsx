@@ -10,47 +10,133 @@ export default function AuthenticatedLayout({ header, children }) {
     const puedeVer   = (modulo) => !!permisos?.[modulo]?.ver;
     const puedeCrear = (modulo) => !!permisos?.[modulo]?.crear;
     const puedeGranular = (clave) => !!permisosGranulares?.[clave];
-    const puedeListarNotasPago = ['facturacion.agregar_facturas', 'facturacion.modificar_facturas', 'facturacion.cancelar_factura'].some(puedeGranular);
+    const puedeAlguno = (...claves) => claves.some(puedeGranular);
+    const actual = (...patrones) => patrones.some((p) => route().current(p));
 
-    const catalogos = [
-        ['propietarios',       'Propietarios',           'propietarios.*'],
-        ['municipios',         'Municipios',             'municipios.index'],
-        ['estados',            'Estados',                'estados.index'],
-        ['especies',           'Especies',               'especies.index'],
-        ['razas',              'Razas',                  'razas.index'],
-        ['pruebas',            'Pruebas',                'pruebas.index'],
-        ['funcion-zootecnicas','Funciones Zootécnicas',  'funcion-zootecnicas.*'],
-        ['metodos',            'Métodos',                'metodos.*'],
-        ['tipos-muestra',      'Tipos de Muestra',       'tipos-muestra.*'],
-    ].filter(([modulo]) => puedeVer(modulo));
+    // Enlace con pantalla real: { etiqueta, href, activo, visible }.
+    // Enlace pendiente (sin pantalla aún): { etiqueta, pendiente: true, visible }.
+    const enlace = (etiqueta, nombreRuta, activo, visible) => ({
+        etiqueta,
+        href: visible ? route(nombreRuta) : '#',
+        activo,
+        visible,
+    });
+    const pendiente = (etiqueta, visible) => ({ etiqueta, pendiente: true, visible });
+
+    // Menú lateral. Cada enlace sólo se muestra si el usuario tiene permiso
+    // para él, y un grupo sin ningún enlace visible se oculta por completo.
+    const grupos = [
+        {
+            clave: 'configuracion',
+            etiqueta: 'Configuración General',
+            activo: actual('areas.*', 'datos-generales.*', 'parametros-operacion.*', 'mantenimiento-base-datos.*', 'servicios.*'),
+            enlaces: [
+                enlace('Datos generales', 'datos-generales.edit', actual('datos-generales.*'), puedeVer('datos-generales')),
+                enlace('Mantenimiento de la base de datos', 'mantenimiento-base-datos.index', actual('mantenimiento-base-datos.*'), puedeVer('mantenimiento-base-datos')),
+                enlace('Parámetros de Operación', 'parametros-operacion.edit', actual('parametros-operacion.*'), puedeVer('parametros-operacion')),
+                enlace('Catálogo de Áreas', 'areas.index', actual('areas.*'), puedeVer('areas')),
+                enlace('Catálogo de análisis', 'servicios.index', actual('servicios.index', 'servicios.edit'), puedeVer('servicios')),
+            ],
+        },
+        {
+            clave: 'historias',
+            etiqueta: 'Historias Clínicas',
+            activo: actual('historias-clinicas.*', 'cuestionario.*'),
+            enlaces: [
+                enlace('Listado de historias clínicas', 'historias-clinicas.index', actual('historias-clinicas.index'), puedeVer('historias-clinicas')),
+                enlace('Nueva historia clínica', 'historias-clinicas.create', actual('historias-clinicas.create'), puedeVer('historias-clinicas') && puedeCrear('historias-clinicas')),
+                enlace('Preguntas del cuestionario', 'cuestionario.index', actual('cuestionario.*'), puedeVer('cuestionario')),
+            ],
+        },
+        {
+            clave: 'diagnosticos',
+            etiqueta: 'Diagnósticos',
+            activo: false,
+            pendiente: true,
+            enlaces: [
+                pendiente('Nuevo diagnóstico', puedeGranular('diagnosticos.agregar')),
+                pendiente('Listado de diagnósticos', puedeAlguno(
+                    'diagnosticos.agregar', 'diagnosticos.modificar', 'diagnosticos.emitir',
+                    'diagnosticos.consultar_de_otros', 'diagnosticos.modificar_emitidos', 'diagnosticos.cancelar',
+                )),
+            ],
+        },
+        {
+            clave: 'facturacion',
+            etiqueta: 'Notas de pago',
+            activo: actual('productos.*', 'notas-pago.*', 'clientes.*'),
+            enlaces: [
+                enlace('Nueva nota de pago', 'notas-pago.create', actual('notas-pago.create'), puedeGranular('facturacion.agregar_facturas')),
+                enlace('Listado notas de pago', 'notas-pago.index', actual('notas-pago.index'), puedeAlguno('facturacion.agregar_facturas', 'facturacion.modificar_facturas', 'facturacion.cancelar_factura')),
+                pendiente('Nueva nota de abono', puedeGranular('facturacion.agregar_notas_abono')),
+                pendiente('Listado Notas de abono', puedeAlguno('facturacion.agregar_notas_abono', 'facturacion.modificar_notas_abono', 'facturacion.cancelar_nota_abono')),
+                enlace('Listado de productos', 'productos.index', actual('productos.index', 'productos.edit'), puedeVer('productos')),
+                enlace('Agregar producto', 'productos.create', actual('productos.create'), puedeCrear('productos')),
+                enlace('Listado clientes', 'clientes.index', actual('clientes.*'), puedeVer('clientes')),
+                pendiente('Estado de cuenta', puedeVer('clientes')),
+            ],
+        },
+        {
+            clave: 'reportes',
+            etiqueta: 'Reportes',
+            activo: false,
+            pendiente: true,
+            enlaces: [
+                pendiente('Diagnósticos', puedeGranular('reportes.diagnosticos')),
+                pendiente('Análisis por especie', puedeGranular('reportes.analisis_x_especie')),
+                pendiente('Muestras Trabajadas X Especie', puedeGranular('reportes.muestras_trabajadas_x_especie')),
+                pendiente('Accesos sospechosos', puedeGranular('reportes.accesos_sospechosos')),
+                pendiente('Auditoría de Movimientos', puedeGranular('reportes.auditoria_movimientos')),
+                pendiente('Notificación de res. de B-Agonistas', puedeGranular('reportes.notificacion_b_agonistas')),
+                pendiente('Reporte global', puedeGranular('reportes.global')),
+                pendiente('Estado de cuenta por cliente', puedeGranular('reportes.estado_cuenta_cliente')),
+                pendiente('Estados Movimientos de notas de pago', puedeGranular('reportes.estados_movimientos_facturacion')),
+                pendiente('Volumen de Trabajo', puedeGranular('reportes.volumen_trabajo')),
+                pendiente('Muestras / Casos sin nota de pago', puedeGranular('reportes.muestras_casos_no_facturados')),
+            ],
+        },
+        {
+            clave: 'catalogos',
+            etiqueta: 'Catálogos',
+            activo: actual(
+                'propietarios.*', 'municipios.index', 'estados.index', 'especies.*', 'razas.index',
+                'pruebas.index', 'funcion-zootecnicas.*', 'metodos.*', 'tipos-muestra.*',
+            ),
+            enlaces: [
+                ['propietarios',       'Propietarios',           'propietarios.*'],
+                ['municipios',         'Municipios',             'municipios.index'],
+                ['estados',            'Estados',                'estados.index'],
+                ['especies',           'Especies',               'especies.index'],
+                ['razas',              'Razas',                  'razas.index'],
+                ['pruebas',            'Pruebas',                'pruebas.index'],
+                ['funcion-zootecnicas','Funciones Zootécnicas',  'funcion-zootecnicas.*'],
+                ['metodos',            'Métodos',                'metodos.*'],
+                ['tipos-muestra',      'Tipos de Muestra',       'tipos-muestra.*'],
+            ].map(([modulo, etiqueta, patron]) => enlace(etiqueta, `${modulo}.index`, actual(patron), puedeVer(modulo))),
+        },
+        {
+            // Datos personales es visible para todo usuario.
+            clave: 'seguridad',
+            etiqueta: 'Seguridad',
+            activo: actual('users.*', 'roles.*', 'datos-personales.*'),
+            enlaces: [
+                enlace('Datos personales', 'datos-personales.edit', actual('datos-personales.*'), true),
+                enlace('Usuarios', 'users.index', actual('users.index', 'users.edit'), puedeVer('users')),
+                enlace('Nuevo usuario', 'users.create', actual('users.create'), puedeCrear('users')),
+                enlace('Roles', 'roles.index', actual('roles.*'), puedeVer('roles')),
+            ],
+        },
+    ]
+        .map((grupo) => ({ ...grupo, enlaces: grupo.enlaces.filter((e) => e.visible) }))
+        .filter((grupo) => grupo.enlaces.length > 0);
 
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
-    const [adminOpen, setAdminOpen] = useState(route().current('users.*') || route().current('roles.*'));
-
-    const catalogosRoutes = [
-        'propietarios.index', 'propietarios.create', 'propietarios.edit',
-        'municipios.index', 'estados.index', 'especies.*',
-        'razas.index', 'pruebas.index', 'funcion-zootecnicas.*',
-        'metodos.index', 'tipos-muestra.*',
-    ];
-    const [catalogosOpen, setCatalogosOpen] = useState(
-        catalogosRoutes.some((r) => route().current(r)),
+    // Grupos desplegados; al cargar se abre el que contiene la página actual.
+    const [abiertos, setAbiertos] = useState(() =>
+        Object.fromEntries(grupos.map((g) => [g.clave, g.activo])),
     );
-
-    const [historiasOpen, setHistoriasOpen] = useState(
-        route().current('historias-clinicas.*') || route().current('cuestionario.*'),
-    );
-
-    const [facturacionOpen, setFacturacionOpen] = useState(false);
-
-    const [diagnosticosOpen, setDiagnosticosOpen] = useState(false);
-
-    const [reportesOpen, setReportesOpen] = useState(false);
-
-    const [configuracionOpen, setConfiguracionOpen] = useState(
-        route().current('areas.*') || route().current('servicios.*'),
-    );
+    const alternar = (clave) => setAbiertos((a) => ({ ...a, [clave]: !a[clave] }));
 
     const chevron = (open) => (
         <svg
@@ -92,6 +178,7 @@ export default function AuthenticatedLayout({ header, children }) {
 
     const enlacePendiente = (label) => (
         <NavLink
+            key={label}
             href="#"
             active={false}
             onClick={(e) => e.preventDefault()}
@@ -106,6 +193,7 @@ export default function AuthenticatedLayout({ header, children }) {
 
     const enlacePendienteMovil = (label) => (
         <ResponsiveNavLink
+            key={label}
             href="#"
             active={false}
             onClick={(e) => e.preventDefault()}
@@ -135,176 +223,18 @@ export default function AuthenticatedLayout({ header, children }) {
                         Inicio
                     </NavLink>
 
-                    {/* Configuración General */}
-                    <div>
-                        {groupBtn('Configuración General', configuracionOpen, () => setConfiguracionOpen((v) => !v), route().current('areas.*') || route().current('datos-generales.*') || route().current('parametros-operacion.*') || route().current('mantenimiento-base-datos.*') || route().current('servicios.*'))}
-                        {configuracionOpen && (
-                            <div className="ms-3 mt-1 flex flex-col items-start space-y-1 border-l border-gray-200 ps-3">
-                                {puedeVer('datos-generales') ? (
-                                    <NavLink href={route('datos-generales.edit')} active={route().current('datos-generales.*')}>Datos generales</NavLink>
-                                ) : (
-                                    <NavLink href="#" active={false}>Datos generales</NavLink>
-                                )}
-                                {puedeVer('mantenimiento-base-datos') ? (
-                                    <NavLink href={route('mantenimiento-base-datos.index')} active={route().current('mantenimiento-base-datos.*')}>Mantenimiento de la base de datos</NavLink>
-                                ) : (
-                                    <NavLink href="#" active={false}>Mantenimiento de la base de datos</NavLink>
-                                )}
-                                {puedeVer('parametros-operacion') ? (
-                                    <NavLink href={route('parametros-operacion.edit')} active={route().current('parametros-operacion.*')}>Parámetros de Operación</NavLink>
-                                ) : (
-                                    <NavLink href="#" active={false}>Parámetros de Operación</NavLink>
-                                )}
-                                {puedeVer('areas') ? (
-                                    <NavLink href={route('areas.index')} active={route().current('areas.*')}>Catálogo de Áreas</NavLink>
-                                ) : (
-                                    <NavLink href="#" active={false}>Catálogo de Áreas</NavLink>
-                                )}
-                                {puedeVer('servicios') ? (
-                                    <NavLink href={route('servicios.index')} active={route().current('servicios.index') || route().current('servicios.edit')}>Catálogo de análisis</NavLink>
-                                ) : (
-                                    <NavLink href="#" active={false}>Catálogo de análisis</NavLink>
-                                )}
-                            </div>
-                        )}
-                    </div>
-
-                    {/* Historias Clínicas */}
-                    {puedeVer('historias-clinicas') && (
-                        <div>
-                            {groupBtn(
-                                'Historias Clínicas',
-                                historiasOpen,
-                                () => setHistoriasOpen((v) => !v),
-                                route().current('historias-clinicas.*') || route().current('cuestionario.*'),
-                            )}
-                            {historiasOpen && (
+                    {grupos.map((grupo) => (
+                        <div key={grupo.clave}>
+                            {groupBtn(grupo.etiqueta, abiertos[grupo.clave], () => alternar(grupo.clave), grupo.activo, grupo.pendiente)}
+                            {abiertos[grupo.clave] && (
                                 <div className="ms-3 mt-1 flex flex-col items-start space-y-1 border-l border-gray-200 ps-3">
-                                    <NavLink href={route('historias-clinicas.index')} active={route().current('historias-clinicas.index')}>Listado de historias clínicas</NavLink>
-                                    {puedeCrear('historias-clinicas') && (
-                                        <NavLink href={route('historias-clinicas.create')} active={route().current('historias-clinicas.create')}>Nueva historia clínica</NavLink>
-                                    )}
-                                    {puedeVer('cuestionario') && (
-                                        <NavLink href={route('cuestionario.index')} active={route().current('cuestionario.*')}>Preguntas del cuestionario</NavLink>
-                                    )}
+                                    {grupo.enlaces.map((e) => (e.pendiente ? enlacePendiente(e.etiqueta) : (
+                                        <NavLink key={e.etiqueta} href={e.href} active={e.activo}>{e.etiqueta}</NavLink>
+                                    )))}
                                 </div>
                             )}
                         </div>
-                    )}
-
-                    {/* Diagnósticos */}
-                    <div>
-                        {groupBtn('Diagnósticos', diagnosticosOpen, () => setDiagnosticosOpen((v) => !v), false, true)}
-                        {diagnosticosOpen && (
-                            <div className="ms-3 mt-1 flex flex-col items-start space-y-1 border-l border-gray-200 ps-3">
-                                {enlacePendiente('Nuevo diagnóstico')}
-                                {enlacePendiente('Listado de diagnósticos')}
-                            </div>
-                        )}
-                    </div>
-
-                    {/* Notas de pago */}
-                    <div>
-                        {groupBtn('Notas de pago', facturacionOpen, () => setFacturacionOpen((v) => !v), route().current('productos.*') || route().current('notas-pago.*') || route().current('clientes.*'))}
-                        {facturacionOpen && (
-                            <div className="ms-3 mt-1 flex flex-col items-start space-y-1 border-l border-gray-200 ps-3">
-                                {puedeGranular('facturacion.agregar_facturas') ? (
-                                    <NavLink href={route('notas-pago.create')} active={route().current('notas-pago.create')}>Nueva nota de pago</NavLink>
-                                ) : (
-                                    <NavLink href="#" active={false}>Nueva nota de pago</NavLink>
-                                )}
-                                {puedeListarNotasPago ? (
-                                    <NavLink href={route('notas-pago.index')} active={route().current('notas-pago.index')}>Listado notas de pago</NavLink>
-                                ) : (
-                                    <NavLink href="#" active={false}>Listado notas de pago</NavLink>
-                                )}
-                                {enlacePendiente('Nueva nota de abono')}
-                                {enlacePendiente('Listado Notas de abono')}
-                                {puedeVer('productos') ? (
-                                    <NavLink href={route('productos.index')} active={route().current('productos.index') || route().current('productos.edit')}>Listado de productos</NavLink>
-                                ) : (
-                                    <NavLink href="#" active={false}>Listado de productos</NavLink>
-                                )}
-                                {puedeCrear('productos') ? (
-                                    <NavLink href={route('productos.create')} active={route().current('productos.create')}>Agregar producto</NavLink>
-                                ) : (
-                                    <NavLink href="#" active={false}>Agregar producto</NavLink>
-                                )}
-                                {puedeVer('clientes') ? (
-                                    <NavLink href={route('clientes.index')} active={route().current('clientes.*')}>Listado clientes</NavLink>
-                                ) : (
-                                    <NavLink href="#" active={false}>Listado clientes</NavLink>
-                                )}
-                                {enlacePendiente('Estado de cuenta')}
-                            </div>
-                        )}
-                    </div>
-
-                    {/* Reportes */}
-                    <div>
-                        {groupBtn('Reportes', reportesOpen, () => setReportesOpen((v) => !v), false, true)}
-                        {reportesOpen && (
-                            <div className="ms-3 mt-1 flex flex-col items-start space-y-1 border-l border-gray-200 ps-3">
-                                {enlacePendiente('Diagnósticos')}
-                                {enlacePendiente('Análisis por especie')}
-                                {enlacePendiente('Muestras Trabajadas X Especie')}
-                                {enlacePendiente('Accesos sospechosos')}
-                                {enlacePendiente('Auditoría de Movimientos')}
-                                {enlacePendiente('Notificación de res. de B-Agonistas')}
-                                {enlacePendiente('Reporte global')}
-                                {enlacePendiente('Estado de cuenta por cliente')}
-                                {enlacePendiente('Estados Movimientos de notas de pago')}
-                                {enlacePendiente('Volumen de Trabajo')}
-                                {enlacePendiente('Muestras / Casos sin nota de pago')}
-                            </div>
-                        )}
-                    </div>
-
-                    {/* Catálogos */}
-                    {catalogos.length > 0 && (
-                        <div>
-                            {groupBtn(
-                                'Catálogos',
-                                catalogosOpen,
-                                () => setCatalogosOpen((v) => !v),
-                                catalogosRoutes.some((r) => route().current(r)),
-                            )}
-                            {catalogosOpen && (
-                                <div className="ms-3 mt-1 flex flex-col items-start space-y-1 border-l border-gray-200 ps-3">
-                                    {catalogos.map(([modulo, etiqueta, patron]) => (
-                                        <NavLink key={modulo} href={route(`${modulo}.index`)} active={route().current(patron)}>
-                                            {etiqueta}
-                                        </NavLink>
-                                    ))}
-                                </div>
-                            )}
-                        </div>
-                    )}
-
-                    {/* Seguridad */}
-                    {(puedeVer('users') || puedeVer('roles')) && (
-                        <div>
-                            {groupBtn(
-                                'Seguridad',
-                                adminOpen,
-                                () => setAdminOpen((v) => !v),
-                                route().current('users.*') || route().current('roles.*'),
-                            )}
-                            {adminOpen && (
-                                <div className="ms-3 mt-1 flex flex-col items-start space-y-1 border-l border-gray-200 ps-3">
-                                    {puedeVer('users') && (
-                                        <NavLink href={route('users.index')} active={route().current('users.index') || route().current('users.edit')}>Usuarios</NavLink>
-                                    )}
-                                    {puedeCrear('users') && (
-                                        <NavLink href={route('users.create')} active={route().current('users.create')}>Nuevo usuario</NavLink>
-                                    )}
-                                    {puedeVer('roles') && (
-                                        <NavLink href={route('roles.index')} active={route().current('roles.*')}>Roles</NavLink>
-                                    )}
-                                </div>
-                            )}
-                        </div>
-                    )}
+                    ))}
                 </nav>
 
                 {/* User section at bottom */}
@@ -348,126 +278,17 @@ export default function AuthenticatedLayout({ header, children }) {
                     <div className="bg-white sm:hidden">
                         <div className="space-y-1 pb-3 pt-2">
                             <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>Inicio</ResponsiveNavLink>
-                            <>
-                                <div className="px-4 py-1 text-xs font-semibold uppercase tracking-wider text-gray-400">Configuración General</div>
-                                {puedeVer('datos-generales') ? (
-                                    <ResponsiveNavLink href={route('datos-generales.edit')} active={route().current('datos-generales.*')}>Datos generales</ResponsiveNavLink>
-                                ) : (
-                                    <ResponsiveNavLink href="#" active={false}>Datos generales</ResponsiveNavLink>
-                                )}
-                                {puedeVer('mantenimiento-base-datos') ? (
-                                    <ResponsiveNavLink href={route('mantenimiento-base-datos.index')} active={route().current('mantenimiento-base-datos.*')}>Mantenimiento de la base de datos</ResponsiveNavLink>
-                                ) : (
-                                    <ResponsiveNavLink href="#" active={false}>Mantenimiento de la base de datos</ResponsiveNavLink>
-                                )}
-                                {puedeVer('parametros-operacion') ? (
-                                    <ResponsiveNavLink href={route('parametros-operacion.edit')} active={route().current('parametros-operacion.*')}>Parámetros de Operación</ResponsiveNavLink>
-                                ) : (
-                                    <ResponsiveNavLink href="#" active={false}>Parámetros de Operación</ResponsiveNavLink>
-                                )}
-                                {puedeVer('areas') ? (
-                                    <ResponsiveNavLink href={route('areas.index')} active={route().current('areas.*')}>Catálogo de Áreas</ResponsiveNavLink>
-                                ) : (
-                                    <ResponsiveNavLink href="#" active={false}>Catálogo de Áreas</ResponsiveNavLink>
-                                )}
-                                {puedeVer('servicios') ? (
-                                    <ResponsiveNavLink href={route('servicios.index')} active={route().current('servicios.index') || route().current('servicios.edit')}>Catálogo de análisis</ResponsiveNavLink>
-                                ) : (
-                                    <ResponsiveNavLink href="#" active={false}>Catálogo de análisis</ResponsiveNavLink>
-                                )}
-                            </>
-                            {puedeVer('historias-clinicas') && (
-                                <>
-                                    <div className="px-4 py-1 text-xs font-semibold uppercase tracking-wider text-gray-400">Historias Clínicas</div>
-                                    <ResponsiveNavLink href={route('historias-clinicas.index')} active={route().current('historias-clinicas.index')}>Listado de historias clínicas</ResponsiveNavLink>
-                                    {puedeCrear('historias-clinicas') && (
-                                        <ResponsiveNavLink href={route('historias-clinicas.create')} active={route().current('historias-clinicas.create')}>Nueva historia clínica</ResponsiveNavLink>
-                                    )}
-                                    {puedeVer('cuestionario') && (
-                                        <ResponsiveNavLink href={route('cuestionario.index')} active={route().current('cuestionario.*')}>Preguntas del cuestionario</ResponsiveNavLink>
-                                    )}
-                                </>
-                            )}
-                            <>
-                                <div className="flex items-center px-4 py-1 text-xs font-semibold uppercase tracking-wider text-gray-400">
-                                    Diagnósticos
-                                    {insigniaPendiente}
+                            {grupos.map((grupo) => (
+                                <div key={grupo.clave} className="space-y-1">
+                                    <div className="flex items-center px-4 py-1 text-xs font-semibold uppercase tracking-wider text-gray-400">
+                                        {grupo.etiqueta}
+                                        {grupo.pendiente && insigniaPendiente}
+                                    </div>
+                                    {grupo.enlaces.map((e) => (e.pendiente ? enlacePendienteMovil(e.etiqueta) : (
+                                        <ResponsiveNavLink key={e.etiqueta} href={e.href} active={e.activo}>{e.etiqueta}</ResponsiveNavLink>
+                                    )))}
                                 </div>
-                                {enlacePendienteMovil('Nuevo diagnóstico')}
-                                {enlacePendienteMovil('Listado de diagnósticos')}
-                            </>
-                            <>
-                                <div className="px-4 py-1 text-xs font-semibold uppercase tracking-wider text-gray-400">Notas de pago</div>
-                                {puedeGranular('facturacion.agregar_facturas') ? (
-                                    <ResponsiveNavLink href={route('notas-pago.create')} active={route().current('notas-pago.create')}>Nueva nota de pago</ResponsiveNavLink>
-                                ) : (
-                                    <ResponsiveNavLink href="#" active={false}>Nueva nota de pago</ResponsiveNavLink>
-                                )}
-                                {puedeListarNotasPago ? (
-                                    <ResponsiveNavLink href={route('notas-pago.index')} active={route().current('notas-pago.index')}>Listado notas de pago</ResponsiveNavLink>
-                                ) : (
-                                    <ResponsiveNavLink href="#" active={false}>Listado notas de pago</ResponsiveNavLink>
-                                )}
-                                {enlacePendienteMovil('Nueva nota de abono')}
-                                {enlacePendienteMovil('Listado Notas de abono')}
-                                {puedeVer('productos') ? (
-                                    <ResponsiveNavLink href={route('productos.index')} active={route().current('productos.index') || route().current('productos.edit')}>Listado de productos</ResponsiveNavLink>
-                                ) : (
-                                    <ResponsiveNavLink href="#" active={false}>Listado de productos</ResponsiveNavLink>
-                                )}
-                                {puedeCrear('productos') ? (
-                                    <ResponsiveNavLink href={route('productos.create')} active={route().current('productos.create')}>Agregar producto</ResponsiveNavLink>
-                                ) : (
-                                    <ResponsiveNavLink href="#" active={false}>Agregar producto</ResponsiveNavLink>
-                                )}
-                                {puedeVer('clientes') ? (
-                                    <ResponsiveNavLink href={route('clientes.index')} active={route().current('clientes.*')}>Listado clientes</ResponsiveNavLink>
-                                ) : (
-                                    <ResponsiveNavLink href="#" active={false}>Listado clientes</ResponsiveNavLink>
-                                )}
-                                {enlacePendienteMovil('Estado de cuenta')}
-                            </>
-                            <>
-                                <div className="flex items-center px-4 py-1 text-xs font-semibold uppercase tracking-wider text-gray-400">
-                                    Reportes
-                                    {insigniaPendiente}
-                                </div>
-                                {enlacePendienteMovil('Diagnósticos')}
-                                {enlacePendienteMovil('Análisis por especie')}
-                                {enlacePendienteMovil('Muestras Trabajadas X Especie')}
-                                {enlacePendienteMovil('Accesos sospechosos')}
-                                {enlacePendienteMovil('Auditoría de Movimientos')}
-                                {enlacePendienteMovil('Notificación de res. de B-Agonistas')}
-                                {enlacePendienteMovil('Reporte global')}
-                                {enlacePendienteMovil('Estado de cuenta por cliente')}
-                                {enlacePendienteMovil('Estados Movimientos de notas de pago')}
-                                {enlacePendienteMovil('Volumen de Trabajo')}
-                                {enlacePendienteMovil('Muestras / Casos sin nota de pago')}
-                            </>
-                            {catalogos.length > 0 && (
-                                <>
-                                    <div className="px-4 py-1 text-xs font-semibold uppercase tracking-wider text-gray-400">Catálogos</div>
-                                    {catalogos.map(([modulo, etiqueta, patron]) => (
-                                        <ResponsiveNavLink key={modulo} href={route(`${modulo}.index`)} active={route().current(patron)}>
-                                            {etiqueta}
-                                        </ResponsiveNavLink>
-                                    ))}
-                                </>
-                            )}
-                            {(puedeVer('users') || puedeVer('roles')) && (
-                                <>
-                                    <div className="px-4 py-1 text-xs font-semibold uppercase tracking-wider text-gray-400">Seguridad</div>
-                                    {puedeVer('users') && (
-                                        <ResponsiveNavLink href={route('users.index')} active={route().current('users.index') || route().current('users.edit')}>Usuarios</ResponsiveNavLink>
-                                    )}
-                                    {puedeCrear('users') && (
-                                        <ResponsiveNavLink href={route('users.create')} active={route().current('users.create')}>Nuevo usuario</ResponsiveNavLink>
-                                    )}
-                                    {puedeVer('roles') && (
-                                        <ResponsiveNavLink href={route('roles.index')} active={route().current('roles.*')}>Roles</ResponsiveNavLink>
-                                    )}
-                                </>
-                            )}
+                            ))}
                         </div>
 
                         <div className="border-t border-gray-200 pb-1 pt-4">

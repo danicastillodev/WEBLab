@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Models\User;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -29,8 +30,24 @@ class LoginRequest extends FormRequest
     {
         return [
             'username' => ['required', 'string', 'max:255'],
-            'password' => ['required', 'string'],
+            // Puede venir vacía: el usuario sin contraseña sólo escribe su usuario.
+            'password' => ['nullable', 'string'],
         ];
+    }
+
+    /**
+     * Usuario que todavía no tiene contraseña (recién creado o al que se le
+     * borró), o null si el usuario no existe o ya tiene una.
+     *
+     * @throws ValidationException
+     */
+    public function usuarioSinContrasena(): ?User
+    {
+        $this->ensureIsNotRateLimited();
+
+        return User::where('username', $this->string('username'))
+            ->whereNull('password')
+            ->first();
     }
 
     /**
@@ -41,6 +58,12 @@ class LoginRequest extends FormRequest
     public function authenticate(): void
     {
         $this->ensureIsNotRateLimited();
+
+        if (! $this->filled('password')) {
+            throw ValidationException::withMessages([
+                'password' => trans('validation.required', ['attribute' => 'contraseña']),
+            ]);
+        }
 
         if (! Auth::attempt($this->only('username', 'password'), $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());

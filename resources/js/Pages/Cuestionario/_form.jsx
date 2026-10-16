@@ -1,3 +1,4 @@
+import FormErrorAlert from '@/Components/FormErrorAlert';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -16,6 +17,7 @@ export const TIPOS = {
 export default function PreguntaForm({ data, setData, errors, processing, submit, etiquetaBoton, respuestasCount = 0 }) {
     return (
         <form onSubmit={submit} className="space-y-6">
+            <FormErrorAlert errors={errors} />
             <div>
                 <InputLabel htmlFor="texto" value="Pregunta" />
                 <textarea
