@@ -1,14 +1,15 @@
 import AccesoFields from '@/Components/AccesoFields';
+import DangerButton from '@/Components/DangerButton';
+import FormErrorAlert from '@/Components/FormErrorAlert';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
-import { Link } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
 
 // Se está dando de alta o editando a OTRO usuario: el navegador no debe
-// rellenar estos campos con las credenciales guardadas de quien inició sesión.
-// Chrome ignora autocomplete="off" en contraseñas, pero respeta "new-password";
-// los data-* hacen lo mismo con 1Password, LastPass y Bitwarden.
+// rellenar el usuario con las credenciales guardadas de quien inició sesión.
+// Los data-* hacen lo mismo con 1Password, LastPass y Bitwarden.
 const sinAutollenado = {
     'data-1p-ignore': true,
     'data-lpignore': 'true',
@@ -31,7 +32,21 @@ export default function UserForm({
     gruposPermisos,
     roles,
     esEdicion = false,
+    userId = null,
+    tieneContrasena = false,
 }) {
+    function borrarContrasena() {
+        if (!confirm(`¿Borrar la contraseña de "${data.name}"? Se le pedirá crear una nueva la próxima vez que inicie sesión.`)) {
+            return;
+        }
+
+        // preserveState conserva lo que se lleve capturado en el formulario.
+        router.patch(route('users.borrar-contrasena', userId), {}, {
+            preserveState: true,
+            preserveScroll: true,
+        });
+    }
+
     function toggleArea(id) {
         const actuales = data.area_ids ?? [];
         setData(
@@ -44,18 +59,7 @@ export default function UserForm({
 
     return (
         <form onSubmit={submit} className="space-y-6" autoComplete="off">
-            <div>
-                <InputLabel htmlFor="name" value="Nombre" />
-                <TextInput
-                    id="name"
-                    value={data.name}
-                    onChange={(e) => setData('name', e.target.value)}
-                    className="mt-1 block w-full"
-                    autoFocus
-                />
-                <InputError message={errors.name} className="mt-2" />
-            </div>
-
+            <FormErrorAlert errors={errors} />
             <div>
                 <InputLabel htmlFor="username" value="Usuario" />
                 <TextInput
@@ -63,6 +67,7 @@ export default function UserForm({
                     value={data.username}
                     onChange={(e) => setData('username', e.target.value)}
                     className="mt-1 block w-full"
+                    autoFocus
                     autoComplete="off"
                     {...sinAutollenado}
                 />
@@ -70,6 +75,17 @@ export default function UserForm({
                     Es el nombre con el que se inicia sesión.
                 </p>
                 <InputError message={errors.username} className="mt-2" />
+            </div>
+
+            <div>
+                <InputLabel htmlFor="name" value="Nombre completo" />
+                <TextInput
+                    id="name"
+                    value={data.name}
+                    onChange={(e) => setData('name', e.target.value)}
+                    className="mt-1 block w-full"
+                />
+                <InputError message={errors.name} className="mt-2" />
             </div>
 
             <div>
@@ -109,37 +125,31 @@ export default function UserForm({
                 <InputError message={errors.area_ids} className="mt-2" />
             </div>
 
-            <div>
-                <InputLabel htmlFor="password" value={esEdicion ? 'Nueva contraseña' : 'Contraseña'} />
-                <TextInput
-                    id="password"
-                    type="password"
-                    value={data.password}
-                    onChange={(e) => setData('password', e.target.value)}
-                    className="mt-1 block w-full"
-                    autoComplete="new-password"
-                    {...sinAutollenado}
-                    placeholder={esEdicion ? 'Dejar en blanco para mantener la contraseña actual' : ''}
-                />
-                <InputError message={errors.password} className="mt-2" />
-            </div>
-
-            <div>
-                <InputLabel
-                    htmlFor="password_confirmation"
-                    value={esEdicion ? 'Confirmar nueva contraseña' : 'Confirmar contraseña'}
-                />
-                <TextInput
-                    id="password_confirmation"
-                    type="password"
-                    value={data.password_confirmation}
-                    onChange={(e) => setData('password_confirmation', e.target.value)}
-                    className="mt-1 block w-full"
-                    autoComplete="new-password"
-                    {...sinAutollenado}
-                />
-                <InputError message={errors.password_confirmation} className="mt-2" />
-            </div>
+            {esEdicion ? (
+                <div>
+                    <InputLabel value="Contraseña" />
+                    {tieneContrasena ? (
+                        <div className="mt-1 flex flex-wrap items-center justify-between gap-3">
+                            <p className="text-sm text-gray-600">
+                                El usuario tiene contraseña. Si la olvidó, bórrela y se le pedirá
+                                crear una nueva al iniciar sesión.
+                            </p>
+                            <DangerButton type="button" onClick={borrarContrasena}>
+                                Borrar contraseña
+                            </DangerButton>
+                        </div>
+                    ) : (
+                        <p className="mt-1 text-sm text-gray-600">
+                            Sin contraseña: se le pedirá crearla la próxima vez que inicie sesión.
+                        </p>
+                    )}
+                </div>
+            ) : (
+                // En el alta la contraseña queda en blanco; el usuario la crea al entrar.
+                <div className="rounded-md bg-indigo-50 px-4 py-3 text-sm text-indigo-700">
+                    El usuario creará su contraseña la primera vez que inicie sesión.
+                </div>
+            )}
 
             <AccesoFields
                 data={data}

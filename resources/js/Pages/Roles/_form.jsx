@@ -1,3 +1,4 @@
+import FormErrorAlert from '@/Components/FormErrorAlert';
 import HorarioFields from '@/Components/HorarioFields';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
@@ -22,6 +23,7 @@ export default function RolForm({
 }) {
     return (
         <form onSubmit={submit} className="space-y-6">
+            <FormErrorAlert errors={errors} />
             <div>
                 <InputLabel htmlFor="nombre" value="Nombre" />
                 <TextInput

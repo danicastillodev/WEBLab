@@ -1,5 +1,6 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import FieldActions from '@/Components/FieldActions';
+import FormErrorAlert, { erroresDeAxios } from '@/Components/FormErrorAlert';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -222,7 +223,7 @@ export default function Create({
             setData('cliente_id', String(guardado.id));
             setShowClienteModal(false);
         } catch (err) {
-            if (err.response?.status === 422) setClienteErrors(err.response.data.errors);
+            setClienteErrors(erroresDeAxios(err));
         } finally {
             setClienteSaving(false);
         }
@@ -253,6 +254,7 @@ export default function Create({
             {showClienteModal && (
                 <Modal title={clienteEditando ? 'Editar cliente' : 'Nuevo cliente'} onClose={() => setShowClienteModal(false)}>
                     <form onSubmit={submitCliente} className="space-y-4">
+                        <FormErrorAlert errors={clienteErrors} serverErrors={false} />
                         <div>
                             <InputLabel value="Nombre o razón social" required />
                             <TextInput
@@ -445,13 +447,8 @@ export default function Create({
                         </div>
                     )}
 
-                    {Object.keys(errors).length > 0 && (
-                        <div className="rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-700">
-                            Hay errores en el formulario. Revisa los campos marcados antes de guardar.
-                        </div>
-                    )}
-
                     <form onSubmit={submit} className="space-y-6">
+                        <FormErrorAlert errors={errors} />
                         {/* ── Datos del cliente ── */}
                         <div className="overflow-hidden bg-white p-6 shadow-sm sm:rounded-lg">
                             <h3 className="mb-4 text-base font-semibold text-gray-800 border-b border-gray-200 pb-2">

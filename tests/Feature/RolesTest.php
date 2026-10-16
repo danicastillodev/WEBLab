@@ -190,8 +190,6 @@ class RolesTest extends TestCase
                 'name' => 'Laura Méndez',
                 'username' => 'lmendez',
                 'email' => 'lmendez@example.com',
-                'password' => 'contrasena-larga-1',
-                'password_confirmation' => 'contrasena-larga-1',
                 'rol_id' => $rol->id,
                 'permisos' => [
                     'historias-clinicas' => ['ver' => true, 'crear' => false, 'editar' => true, 'eliminar' => false],

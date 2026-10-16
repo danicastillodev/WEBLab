@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Http\Middleware\VerificarHorario;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
@@ -99,7 +100,9 @@ class ControlAccesoTest extends TestCase
 
         $this->actingAs($user)
             ->get(route('profile.edit'))
-            ->assertRedirect(route('login'));
+            ->assertRedirect(route('login'))
+            // Bajo "username", que es el campo que muestra la pantalla de login.
+            ->assertSessionHasErrors(['username' => VerificarHorario::MENSAJE]);
 
         $this->assertGuest();
     }

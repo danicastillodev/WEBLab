@@ -14,6 +14,8 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class VerificarHorario
 {
+    public const MENSAJE = 'Su acceso al sistema está fuera del horario permitido.';
+
     public function handle(Request $request, Closure $next): Response
     {
         $user = $request->user();
@@ -23,8 +25,9 @@ class VerificarHorario
             $request->session()->invalidate();
             $request->session()->regenerateToken();
 
+            // La pantalla de login muestra los errores bajo el campo "username".
             return redirect()->route('login')->withErrors([
-                'email' => 'Su acceso al sistema está fuera del horario permitido.',
+                'username' => self::MENSAJE,
             ]);
         }
 

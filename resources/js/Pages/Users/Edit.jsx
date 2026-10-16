@@ -1,5 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, useForm, usePage } from '@inertiajs/react';
 import UserForm from './_form';
 
 export default function Edit({ user, areas, modulos, secciones, acciones, dias, gruposPermisos, roles }) {
@@ -8,8 +8,6 @@ export default function Edit({ user, areas, modulos, secciones, acciones, dias, 
         username: user.username ?? '',
         email: user.email,
         area_ids: user.area_ids ?? [],
-        password: '',
-        password_confirmation: '',
         es_admin: user.es_admin,
         rol_id: user.rol_id ?? '',
         hora_inicio: user.hora_inicio ?? '',
@@ -18,6 +16,8 @@ export default function Edit({ user, areas, modulos, secciones, acciones, dias, 
         permisos: user.permisos,
         permisos_granulares: user.permisos_granulares,
     });
+
+    const { flash } = usePage().props;
 
     function submit(e) {
         e.preventDefault();
@@ -32,6 +32,11 @@ export default function Edit({ user, areas, modulos, secciones, acciones, dias, 
 
             <div className="py-12">
                 <div className="mx-auto max-w-3xl sm:px-6 lg:px-8">
+                    {flash?.success && (
+                        <div className="mb-4 rounded-md bg-green-50 px-4 py-3 text-sm text-green-700">
+                            {flash.success}
+                        </div>
+                    )}
                     <div className="overflow-hidden bg-white p-6 shadow-sm sm:rounded-lg">
                         <UserForm
                             data={data}
@@ -48,6 +53,8 @@ export default function Edit({ user, areas, modulos, secciones, acciones, dias, 
                             gruposPermisos={gruposPermisos}
                             roles={roles}
                             esEdicion
+                            userId={user.id}
+                            tieneContrasena={user.tiene_contrasena}
                         />
                     </div>
                 </div>

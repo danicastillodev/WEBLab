@@ -9,8 +9,6 @@ export default function Create({ areas, modulos, secciones, acciones, dias, grup
         username: '',
         email: '',
         area_ids: [],
-        password: '',
-        password_confirmation: '',
         es_admin: false,
         rol_id: '',
         hora_inicio: '',

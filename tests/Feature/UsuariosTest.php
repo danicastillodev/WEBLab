@@ -29,8 +29,6 @@ class UsuariosTest extends TestCase
             'username' => 'lmendez',
             'email' => 'lmendez@example.com',
             'area_ids' => [],
-            'password' => 'contrasena-larga-1',
-            'password_confirmation' => 'contrasena-larga-1',
             'es_admin' => false,
             'hora_inicio' => '',
             'hora_fin' => '',
@@ -110,7 +108,6 @@ class UsuariosTest extends TestCase
             $user->areas()->pluck('areas.id')->all(),
         );
         $this->assertSame([1, 2, 3, 4, 5], $user->dias_permitidos);
-        $this->assertTrue(Hash::check('contrasena-larga-1', $user->password));
 
         // Sólo se guardan las filas con alguna casilla marcada.
         $this->assertSame(2, $user->permissions()->count());
@@ -214,7 +211,16 @@ class UsuariosTest extends TestCase
         $this->assertSame(1, $user->permissions()->count());
     }
 
-    public function test_editar_sin_contrasena_conserva_la_actual(): void
+    public function test_el_alta_deja_la_contrasena_en_blanco(): void
+    {
+        $this->actingAs($this->admin())
+            ->post(route('users.store'), $this->datos(['password' => 'ignorada-1234']))
+            ->assertRedirect(route('users.index'));
+
+        $this->assertNull(User::where('username', 'lmendez')->firstOrFail()->password);
+    }
+
+    public function test_editar_no_cambia_la_contrasena(): void
     {
         $user = User::factory()->create([
             'username' => 'jperez',
@@ -226,12 +232,53 @@ class UsuariosTest extends TestCase
                 'name' => $user->name,
                 'username' => 'jperez',
                 'email' => $user->email,
-                'password' => '',
-                'password_confirmation' => '',
+                'password' => 'otra-contrasena-2',
+                'password_confirmation' => 'otra-contrasena-2',
             ]))
             ->assertRedirect(route('users.index'));
 
         $this->assertTrue(Hash::check('la-de-siempre-1', $user->refresh()->password));
+    }
+
+    public function test_el_formulario_de_edicion_indica_si_tiene_contrasena(): void
+    {
+        $con = User::factory()->create();
+        $sin = User::factory()->create(['password' => null]);
+
+        $this->actingAs($this->admin())
+            ->get(route('users.edit', $con))
+            ->assertInertia(fn ($page) => $page->where('user.tiene_contrasena', true));
+
+        $this->actingAs($this->admin())
+            ->get(route('users.edit', $sin))
+            ->assertInertia(fn ($page) => $page->where('user.tiene_contrasena', false));
+    }
+
+    public function test_borrar_contrasena_la_deja_en_blanco(): void
+    {
+        $user = User::factory()->create(['remember_token' => 'token-viejo']);
+
+        $this->actingAs($this->admin())
+            ->patch(route('users.borrar-contrasena', $user))
+            ->assertRedirect(route('users.edit', $user))
+            ->assertSessionHas('success');
+
+        $user->refresh();
+        $this->assertNull($user->password);
+        $this->assertNull($user->remember_token);
+    }
+
+    public function test_borrar_contrasena_requiere_permiso_de_editar_usuarios(): void
+    {
+        $user = User::factory()->create();
+        $soloVer = User::factory()->create();
+        $soloVer->permissions()->create(['modulo' => 'users', 'ver' => true]);
+
+        $this->actingAs($soloVer)
+            ->patch(route('users.borrar-contrasena', $user))
+            ->assertForbidden();
+
+        $this->assertNotNull($user->refresh()->password);
     }
 
     public function test_el_formulario_de_edicion_precarga_los_permisos_guardados(): void

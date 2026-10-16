@@ -45,7 +45,8 @@ export default function Dashboard() {
                     </div>
 
                     <h1 className="text-3xl font-bold text-gray-800">
-                        Bienvenido, {auth.user.name}
+                        Bienvenido,{' '}
+                        <span className="text-brand">{auth.user.name}</span>
                     </h1>
 
                     <p className="mt-4 text-base text-gray-500">{mensaje}</p>

@@ -1,4 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import FormErrorAlert from '@/Components/FormErrorAlert';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -41,6 +42,7 @@ export default function Edit({ parametros }) {
 
                     <div className="overflow-hidden bg-white p-6 shadow-sm sm:rounded-lg">
                         <form onSubmit={submit} className="space-y-6">
+                            <FormErrorAlert errors={errors} />
                             <div className={fieldsetClass}>
                                 <h3 className={legendClass}>Impresión de Notas de pago</h3>
                                 <p className="text-sm text-gray-500">

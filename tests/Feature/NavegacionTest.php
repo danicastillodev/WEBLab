@@ -47,6 +47,7 @@ class NavegacionTest extends TestCase
         'servicios.create',
         'users.index',
         'users.create',
+        'datos-personales.edit',
         'profile.edit',
     ];
 

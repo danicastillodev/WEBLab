@@ -1,4 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import FormErrorAlert from '@/Components/FormErrorAlert';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -55,6 +56,7 @@ export default function Edit({ datosGenerales, estados, municipios }) {
 
                     <div className="overflow-hidden bg-white p-6 shadow-sm sm:rounded-lg">
                         <form onSubmit={submit} className="space-y-6">
+                            <FormErrorAlert errors={errors} />
                             <div>
                                 <InputLabel htmlFor="razon_social" value="Razón social" />
                                 <TextInput

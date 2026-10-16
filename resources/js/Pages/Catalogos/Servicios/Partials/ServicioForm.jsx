@@ -1,5 +1,6 @@
 import Checkbox from '@/Components/Checkbox';
 import FieldActions from '@/Components/FieldActions';
+import FormErrorAlert from '@/Components/FormErrorAlert';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import Modal from '@/Components/Modal';
@@ -179,6 +180,7 @@ export default function ServicioForm({ data, setData, errors, processing, onSubm
     return (
         <>
             <form onSubmit={onSubmit} className="space-y-4">
+                <FormErrorAlert errors={errors} />
                 <Fila etiqueta="No.">
                     <TextInput value={numero ?? ''} readOnly disabled className="block w-28 bg-gray-50 text-gray-600" />
                 </Fila>
@@ -301,6 +303,7 @@ export default function ServicioForm({ data, setData, errors, processing, onSubm
 
             <Modal show={altaAbierta} onClose={() => setAltaAbierta(false)} maxWidth="md">
                 <form onSubmit={guardarAlta} className="p-6">
+                    <FormErrorAlert message={altaError} serverErrors={false} className="mt-4" />
                     <h2 className="text-lg font-medium text-gray-900">
                         {editandoId ? 'Modificar' : 'Agregar'} {alta && CATALOGOS[alta].etiqueta}
                     </h2>

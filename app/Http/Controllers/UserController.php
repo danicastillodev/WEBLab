@@ -8,9 +8,8 @@ use App\Models\User;
 use App\Support\Permisos;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -37,6 +36,8 @@ class UserController extends Controller
     {
         $validated = $request->validate($this->reglas());
 
+        // La contraseña no se captura en el alta: queda en blanco y el usuario la
+        // crea la primera vez que inicia sesión (ver CrearContrasenaController).
         $user = User::create([
             'name' => $validated['name'],
             'username' => $validated['username'],
@@ -46,7 +47,7 @@ class UserController extends Controller
             'hora_inicio' => $validated['hora_inicio'] ?? null,
             'hora_fin' => $validated['hora_fin'] ?? null,
             'dias_permitidos' => $validated['dias_permitidos'] ?? null,
-            'password' => Hash::make($validated['password']),
+            'password' => null,
         ]);
 
         $user->areas()->sync($validated['area_ids'] ?? []);
@@ -54,7 +55,8 @@ class UserController extends Controller
         $this->sincronizarPermisos($user, $request->input('permisos', []));
         $this->sincronizarPermisosGranulares($user, $request->input('permisos_granulares', []));
 
-        return redirect()->route('users.index')->with('success', 'Usuario creado.');
+        return redirect()->route('users.index')
+            ->with('success', 'Usuario creado. Se le pedirá crear su contraseña al iniciar sesión.');
     }
 
     public function edit(User $user): Response
@@ -65,6 +67,7 @@ class UserController extends Controller
                 'name' => $user->name,
                 'username' => $user->username,
                 'email' => $user->email,
+                'tiene_contrasena' => $user->password !== null,
                 'area_ids' => $user->areas()->pluck('areas.id')->all(),
                 'es_admin' => (bool) $user->es_admin,
                 'rol_id' => $user->rol_id,
@@ -94,10 +97,6 @@ class UserController extends Controller
             'dias_permitidos' => $validated['dias_permitidos'] ?? null,
         ]);
 
-        if (! empty($validated['password'])) {
-            $user->password = Hash::make($validated['password']);
-        }
-
         $user->save();
 
         $user->areas()->sync($validated['area_ids'] ?? []);
@@ -106,6 +105,23 @@ class UserController extends Controller
         $this->sincronizarPermisosGranulares($user, $request->input('permisos_granulares', []));
 
         return redirect()->route('users.index')->with('success', 'Usuario actualizado.');
+    }
+
+    /**
+     * Deja la contraseña en blanco: en su próximo inicio de sesión se le pedirá
+     * al usuario crear una nueva. Las sesiones que tenga abiertas se cierran
+     * para que no siga entrando con la contraseña anterior.
+     */
+    public function borrarContrasena(User $user): RedirectResponse
+    {
+        $user->forceFill(['password' => null, 'remember_token' => null])->save();
+
+        if (config('session.driver') === 'database') {
+            DB::table(config('session.table', 'sessions'))->where('user_id', $user->id)->delete();
+        }
+
+        return redirect()->route('users.edit', $user)
+            ->with('success', 'Contraseña borrada. Se le pedirá crear una nueva al iniciar sesión.');
     }
 
     public function destroy(Request $request, User $user): RedirectResponse
@@ -167,8 +183,6 @@ class UserController extends Controller
             'permisos.*.*' => ['boolean'],
             'permisos_granulares' => ['nullable', 'array'],
             'permisos_granulares.*' => ['boolean'],
-            // En alta la contraseña es obligatoria; al editar, en blanco = sin cambio.
-            'password' => [$user ? 'nullable' : 'required', 'confirmed', Rules\Password::defaults()],
         ];
     }
 
