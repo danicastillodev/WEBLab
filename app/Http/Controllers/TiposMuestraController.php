@@ -19,7 +19,7 @@ class TiposMuestraController extends Controller
     public function index(): Response
     {
         return Inertia::render('Catalogos/TiposMuestra/Index', [
-            'tiposMuestra' => TipoMuestra::general()->withCount('servicios')->orderBy('nombre')->paginate(15),
+            'tiposMuestra' => TipoMuestra::general()->orderBy('nombre')->paginate(15),
         ]);
     }
 

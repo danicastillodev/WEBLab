@@ -39,14 +39,13 @@ export default function Index({ tiposMuestra }) {
                             <thead className="bg-gray-50">
                                 <tr>
                                     <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Nombre</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Análisis</th>
                                     <th className="px-6 py-3" />
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-200 bg-white">
                                 {tiposMuestra.data.length === 0 && (
                                     <tr>
-                                        <td colSpan={3} className="px-6 py-4 text-center text-sm text-gray-500">
+                                        <td colSpan={2} className="px-6 py-4 text-center text-sm text-gray-500">
                                             Aún no hay tipos de muestra registrados.
                                         </td>
                                     </tr>
@@ -54,7 +53,6 @@ export default function Index({ tiposMuestra }) {
                                 {tiposMuestra.data.map((tipo) => (
                                     <tr key={tipo.id}>
                                         <td className="px-6 py-4 text-sm font-medium text-gray-900">{tipo.nombre}</td>
-                                        <td className="px-6 py-4 text-sm text-gray-500">{tipo.servicios_count}</td>
                                         <td className="px-6 py-4 text-right text-sm">
                                             <Link
                                                 href={route('tipos-muestra.edit', tipo.id)}
