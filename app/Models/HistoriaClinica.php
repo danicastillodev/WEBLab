@@ -96,6 +96,10 @@ class HistoriaClinica extends Model
      * cada año (2025 → 1, 2, 3…; 2026 → 1, 2, 3…), así que el consecutivo se
      * calcula sobre el ejercicio y no sobre toda la tabla.
      *
+     * Si en Parámetros de Operación se fijó un próximo número de caso para
+     * ese mismo ejercicio, la numeración salta hasta él; nunca retrocede por
+     * debajo del último caso registrado, así que no puede duplicar números.
+     *
      * Debe llamarse dentro de una transacción: el lockForUpdate evita que dos
      * altas simultáneas del mismo año tomen el mismo número.
      */
@@ -105,7 +109,12 @@ class HistoriaClinica extends Model
             ->lockForUpdate()
             ->max('numero_caso');
 
-        return ((int) $ultimo) + 1;
+        $parametros = ParametroOperacion::first();
+        $configurado = $parametros?->ejercicio_numero_caso === $ejercicio
+            ? (int) $parametros->proximo_numero_caso
+            : 0;
+
+        return max(((int) $ultimo) + 1, $configurado);
     }
 
     public function creadoPor(): BelongsTo

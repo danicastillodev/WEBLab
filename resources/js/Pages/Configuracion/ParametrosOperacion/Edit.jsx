@@ -10,12 +10,13 @@ import { Head, Link, useForm, usePage } from '@inertiajs/react';
 // Las secciones de "Impresión de Notas de pago" abajo abren un flujo que ningún
 // card describe todavía (editor de posiciones de campos), así que su botón
 // queda sin acción, igual que los placeholders "#" del grupo Notas de pago.
-export default function Edit({ parametros }) {
+export default function Edit({ parametros, numeroCaso }) {
     const { flash } = usePage().props;
     const { data, setData, put, processing, errors } = useForm({
         folio_automatico_activo: parametros.folio_automatico_activo ?? true,
         proximo_folio: parametros.proximo_folio ?? '',
         iva_porcentaje: parametros.iva_porcentaje ?? '',
+        proximo_numero_caso: numeroCaso.proximo ?? '',
     });
 
     function submit(e) {
@@ -96,6 +97,46 @@ export default function Edit({ parametros }) {
                                     </label>
                                 </div>
                                 <InputError message={errors.proximo_folio} className="mt-2" />
+                            </div>
+
+                            <div className={fieldsetClass}>
+                                <h3 className={legendClass}>Número de caso en Historias Clínicas</h3>
+                                <p className="text-sm text-gray-500">
+                                    La numeración de casos es consecutiva dentro de cada ejercicio y reinicia cada año.
+                                    Puede indicar el número que tomará la próxima historia clínica del ejercicio en curso.
+                                </p>
+                                <div className="flex flex-wrap items-start gap-4">
+                                    <div>
+                                        <InputLabel htmlFor="ejercicio_numero_caso" value="Ejercicio" />
+                                        <TextInput
+                                            id="ejercicio_numero_caso"
+                                            value={numeroCaso.ejercicio}
+                                            readOnly
+                                            className="mt-1 block w-24 bg-gray-50 text-gray-600"
+                                        />
+                                    </div>
+                                    <div>
+                                        <InputLabel htmlFor="proximo_numero_caso" value="Próximo número de caso" />
+                                        <TextInput
+                                            id="proximo_numero_caso"
+                                            type="number"
+                                            min={numeroCaso.proximo}
+                                            value={data.proximo_numero_caso}
+                                            onChange={(e) => setData('proximo_numero_caso', e.target.value)}
+                                            className="mt-1 block w-32"
+                                        />
+                                    </div>
+                                </div>
+                                <p className="text-xs text-gray-500">
+                                    El próximo número no puede ser menor a {numeroCaso.proximo}.
+                                </p>
+                                {String(data.proximo_numero_caso) !== String(numeroCaso.proximo) && (
+                                    <div className="rounded-md bg-amber-50 px-4 py-3 text-sm text-amber-800">
+                                        Atención: una vez guardado, no podrá disminuir este número después para el
+                                        ejercicio {numeroCaso.ejercicio}.
+                                    </div>
+                                )}
+                                <InputError message={errors.proximo_numero_caso} className="mt-2" />
                             </div>
 
                             <div className={fieldsetClass}>

@@ -10,6 +10,7 @@ import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { CLIENTE_VACIO, clienteNuevo } from '@/Pages/Catalogos/Clientes/Partials/ClienteForm';
+import { formatFechaHora } from '@/utils/fechas';
 
 const selectClass = 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500';
 
@@ -414,7 +415,7 @@ export default function Create({
                                         />
                                         <span className="font-medium text-gray-700">Caso {h.numero_caso}</span>
                                         <span className="text-gray-500">{h.propietario}</span>
-                                        <span className="ms-auto text-xs text-gray-400">{h.fecha_recepcion}</span>
+                                        <span className="ms-auto text-xs text-gray-400">{formatFechaHora(h.fecha_recepcion)}</span>
                                     </label>
                                 );
                             })}

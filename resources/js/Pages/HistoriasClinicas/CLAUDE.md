@@ -4,6 +4,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Create.jsx overview
 
+`Create.jsx` is used for both creating and editing. `edit()` renders it with an extra `historia` prop (with `muestras` and `respuestas`); the form is prefilled from it and submits with `put` to `historias-clinicas.update`. There is no separate `Edit.jsx`. Cancelled historias can't be edited.
+
 The create form collects all fields needed to open a new `HistoriaClinica`. Field order (top to bottom):
 
 1. Fecha de recepción

@@ -16,10 +16,14 @@ class ParametroOperacion extends Model
         'impresora_tickets',
         'folio_automatico_activo',
         'proximo_folio',
+        'proximo_numero_caso',
+        'ejercicio_numero_caso',
         'iva_porcentaje',
     ];
 
     protected $casts = [
         'folio_automatico_activo' => 'boolean',
+        'proximo_numero_caso' => 'integer',
+        'ejercicio_numero_caso' => 'integer',
     ];
 }

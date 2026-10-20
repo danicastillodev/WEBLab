@@ -2,6 +2,7 @@ import EstadoBadge, { ESTADOS } from '@/Components/EstadoBadge';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import { useState } from 'react';
+import { formatFechaHora } from '@/utils/fechas';
 
 // Etiquetas de "impreso"; el valor guardado es el de la columna del mismo nombre.
 const IMPRESOS = {
@@ -116,6 +117,11 @@ export default function Index({ historias, filtros, especies }) {
 
             <div className="py-12">
                 <div className="mx-auto max-w-6xl sm:px-6 lg:px-8">
+                    {flash?.error && (
+                        <div className="mb-4 rounded-md bg-red-50 px-4 py-3 text-sm text-red-700">
+                            {flash.error}
+                        </div>
+                    )}
                     {flash?.success && (
                         <div className="mb-4 rounded-md bg-green-50 px-4 py-3 text-sm text-green-700">
                             {flash.success}
@@ -271,7 +277,7 @@ export default function Index({ historias, filtros, especies }) {
                                         <td className="px-6 py-4 text-sm font-medium text-gray-900">
                                             {historia.propietario?.nombre} {historia.propietario?.apellidos}
                                         </td>
-                                        <td className="px-6 py-4 text-sm text-gray-500">{historia.fecha_recepcion}</td>
+                                        <td className="px-6 py-4 text-sm text-gray-500">{formatFechaHora(historia.fecha_recepcion)}</td>
                                         <td className="px-6 py-4 text-sm"><EstadoBadge estado={historia.estado} /></td>
                                         <td className="px-6 py-4 text-sm text-gray-500">{IMPRESOS[historia.impreso] ?? '—'}</td>
                                         <td className="px-6 py-4 text-sm text-gray-500">{historia.creado_por?.name ?? '—'}</td>
@@ -296,6 +302,17 @@ export default function Index({ historias, filtros, especies }) {
                                                         <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                                                     </svg>
                                                 </Link>
+                                                {historia.estado !== 'cancelada' && (
+                                                    <Link
+                                                        href={route('historias-clinicas.edit', historia.id)}
+                                                        className="inline-flex items-center text-gray-500 hover:text-gray-800"
+                                                        title="Editar"
+                                                    >
+                                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                                                            <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                                        </svg>
+                                                    </Link>
+                                                )}
                                                 {historia.estado !== 'cancelada' && (
                                                     <button
                                                         onClick={() => handleCancel(historia)}

@@ -82,9 +82,22 @@ class HistoriasClinicasController extends Controller
 
     public function create(): Response
     {
-        return Inertia::render('HistoriasClinicas/Create', [
+        return Inertia::render('HistoriasClinicas/Create', $this->datosFormulario());
+    }
+
+    /**
+     * Catálogos del formulario de captura, que sirve tanto para el alta como
+     * para la edición. Al editar, los servicios ya usados en la historia se
+     * incluyen aunque se hayan desactivado después, para no perderlos.
+     *
+     * @param  list<int>  $serviciosUsados
+     * @return array<string, mixed>
+     */
+    private function datosFormulario(array $serviciosUsados = []): array
+    {
+        return [
             'propietarios' => Propietario::orderBy('apellidos')->orderBy('nombre')->get(['id', 'nombre', 'apellidos', 'telefono', 'curp', 'rfc']),
-            'direcciones' => Direccion::with(['municipio', 'estado'])->get(['id', 'propietario_id', 'calle', 'numero_exterior', 'numero_interior', 'colonia', 'municipio_id', 'estado_id', 'codigo_postal', 'caseta', 'lote', 'parvada']),
+            'direcciones' => Direccion::with(['municipio', 'estado'])->get(['id', 'propietario_id', 'calle', 'numero_exterior', 'numero_interior', 'colonia', 'municipio_id', 'estado_id', 'codigo_postal']),
             'explotaciones' => Explotacion::with('municipio')->get(['id', 'propietario_id', 'nombre', 'direccion', 'estado_id', 'municipio_id', 'caseta', 'lote', 'parvada']),
             'especies' => Especie::orderBy('nombre')->get(['id', 'nombre']),
             'razas' => Raza::orderBy('nombre')->get(['id', 'nombre', 'especie_id']),
@@ -93,13 +106,14 @@ class HistoriasClinicasController extends Controller
             // Cada servicio trae los tipos de muestra elegidos en su alta del
             // catálogo de análisis: son las únicas opciones de "Tipo de muestra".
             'servicios' => Servicio::where('activo', true)
+                ->when($serviciosUsados !== [], fn ($q) => $q->orWhereIn('id', $serviciosUsados))
                 ->with(['tiposMuestra' => fn ($q) => $q->orderBy('nombre')->select('tipo_muestras.id', 'tipo_muestras.nombre')])
                 ->orderBy('descripcion')
                 ->get(['id', 'clave', 'descripcion']),
             'funciones_zootecnicas' => FuncionZootecnica::with('especies:id')->orderBy('nombre')->get(['id', 'nombre'])
                 ->map(fn ($f) => $this->funcionConEspecies($f)),
             'preguntas' => Pregunta::vigentes()->get(['id', 'texto', 'tipo']),
-        ]);
+        ];
     }
 
     public function storePropietario(Request $request): JsonResponse
@@ -140,10 +154,7 @@ class HistoriasClinicasController extends Controller
             'colonia' => ['required', 'string', 'max:150'],
             'estado_id' => ['required', 'integer', 'exists:estados,id'],
             'municipio_id' => ['required', 'integer', 'exists:municipios,id'],
-            'codigo_postal' => ['required', 'string', 'max:10'],
-            'caseta' => ['nullable', 'string', 'max:50'],
-            'lote' => ['nullable', 'string', 'max:50'],
-            'parvada' => ['nullable', 'string', 'max:50'],
+            'codigo_postal' => ['nullable', 'string', 'max:10'],
         ]);
 
         $direccion = Direccion::create($validated);
@@ -270,10 +281,7 @@ class HistoriasClinicasController extends Controller
             'colonia' => ['required', 'string', 'max:150'],
             'estado_id' => ['required', 'integer', 'exists:estados,id'],
             'municipio_id' => ['required', 'integer', 'exists:municipios,id'],
-            'codigo_postal' => ['required', 'string', 'max:10'],
-            'caseta' => ['nullable', 'string', 'max:50'],
-            'lote' => ['nullable', 'string', 'max:50'],
-            'parvada' => ['nullable', 'string', 'max:50'],
+            'codigo_postal' => ['nullable', 'string', 'max:10'],
         ]);
 
         $direccion->update($validated);
@@ -424,40 +432,17 @@ class HistoriasClinicasController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'propietario_id' => ['required', 'integer', 'exists:propietarios,id'],
-            'direccion_id' => ['required', 'integer', 'exists:direcciones,id'],
-            'explotacion_id' => ['required', 'integer', 'exists:explotaciones,id'],
-            'fecha_recepcion' => ['required', 'date'],
-            'fecha_muestra' => ['required', 'date'],
-            'especie_id' => ['required', 'integer', 'exists:especies,id'],
-            'raza_id' => ['required', 'integer', 'exists:razas,id'],
-            // La función tiene que ser una de las de la especie elegida.
-            'funcion_zootecnica_id' => [
-                'required', 'integer',
-                Rule::exists('especie_funcion_zootecnica', 'funcion_zootecnica_id')->where('especie_id', $request->integer('especie_id')),
-            ],
-            'sexo' => ['nullable', 'in:Hembra,Macho,Ambos,NA'],
-            'edad_unidad' => ['nullable', 'in:Dias,Meses,Años,NR,NA'],
-            'edad_valor' => ['nullable', 'integer', 'min:0'],
-            'animales_explotacion' => ['nullable', 'integer', 'min:0'],
-            'animales_muertos' => ['nullable', 'integer', 'min:0'],
-            'animales_enfermos' => ['nullable', 'integer', 'min:0'],
-            'notas_adicionales' => ['nullable', 'string', 'max:512'],
-            'muestras' => ['required', 'array', 'min:1'],
-            'muestras.*.servicio_id' => ['required', 'integer', 'exists:servicios,id'],
-            'muestras.*.cantidad' => ['required', 'integer', 'min:1'],
-            'muestras.*.tipo_muestra_id' => ['nullable', 'integer', 'exists:tipo_muestras,id'],
-            'muestras.*.notas' => ['nullable', 'string', 'max:1000'],
-            'respuestas' => ['nullable', 'array'],
-            'respuestas.*' => ['nullable', 'string', 'max:2000'],
-        ]);
+        $validated = $request->validate($this->reglasHistoria($request));
 
         $this->validarTiposMuestraDelServicio($validated['muestras']);
 
         if (in_array($validated['edad_unidad'] ?? null, ['NR', 'NA'], true)) {
             $validated['edad_valor'] = null;
         }
+
+        // La recepción es el momento del alta, con fecha y hora; no se toma
+        // del navegador (el campo del formulario es de solo lectura).
+        $validated['fecha_recepcion'] = now();
 
         $historia = DB::transaction(function () use ($validated) {
             // El ejercicio y el número de caso los asigna el modelo al crear.
@@ -550,37 +535,87 @@ class HistoriasClinicasController extends Controller
         }
     }
 
-    public function edit(HistoriaClinica $historiaClinica): Response
+    public function edit(HistoriaClinica $historiaClinica): Response|RedirectResponse
     {
-        return Inertia::render('HistoriasClinicas/Edit', [
-            'historia' => $historiaClinica->load(['propietario', 'direccion.municipio', 'direccion.estado', 'especie', 'raza']),
-            'propietarios' => Propietario::orderBy('apellidos')->orderBy('nombre')->get(['id', 'nombre', 'apellidos', 'telefono', 'curp', 'rfc']),
-            'direcciones' => Direccion::with(['municipio', 'estado'])->get(['id', 'propietario_id', 'calle', 'numero_exterior', 'numero_interior', 'colonia', 'municipio_id', 'estado_id', 'codigo_postal', 'caseta', 'lote', 'parvada']),
-            'especies' => Especie::orderBy('nombre')->get(['id', 'nombre']),
-            'razas' => Raza::orderBy('nombre')->get(['id', 'nombre', 'especie_id']),
+        if ($historiaClinica->estado === HistoriaClinica::ESTADO_CANCELADA) {
+            return $this->redirectAlIndiceConFiltrosHoy()->with('error', 'Una historia clínica cancelada no se puede editar.');
+        }
+
+        $historiaClinica->load(['muestras', 'respuestas']);
+
+        return Inertia::render('HistoriasClinicas/Create', [
+            ...$this->datosFormulario($historiaClinica->muestras->pluck('servicio_id')->filter()->unique()->values()->all()),
+            'historia' => $historiaClinica,
         ]);
     }
 
     public function update(Request $request, HistoriaClinica $historiaClinica): RedirectResponse
     {
-        $validated = $request->validate([
-            'propietario_id' => ['required', 'integer', 'exists:propietarios,id'],
-            'direccion_id' => ['required', 'integer', 'exists:direcciones,id'],
-            'fecha_recepcion' => ['required', 'date'],
-            'especie_id' => ['required', 'integer', 'exists:especies,id'],
-            'raza_id' => ['required', 'integer', 'exists:razas,id'],
-            'edad_unidad' => ['nullable', 'in:Dias,Meses,Años,NR,NA'],
-            'edad_valor' => ['nullable', 'integer', 'min:0'],
-            'cantidad' => ['required', 'integer', 'min:1'],
-        ]);
+        abort_if($historiaClinica->estado === HistoriaClinica::ESTADO_CANCELADA, 403, 'Una historia clínica cancelada no se puede editar.');
+
+        $validated = $request->validate($this->reglasHistoria($request));
+
+        $this->validarTiposMuestraDelServicio($validated['muestras']);
 
         if (in_array($validated['edad_unidad'] ?? null, ['NR', 'NA'], true)) {
             $validated['edad_valor'] = null;
         }
 
-        $historiaClinica->update($validated);
+        // El número de caso, el ejercicio y la fecha de recepción no cambian
+        // al editar: se fijaron en el alta.
+        unset($validated['fecha_recepcion']);
 
-        return $this->redirectAlIndiceConFiltrosHoy()->with('success', 'Historia clínica actualizada.');
+        DB::transaction(function () use ($historiaClinica, $validated) {
+            $historiaClinica->update($validated);
+
+            // Los análisis solicitados se reemplazan por los del formulario.
+            $historiaClinica->muestras()->delete();
+            $historiaClinica->muestras()->createMany($validated['muestras']);
+
+            // Solo se reemplazan las respuestas de las preguntas vigentes; las
+            // de preguntas ya desactivadas no aparecen en el formulario.
+            $historiaClinica->respuestas()->whereIn('pregunta_id', Pregunta::vigentes()->pluck('id'))->delete();
+            $this->guardarRespuestas($historiaClinica, $validated['respuestas'] ?? []);
+        });
+
+        return $this->redirectAlIndiceConFiltrosHoy()->with('success', "Historia clínica {$historiaClinica->numero_caso} actualizada.");
+    }
+
+    /**
+     * Reglas comunes al alta y la edición de una historia clínica.
+     *
+     * @return array<string, mixed>
+     */
+    private function reglasHistoria(Request $request): array
+    {
+        return [
+            'propietario_id' => ['required', 'integer', 'exists:propietarios,id'],
+            'direccion_id' => ['required', 'integer', 'exists:direcciones,id'],
+            'explotacion_id' => ['required', 'integer', 'exists:explotaciones,id'],
+            'fecha_recepcion' => ['nullable', 'date'],
+            'fecha_muestra' => ['required', 'date'],
+            'especie_id' => ['required', 'integer', 'exists:especies,id'],
+            'raza_id' => ['required', 'integer', 'exists:razas,id'],
+            // La función tiene que ser una de las de la especie elegida.
+            'funcion_zootecnica_id' => [
+                'required', 'integer',
+                Rule::exists('especie_funcion_zootecnica', 'funcion_zootecnica_id')->where('especie_id', $request->integer('especie_id')),
+            ],
+            'sexo' => ['nullable', 'in:Hembra,Macho,Ambos,NA'],
+            'edad_unidad' => ['nullable', 'in:Dias,Meses,Años,NR,NA'],
+            'edad_valor' => ['nullable', 'integer', 'min:0'],
+            'animales_explotacion' => ['nullable', 'integer', 'min:0'],
+            'animales_muertos' => ['nullable', 'integer', 'min:0'],
+            'animales_enfermos' => ['nullable', 'integer', 'min:0'],
+            'notas_adicionales' => ['nullable', 'string', 'max:512'],
+            'muestras' => ['required', 'array', 'min:1'],
+            'muestras.*.servicio_id' => ['required', 'integer', 'exists:servicios,id'],
+            'muestras.*.cantidad' => ['required', 'integer', 'min:1'],
+            'muestras.*.tipo_muestra_id' => ['nullable', 'integer', 'exists:tipo_muestras,id'],
+            'muestras.*.notas' => ['nullable', 'string', 'max:1000'],
+            'respuestas' => ['nullable', 'array'],
+            'respuestas.*' => ['nullable', 'string', 'max:2000'],
+        ];
     }
 
     public function destroy(HistoriaClinica $historiaClinica): RedirectResponse
