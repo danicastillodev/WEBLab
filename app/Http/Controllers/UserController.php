@@ -23,7 +23,7 @@ class UserController extends Controller
     public function index(): Response
     {
         return Inertia::render('Users/Index', [
-            'users' => User::with(['areas:id,nombre', 'rol:id,nombre'])->orderBy('name')->paginate(10),
+            'users' => User::with('areas:id,nombre')->orderBy('name')->paginate(10),
         ]);
     }
 

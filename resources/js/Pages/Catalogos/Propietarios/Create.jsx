@@ -21,9 +21,6 @@ export default function Create({ estados, municipios }) {
         estado_id: estadoDefault,
         municipio_id: '',
         codigo_postal: '',
-        caseta: '',
-        lote: '',
-        parvada: '',
     };
 
     const { data, setData, post, processing, errors } = useForm({
@@ -266,41 +263,6 @@ export default function Create({ estados, municipios }) {
                                                         <InputError message={errors[`direcciones.${index}.codigo_postal`]} className="mt-1" />
                                                     </div>
 
-                                                    <div className="grid grid-cols-3 gap-3">
-                                                        <div>
-                                                            <InputLabel value="Caseta" />
-                                                            <TextInput
-                                                                value={dir.caseta}
-                                                                onChange={(e) => updateDireccion(index, 'caseta', e.target.value)}
-                                                                className="mt-1 block w-full"
-                                                                maxLength={50}
-                                                                placeholder="Opcional"
-                                                            />
-                                                            <InputError message={errors[`direcciones.${index}.caseta`]} className="mt-1" />
-                                                        </div>
-                                                        <div>
-                                                            <InputLabel value="Lote" />
-                                                            <TextInput
-                                                                value={dir.lote}
-                                                                onChange={(e) => updateDireccion(index, 'lote', e.target.value)}
-                                                                className="mt-1 block w-full"
-                                                                maxLength={50}
-                                                                placeholder="Opcional"
-                                                            />
-                                                            <InputError message={errors[`direcciones.${index}.lote`]} className="mt-1" />
-                                                        </div>
-                                                        <div>
-                                                            <InputLabel value="Parvada" />
-                                                            <TextInput
-                                                                value={dir.parvada}
-                                                                onChange={(e) => updateDireccion(index, 'parvada', e.target.value)}
-                                                                className="mt-1 block w-full"
-                                                                maxLength={50}
-                                                                placeholder="Opcional"
-                                                            />
-                                                            <InputError message={errors[`direcciones.${index}.parvada`]} className="mt-1" />
-                                                        </div>
-                                                    </div>
                                                 </div>
                                             </div>
                                         );

@@ -150,7 +150,11 @@ class CatalogoEnLineaTest extends TestCase
             ->assertOk();
     }
 
-    public function test_guarda_caseta_lote_y_parvada_en_la_direccion(): void
+    /**
+     * Caseta, lote y parvada se quitaron de la dirección (siguen en la
+     * explotación): aunque lleguen en la petición, no se guardan.
+     */
+    public function test_la_direccion_ya_no_guarda_caseta_lote_ni_parvada(): void
     {
         $historia = $this->historiaCompleta();
 
@@ -161,15 +165,30 @@ class CatalogoEnLineaTest extends TestCase
                 'municipio_id' => Municipio::value('id'), 'codigo_postal' => '45000',
                 'caseta' => 'A-12', 'lote' => '7', 'parvada' => 'Norte 2',
             ])
-            ->assertOk()
-            ->assertJsonPath('caseta', 'A-12')
-            ->assertJsonPath('lote', '7')
-            ->assertJsonPath('parvada', 'Norte 2');
+            ->assertOk();
 
         $this->assertDatabaseHas('direcciones', [
             'id' => $historia->direccion_id,
-            'caseta' => 'A-12', 'lote' => '7', 'parvada' => 'Norte 2',
+            'calle' => 'Camino a la granja',
+            'caseta' => null, 'lote' => null, 'parvada' => null,
         ]);
+    }
+
+    public function test_la_direccion_no_requiere_codigo_postal(): void
+    {
+        $historia = $this->historiaCompleta();
+
+        $this->actingAs($this->admin())
+            ->postJson(route('historias-clinicas.store-direccion'), [
+                'propietario_id' => $historia->propietario_id,
+                'calle' => 'Camino viejo', 'numero_exterior' => 'S/N',
+                'colonia' => 'Rancho', 'estado_id' => Estado::where('clave', 'JAL')->value('id'),
+                'municipio_id' => Municipio::value('id'),
+            ])
+            ->assertOk()
+            ->assertJsonPath('codigo_postal', null);
+
+        $this->assertDatabaseHas('direcciones', ['calle' => 'Camino viejo', 'codigo_postal' => null]);
     }
 
     public function test_la_direccion_no_requiere_caseta_lote_ni_parvada(): void

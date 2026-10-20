@@ -7,8 +7,10 @@ use App\Models\Especie;
 use App\Models\Estado;
 use App\Models\HistoriaClinica;
 use App\Models\Municipio;
+use App\Models\ParametroOperacion;
 use App\Models\Propietario;
 use App\Models\Raza;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -77,5 +79,53 @@ class HistoriaClinicaAltaTest extends TestCase
 
         $this->assertSame(2025, $terceraDe2025->ejercicio);
         $this->assertSame(3, $terceraDe2025->numero_caso);
+    }
+
+    public function test_el_numero_de_caso_salta_al_proximo_configurado_en_su_ejercicio(): void
+    {
+        $this->historia('2026-01-05');
+        ParametroOperacion::create([
+            'proximo_folio' => 1, 'iva_porcentaje' => 16,
+            'proximo_numero_caso' => 500, 'ejercicio_numero_caso' => 2026,
+        ]);
+
+        $this->assertSame(500, $this->historia('2026-02-01')->numero_caso);
+        $this->assertSame(501, $this->historia('2026-02-02')->numero_caso);
+    }
+
+    public function test_el_proximo_numero_configurado_no_aplica_a_otro_ejercicio(): void
+    {
+        ParametroOperacion::create([
+            'proximo_folio' => 1, 'iva_porcentaje' => 16,
+            'proximo_numero_caso' => 500, 'ejercicio_numero_caso' => 2025,
+        ]);
+
+        $this->assertSame(1, $this->historia('2026-02-01')->numero_caso);
+    }
+
+    public function test_el_proximo_numero_configurado_nunca_retrocede_la_numeracion(): void
+    {
+        $this->historia('2026-01-01');
+        $this->historia('2026-01-02');
+        ParametroOperacion::create([
+            'proximo_folio' => 1, 'iva_porcentaje' => 16,
+            'proximo_numero_caso' => 2, 'ejercicio_numero_caso' => 2026,
+        ]);
+
+        $this->assertSame(3, $this->historia('2026-01-03')->numero_caso);
+    }
+
+    public function test_parametros_de_operacion_rechaza_un_numero_de_caso_ya_usado(): void
+    {
+        $this->travelTo('2026-10-20');
+        $this->historia('2026-03-01');
+        $this->historia('2026-03-02');
+
+        $this->actingAs(User::factory()->create(['es_admin' => true]))
+            ->put(route('parametros-operacion.update'), [
+                'proximo_folio' => 1, 'iva_porcentaje' => 16,
+                'proximo_numero_caso' => 2,
+            ])
+            ->assertSessionHasErrors('proximo_numero_caso');
     }
 }

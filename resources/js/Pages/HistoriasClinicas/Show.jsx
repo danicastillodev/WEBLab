@@ -1,6 +1,7 @@
 import EstadoBadge from '@/Components/EstadoBadge';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
+import { formatFechaHora } from '@/utils/fechas';
 
 // Etiquetas de "impreso"; el valor guardado es el de la columna del mismo nombre.
 const IMPRESOS = {
@@ -18,7 +19,7 @@ function formatFecha(valor) {
 
 function formatDireccion(dir) {
     if (!dir) return '—';
-    return `${dir.calle} ${dir.numero_exterior}${dir.numero_interior ? ` Int. ${dir.numero_interior}` : ''}, ${dir.colonia}, ${[dir.municipio?.nombre, dir.estado?.nombre].filter(Boolean).join(', ')}, C.P. ${dir.codigo_postal}`;
+    return `${dir.calle} ${dir.numero_exterior}${dir.numero_interior ? ` Int. ${dir.numero_interior}` : ''}, ${dir.colonia}, ${[dir.municipio?.nombre, dir.estado?.nombre].filter(Boolean).join(', ')}${dir.codigo_postal ? `, C.P. ${dir.codigo_postal}` : ''}`;
 }
 
 function formatEdad(historia) {
@@ -63,12 +64,14 @@ export default function Show({ historia }) {
                     </h2>
                     <div className="flex items-center gap-3">
                         <EstadoBadge estado={historia.estado} />
-                        <Link
-                            href={route('historias-clinicas.edit', historia.id)}
-                            className="rounded-md bg-brand px-4 py-2 text-sm text-white hover:bg-brand-hover"
-                        >
-                            Editar
-                        </Link>
+                        {historia.estado !== 'cancelada' && (
+                            <Link
+                                href={route('historias-clinicas.edit', historia.id)}
+                                className="rounded-md bg-brand px-4 py-2 text-sm text-white hover:bg-brand-hover"
+                            >
+                                Editar
+                            </Link>
+                        )}
                     </div>
                 </div>
             }
@@ -81,7 +84,7 @@ export default function Show({ historia }) {
                         <Seccion titulo="Datos generales">
                             <Campo etiqueta="Ejercicio">{historia.ejercicio}</Campo>
                             <Campo etiqueta="No. caso">{historia.numero_caso}</Campo>
-                            <Campo etiqueta="Fecha de recepción">{formatFecha(historia.fecha_recepcion)}</Campo>
+                            <Campo etiqueta="Fecha de recepción">{formatFechaHora(historia.fecha_recepcion)}</Campo>
                             <Campo etiqueta="Fecha de muestra">{formatFecha(historia.fecha_muestra)}</Campo>
                             <Campo etiqueta="Impreso">{IMPRESOS[historia.impreso] ?? '—'}</Campo>
                             <Campo etiqueta="Registró">{historia.creado_por?.name}</Campo>

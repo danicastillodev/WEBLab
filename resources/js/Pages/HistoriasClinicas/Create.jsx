@@ -10,10 +10,44 @@ import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
 import axios from 'axios';
 import { useState } from 'react';
+import { formatFechaHora } from '@/utils/fechas';
 
 const selectClass = 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500';
 const EDAD_UNIDADES = ['Dias', 'Meses', 'Años', 'NR', 'NA'];
 const MUESTRA_VACIA = { servicio_id: '', cantidad: 1, tipo_muestra_id: '', notas: '' };
+
+// Las fechas llegan como AAAA-MM-DD y el selector trabaja con AAAA/MM/DD.
+const aFechaFormulario = (fecha) => (fecha ? String(fecha).slice(0, 10).replace(/-/g, '/') : '');
+const texto = (valor) => (valor === null || valor === undefined ? '' : String(valor));
+
+/** Valores iniciales del formulario a partir de una historia ya guardada. */
+function datosDeHistoria(historia) {
+    return {
+        propietario_id:        texto(historia.propietario_id),
+        direccion_id:          texto(historia.direccion_id),
+        explotacion_id:        texto(historia.explotacion_id),
+        fecha_muestra:         aFechaFormulario(historia.fecha_muestra),
+        especie_id:            texto(historia.especie_id),
+        raza_id:               texto(historia.raza_id),
+        sexo:                  texto(historia.sexo),
+        edad_unidad:           texto(historia.edad_unidad),
+        edad_valor:            texto(historia.edad_valor),
+        animales_explotacion:  texto(historia.animales_explotacion),
+        animales_muertos:      texto(historia.animales_muertos),
+        animales_enfermos:     texto(historia.animales_enfermos),
+        funcion_zootecnica_id: texto(historia.funcion_zootecnica_id),
+        notas_adicionales:     texto(historia.notas_adicionales),
+        muestras: historia.muestras.length
+            ? historia.muestras.map((m) => ({
+                servicio_id:     texto(m.servicio_id),
+                cantidad:        m.cantidad ?? 1,
+                tipo_muestra_id: texto(m.tipo_muestra_id),
+                notas:           texto(m.notas),
+            }))
+            : [{ ...MUESTRA_VACIA }],
+        respuestas: Object.fromEntries(historia.respuestas.map((r) => [r.pregunta_id, r.respuesta])),
+    };
+}
 
 function formatDireccion(dir) {
     const lugar = [dir.municipio?.nombre, dir.estado?.nombre].filter(Boolean).join(', ');
@@ -50,7 +84,13 @@ function Modal({ title, onClose, children }) {
     );
 }
 
-export default function Create({ propietarios: initPropietarios, direcciones: initDirecciones, explotaciones: initExplotaciones, especies: initEspecies, razas: initRazas, estados, municipios, servicios, funciones_zootecnicas: initFunciones, preguntas = [] }) {
+export default function Create({ propietarios: initPropietarios, direcciones: initDirecciones, explotaciones: initExplotaciones, especies: initEspecies, razas: initRazas, estados, municipios, servicios, funciones_zootecnicas: initFunciones, preguntas = [], historia = null }) {
+    // Con `historia` el formulario edita esa historia; sin ella, da de alta una nueva.
+    const editando = historia !== null;
+    // Solo informativa: en el alta el servidor fija la fecha y hora reales al
+    // guardar, y al editar no cambia.
+    const [fechaRecepcion] = useState(() => formatFechaHora(editando ? historia.fecha_recepcion : new Date().toLocaleString('sv')));
+
     const [propietarios, setPropietarios]   = useState(initPropietarios);
     const [direcciones, setDirecciones]     = useState(initDirecciones);
     const [explotaciones, setExplotaciones] = useState(initExplotaciones);
@@ -59,11 +99,10 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
     const [funciones, setFunciones]         = useState(initFunciones);
 
     /* ── Main form ── */
-    const { data, setData, post, processing, errors } = useForm({
+    const { data, setData, post, put, processing, errors } = useForm(editando ? datosDeHistoria(historia) : {
         propietario_id:  '',
         direccion_id:    '',
         explotacion_id:  '',
-        fecha_recepcion: new Date().toLocaleDateString('sv').replace(/-/g, '/'),
         fecha_muestra:   '',
         especie_id:      '',
         raza_id:         '',
@@ -132,7 +171,11 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
 
     function submit(e) {
         e.preventDefault();
-        post(route('historias-clinicas.store'));
+        if (editando) {
+            put(route('historias-clinicas.update', historia.id));
+        } else {
+            post(route('historias-clinicas.store'));
+        }
     }
 
     /* ── Eliminación de registros de catálogo ── */
@@ -371,7 +414,7 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
     const jalisco       = estados.find((e) => e.nombre === 'Jalisco');
     const estadoDefault = jalisco ? String(jalisco.id) : '';
 
-    const DIR_VACIA = { calle: '', numero_exterior: '', numero_interior: '', colonia: '', estado_id: estadoDefault, municipio_id: '', codigo_postal: '', caseta: '', lote: '', parvada: '' };
+    const DIR_VACIA = { calle: '', numero_exterior: '', numero_interior: '', colonia: '', estado_id: estadoDefault, municipio_id: '', codigo_postal: '' };
 
     const [showDirModal, setShowDirModal] = useState(false);
     const [dirEditId, setDirEditId]       = useState(null);
@@ -396,9 +439,6 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
                 estado_id:       direccion.municipio?.estado_id ? String(direccion.municipio.estado_id) : estadoDefault,
                 municipio_id:    direccion.municipio_id ? String(direccion.municipio_id) : '',
                 codigo_postal:   direccion.codigo_postal ?? '',
-                caseta:          direccion.caseta ?? '',
-                lote:            direccion.lote ?? '',
-                parvada:         direccion.parvada ?? '',
             }
             : DIR_VACIA);
         setDirErrors({});
@@ -513,15 +553,17 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
         );
     }
 
+    const titulo = editando ? `Editar historia clínica — Caso ${historia.numero_caso}` : 'Nueva historia clínica';
+
     return (
         <AuthenticatedLayout
             header={
                 <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    Nueva historia clínica
+                    {titulo}
                 </h2>
             }
         >
-            <Head title="Nueva historia clínica" />
+            <Head title={titulo} />
 
             {/* ── Función zootécnica modal ── */}
             {showFuncModal && (
@@ -790,41 +832,6 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
                             />
                             {dirErrors.codigo_postal && <p className="mt-1 text-sm text-red-600">{dirErrors.codigo_postal[0]}</p>}
                         </div>
-                        <div className="grid grid-cols-3 gap-3">
-                            <div>
-                                <InputLabel value="Caseta" />
-                                <TextInput
-                                    value={dirForm.caseta}
-                                    onChange={(e) => setDirForm((p) => ({ ...p, caseta: e.target.value }))}
-                                    className="mt-1 block w-full"
-                                    maxLength={50}
-                                    placeholder="Opcional"
-                                />
-                                {dirErrors.caseta && <p className="mt-1 text-sm text-red-600">{dirErrors.caseta[0]}</p>}
-                            </div>
-                            <div>
-                                <InputLabel value="Lote" />
-                                <TextInput
-                                    value={dirForm.lote}
-                                    onChange={(e) => setDirForm((p) => ({ ...p, lote: e.target.value }))}
-                                    className="mt-1 block w-full"
-                                    maxLength={50}
-                                    placeholder="Opcional"
-                                />
-                                {dirErrors.lote && <p className="mt-1 text-sm text-red-600">{dirErrors.lote[0]}</p>}
-                            </div>
-                            <div>
-                                <InputLabel value="Parvada" />
-                                <TextInput
-                                    value={dirForm.parvada}
-                                    onChange={(e) => setDirForm((p) => ({ ...p, parvada: e.target.value }))}
-                                    className="mt-1 block w-full"
-                                    maxLength={50}
-                                    placeholder="Opcional"
-                                />
-                                {dirErrors.parvada && <p className="mt-1 text-sm text-red-600">{dirErrors.parvada[0]}</p>}
-                            </div>
-                        </div>
                         <div className="flex justify-end gap-3 pt-2">
                             <button type="button" onClick={() => setShowDirModal(false)} className="text-sm text-gray-600 hover:text-gray-900">Cancelar</button>
                             <PrimaryButton disabled={dirSaving}>Guardar</PrimaryButton>
@@ -949,7 +956,7 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
                                 <TextInput
                                     id="fecha_recepcion"
                                     type="text"
-                                    value={data.fecha_recepcion}
+                                    value={fechaRecepcion}
                                     readOnly
                                     className="mt-1 block w-full bg-gray-100 cursor-not-allowed"
                                 />
@@ -1057,7 +1064,7 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
                                             >
                                                 <option value="">— Selecciona un servicio —</option>
                                                 {servicios.map((s) => (
-                                                    <option key={s.id} value={s.id}>{s.clave} — {s.descripcion}</option>
+                                                    <option key={s.id} value={s.id}>{s.descripcion} - {s.clave}</option>
                                                 ))}
                                             </select>
                                             {errors[`muestras.${index}.servicio_id`] && (
@@ -1377,12 +1384,12 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
                             </div>
 
                             <div className="flex items-center gap-4">
-                                <PrimaryButton disabled={processing}>Crear</PrimaryButton>
+                                <PrimaryButton disabled={processing}>{editando ? 'Guardar cambios' : 'Crear'}</PrimaryButton>
                                 <Link href={route('historias-clinicas.index')} className="text-sm text-gray-600 hover:text-gray-900">
                                     Cancelar
                                 </Link>
                                 {/* Toda historia nueva nace pendiente; el sistema la mueve después. */}
-                                <EstadoBadge estado="pendiente" className="ml-auto" />
+                                <EstadoBadge estado={editando ? historia.estado : 'pendiente'} className="ml-auto" />
                             </div>
                         </form>
                     </div>

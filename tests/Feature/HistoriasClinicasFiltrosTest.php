@@ -130,6 +130,8 @@ class HistoriasClinicasFiltrosTest extends TestCase
             'especie_id', 'ejercicio', 'estado', 'impreso',
         ], '');
 
+        app()->setLocale('es');
+
         $respuesta = $this->actingAs(User::factory()->create(['es_admin' => true]))
             ->get(route('historias-clinicas.index', $filtrosVacios))
             ->assertOk();
@@ -137,6 +139,11 @@ class HistoriasClinicasFiltrosTest extends TestCase
         $pagina = $respuesta->viewData('page')['props']['historias'];
         $this->assertSame($historias->count(), $pagina['total']);
         $this->assertCount(15, $pagina['data']);
+
+        // Los enlaces de paginación salen traducidos, no como la clave.
+        $etiquetas = array_column($pagina['links'], 'label');
+        $this->assertSame('&laquo; Anterior', $etiquetas[0]);
+        $this->assertSame('Siguiente &raquo;', end($etiquetas));
     }
 
     /**

@@ -1,5 +1,6 @@
 import { Head, Link } from '@inertiajs/react';
 import { useEffect } from 'react';
+import { formatFechaHora } from '@/utils/fechas';
 
 /**
  * Medidas del rollo de la impresora térmica de tickets: 7.5 cm de ancho fijo.
@@ -7,6 +8,7 @@ import { useEffect } from 'react';
  */
 const ANCHO_PAPEL = '75mm';
 const MARGEN_PAPEL = '3mm';
+const MARGEN_IZQUIERDO = '6mm';
 
 /**
  * El ticket no usa utilidades de Tailwind: al imprimirse en un rollo estrecho
@@ -22,9 +24,9 @@ const ESTILOS = `
     .ticket {
         width: ${ANCHO_PAPEL};
         box-sizing: border-box;
-        padding: ${MARGEN_PAPEL};
+        padding: ${MARGEN_PAPEL} ${MARGEN_PAPEL} ${MARGEN_PAPEL} ${MARGEN_IZQUIERDO};
         font-family: Arial, Helvetica, sans-serif;
-        font-size: 12pt;
+        font-size: 10pt;
         line-height: 1.25;
         color: #000;
         background: #fff;
@@ -50,7 +52,7 @@ const ESTILOS = `
        F079; a 12 pt no caben en 80 mm, así que se reduce solo ese bloque. */
     .ticket-encabezado {
         text-align: left;
-        font-size: 10pt;
+        font-size: 8.5pt;
     }
 
     /* Los separadores "======" del formato. Un borde doble ocupa siempre el
@@ -107,12 +109,6 @@ const ESTILOS = `
 `;
 
 /** "2026-08-25" (o un ISO completo) → "25/08/2026", sin desfase de zona horaria. */
-function formatFecha(valor) {
-    if (!valor) return '';
-    const [y, m, d] = String(valor).slice(0, 10).split('-');
-    return y && m && d ? `${d}/${m}/${y}` : String(valor);
-}
-
 export default function Ticket({ historia, datosGenerales }) {
     useEffect(() => {
         window.print();
@@ -166,7 +162,7 @@ export default function Ticket({ historia, datosGenerales }) {
 
                     <p className="ticket-negrita">Detalles de Historia Clínica</p>
                     <p>Caso: {caso}</p>
-                    <p>Fecha Recepción: {formatFecha(historia.fecha_recepcion)}</p>
+                    <p>Fecha Recepción: {formatFechaHora(historia.fecha_recepcion)}</p>
                     <p>Propietario:</p>
                     <p>{propietario}</p>
 
