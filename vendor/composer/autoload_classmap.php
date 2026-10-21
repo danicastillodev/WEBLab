@@ -82,6 +82,7 @@ return array(
     'App\\Models\\UserPermisoGranular' => $baseDir . '/app/Models/UserPermisoGranular.php',
     'App\\Models\\UserPermission' => $baseDir . '/app/Models/UserPermission.php',
     'App\\Providers\\AppServiceProvider' => $baseDir . '/app/Providers/AppServiceProvider.php',
+    'App\\Support\\ImporteConLetra' => $baseDir . '/app/Support/ImporteConLetra.php',
     'App\\Support\\Permisos' => $baseDir . '/app/Support/Permisos.php',
     'Attribute' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
     'Brick\\Math\\BigDecimal' => $vendorDir . '/brick/math/src/BigDecimal.php',

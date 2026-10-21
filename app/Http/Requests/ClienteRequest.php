@@ -8,8 +8,9 @@ use Illuminate\Validation\Rule;
 /**
  * Alta y edición de clientes, tanto desde el catálogo "Listado clientes"
  * como desde el modal de la nota de pago. A diferencia del propietario de la
- * historia clínica, al cliente se le exigen todos sus datos: es a quien se
- * le emite la nota de pago.
+ * historia clínica, el cliente es a quien se le emite la nota de pago. Sólo
+ * el nombre es obligatorio; si se capturan los demás datos, se valida su
+ * formato.
  */
 class ClienteRequest extends FormRequest
 {
@@ -20,7 +21,8 @@ class ClienteRequest extends FormRequest
 
     protected function prepareForValidation(): void
     {
-        $this->merge(['rfc' => strtoupper(trim((string) $this->input('rfc')))]);
+        $rfc = strtoupper(trim((string) $this->input('rfc')));
+        $this->merge(['rfc' => $rfc === '' ? null : $rfc]);
     }
 
     /**
@@ -30,16 +32,16 @@ class ClienteRequest extends FormRequest
     {
         return [
             'nombre' => ['required', 'string', 'max:255'],
-            'rfc' => ['required', 'string', 'min:12', 'max:13', Rule::unique('clientes', 'rfc')->ignore($this->route('cliente'))],
-            'telefono' => ['required', 'digits:10'],
-            'calle' => ['required', 'string', 'max:255'],
-            'numero_exterior' => ['required', 'string', 'max:20'],
+            'rfc' => ['nullable', 'string', 'min:12', 'max:13', Rule::unique('clientes', 'rfc')->ignore($this->route('cliente'))],
+            'telefono' => ['nullable', 'digits:10'],
+            'calle' => ['nullable', 'string', 'max:255'],
+            'numero_exterior' => ['nullable', 'string', 'max:20'],
             'numero_interior' => ['nullable', 'string', 'max:20'],
-            'colonia' => ['required', 'string', 'max:255'],
-            'codigo_postal' => ['required', 'digits:5'],
-            'estado_id' => ['required', 'integer', 'exists:estados,id'],
+            'colonia' => ['nullable', 'string', 'max:255'],
+            'codigo_postal' => ['nullable', 'digits:5'],
+            'estado_id' => ['nullable', 'integer', 'exists:estados,id'],
             'municipio_id' => [
-                'required', 'integer',
+                'nullable', 'integer',
                 Rule::exists('municipios', 'id')->where('estado_id', $this->input('estado_id')),
             ],
         ];

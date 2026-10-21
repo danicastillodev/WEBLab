@@ -58,6 +58,26 @@ class PropietariosTest extends TestCase
         ]);
     }
 
+    public function test_crea_un_propietario_sin_direcciones(): void
+    {
+        $this->actingAs($this->admin())
+            ->post(route('propietarios.store'), $this->datos([], []))
+            ->assertSessionHasNoErrors()
+            ->assertRedirect(route('propietarios.index'));
+
+        $propietario = Propietario::where('nombre', 'Ana')->firstOrFail();
+        $this->assertSame(0, $propietario->direcciones()->count());
+    }
+
+    public function test_la_colonia_de_la_direccion_es_opcional(): void
+    {
+        $this->actingAs($this->admin())
+            ->post(route('propietarios.store'), $this->datos([$this->direccion(['colonia' => null])], []))
+            ->assertSessionHasNoErrors();
+
+        $this->assertDatabaseHas('direcciones', ['calle' => 'Av. Central', 'colonia' => null]);
+    }
+
     public function test_crea_un_propietario_con_sus_explotaciones(): void
     {
         $this->actingAs($this->admin())

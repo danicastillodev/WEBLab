@@ -23,6 +23,7 @@
         "vite": "^7.0.0"
     },
     "dependencies": {
+        "@heroicons/react": "^2.2.0",
         "react-datepicker": "^9.1.0"
     }
 }

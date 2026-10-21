@@ -9,19 +9,13 @@ import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { CLIENTE_VACIO, clienteNuevo } from '@/Pages/Catalogos/Clientes/Partials/ClienteForm';
+import { CLIENTE_VACIO, clienteNuevo, formatDomicilio } from '@/Pages/Catalogos/Clientes/Partials/ClienteForm';
 import { formatFechaHora } from '@/utils/fechas';
 
 const selectClass = 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500';
 
 function dinero(valor) {
     return `$${Number(valor || 0).toFixed(2)}`;
-}
-
-function formatDomicilio(cliente) {
-    if (!cliente) return '';
-    const interior = cliente.numero_interior ? ` int. ${cliente.numero_interior}` : '';
-    return `${cliente.calle} ${cliente.numero_exterior}${interior}, ${cliente.colonia}, C.P. ${cliente.codigo_postal}`;
 }
 
 function Modal({ title, onClose, children }) {
@@ -46,25 +40,28 @@ export default function Create({
     tipos_pago: tiposPago,
     iva_porcentaje: ivaPorcentaje,
     historias_preseleccionadas: historiasPreseleccionadas,
+    // Presente sólo al editar: la nota guardada, con sus historias y sus
+    // conceptos recalculados (ver NotasPagoController::edit).
+    nota = null,
 }) {
     const { flash } = usePage().props;
     const [clientes, setClientes] = useState(initClientes);
 
-    const { data, setData, post, processing, errors, reset, transform } = useForm({
-        cliente_id: '',
-        historia_clinica_ids: [],
-        concepto: conceptosOpciones[0] ?? '',
-        tipo_pago: tiposPago[0] ?? '',
-        pagada: false,
-        notas_adicionales: '',
+    const { data, setData, post, put, processing, errors, reset, transform } = useForm({
+        cliente_id: nota?.cliente_id ?? '',
+        historia_clinica_ids: nota?.historias.map((h) => h.id) ?? [],
+        concepto: nota?.concepto ?? conceptosOpciones[0] ?? '',
+        tipo_pago: nota?.tipo_pago ?? tiposPago[0] ?? '',
+        pagada: nota?.pagada ?? false,
+        notas_adicionales: nota?.notas_adicionales ?? '',
     });
 
     // Los conceptos sólo se agregan automáticamente al seleccionar historias
     // clínicas (ver "Seleccionar Historias Clínicas" más abajo). Sólo la
     // cantidad es editable: el servidor recalcula producto y precio al
     // guardar y aplica las cantidades enviadas en `cantidades`.
-    const [conceptos, setConceptos] = useState(historiasPreseleccionadas?.conceptos ?? []);
-    const [historiasSeleccionadas, setHistoriasSeleccionadas] = useState(historiasPreseleccionadas?.historias ?? []); // [{id, numero_caso}]
+    const [conceptos, setConceptos] = useState(nota?.conceptos ?? historiasPreseleccionadas?.conceptos ?? []);
+    const [historiasSeleccionadas, setHistoriasSeleccionadas] = useState(nota?.historias ?? historiasPreseleccionadas?.historias ?? []); // [{id, numero_caso}]
 
     // Al llegar desde "¿Desea crear una nota de pago?" (alta de historia
     // clínica), el servidor ya resolvió qué historias del día de hoy, del
@@ -81,6 +78,7 @@ export default function Create({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const titulo = nota ? `Editar nota de pago — folio ${nota.folio}` : 'Nueva nota de pago';
     const clienteSel = clientes.find((c) => String(c.id) === String(data.cliente_id));
 
     function quitarHistoriaSeleccionada(historiaId) {
@@ -109,6 +107,10 @@ export default function Create({
             ...datos,
             cantidades: Object.fromEntries(conceptos.map((c) => [c.muestra_id, c.cantidad])),
         }));
+        if (nota) {
+            put(route('notas-pago.update', nota.id));
+            return;
+        }
         post(route('notas-pago.store'), {
             onSuccess: () => {
                 reset();
@@ -141,7 +143,7 @@ export default function Create({
         setErrorHistorias('');
         try {
             const { data: resultado } = await axios.get(route('notas-pago.buscar-historias'), {
-                params: { buscar: texto },
+                params: { buscar: texto, nota_pago_id: nota?.id },
             });
             setResultadosHistorias(resultado.historias);
         } catch (err) {
@@ -170,7 +172,7 @@ export default function Create({
         setErrorHistorias('');
         try {
             const { data: resultado } = await axios.get(route('notas-pago.conceptos-de-historias'), {
-                params: { historia_clinica_ids: seleccionHistorias.map((h) => h.id) },
+                params: { historia_clinica_ids: seleccionHistorias.map((h) => h.id), nota_pago_id: nota?.id },
             });
 
             setConceptos((prev) => [...prev, ...resultado.conceptos]);
@@ -189,7 +191,7 @@ export default function Create({
 
     /* ── Cliente modal (alta y edición) ── */
     // El cliente es a quien se le emite la nota — distinto al propietario de
-    // la historia clínica — y debe quedar con todos sus datos capturados.
+    // la historia clínica. Sólo el nombre es obligatorio.
     const [showClienteModal, setShowClienteModal] = useState(false);
     const [clienteEditando, setClienteEditando] = useState(null);
     const [clienteForm, setClienteForm] = useState(() => clienteNuevo(estados));
@@ -247,9 +249,9 @@ export default function Create({
 
     return (
         <AuthenticatedLayout
-            header={<h2 className="text-xl font-semibold leading-tight text-gray-800">Nueva nota de pago</h2>}
+            header={<h2 className="text-xl font-semibold leading-tight text-gray-800">{titulo}</h2>}
         >
-            <Head title="Nueva nota de pago" />
+            <Head title={titulo} />
 
             {/* ── Cliente modal ── */}
             {showClienteModal && (
@@ -268,7 +270,7 @@ export default function Create({
                         </div>
                         <div className="grid grid-cols-2 gap-3">
                             <div>
-                                <InputLabel value="RFC" required />
+                                <InputLabel value="RFC" />
                                 <TextInput
                                     value={clienteForm.rfc}
                                     onChange={(e) => campoCliente('rfc', e.target.value.toUpperCase())}
@@ -278,7 +280,7 @@ export default function Create({
                                 {errorCliente('rfc')}
                             </div>
                             <div>
-                                <InputLabel value="Teléfono" required />
+                                <InputLabel value="Teléfono" />
                                 <TextInput
                                     value={clienteForm.telefono}
                                     onChange={(e) => campoCliente('telefono', e.target.value.replace(/\D/g, ''))}
@@ -291,7 +293,7 @@ export default function Create({
                             </div>
                         </div>
                         <div>
-                            <InputLabel value="Calle" required />
+                            <InputLabel value="Calle" />
                             <TextInput
                                 value={clienteForm.calle}
                                 onChange={(e) => campoCliente('calle', e.target.value)}
@@ -301,7 +303,7 @@ export default function Create({
                         </div>
                         <div className="grid grid-cols-2 gap-3">
                             <div>
-                                <InputLabel value="Núm. exterior" required />
+                                <InputLabel value="Núm. exterior" />
                                 <TextInput
                                     value={clienteForm.numero_exterior}
                                     onChange={(e) => campoCliente('numero_exterior', e.target.value)}
@@ -322,7 +324,7 @@ export default function Create({
                         </div>
                         <div className="grid grid-cols-2 gap-3">
                             <div>
-                                <InputLabel value="Colonia" required />
+                                <InputLabel value="Colonia" />
                                 <TextInput
                                     value={clienteForm.colonia}
                                     onChange={(e) => campoCliente('colonia', e.target.value)}
@@ -331,7 +333,7 @@ export default function Create({
                                 {errorCliente('colonia')}
                             </div>
                             <div>
-                                <InputLabel value="Código postal" required />
+                                <InputLabel value="Código postal" />
                                 <TextInput
                                     value={clienteForm.codigo_postal}
                                     onChange={(e) => campoCliente('codigo_postal', e.target.value.replace(/\D/g, ''))}
@@ -344,7 +346,7 @@ export default function Create({
                         </div>
                         <div className="grid grid-cols-2 gap-3">
                             <div>
-                                <InputLabel value="Estado" required />
+                                <InputLabel value="Estado" />
                                 <select
                                     value={clienteForm.estado_id}
                                     onChange={(e) => setClienteForm((p) => ({ ...p, estado_id: e.target.value, municipio_id: '' }))}
@@ -356,7 +358,7 @@ export default function Create({
                                 {errorCliente('estado_id')}
                             </div>
                             <div>
-                                <InputLabel value="Municipio" required />
+                                <InputLabel value="Municipio" />
                                 <select
                                     value={clienteForm.municipio_id}
                                     onChange={(e) => campoCliente('municipio_id', e.target.value)}
@@ -414,6 +416,9 @@ export default function Create({
                                             className="rounded text-indigo-600 focus:ring-indigo-500"
                                         />
                                         <span className="font-medium text-gray-700">Caso {h.numero_caso}</span>
+                                        {h.facturada_parcialmente && (
+                                            <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs text-amber-700">Facturada parcialmente</span>
+                                        )}
                                         <span className="text-gray-500">{h.propietario}</span>
                                         <span className="ms-auto text-xs text-gray-400">{formatFechaHora(h.fecha_recepcion)}</span>
                                     </label>
@@ -560,12 +565,17 @@ export default function Create({
                                                     <td className="py-2 pr-2 align-top">
                                                         <input
                                                             type="number"
-                                                            min="1"
+                                                            min="0"
                                                             step="1"
                                                             value={concepto.cantidad}
                                                             onChange={(e) => cambiarCantidad(concepto.muestra_id, e.target.value)}
                                                             className="w-16 rounded-md border border-gray-300 px-2 py-1 text-sm shadow-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
                                                         />
+                                                        {concepto.por_facturar !== undefined && (
+                                                            <p className="mt-0.5 whitespace-nowrap text-xs text-gray-400">
+                                                                Por facturar: {concepto.por_facturar} de {concepto.cantidad_muestra}
+                                                            </p>
+                                                        )}
                                                         {errors[`cantidades.${concepto.muestra_id}`] && (
                                                             <p className="mt-0.5 text-xs text-red-600">{errors[`cantidades.${concepto.muestra_id}`]}</p>
                                                         )}
@@ -657,8 +667,8 @@ export default function Create({
                         </div>
 
                         <div className="flex items-center gap-4">
-                            <PrimaryButton disabled={processing}>Guardar nota de pago</PrimaryButton>
-                            <Link href={route('dashboard')} className="text-sm text-gray-600 hover:text-gray-900">Cancelar</Link>
+                            <PrimaryButton disabled={processing}>{nota ? 'Guardar cambios' : 'Guardar nota de pago'}</PrimaryButton>
+                            <Link href={route(nota ? 'notas-pago.index' : 'dashboard')} className="text-sm text-gray-600 hover:text-gray-900">Cancelar</Link>
                         </div>
                     </form>
                 </div>

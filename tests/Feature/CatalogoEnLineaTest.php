@@ -80,6 +80,54 @@ class CatalogoEnLineaTest extends TestCase
         $this->assertDatabaseHas('especies', ['id' => $historia->especie_id]);
     }
 
+    /**
+     * Agregar una raza que la especie ya tiene no es un error ni la duplica:
+     * devuelve la existente para seleccionarla.
+     */
+    public function test_agregar_una_raza_que_ya_existe_en_la_especie_la_reutiliza(): void
+    {
+        $especie = Especie::firstOrCreate(['nombre' => 'Bovino']);
+        $holstein = Raza::create(['nombre' => 'Holstein', 'especie_id' => $especie->id]);
+
+        $this->actingAs($this->admin())
+            ->postJson(route('historias-clinicas.store-raza'), ['nombre' => ' holstein ', 'especie_id' => $especie->id])
+            ->assertOk()
+            ->assertJsonPath('id', $holstein->id);
+
+        $this->assertSame(1, Raza::where('especie_id', $especie->id)->where('nombre', 'Holstein')->count());
+    }
+
+    /**
+     * Si el nombre solo existe en otra especie, se crea para esta especie.
+     */
+    public function test_agregar_una_raza_que_existe_en_otra_especie_la_crea_para_esta(): void
+    {
+        $bovino = Especie::firstOrCreate(['nombre' => 'Bovino']);
+        $ovino = Especie::firstOrCreate(['nombre' => 'Ovino']);
+        $criolloBovino = Raza::create(['nombre' => 'Criollo', 'especie_id' => $bovino->id]);
+
+        $id = $this->actingAs($this->admin())
+            ->postJson(route('historias-clinicas.store-raza'), ['nombre' => 'Criollo', 'especie_id' => $ovino->id])
+            ->assertOk()
+            ->assertJsonPath('especie_id', $ovino->id)
+            ->json('id');
+
+        $this->assertNotSame($criolloBovino->id, $id);
+        $this->assertDatabaseHas('razas', ['id' => $id, 'nombre' => 'Criollo', 'especie_id' => $ovino->id]);
+    }
+
+    public function test_agregar_una_raza_nueva_la_crea(): void
+    {
+        $especie = Especie::firstOrCreate(['nombre' => 'Bovino']);
+
+        $this->actingAs($this->admin())
+            ->postJson(route('historias-clinicas.store-raza'), ['nombre' => 'Jersey', 'especie_id' => $especie->id])
+            ->assertOk()
+            ->assertJsonPath('nombre', 'Jersey');
+
+        $this->assertDatabaseHas('razas', ['nombre' => 'Jersey', 'especie_id' => $especie->id]);
+    }
+
     public function test_no_permite_eliminar_una_raza_en_uso(): void
     {
         $historia = $this->historiaCompleta();

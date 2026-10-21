@@ -29,7 +29,7 @@ export default function Create({ estados, municipios }) {
         curp: '',
         rfc: '',
         telefono: '',
-        direcciones: [{ ...direccionVacia }],
+        direcciones: [],
         explotaciones: [],
     });
 
@@ -154,6 +154,10 @@ export default function Create({ estados, municipios }) {
                                     <p className="mb-2 text-sm text-red-600">{errors.direcciones}</p>
                                 )}
 
+                                {data.direcciones.length === 0 && (
+                                    <p className="text-sm text-gray-500">Sin direcciones. La dirección es opcional.</p>
+                                )}
+
                                 <div className="space-y-4">
                                     {data.direcciones.map((dir, index) => {
                                         const municipiosFiltrados = municipios.filter(
@@ -166,15 +170,13 @@ export default function Create({ estados, municipios }) {
                                                     <span className="text-xs font-semibold uppercase tracking-wider text-gray-400">
                                                         Dirección {index + 1}
                                                     </span>
-                                                    {data.direcciones.length > 1 && (
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => quitarDireccion(index)}
-                                                            className="text-xs text-red-500 hover:text-red-700"
-                                                        >
-                                                            Quitar
-                                                        </button>
-                                                    )}
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => quitarDireccion(index)}
+                                                        className="text-xs text-red-500 hover:text-red-700"
+                                                    >
+                                                        Quitar
+                                                    </button>
                                                 </div>
 
                                                 <div className="space-y-3">

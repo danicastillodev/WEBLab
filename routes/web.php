@@ -110,6 +110,11 @@ Route::middleware('auth')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('nueva', 'create')->name('create');
             Route::post('/', 'store')->name('store');
+            Route::get('{notaPago}/imprimir', 'imprimir')->whereNumber('notaPago')->name('imprimir');
+            Route::get('{notaPago}/editar', 'edit')->whereNumber('notaPago')->name('edit');
+            Route::put('{notaPago}', 'update')->whereNumber('notaPago')->name('update');
+            Route::patch('{notaPago}/cancelar', 'cancelar')->whereNumber('notaPago')->name('cancelar');
+            Route::delete('{notaPago}', 'destroy')->whereNumber('notaPago')->name('destroy');
             Route::post('clientes', 'storeCliente')->name('store-cliente');
             Route::patch('clientes/{cliente}', 'updateCliente')->name('update-cliente');
             Route::delete('clientes/{cliente}', 'destroyCliente')->name('destroy-cliente');

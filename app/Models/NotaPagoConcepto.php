@@ -9,7 +9,9 @@ class NotaPagoConcepto extends Model
 {
     protected $fillable = [
         'nota_pago_id',
+        'muestra_id',
         'producto_id',
+        'historia_clinica_id',
         'descripcion',
         'cantidad',
         'precio_unitario',
@@ -30,5 +32,10 @@ class NotaPagoConcepto extends Model
     public function producto(): BelongsTo
     {
         return $this->belongsTo(Producto::class);
+    }
+
+    public function historiaClinica(): BelongsTo
+    {
+        return $this->belongsTo(HistoriaClinica::class);
     }
 }

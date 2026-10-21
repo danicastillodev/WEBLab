@@ -17,9 +17,17 @@ export function clienteNuevo(estados) {
 }
 
 /**
- * Campos del cliente compartidos por Create y Edit. Todos son obligatorios
- * salvo el número interior: el cliente es a quien se emite la nota de pago.
+ * Campos del cliente compartidos por Create y Edit. Sólo el nombre es
+ * obligatorio; los demás datos pueden completarse después.
  */
+export function formatDomicilio(cliente) {
+    if (!cliente) return '';
+    const calle = [cliente.calle, cliente.numero_exterior].filter(Boolean).join(' ');
+    const interior = cliente.numero_interior ? `int. ${cliente.numero_interior}` : '';
+    const cp = cliente.codigo_postal ? `C.P. ${cliente.codigo_postal}` : '';
+    return [[calle, interior].filter(Boolean).join(' '), cliente.colonia, cp].filter(Boolean).join(', ');
+}
+
 export default function ClienteForm({ data, setData, errors, estados, municipios }) {
     const municipiosFiltrados = municipios.filter((m) => String(m.estado_id) === String(data.estado_id));
 
@@ -37,7 +45,7 @@ export default function ClienteForm({ data, setData, errors, estados, municipios
                 <InputError message={errors.nombre} className="mt-2" />
             </div>
             <div>
-                <InputLabel htmlFor="rfc" value="RFC" required />
+                <InputLabel htmlFor="rfc" value="RFC" />
                 <TextInput
                     id="rfc"
                     value={data.rfc}
@@ -48,7 +56,7 @@ export default function ClienteForm({ data, setData, errors, estados, municipios
                 <InputError message={errors.rfc} className="mt-2" />
             </div>
             <div>
-                <InputLabel htmlFor="telefono" value="Teléfono" required />
+                <InputLabel htmlFor="telefono" value="Teléfono" />
                 <TextInput
                     id="telefono"
                     value={data.telefono}
@@ -61,7 +69,7 @@ export default function ClienteForm({ data, setData, errors, estados, municipios
                 <InputError message={errors.telefono} className="mt-2" />
             </div>
             <div className="sm:col-span-2">
-                <InputLabel htmlFor="calle" value="Calle" required />
+                <InputLabel htmlFor="calle" value="Calle" />
                 <TextInput
                     id="calle"
                     value={data.calle}
@@ -71,7 +79,7 @@ export default function ClienteForm({ data, setData, errors, estados, municipios
                 <InputError message={errors.calle} className="mt-2" />
             </div>
             <div>
-                <InputLabel htmlFor="numero_exterior" value="Núm. exterior" required />
+                <InputLabel htmlFor="numero_exterior" value="Núm. exterior" />
                 <TextInput
                     id="numero_exterior"
                     value={data.numero_exterior}
@@ -92,7 +100,7 @@ export default function ClienteForm({ data, setData, errors, estados, municipios
                 <InputError message={errors.numero_interior} className="mt-2" />
             </div>
             <div>
-                <InputLabel htmlFor="colonia" value="Colonia" required />
+                <InputLabel htmlFor="colonia" value="Colonia" />
                 <TextInput
                     id="colonia"
                     value={data.colonia}
@@ -102,7 +110,7 @@ export default function ClienteForm({ data, setData, errors, estados, municipios
                 <InputError message={errors.colonia} className="mt-2" />
             </div>
             <div>
-                <InputLabel htmlFor="codigo_postal" value="Código postal" required />
+                <InputLabel htmlFor="codigo_postal" value="Código postal" />
                 <TextInput
                     id="codigo_postal"
                     value={data.codigo_postal}
@@ -114,7 +122,7 @@ export default function ClienteForm({ data, setData, errors, estados, municipios
                 <InputError message={errors.codigo_postal} className="mt-2" />
             </div>
             <div>
-                <InputLabel htmlFor="estado_id" value="Estado" required />
+                <InputLabel htmlFor="estado_id" value="Estado" />
                 <select
                     id="estado_id"
                     value={data.estado_id}
@@ -127,7 +135,7 @@ export default function ClienteForm({ data, setData, errors, estados, municipios
                 <InputError message={errors.estado_id} className="mt-2" />
             </div>
             <div>
-                <InputLabel htmlFor="municipio_id" value="Municipio" required />
+                <InputLabel htmlFor="municipio_id" value="Municipio" />
                 <select
                     id="municipio_id"
                     value={data.municipio_id}

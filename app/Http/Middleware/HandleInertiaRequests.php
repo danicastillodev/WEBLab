@@ -47,6 +47,8 @@ class HandleInertiaRequests extends Middleware
                 'error' => session('error'),
                 'numero_caso' => session('numero_caso'),
                 'historia_id' => session('historia_id'),
+                'nota_pago_folio' => session('nota_pago_folio'),
+                'nota_pago_id' => session('nota_pago_id'),
             ],
         ];
     }

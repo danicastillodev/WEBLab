@@ -335,8 +335,10 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
                 setRazas((prev) => reemplazar(prev, editada).sort(porNombre));
             } else {
                 const payload = { nombre: razaForm.nombre, especie_id: data.especie_id };
+                // Si la raza ya existía en la especie, el servidor la devuelve y
+                // solo se selecciona, sin duplicarla en la lista.
                 const { data: nueva } = await axios.post(route('historias-clinicas.store-raza'), payload);
-                setRazas((prev) => [...prev, nueva].sort(porNombre));
+                setRazas((prev) => (prev.some((r) => r.id === nueva.id) ? prev : [...prev, nueva].sort(porNombre)));
                 setData((prev) => ({ ...prev, raza_id: String(nueva.id) }));
             }
             setShowRazaModal(false);

@@ -567,6 +567,7 @@ class ComposerStaticInitc11f150be0732951857d8d4830647cd5
         'App\\Models\\UserPermisoGranular' => __DIR__ . '/../..' . '/app/Models/UserPermisoGranular.php',
         'App\\Models\\UserPermission' => __DIR__ . '/../..' . '/app/Models/UserPermission.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
+        'App\\Support\\ImporteConLetra' => __DIR__ . '/../..' . '/app/Support/ImporteConLetra.php',
         'App\\Support\\Permisos' => __DIR__ . '/../..' . '/app/Support/Permisos.php',
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'Brick\\Math\\BigDecimal' => __DIR__ . '/..' . '/brick/math/src/BigDecimal.php',

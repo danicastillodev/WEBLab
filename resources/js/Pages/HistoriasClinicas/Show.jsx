@@ -19,7 +19,7 @@ function formatFecha(valor) {
 
 function formatDireccion(dir) {
     if (!dir) return '—';
-    return `${dir.calle} ${dir.numero_exterior}${dir.numero_interior ? ` Int. ${dir.numero_interior}` : ''}, ${dir.colonia}, ${[dir.municipio?.nombre, dir.estado?.nombre].filter(Boolean).join(', ')}${dir.codigo_postal ? `, C.P. ${dir.codigo_postal}` : ''}`;
+    return `${dir.calle} ${dir.numero_exterior}${dir.numero_interior ? ` Int. ${dir.numero_interior}` : ''}${dir.colonia ? `, ${dir.colonia}` : ''}, ${[dir.municipio?.nombre, dir.estado?.nombre].filter(Boolean).join(', ')}${dir.codigo_postal ? `, C.P. ${dir.codigo_postal}` : ''}`;
 }
 
 function formatEdad(historia) {
