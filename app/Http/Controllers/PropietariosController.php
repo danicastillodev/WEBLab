@@ -42,7 +42,7 @@ class PropietariosController extends Controller
 
         DB::transaction(function () use ($validated) {
             $propietario = Propietario::create($this->datosPropietario($validated));
-            $this->sincronizar($propietario->direcciones(), $validated['direcciones']);
+            $this->sincronizar($propietario->direcciones(), $validated['direcciones'] ?? []);
             $this->sincronizar($propietario->explotaciones(), $validated['explotaciones'] ?? []);
         });
 
@@ -70,7 +70,7 @@ class PropietariosController extends Controller
         // (direccion_id en historias es RESTRICT; explotacion_id se anularía).
         $this->bloquearSiEnUso(
             'direcciones',
-            $this->quitadas($propietario->direcciones(), $validated['direcciones']),
+            $this->quitadas($propietario->direcciones(), $validated['direcciones'] ?? []),
             fn ($ids) => HistoriaClinica::whereIn('direccion_id', $ids)->pluck('direccion_id')
                 ->merge(NotaPago::whereIn('direccion_id', $ids)->pluck('direccion_id')),
             'La dirección :nombre está usada en historias clínicas o notas de pago; no se puede quitar.',
@@ -86,7 +86,7 @@ class PropietariosController extends Controller
 
         DB::transaction(function () use ($propietario, $validated) {
             $propietario->update($this->datosPropietario($validated));
-            $this->sincronizar($propietario->direcciones(), $validated['direcciones']);
+            $this->sincronizar($propietario->direcciones(), $validated['direcciones'] ?? []);
             $this->sincronizar($propietario->explotaciones(), $validated['explotaciones'] ?? []);
         });
 
@@ -116,12 +116,12 @@ class PropietariosController extends Controller
             'curp' => ['nullable', 'string', 'size:18', Rule::unique('propietarios', 'curp')->ignore($propietario?->id)],
             'rfc' => ['nullable', 'string', 'min:12', 'max:13', Rule::unique('propietarios', 'rfc')->ignore($propietario?->id)],
             'telefono' => ['nullable', 'digits:10'],
-            'direcciones' => ['required', 'array', 'min:1'],
+            'direcciones' => ['nullable', 'array'],
             'direcciones.*.id' => $propia('direcciones'),
             'direcciones.*.calle' => ['required', 'string', 'max:200'],
             'direcciones.*.numero_exterior' => ['required', 'string', 'max:20'],
             'direcciones.*.numero_interior' => ['nullable', 'string', 'max:20'],
-            'direcciones.*.colonia' => ['required', 'string', 'max:150'],
+            'direcciones.*.colonia' => ['nullable', 'string', 'max:150'],
             'direcciones.*.estado_id' => ['required', 'integer', 'exists:estados,id'],
             'direcciones.*.municipio_id' => ['required', 'integer', 'exists:municipios,id'],
             'direcciones.*.codigo_postal' => ['nullable', 'string', 'max:10'],
@@ -146,7 +146,6 @@ class PropietariosController extends Controller
             'rfc.max' => 'El RFC no puede tener más de 13 caracteres.',
             'rfc.unique' => 'Ya existe un propietario con ese RFC.',
             'telefono.digits' => 'El teléfono debe tener exactamente 10 dígitos.',
-            'direcciones.min' => 'Se requiere al menos una dirección.',
             'explotaciones.*.nombre.required' => 'La explotación necesita un nombre.',
         ];
     }

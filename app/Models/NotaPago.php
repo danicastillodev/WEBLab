@@ -19,7 +19,25 @@ class NotaPago extends Model
 
     public const TIPO_PAGO_CREDITO = 'Crédito';
 
-    public const TIPOS_PAGO = [self::TIPO_PAGO_CONTADO, self::TIPO_PAGO_CREDITO];
+    public const TIPO_PAGO_CHEQUE = 'Cheque';
+
+    public const TIPO_PAGO_DEPOSITO = 'Depósito';
+
+    public const TIPO_PAGO_EFECTIVO = 'Efectivo';
+
+    public const TIPO_PAGO_TARJETA = 'Pago con tarjeta';
+
+    public const TIPO_PAGO_TRANSFERENCIA = 'Transferencia';
+
+    public const TIPOS_PAGO = [
+        self::TIPO_PAGO_CONTADO,
+        self::TIPO_PAGO_CREDITO,
+        self::TIPO_PAGO_CHEQUE,
+        self::TIPO_PAGO_DEPOSITO,
+        self::TIPO_PAGO_EFECTIVO,
+        self::TIPO_PAGO_TARJETA,
+        self::TIPO_PAGO_TRANSFERENCIA,
+    ];
 
     protected static function booted(): void
     {
@@ -42,10 +60,16 @@ class NotaPago extends Model
         'total',
         'notas_adicionales',
         'created_by',
+        'cancelada',
+        'motivo_cancelacion',
+        'cancelada_at',
+        'cancelada_por',
     ];
 
     protected $casts = [
         'pagada' => 'boolean',
+        'cancelada' => 'boolean',
+        'cancelada_at' => 'datetime',
         'subtotal' => 'decimal:2',
         'iva_porcentaje' => 'decimal:2',
         'iva_monto' => 'decimal:2',

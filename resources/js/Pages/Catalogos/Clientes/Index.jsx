@@ -1,11 +1,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import { useState } from 'react';
-
-function domicilio(cliente) {
-    const interior = cliente.numero_interior ? ` int. ${cliente.numero_interior}` : '';
-    return `${cliente.calle} ${cliente.numero_exterior}${interior}, ${cliente.colonia}, C.P. ${cliente.codigo_postal}`;
-}
+import { formatDomicilio } from './Partials/ClienteForm';
 
 export default function Index({ clientes, estados, filtros, puede: permisos }) {
     const { flash } = usePage().props;
@@ -139,11 +135,11 @@ export default function Index({ clientes, estados, filtros, puede: permisos }) {
                                 {clientes.data.map((cliente) => (
                                     <tr key={cliente.id}>
                                         <td className="px-6 py-4 text-sm font-medium text-gray-900">{cliente.nombre}</td>
-                                        <td className="px-6 py-4 font-mono text-sm text-gray-500">{cliente.rfc}</td>
-                                        <td className="px-6 py-4 text-sm text-gray-500">{cliente.telefono}</td>
-                                        <td className="px-6 py-4 text-sm text-gray-500">{domicilio(cliente)}</td>
+                                        <td className="px-6 py-4 font-mono text-sm text-gray-500">{cliente.rfc ?? '—'}</td>
+                                        <td className="px-6 py-4 text-sm text-gray-500">{cliente.telefono ?? '—'}</td>
+                                        <td className="px-6 py-4 text-sm text-gray-500">{formatDomicilio(cliente) || '—'}</td>
                                         <td className="px-6 py-4 text-sm text-gray-500">
-                                            {cliente.municipio?.nombre}, {cliente.estado?.nombre}
+                                            {[cliente.municipio?.nombre, cliente.estado?.nombre].filter(Boolean).join(', ') || '—'}
                                         </td>
                                         <td className="px-6 py-4 text-sm text-gray-500">{cliente.notas_pago_count}</td>
                                         <td className="whitespace-nowrap px-6 py-4 text-right text-sm">

@@ -151,7 +151,7 @@ class HistoriasClinicasController extends Controller
             'calle' => ['required', 'string', 'max:200'],
             'numero_exterior' => ['required', 'string', 'max:20'],
             'numero_interior' => ['nullable', 'string', 'max:20'],
-            'colonia' => ['required', 'string', 'max:150'],
+            'colonia' => ['nullable', 'string', 'max:150'],
             'estado_id' => ['required', 'integer', 'exists:estados,id'],
             'municipio_id' => ['required', 'integer', 'exists:municipios,id'],
             'codigo_postal' => ['nullable', 'string', 'max:10'],
@@ -203,11 +203,19 @@ class HistoriasClinicasController extends Controller
     public function storeRaza(Request $request): JsonResponse
     {
         $validated = $request->validate([
-            'nombre' => ['required', 'string', 'max:100', 'unique:razas'],
+            'nombre' => ['required', 'string', 'max:100'],
             'especie_id' => ['required', 'integer', 'exists:especies,id'],
         ]);
 
-        $raza = Raza::create($validated);
+        // El nombre solo es único dentro de la especie: si la especie ya tiene
+        // esa raza (sin importar mayúsculas) se devuelve la existente para
+        // seleccionarla; si no, se crea para esta especie aunque el nombre ya
+        // exista en otra.
+        $nombre = trim($validated['nombre']);
+        $raza = Raza::where('especie_id', $validated['especie_id'])
+            ->whereRaw('LOWER(nombre) = ?', [mb_strtolower($nombre)])
+            ->first()
+            ?? Raza::create(['nombre' => $nombre, 'especie_id' => $validated['especie_id']]);
 
         return response()->json($raza);
     }
@@ -278,7 +286,7 @@ class HistoriasClinicasController extends Controller
             'calle' => ['required', 'string', 'max:200'],
             'numero_exterior' => ['required', 'string', 'max:20'],
             'numero_interior' => ['nullable', 'string', 'max:20'],
-            'colonia' => ['required', 'string', 'max:150'],
+            'colonia' => ['nullable', 'string', 'max:150'],
             'estado_id' => ['required', 'integer', 'exists:estados,id'],
             'municipio_id' => ['required', 'integer', 'exists:municipios,id'],
             'codigo_postal' => ['nullable', 'string', 'max:10'],
@@ -384,7 +392,7 @@ class HistoriasClinicasController extends Controller
     public function updateRaza(Request $request, Raza $raza): JsonResponse
     {
         $validated = $request->validate([
-            'nombre' => ['required', 'string', 'max:100', Rule::unique('razas')->ignore($raza->id)],
+            'nombre' => ['required', 'string', 'max:100', Rule::unique('razas')->where('especie_id', $raza->especie_id)->ignore($raza->id)],
         ]);
 
         $raza->update($validated);

@@ -1,6 +1,6 @@
 import { Head, Link } from '@inertiajs/react';
 import { useEffect } from 'react';
-import { formatFechaHora } from '@/utils/fechas';
+import { formatFechaHoraISO } from '@/utils/fechas';
 
 /**
  * Medidas del rollo de la impresora térmica de tickets: 7.5 cm de ancho fijo.
@@ -162,7 +162,7 @@ export default function Ticket({ historia, datosGenerales }) {
 
                     <p className="ticket-negrita">Detalles de Historia Clínica</p>
                     <p>Caso: {caso}</p>
-                    <p>Fecha Recepción: {formatFechaHora(historia.fecha_recepcion)}</p>
+                    <p>Fecha Recepción: {formatFechaHoraISO(historia.fecha_recepcion)}</p>
                     <p>Propietario:</p>
                     <p>{propietario}</p>
 
@@ -176,7 +176,7 @@ export default function Ticket({ historia, datosGenerales }) {
                         muestras.map((muestra, i) => (
                             <div className="ticket-muestra" key={muestra.id ?? i}>
                                 <p>Análisis: {muestra.servicio?.descripcion}</p>
-                                <p>Cant: {muestra.cantidad}</p>
+                                <p>Cantidad: {muestra.cantidad}</p>
                                 <p>Tipo: {muestra.tipo_muestra?.nombre}</p>
                                 <p>Especie: {historia.especie?.nombre}</p>
                             </div>

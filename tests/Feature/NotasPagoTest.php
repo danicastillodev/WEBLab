@@ -128,6 +128,51 @@ class NotasPagoTest extends TestCase
             ->assertInertia(fn ($page) => $page->has('notas.data', 1)->where('notas.data.0.folio', 8888));
     }
 
+    public function test_imprime_la_nota_con_los_datos_del_cliente_los_conceptos_y_el_total_con_letra(): void
+    {
+        ParametroOperacion::create(['iva_porcentaje' => 16, 'proximo_folio' => 55586]);
+        $producto = Producto::create(['nombre' => 'BRUCELA FIJACION DE COMPLEMENTO', 'precio_unitario' => 155.17, 'activo' => true]);
+        [$historia] = $this->historiaConMuestra('Brucela', 1, $producto->id);
+        $cliente = $this->cliente(['nombre' => 'Jesús Eduardo Sandoval Jiménez', 'calle' => 'Francisco I Madero', 'numero_exterior' => '254']);
+        $admin = $this->admin();
+
+        $this->actingAs($admin)->post(route('notas-pago.store'), [
+            'cliente_id' => $cliente->id,
+            'concepto' => 'Laboratorios',
+            'tipo_pago' => 'Contado',
+            'historia_clinica_ids' => [$historia->id],
+        ]);
+        $nota = NotaPago::where('folio', 55586)->firstOrFail();
+
+        $this->actingAs($admin)
+            ->get(route('notas-pago.imprimir', $nota))
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page
+                ->component('NotasPago/Imprimir')
+                ->where('nota.folio', 55586)
+                ->where('nota.fecha', now()->format('d/m/Y'))
+                ->where('nota.cliente.nombre', 'Jesús Eduardo Sandoval Jiménez')
+                ->where('nota.cliente.domicilio', 'Francisco I Madero # 254')
+                ->where('nota.cliente.poblacion', 'Guadalajara, Jalisco')
+                ->where('nota.cliente.rfc', $cliente->rfc)
+                ->where('nota.conceptos.0.descripcion', 'BRUCELA FIJACION DE COMPLEMENTO')
+                ->where('nota.conceptos.0.numero_caso', $historia->numero_caso)
+                ->where('nota.subtotal', '155.17')
+                ->where('nota.iva_monto', '24.83')
+                ->where('nota.total', '180.00')
+                ->where('nota.total_letra', 'CIENTO OCHENTA PESOS 00/100 M.N.'));
+    }
+
+    public function test_imprimir_la_nota_requiere_algun_permiso_de_notas_de_pago(): void
+    {
+        $nota = NotaPago::create(['folio' => 1, 'cliente_id' => $this->cliente()->id, 'concepto' => 'Laboratorios',
+            'tipo_pago' => 'Contado', 'subtotal' => 100, 'iva_porcentaje' => 16, 'iva_monto' => 16, 'total' => 116]);
+
+        $this->actingAs(User::factory()->create(['es_admin' => false]))
+            ->get(route('notas-pago.imprimir', $nota))
+            ->assertForbidden();
+    }
+
     public function test_un_admin_puede_ver_el_formulario(): void
     {
         ParametroOperacion::create(['iva_porcentaje' => 16, 'proximo_folio' => 55351]);
@@ -172,10 +217,34 @@ class NotasPagoTest extends TestCase
             'cantidad' => 2,
             'precio_unitario' => 100,
             'importe' => 200,
+            'historia_clinica_id' => $historia->id,
         ]);
 
         // El folio siguiente avanza para la próxima nota.
         $this->assertSame(101, ParametroOperacion::first()->proximo_folio);
+    }
+
+    public function test_al_guardar_entrega_el_folio_y_la_nota_para_preguntar_si_se_imprime(): void
+    {
+        ParametroOperacion::create(['iva_porcentaje' => 16, 'proximo_folio' => 555]);
+        [$historia] = $this->historiaConMuestra('Antibiograma');
+
+        $this->actingAs($this->admin())
+            ->post(route('notas-pago.store'), [
+                'cliente_id' => $this->cliente()->id,
+                'concepto' => 'Laboratorios',
+                'tipo_pago' => 'Contado',
+                'historia_clinica_ids' => [$historia->id],
+            ])
+            ->assertRedirect(route('notas-pago.index'))
+            ->assertSessionHas('nota_pago_folio', 555)
+            ->assertSessionHas('nota_pago_id', NotaPago::where('folio', 555)->value('id'));
+
+        $this->actingAs($this->admin())
+            ->get(route('notas-pago.index'))
+            ->assertInertia(fn ($page) => $page
+                ->component('NotasPago/Index')
+                ->where('flash.nota_pago_folio', 555));
     }
 
     public function test_ignora_los_conceptos_enviados_por_el_cliente_y_los_reconstruye_desde_las_historias(): void
@@ -228,20 +297,25 @@ class NotasPagoTest extends TestCase
         $this->assertSame(1, (int) $muestra->fresh()->cantidad);
     }
 
-    public function test_rechaza_cantidades_menores_a_uno(): void
+    public function test_rechaza_cantidades_negativas_y_exige_facturar_al_menos_un_concepto(): void
     {
         [$historia] = $this->historiaConMuestra('Antibiograma', 1);
         $muestra = $historia->muestras()->first();
+        $datos = [
+            'cliente_id' => $this->cliente()->id,
+            'concepto' => 'Laboratorios',
+            'tipo_pago' => 'Contado',
+            'historia_clinica_ids' => [$historia->id],
+        ];
 
         $this->actingAs($this->admin())
-            ->post(route('notas-pago.store'), [
-                'cliente_id' => $this->cliente()->id,
-                'concepto' => 'Laboratorios',
-                'tipo_pago' => 'Contado',
-                'historia_clinica_ids' => [$historia->id],
-                'cantidades' => [$muestra->id => 0],
-            ])
+            ->post(route('notas-pago.store'), $datos + ['cantidades' => [$muestra->id => -1]])
             ->assertSessionHasErrors("cantidades.{$muestra->id}");
+
+        // 0 deja la muestra fuera de la nota; si no queda ningún concepto, no hay nota.
+        $this->actingAs($this->admin())
+            ->post(route('notas-pago.store'), $datos + ['cantidades' => [$muestra->id => 0]])
+            ->assertSessionHasErrors('cantidades');
 
         $this->assertDatabaseCount('notas_pago', 0);
     }
@@ -304,14 +378,11 @@ class NotasPagoTest extends TestCase
             ->assertSessionHasErrors('historia_clinica_ids');
     }
 
-    public function test_no_permite_ligar_una_historia_clinica_ya_ligada_a_otra_nota_de_pago(): void
+    public function test_no_permite_facturar_una_historia_ya_facturada_por_completo(): void
     {
-        [$historia, $propietario] = $this->historiaConMuestra('Antibiograma');
-        $notaExistente = NotaPago::create([
-            'folio' => 1, 'cliente_id' => $this->cliente()->id,
-            'concepto' => 'Laboratorios', 'tipo_pago' => 'Contado',
-        ]);
-        $notaExistente->historiasClinicas()->attach($historia->id);
+        ParametroOperacion::create(['iva_porcentaje' => 16, 'proximo_folio' => 1]);
+        [$historia] = $this->historiaConMuestra('Antibiograma');
+        $this->crearNota([$historia]);
 
         $this->actingAs($this->admin())
             ->post(route('notas-pago.store'), [
@@ -340,18 +411,11 @@ class NotasPagoTest extends TestCase
             ->assertJsonFragment(['id' => $historia->id]);
     }
 
-    public function test_no_ofrece_una_historia_clinica_ya_ligada_a_otra_nota_de_pago(): void
+    public function test_no_ofrece_una_historia_clinica_ya_facturada_por_completo(): void
     {
-        [$historiaLigada, $propietario] = $this->historiaConMuestra('ANTIBIOGRAMA');
+        [$historiaLigada] = $this->historiaConMuestra('ANTIBIOGRAMA');
         [$historiaLibre] = $this->historiaConMuestra('HEMOGRAMA');
-
-        $notaExistente = NotaPago::create([
-            'folio' => 1,
-            'cliente_id' => $this->cliente()->id,
-            'concepto' => 'Laboratorios',
-            'tipo_pago' => 'Contado',
-        ]);
-        $notaExistente->historiasClinicas()->attach($historiaLigada->id);
+        $this->crearNota([$historiaLigada]);
 
         $respuesta = $this->actingAs($this->admin())
             ->getJson(route('notas-pago.buscar-historias'))
@@ -452,13 +516,9 @@ class NotasPagoTest extends TestCase
         $miaDeAyer->created_at = now()->subDay();
         $miaDeAyer->save();
 
-        [$miaYaLigada, $propietario] = $this->historiaConMuestra('Antibiograma');
+        [$miaYaLigada] = $this->historiaConMuestra('Antibiograma');
         $miaYaLigada->update(['created_by' => $admin->id]);
-        $notaExistente = NotaPago::create([
-            'folio' => 1, 'cliente_id' => $this->cliente()->id,
-            'concepto' => 'Laboratorios', 'tipo_pago' => 'Contado',
-        ]);
-        $notaExistente->historiasClinicas()->attach($miaYaLigada->id);
+        $this->crearNota([$miaYaLigada]);
 
         $this->actingAs($admin)
             ->get(route('notas-pago.create', ['preseleccionar_hoy' => 1]))
@@ -509,18 +569,21 @@ class NotasPagoTest extends TestCase
         $this->assertSame($cliente->id, NotaPago::firstOrFail()->cliente_id);
     }
 
-    public function test_el_alta_de_cliente_exige_todos_sus_datos(): void
+    public function test_el_alta_de_cliente_desde_la_nota_solo_exige_el_nombre(): void
     {
         $this->actingAs($this->admin())
-            ->postJson(route('notas-pago.store-cliente'), ['nombre' => 'Sin datos'])
+            ->postJson(route('notas-pago.store-cliente'), [])
             ->assertUnprocessable()
-            ->assertJsonValidationErrors([
+            ->assertJsonValidationErrors(['nombre'])
+            ->assertJsonMissingValidationErrors([
                 'rfc', 'telefono', 'calle', 'numero_exterior', 'colonia',
                 'codigo_postal', 'estado_id', 'municipio_id',
-            ])
-            ->assertJsonMissingValidationErrors(['numero_interior']);
+            ]);
 
-        $this->assertSame(0, Cliente::count());
+        $this->actingAs($this->admin())
+            ->postJson(route('notas-pago.store-cliente'), ['nombre' => 'Sólo nombre', 'rfc' => ''])
+            ->assertCreated()
+            ->assertJsonPath('rfc', null);
     }
 
     public function test_crea_un_cliente_con_todos_sus_datos(): void
@@ -578,5 +641,298 @@ class NotasPagoTest extends TestCase
         $muestra = $historia->muestras()->first();
         $producto = Producto::create(['nombre' => 'PRODUCTO DE PRUEBA', 'precio_unitario' => $precio, 'activo' => true]);
         $muestra->update(['producto_id' => $producto->id]);
+    }
+
+    /** @param  array<int, HistoriaClinica>  $historias */
+    private function crearNota(array $historias, array $extra = []): NotaPago
+    {
+        $this->actingAs($this->admin())
+            ->post(route('notas-pago.store'), $extra + [
+                'cliente_id' => $this->cliente()->id,
+                'concepto' => 'Laboratorios',
+                'tipo_pago' => 'Contado',
+                'historia_clinica_ids' => array_map(fn ($h) => $h->id, $historias),
+            ])
+            ->assertSessionHasNoErrors()
+            ->assertRedirect(route('notas-pago.index'));
+
+        return NotaPago::latest('id')->firstOrFail();
+    }
+
+    private function usuarioCon(string ...$claves): User
+    {
+        $user = User::factory()->create(['es_admin' => false]);
+        foreach ($claves as $clave) {
+            $user->permisosGranulares()->create(['clave' => $clave]);
+        }
+
+        return $user;
+    }
+
+    public function test_editar_precarga_la_nota_y_conserva_la_cantidad_ajustada(): void
+    {
+        $producto = Producto::create(['nombre' => 'ANTIBIOGRAMA', 'precio_unitario' => 100, 'activo' => true]);
+        [$historia] = $this->historiaConMuestra('Antibiograma', 5, $producto->id);
+        $muestra = $historia->muestras()->first();
+        $nota = $this->crearNota([$historia], ['tipo_pago' => 'Cheque', 'cantidades' => [$muestra->id => 4]]);
+
+        $this->actingAs($this->admin())
+            ->get(route('notas-pago.edit', $nota))
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page
+                ->component('NotasPago/Create')
+                ->where('nota.folio', $nota->folio)
+                ->where('nota.tipo_pago', 'Cheque')
+                ->where('nota.historias.0.id', $historia->id)
+                ->where('nota.conceptos.0.muestra_id', $muestra->id)
+                ->where('nota.conceptos.0.cantidad', 4));
+    }
+
+    public function test_actualizar_conserva_el_folio_y_reconstruye_conceptos_e_historias(): void
+    {
+        ParametroOperacion::create(['iva_porcentaje' => 16, 'proximo_folio' => 700]);
+        $producto = Producto::create(['nombre' => 'ANTIBIOGRAMA', 'precio_unitario' => 100, 'activo' => true]);
+        [$historiaUno] = $this->historiaConMuestra('Antibiograma', 1, $producto->id);
+        [$historiaDos] = $this->historiaConMuestra('Antibiograma', 3, $producto->id);
+        $nota = $this->crearNota([$historiaUno]);
+        $otroCliente = $this->cliente(['nombre' => 'OTRO CLIENTE', 'rfc' => 'XAXX010101000']);
+
+        // El precio del catálogo cambió desde que se emitió la nota.
+        $producto->update(['precio_unitario' => 50]);
+
+        $this->actingAs($this->admin())
+            ->put(route('notas-pago.update', $nota), [
+                'cliente_id' => $otroCliente->id,
+                'concepto' => 'Laboratorios',
+                'tipo_pago' => 'Depósito',
+                'pagada' => true,
+                // Se quita la historia uno y se agrega la dos.
+                'historia_clinica_ids' => [$historiaDos->id],
+            ])
+            ->assertRedirect(route('notas-pago.index'))
+            ->assertSessionHasNoErrors();
+
+        $nota->refresh();
+        $this->assertSame(700, $nota->folio);
+        $this->assertSame($otroCliente->id, $nota->cliente_id);
+        $this->assertSame('Depósito', $nota->tipo_pago);
+        $this->assertTrue($nota->pagada);
+        $this->assertSame([$historiaDos->id], $nota->historiasClinicas()->pluck('historias_clinicas.id')->all());
+        $this->assertSame(1, $nota->conceptos()->count());
+        $this->assertDatabaseHas('nota_pago_conceptos', [
+            'nota_pago_id' => $nota->id, 'historia_clinica_id' => $historiaDos->id,
+            'cantidad' => 3, 'precio_unitario' => 50, 'importe' => 150,
+        ]);
+        $this->assertEquals(174, $nota->total);
+        // Editar no consume folio.
+        $this->assertSame(701, ParametroOperacion::first()->proximo_folio);
+    }
+
+    public function test_editar_requiere_el_permiso_de_modificar_notas_de_pago(): void
+    {
+        [$historia] = $this->historiaConMuestra('Antibiograma');
+        $nota = $this->crearNota([$historia]);
+
+        $this->actingAs($this->usuarioCon('facturacion.agregar_facturas'))
+            ->get(route('notas-pago.edit', $nota))
+            ->assertForbidden();
+
+        $this->actingAs($this->usuarioCon('facturacion.modificar_facturas'))
+            ->get(route('notas-pago.edit', $nota))
+            ->assertOk();
+    }
+
+    public function test_al_editar_el_buscador_ofrece_las_historias_de_la_propia_nota(): void
+    {
+        [$historia] = $this->historiaConMuestra('Antibiograma');
+        $nota = $this->crearNota([$historia]);
+
+        $sinNota = $this->actingAs($this->admin())
+            ->getJson(route('notas-pago.buscar-historias'))
+            ->json('historias');
+        $conNota = $this->actingAs($this->admin())
+            ->getJson(route('notas-pago.buscar-historias', ['nota_pago_id' => $nota->id]))
+            ->json('historias');
+
+        $this->assertNotContains($historia->id, array_column($sinNota, 'id'));
+        $this->assertContains($historia->id, array_column($conNota, 'id'));
+    }
+
+    public function test_cancelar_exige_motivo_conserva_el_folio_y_libera_las_historias(): void
+    {
+        ParametroOperacion::create(['iva_porcentaje' => 16, 'proximo_folio' => 1]);
+        [$historia] = $this->historiaConMuestra('Antibiograma');
+        $nota = $this->crearNota([$historia]);
+        $admin = $this->admin();
+
+        $this->actingAs($admin)
+            ->patch(route('notas-pago.cancelar', $nota), ['motivo_cancelacion' => ''])
+            ->assertSessionHasErrors('motivo_cancelacion');
+        $this->assertFalse($nota->fresh()->cancelada);
+
+        $this->actingAs($admin)
+            ->patch(route('notas-pago.cancelar', $nota), ['motivo_cancelacion' => 'El caso tenía 65 muestras en físico'])
+            ->assertRedirect(route('notas-pago.index'));
+
+        $nota->refresh();
+        $this->assertTrue($nota->cancelada);
+        $this->assertSame('El caso tenía 65 muestras en físico', $nota->motivo_cancelacion);
+        $this->assertSame($admin->id, $nota->cancelada_por);
+        $this->assertNotNull($nota->cancelada_at);
+        // La nota cancelada sigue existiendo con sus conceptos.
+        $this->assertSame(1, $nota->conceptos()->count());
+
+        // La historia vuelve a ofrecerse y puede facturarse en otra nota.
+        $ofrecidas = $this->actingAs($admin)->getJson(route('notas-pago.buscar-historias'))->json('historias');
+        $this->assertContains($historia->id, array_column($ofrecidas, 'id'));
+        $nueva = $this->crearNota([$historia]);
+        $this->assertNotSame($nota->id, $nueva->id);
+    }
+
+    public function test_cancelar_requiere_el_permiso_de_cancelar_notas_de_pago(): void
+    {
+        [$historia] = $this->historiaConMuestra('Antibiograma');
+        $nota = $this->crearNota([$historia]);
+
+        $this->actingAs($this->usuarioCon('facturacion.modificar_facturas'))
+            ->patch(route('notas-pago.cancelar', $nota), ['motivo_cancelacion' => 'Error'])
+            ->assertForbidden();
+
+        $this->assertFalse($nota->fresh()->cancelada);
+    }
+
+    public function test_una_nota_cancelada_no_se_puede_editar(): void
+    {
+        [$historia] = $this->historiaConMuestra('Antibiograma');
+        $nota = $this->crearNota([$historia]);
+        $nota->update(['cancelada' => true, 'motivo_cancelacion' => 'Error']);
+
+        $this->actingAs($this->admin())
+            ->get(route('notas-pago.edit', $nota))
+            ->assertRedirect(route('notas-pago.index'))
+            ->assertSessionHas('error');
+
+        $this->actingAs($this->admin())
+            ->put(route('notas-pago.update', $nota), [
+                'cliente_id' => $nota->cliente_id,
+                'concepto' => 'Laboratorios',
+                'tipo_pago' => 'Efectivo',
+                'historia_clinica_ids' => [$historia->id],
+            ])
+            ->assertRedirect(route('notas-pago.index'));
+
+        $this->assertSame('Contado', $nota->fresh()->tipo_pago);
+    }
+
+    public function test_eliminar_borra_la_nota_y_libera_sus_historias_solo_para_administradores(): void
+    {
+        [$historia] = $this->historiaConMuestra('Antibiograma');
+        $nota = $this->crearNota([$historia]);
+
+        $this->actingAs($this->usuarioCon('facturacion.cancelar_factura', 'facturacion.modificar_facturas'))
+            ->delete(route('notas-pago.destroy', $nota))
+            ->assertForbidden();
+        $this->assertDatabaseHas('notas_pago', ['id' => $nota->id]);
+
+        $this->actingAs($this->admin())
+            ->delete(route('notas-pago.destroy', $nota))
+            ->assertRedirect(route('notas-pago.index'));
+
+        $this->assertDatabaseMissing('notas_pago', ['id' => $nota->id]);
+        $this->assertDatabaseMissing('nota_pago_conceptos', ['nota_pago_id' => $nota->id]);
+        $this->assertDatabaseMissing('nota_pago_historia_clinica', ['nota_pago_id' => $nota->id]);
+        $this->assertFalse($historia->notasPagoVigentes()->exists());
+    }
+
+    public function test_una_historia_se_reparte_en_varias_notas_hasta_completar_sus_muestras(): void
+    {
+        ParametroOperacion::create(['iva_porcentaje' => 16, 'proximo_folio' => 1]);
+        $producto = Producto::create(['nombre' => 'ANTIBIOGRAMA', 'precio_unitario' => 100, 'activo' => true]);
+        [$historia] = $this->historiaConMuestra('Antibiograma', 10, $producto->id);
+        $muestraA = $historia->muestras()->first();
+        $muestraB = $historia->muestras()->create(['servicio_id' => $muestraA->servicio_id, 'producto_id' => $producto->id, 'cantidad' => 5]);
+        $admin = $this->admin();
+
+        // Primera nota: 6 de la muestra A y nada de la B.
+        $primera = $this->crearNota([$historia], ['cantidades' => [$muestraA->id => 6, $muestraB->id => 0]]);
+        $this->assertSame(1, $primera->conceptos()->count());
+        $this->assertDatabaseHas('nota_pago_conceptos', ['nota_pago_id' => $primera->id, 'muestra_id' => $muestraA->id, 'cantidad' => 6]);
+
+        // La historia sigue ofreciéndose, marcada como facturada parcialmente,
+        // y sus conceptos proponen sólo lo que falta.
+        $ofrecida = collect($this->actingAs($admin)->getJson(route('notas-pago.buscar-historias'))->json('historias'))
+            ->firstWhere('id', $historia->id);
+        $this->assertNotNull($ofrecida);
+        $this->assertTrue($ofrecida['facturada_parcialmente']);
+
+        $conceptos = collect($this->actingAs($admin)
+            ->getJson(route('notas-pago.conceptos-de-historias', ['historia_clinica_ids' => [$historia->id]]))
+            ->json('conceptos'))->keyBy('muestra_id');
+        $this->assertSame(4, $conceptos[$muestraA->id]['por_facturar']);
+        $this->assertSame(4, $conceptos[$muestraA->id]['cantidad']);
+        $this->assertSame(10, $conceptos[$muestraA->id]['cantidad_muestra']);
+        $this->assertSame(5, $conceptos[$muestraB->id]['por_facturar']);
+
+        // Segunda nota con lo propuesto: completa la historia.
+        $segunda = $this->crearNota([$historia]);
+        $this->assertDatabaseHas('nota_pago_conceptos', ['nota_pago_id' => $segunda->id, 'muestra_id' => $muestraA->id, 'cantidad' => 4]);
+        $this->assertDatabaseHas('nota_pago_conceptos', ['nota_pago_id' => $segunda->id, 'muestra_id' => $muestraB->id, 'cantidad' => 5]);
+        $this->assertSame(2, $historia->notasPagoVigentes()->count());
+
+        // Ya facturada por completo: ni se ofrece ni se puede volver a facturar.
+        $ids = array_column($this->actingAs($admin)->getJson(route('notas-pago.buscar-historias'))->json('historias'), 'id');
+        $this->assertNotContains($historia->id, $ids);
+        $this->actingAs($admin)
+            ->post(route('notas-pago.store'), [
+                'cliente_id' => $this->cliente()->id,
+                'concepto' => 'Laboratorios',
+                'tipo_pago' => 'Contado',
+                'historia_clinica_ids' => [$historia->id],
+            ])
+            ->assertSessionHasErrors('historia_clinica_ids');
+
+        // Al cancelar la primera, sus 6 unidades vuelven a quedar por facturar.
+        $primera->update(['cancelada' => true, 'motivo_cancelacion' => 'Prueba']);
+        $conceptos = collect($this->actingAs($admin)
+            ->getJson(route('notas-pago.conceptos-de-historias', ['historia_clinica_ids' => [$historia->id]]))
+            ->json('conceptos'))->keyBy('muestra_id');
+        $this->assertSame(6, $conceptos[$muestraA->id]['por_facturar']);
+        $this->assertFalse($conceptos->has($muestraB->id));
+    }
+
+    public function test_al_editar_lo_que_factura_la_propia_nota_no_cuenta_como_facturado(): void
+    {
+        ParametroOperacion::create(['iva_porcentaje' => 16, 'proximo_folio' => 1]);
+        $producto = Producto::create(['nombre' => 'ANTIBIOGRAMA', 'precio_unitario' => 100, 'activo' => true]);
+        [$historia] = $this->historiaConMuestra('Antibiograma', 10, $producto->id);
+        $muestraA = $historia->muestras()->first();
+        $muestraB = $historia->muestras()->create(['servicio_id' => $muestraA->servicio_id, 'producto_id' => $producto->id, 'cantidad' => 5]);
+
+        $primera = $this->crearNota([$historia], ['cantidades' => [$muestraA->id => 6, $muestraB->id => 0]]);
+        $this->crearNota([$historia], ['cantidades' => [$muestraA->id => 1, $muestraB->id => 0]]);
+
+        // En la primera: A tiene 9 disponibles (10 menos el 1 de la otra nota)
+        // y se precargan sus 6; B, que esta nota dejó fuera, aparece en 0.
+        $this->actingAs($this->admin())
+            ->get(route('notas-pago.edit', $primera))
+            ->assertInertia(fn ($page) => $page
+                ->where('nota.conceptos.0.muestra_id', $muestraA->id)
+                ->where('nota.conceptos.0.por_facturar', 9)
+                ->where('nota.conceptos.0.cantidad', 6)
+                ->where('nota.conceptos.1.muestra_id', $muestraB->id)
+                ->where('nota.conceptos.1.cantidad', 0));
+
+        // Al guardar, la propia nota puede tomar lo que tenía y más.
+        $this->actingAs($this->admin())
+            ->put(route('notas-pago.update', $primera), [
+                'cliente_id' => $primera->cliente_id,
+                'concepto' => 'Laboratorios',
+                'tipo_pago' => 'Contado',
+                'historia_clinica_ids' => [$historia->id],
+                'cantidades' => [$muestraA->id => 9, $muestraB->id => 5],
+            ])
+            ->assertSessionHasNoErrors();
+
+        $this->assertSame([9, 5], $primera->conceptos()->orderBy('muestra_id')->pluck('cantidad')->map(fn ($c) => (int) $c)->all());
     }
 }

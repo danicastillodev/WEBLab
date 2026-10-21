@@ -6,6 +6,7 @@ use App\Models\Especie;
 use App\Models\Raza;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -28,7 +29,8 @@ class RazasController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'nombre' => ['required', 'string', 'max:100', 'unique:razas'],
+            // Único dentro de la especie: la misma raza puede existir en varias.
+            'nombre' => ['required', 'string', 'max:100', Rule::unique('razas')->where('especie_id', $request->input('especie_id'))],
             'especie_id' => ['nullable', 'integer', 'exists:especies,id'],
         ]);
 
@@ -48,7 +50,7 @@ class RazasController extends Controller
     public function update(Request $request, Raza $raza): RedirectResponse
     {
         $validated = $request->validate([
-            'nombre' => ['required', 'string', 'max:100', 'unique:razas,nombre,'.$raza->id],
+            'nombre' => ['required', 'string', 'max:100', Rule::unique('razas')->where('especie_id', $request->input('especie_id'))->ignore($raza->id)],
             'especie_id' => ['nullable', 'integer', 'exists:especies,id'],
         ]);
 

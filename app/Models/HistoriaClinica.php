@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use DateTimeInterface;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -165,5 +166,23 @@ class HistoriaClinica extends Model
     public function notasPago(): BelongsToMany
     {
         return $this->belongsToMany(NotaPago::class, 'nota_pago_historia_clinica');
+    }
+
+    /**
+     * Notas de pago no canceladas: una historia sólo cuenta como facturada
+     * mientras su nota siga vigente.
+     */
+    public function notasPagoVigentes(): BelongsToMany
+    {
+        return $this->notasPago()->where('notas_pago.cancelada', false);
+    }
+
+    /**
+     * Historias con al menos una muestra que todavía tiene cantidad por
+     * facturar: pueden agregarse a (otra) nota de pago.
+     */
+    public function scopeConPendientePorFacturar(Builder $query, ?int $exceptoNotaPagoId = null): Builder
+    {
+        return $query->whereHas('muestras', fn ($q) => $q->conPendientePorFacturar($exceptoNotaPagoId));
     }
 }

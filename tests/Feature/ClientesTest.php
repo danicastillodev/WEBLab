@@ -76,13 +76,45 @@ class ClientesTest extends TestCase
         $this->assertDatabaseHas('clientes', ['rfc' => 'ABA010101AB1', 'telefono' => '3312345678']);
     }
 
-    public function test_exige_todos_los_datos_del_cliente(): void
+    public function test_solo_el_nombre_es_obligatorio(): void
     {
         $this->actingAs($this->admin())
-            ->post(route('clientes.store'), ['nombre' => 'Sin datos'])
-            ->assertSessionHasErrors(['rfc', 'telefono', 'calle', 'numero_exterior', 'colonia', 'codigo_postal', 'estado_id', 'municipio_id']);
+            ->post(route('clientes.store'), ['nombre' => ''])
+            ->assertSessionHasErrors('nombre');
 
-        $this->assertSame(0, Cliente::count());
+        $this->actingAs($this->admin())
+            ->post(route('clientes.store'), ['nombre' => 'Sólo nombre'])
+            ->assertSessionHasNoErrors()
+            ->assertRedirect(route('clientes.index'));
+
+        $this->assertDatabaseHas('clientes', ['nombre' => 'Sólo nombre', 'rfc' => null, 'estado_id' => null]);
+    }
+
+    public function test_varios_clientes_pueden_quedar_sin_rfc(): void
+    {
+        $admin = $this->admin();
+
+        $this->actingAs($admin)->post(route('clientes.store'), ['nombre' => 'Cliente uno'])->assertSessionHasNoErrors();
+        $this->actingAs($admin)->post(route('clientes.store'), ['nombre' => 'Cliente dos'])->assertSessionHasNoErrors();
+
+        $this->assertSame(2, Cliente::whereNull('rfc')->count());
+    }
+
+    public function test_valida_el_formato_de_los_datos_opcionales_cuando_se_capturan(): void
+    {
+        $this->actingAs($this->admin())
+            ->post(route('clientes.store'), ['nombre' => 'Cliente', 'telefono' => '123', 'codigo_postal' => '1', 'rfc' => 'ABC'])
+            ->assertSessionHasErrors(['telefono', 'codigo_postal', 'rfc']);
+    }
+
+    public function test_el_listado_muestra_un_cliente_con_solo_nombre(): void
+    {
+        Cliente::create(['nombre' => 'Sólo nombre']);
+
+        $this->actingAs($this->admin())
+            ->get(route('clientes.index'))
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page->has('clientes.data', 1));
     }
 
     public function test_actualiza_un_cliente_conservando_su_propio_rfc(): void
