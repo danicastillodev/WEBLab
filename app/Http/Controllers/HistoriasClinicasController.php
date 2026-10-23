@@ -599,7 +599,7 @@ class HistoriasClinicasController extends Controller
         return [
             'propietario_id' => ['required', 'integer', 'exists:propietarios,id'],
             'direccion_id' => ['required', 'integer', 'exists:direcciones,id'],
-            'explotacion_id' => ['required', 'integer', 'exists:explotaciones,id'],
+            'explotacion_id' => ['nullable', 'integer', 'exists:explotaciones,id'],
             'fecha_recepcion' => ['nullable', 'date'],
             'fecha_muestra' => ['required', 'date'],
             'especie_id' => ['required', 'integer', 'exists:especies,id'],

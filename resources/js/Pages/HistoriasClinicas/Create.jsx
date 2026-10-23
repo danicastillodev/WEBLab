@@ -1,4 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import ComboboxSelect from '@/Components/ComboboxSelect';
 import DatePickerInput from '@/Components/DatePickerInput';
 import EstadoBadge from '@/Components/EstadoBadge';
 import FieldActions from '@/Components/FieldActions';
@@ -9,7 +10,7 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
 import axios from 'axios';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { formatFechaHora } from '@/utils/fechas';
 
 const selectClass = 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500';
@@ -130,6 +131,14 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
     );
     const funcionesFiltradas = funciones.filter(
         (f) => f.especie_ids.includes(Number(data.especie_id)),
+    );
+
+    const opcionesPropietario = useMemo(
+        () => propietarios.map((p) => ({
+            value: p.id,
+            label: `${p.nombre} ${p.apellidos}${p.curp ? ` - ${p.curp}` : ''}`,
+        })),
+        [propietarios],
     );
 
     function onPropietarioChange(id) {
@@ -1286,17 +1295,13 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
                                         onDelete={eliminarPropietario}
                                     />
                                 </div>
-                                <select
+                                <ComboboxSelect
                                     id="propietario_id"
                                     value={data.propietario_id}
-                                    onChange={(e) => onPropietarioChange(e.target.value)}
-                                    className={selectClass}
-                                >
-                                    <option value="">— Selecciona un propietario —</option>
-                                    {propietarios.map((p) => (
-                                        <option key={p.id} value={p.id}>{p.nombre} {p.apellidos}{p.curp ? ` - ${p.curp}` : ''}</option>
-                                    ))}
-                                </select>
+                                    onChange={onPropietarioChange}
+                                    options={opcionesPropietario}
+                                    placeholder="Escribe para buscar un propietario"
+                                />
                                 <InputError message={errors.propietario_id} className="mt-2" />
                             </div>
 
@@ -1330,7 +1335,7 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
 
                             <div>
                                 <div className="flex items-center justify-between">
-                                    <InputLabel htmlFor="explotacion_id" value="Explotación" required />
+                                    <InputLabel htmlFor="explotacion_id" value="Explotación" />
                                     <FieldActions
                                         etiqueta="explotación"
                                         disabled={!data.propietario_id}

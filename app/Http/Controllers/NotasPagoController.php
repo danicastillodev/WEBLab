@@ -442,6 +442,7 @@ class NotasPagoController extends Controller
                 // y no la UTC con la que se serializa created_at.
                 'fecha' => $notaPago->created_at?->format('d/m/Y'),
                 'tipo_pago' => $notaPago->tipo_pago,
+                'pagada' => $notaPago->pagada,
                 'subtotal' => $notaPago->subtotal,
                 'iva_monto' => $notaPago->iva_monto,
                 'total' => $notaPago->total,

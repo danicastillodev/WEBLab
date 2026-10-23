@@ -124,6 +124,20 @@ class HistoriaClinicaTipoMuestraTest extends TestCase
         $this->assertDatabaseCount('historias_clinicas', 0);
     }
 
+    public function test_la_explotacion_es_opcional(): void
+    {
+        $servicio = Servicio::create(['clave' => 'COPRO', 'descripcion' => 'Coprológico', 'activo' => true]);
+        $datos = $this->datosHistoria(['servicio_id' => $servicio->id]);
+        $datos['explotacion_id'] = '';
+
+        $this->actingAs($this->admin())
+            ->post(route('historias-clinicas.store'), $datos)
+            ->assertSessionHasNoErrors()
+            ->assertRedirect();
+
+        $this->assertDatabaseHas('historias_clinicas', ['propietario_id' => $datos['propietario_id'], 'explotacion_id' => null]);
+    }
+
     public function test_rechaza_un_tipo_de_muestra_que_no_es_del_servicio(): void
     {
         $suero = TipoMuestra::create(['nombre' => 'SUERO']);

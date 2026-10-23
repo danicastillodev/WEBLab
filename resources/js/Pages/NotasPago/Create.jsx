@@ -1,4 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import ComboboxSelect from '@/Components/ComboboxSelect';
 import FieldActions from '@/Components/FieldActions';
 import FormErrorAlert, { erroresDeAxios } from '@/Components/FormErrorAlert';
 import InputError from '@/Components/InputError';
@@ -8,7 +9,7 @@ import SecondaryButton from '@/Components/SecondaryButton';
 import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { CLIENTE_VACIO, clienteNuevo, formatDomicilio } from '@/Pages/Catalogos/Clientes/Partials/ClienteForm';
 import { formatFechaHora } from '@/utils/fechas';
 
@@ -80,6 +81,10 @@ export default function Create({
 
     const titulo = nota ? `Editar nota de pago — folio ${nota.folio}` : 'Nueva nota de pago';
     const clienteSel = clientes.find((c) => String(c.id) === String(data.cliente_id));
+    const opcionesCliente = useMemo(
+        () => clientes.map((c) => ({ value: c.id, label: c.rfc ? `${c.nombre} — ${c.rfc}` : c.nombre })),
+        [clientes],
+    );
 
     function quitarHistoriaSeleccionada(historiaId) {
         setConceptos((prev) => prev.filter((c) => c.historia_clinica_id !== historiaId));
@@ -472,16 +477,13 @@ export default function Create({
                                             onDelete={eliminarCliente}
                                         />
                                     </div>
-                                    <select
+                                    <ComboboxSelect
+                                        id="cliente_id"
                                         value={data.cliente_id}
-                                        onChange={(e) => setData('cliente_id', e.target.value)}
-                                        className={selectClass}
-                                    >
-                                        <option value="">— Selecciona un cliente —</option>
-                                        {clientes.map((c) => (
-                                            <option key={c.id} value={c.id}>{c.rfc ? `${c.nombre} — ${c.rfc}` : c.nombre}</option>
-                                        ))}
-                                    </select>
+                                        onChange={(id) => setData('cliente_id', id)}
+                                        options={opcionesCliente}
+                                        placeholder="Escribe para buscar un cliente (nombre o RFC)"
+                                    />
                                     <InputError message={errors.cliente_id} className="mt-2" />
                                 </div>
                                 <div className="sm:col-span-2">

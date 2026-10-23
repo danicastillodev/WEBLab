@@ -18,13 +18,32 @@ use Inertia\Response;
 
 class PropietariosController extends Controller
 {
-    public function index(): Response
+    public function index(Request $request): Response
     {
+        $filtros = $request->only(['buscar']);
+
+        // Cada palabra debe aparecer en algún campo, así "ana pérez" encuentra
+        // a Ana (nombre) Pérez (apellidos).
+        $palabras = preg_split('/\s+/', trim($filtros['buscar'] ?? ''), -1, PREG_SPLIT_NO_EMPTY);
+
+        $propietarios = Propietario::withCount(['direcciones', 'explotaciones'])
+            ->when($palabras, function ($query) use ($palabras) {
+                foreach ($palabras as $palabra) {
+                    $query->where(fn ($q) => $q->where('nombre', 'like', "%{$palabra}%")
+                        ->orWhere('apellidos', 'like', "%{$palabra}%")
+                        ->orWhere('curp', 'like', "%{$palabra}%")
+                        ->orWhere('rfc', 'like', "%{$palabra}%")
+                        ->orWhere('telefono', 'like', "%{$palabra}%"));
+                }
+            })
+            ->orderBy('apellidos')
+            ->orderBy('nombre')
+            ->paginate(15)
+            ->withQueryString();
+
         return Inertia::render('Catalogos/Propietarios/Index', [
-            'propietarios' => Propietario::withCount(['direcciones', 'explotaciones'])
-                ->orderBy('apellidos')
-                ->orderBy('nombre')
-                ->paginate(15),
+            'propietarios' => $propietarios,
+            'filtros' => $filtros,
         ]);
     }
 

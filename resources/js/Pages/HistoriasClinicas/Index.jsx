@@ -1,7 +1,7 @@
 import EstadoBadge, { ESTADOS } from '@/Components/EstadoBadge';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, router, usePage } from '@inertiajs/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { formatFechaHora } from '@/utils/fechas';
 
 // Etiquetas de "impreso"; el valor guardado es el de la columna del mismo nombre.
@@ -51,9 +51,16 @@ export default function Index({ historias, filtros, especies }) {
         router.get(route('historias-clinicas.index'), form, { preserveState: true, replace: true });
     }
 
-    // Sólo vacía los campos: no lanza búsqueda, así que el listado sigue
-    // mostrando el resultado anterior hasta que se pulse "Buscar".
+    // "Limpiar" vacía los campos y oculta el listado sin lanzar búsqueda; el
+    // listado vuelve a aparecer con el siguiente resultado que llegue
+    // (Buscar, Hoy, Todas).
+    const [listadoOculto, setListadoOculto] = useState(false);
+    useEffect(() => setListadoOculto(false), [historias]);
+
+    const filas = listadoOculto ? [] : historias.data;
+
     function limpiar() {
+        setListadoOculto(true);
         setForm({
             fecha_desde: '', fecha_hasta: '', propietario: '', numero_caso: '',
             especie_id: '', ejercicio: '', estado: '', impreso: '',
@@ -261,14 +268,16 @@ export default function Index({ historias, filtros, especies }) {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-200 bg-white">
-                                {historias.data.length === 0 && (
+                                {filas.length === 0 && (
                                     <tr>
                                         <td colSpan={8} className="px-6 py-4 text-center text-sm text-gray-500">
-                                            No se encontraron historias clínicas con los filtros seleccionados.
+                                            {listadoOculto
+                                                ? 'Elige los filtros y pulsa "Buscar" para ver historias clínicas.'
+                                                : 'No se encontraron historias clínicas con los filtros seleccionados.'}
                                         </td>
                                     </tr>
                                 )}
-                                {historias.data.map((historia) => (
+                                {filas.map((historia) => (
                                     <tr key={historia.id}>
                                         <td className="px-6 py-4 text-sm text-gray-500">{historia.ejercicio ?? '—'}</td>
                                         <td className="px-6 py-4 text-sm text-gray-500">
@@ -331,7 +340,7 @@ export default function Index({ historias, filtros, especies }) {
                             </tbody>
                         </table>
 
-                        {historias.links.length > 3 && (
+                        {!listadoOculto && historias.links.length > 3 && (
                             <div className="flex justify-center gap-1 border-t px-6 py-4">
                                 {historias.links.map((link, i) => (
                                     <button

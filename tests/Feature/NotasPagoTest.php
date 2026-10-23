@@ -139,7 +139,8 @@ class NotasPagoTest extends TestCase
         $this->actingAs($admin)->post(route('notas-pago.store'), [
             'cliente_id' => $cliente->id,
             'concepto' => 'Laboratorios',
-            'tipo_pago' => 'Contado',
+            'tipo_pago' => 'Pago con tarjeta',
+            'pagada' => true,
             'historia_clinica_ids' => [$historia->id],
         ]);
         $nota = NotaPago::where('folio', 55586)->firstOrFail();
@@ -160,7 +161,9 @@ class NotasPagoTest extends TestCase
                 ->where('nota.subtotal', '155.17')
                 ->where('nota.iva_monto', '24.83')
                 ->where('nota.total', '180.00')
-                ->where('nota.total_letra', 'CIENTO OCHENTA PESOS 00/100 M.N.'));
+                ->where('nota.total_letra', 'CIENTO OCHENTA PESOS 00/100 M.N.')
+                ->where('nota.pagada', true)
+                ->where('nota.tipo_pago', 'Pago con tarjeta'));
     }
 
     public function test_imprimir_la_nota_requiere_algun_permiso_de_notas_de_pago(): void
