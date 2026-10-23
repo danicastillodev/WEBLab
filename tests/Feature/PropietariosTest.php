@@ -58,6 +58,22 @@ class PropietariosTest extends TestCase
         ]);
     }
 
+    public function test_busca_propietarios_por_nombre_apellidos_y_rfc(): void
+    {
+        Propietario::create(['nombre' => 'Ana', 'apellidos' => 'Pérez', 'rfc' => 'PEAA800101AB1']);
+        Propietario::create(['nombre' => 'Luis', 'apellidos' => 'García']);
+
+        $nombres = fn (string $buscar) => collect(
+            $this->actingAs($this->admin())->get(route('propietarios.index', ['buscar' => $buscar]))
+                ->viewData('page')['props']['propietarios']['data']
+        )->pluck('nombre')->all();
+
+        $this->assertSame(['Ana'], $nombres('ana pérez'));
+        $this->assertSame(['Ana'], $nombres('PEAA8001'));
+        $this->assertSame(['Luis'], $nombres('garc'));
+        $this->assertSame([], $nombres('ana garcía'));
+    }
+
     public function test_crea_un_propietario_sin_direcciones(): void
     {
         $this->actingAs($this->admin())

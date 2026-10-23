@@ -11,23 +11,27 @@ import { useEffect } from 'react';
  */
 const HOJA = { ancho: 215.9, alto: 279.4 };
 
+// Margen lateral: nada se imprime a menos de esto de los bordes izquierdo y
+// derecho de la hoja.
+const MARGEN = 20;
+
 const POS = {
     folio: { top: 22, left: 150 },
     fecha: { top: 34, left: 150 },
-    tipoPago: { top: 50, left: 155 },
     rfc: { top: 41, left: 118 },
-    cliente: { top: 32, left: 8, ancho: 105 },
+    cliente: { top: 32, left: MARGEN, ancho: 95 },
     // Renglones de conceptos: la columna de importes se alinea a la derecha.
     conceptos: { top: 66, alto_renglon: 6 },
-    cantidad: { left: 8, ancho: 12 },
-    descripcion: { left: 24, ancho: 110 },
-    precioUnitario: { right: 50 },
-    importe: { right: 22 },
+    cantidad: { left: MARGEN, ancho: 12 },
+    descripcion: { left: MARGEN + 16, ancho: 100 },
+    precioUnitario: { right: MARGEN + 28 },
+    importe: { right: MARGEN },
     // Pie de la hoja.
     subtotal: { top: 232 },
     iva: { top: 239 },
     total: { top: 246 },
-    totalLetra: { top: 242, left: 12, ancho: 140 },
+    totalLetra: { top: 242, left: MARGEN, ancho: 120 },
+    pago: { top: 256, left: MARGEN },
 };
 
 const moneda = new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' });
@@ -77,6 +81,25 @@ const ESTILOS = `
 
     .nota-derecha {
         text-align: right;
+    }
+
+    .nota-pago {
+        display: flex;
+        align-items: center;
+        gap: 3mm;
+    }
+
+    .nota-etiqueta {
+        font-weight: bold;
+    }
+
+    .nota-recuadro {
+        display: inline-block;
+        min-width: 10mm;
+        padding: 1mm 2mm;
+        border: 0.3mm solid #000;
+        text-align: center;
+        font-weight: bold;
     }
 
     @media print {
@@ -153,7 +176,6 @@ export default function Imprimir({ nota }) {
                     <Campo pos={POS.folio}>{nota.folio}</Campo>
                     <Campo pos={POS.fecha}>{nota.fecha}</Campo>
                     <Campo pos={POS.rfc}>{cliente?.rfc}</Campo>
-                    <Campo pos={POS.tipoPago}>{nota.tipo_pago}</Campo>
 
                     <Campo pos={POS.cliente} className="nota-envolver">
                         <p>{cliente?.nombre}</p>
@@ -199,6 +221,14 @@ export default function Imprimir({ nota }) {
                     </Campo>
                     <Campo pos={POS.totalLetra} className="nota-envolver">
                         ({nota.total_letra})
+                    </Campo>
+
+                    {/* Pie: si ya se pagó y cómo */}
+                    <Campo pos={POS.pago} className="nota-pago">
+                        <span className="nota-etiqueta">Pagado</span>
+                        <span className="nota-recuadro">{nota.pagada ? 'Sí' : 'No'}</span>
+                        <span className="nota-etiqueta" style={{ marginLeft: '8mm' }}>Tipo de pago:</span>
+                        <span>{nota.tipo_pago}</span>
                     </Campo>
                 </div>
             </div>
