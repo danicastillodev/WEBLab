@@ -96,6 +96,19 @@ export default function Create({
         setConceptos((prev) => prev.map((c) => (c.muestra_id === muestraId ? { ...c, cantidad: valor } : c)));
     }
 
+    // Sólo se puede elegir entre los productos del análisis de la muestra;
+    // nombre y precio aquí son vista previa, el servidor los vuelve a tomar
+    // del catálogo al guardar.
+    function cambiarProducto(muestraId, productoId) {
+        setConceptos((prev) => prev.map((c) => {
+            if (c.muestra_id !== muestraId) return c;
+            const producto = c.productos?.find((p) => String(p.id) === String(productoId));
+            return producto
+                ? { ...c, producto_id: producto.id, descripcion: producto.nombre, precio_unitario: producto.precio_unitario }
+                : c;
+        }));
+    }
+
     const conceptosCalculados = conceptos.map((c) => {
         const importe = Number(c.cantidad || 0) * Number(c.precio_unitario || 0);
         const iva = importe * (Number(ivaPorcentaje) / 100);
@@ -111,6 +124,7 @@ export default function Create({
         transform((datos) => ({
             ...datos,
             cantidades: Object.fromEntries(conceptos.map((c) => [c.muestra_id, c.cantidad])),
+            productos: Object.fromEntries(conceptos.map((c) => [c.muestra_id, c.producto_id])),
         }));
         if (nota) {
             put(route('notas-pago.update', nota.id));
@@ -583,8 +597,23 @@ export default function Create({
                                                         )}
                                                     </td>
                                                     <td className="py-2 pr-2 align-top text-gray-700">
-                                                        {concepto.descripcion}
+                                                        {concepto.productos?.length > 1 ? (
+                                                            <select
+                                                                value={concepto.producto_id ?? ''}
+                                                                onChange={(e) => cambiarProducto(concepto.muestra_id, e.target.value)}
+                                                                className="block w-full rounded-md border-gray-300 py-1 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                                            >
+                                                                {concepto.productos.map((p) => (
+                                                                    <option key={p.id} value={p.id}>{p.nombre}</option>
+                                                                ))}
+                                                            </select>
+                                                        ) : (
+                                                            concepto.descripcion
+                                                        )}
                                                         <span className="ml-2 text-xs text-gray-400">(caso {concepto.numero_caso})</span>
+                                                        {errors[`productos.${concepto.muestra_id}`] && (
+                                                            <p className="mt-0.5 text-xs text-red-600">{errors[`productos.${concepto.muestra_id}`]}</p>
+                                                        )}
                                                         {!concepto.producto_id && (
                                                             <p className="mt-0.5 text-xs text-amber-600">
                                                                 ⚠ Sin producto asociado en el catálogo de Pruebas — precio en $0.

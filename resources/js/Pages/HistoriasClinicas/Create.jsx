@@ -141,6 +141,11 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
         [propietarios],
     );
 
+    const opcionesServicio = useMemo(
+        () => servicios.map((s) => ({ value: s.id, label: `${s.descripcion} - ${s.clave}` })),
+        [servicios],
+    );
+
     function onPropietarioChange(id) {
         setData((prev) => ({ ...prev, propietario_id: id, direccion_id: '', explotacion_id: '' }));
     }
@@ -1068,16 +1073,12 @@ export default function Create({ propietarios: initPropietarios, direcciones: in
                                         {/* Análisis solicitado */}
                                         <div>
                                             <InputLabel value="Análisis solicitado" />
-                                            <select
+                                            <ComboboxSelect
                                                 value={muestra.servicio_id}
-                                                onChange={(e) => updateMuestra(index, 'servicio_id', e.target.value)}
-                                                className={selectClass}
-                                            >
-                                                <option value="">— Selecciona un servicio —</option>
-                                                {servicios.map((s) => (
-                                                    <option key={s.id} value={s.id}>{s.descripcion} - {s.clave}</option>
-                                                ))}
-                                            </select>
+                                                onChange={(id) => updateMuestra(index, 'servicio_id', id)}
+                                                options={opcionesServicio}
+                                                placeholder="Escribe para buscar un análisis"
+                                            />
                                             {errors[`muestras.${index}.servicio_id`] && (
                                                 <p className="mt-1 text-sm text-red-600">{errors[`muestras.${index}.servicio_id`]}</p>
                                             )}

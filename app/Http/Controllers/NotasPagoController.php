@@ -100,11 +100,13 @@ class NotasPagoController extends Controller
         $historias = $notaPago->historiasClinicas()->with($this->relacionesConceptos())->orderBy('numero_caso')->get();
         $guardados = $notaPago->conceptos()->get();
 
-        // Los precios se recalculan con el catálogo vigente; sólo se conserva
-        // la cantidad que esta nota factura de cada muestra. Las muestras que
-        // la nota dejó fuera (porque se facturan en otra) aparecen en 0.
+        // Los precios se recalculan con el catálogo vigente; se conservan el
+        // producto elegido y la cantidad que esta nota factura de cada
+        // muestra. Las muestras que la nota dejó fuera (porque se facturan en
+        // otra) aparecen en 0.
         $conceptos = $this->construirConceptosDesdeHistorias($historias, $notaPago->id)->map(function ($c) use ($guardados) {
             $guardado = $guardados->firstWhere('muestra_id', $c['muestra_id']);
+            $c = $this->aplicarProductoElegido($c, $guardado?->producto_id) ?? $c;
 
             return [...$c, 'cantidad' => $guardado ? (int) $guardado->cantidad : 0];
         });
@@ -134,7 +136,7 @@ class NotasPagoController extends Controller
             return $historias;
         }
 
-        $conceptos = $this->conceptosParaGuardar($historias, $validated['cantidades'] ?? [], $notaPago);
+        $conceptos = $this->conceptosParaGuardar($historias, $validated['cantidades'] ?? [], $validated['productos'] ?? [], $notaPago);
 
         DB::transaction(function () use ($notaPago, $validated, $conceptos) {
             $notaPago->update([
@@ -241,7 +243,7 @@ class NotasPagoController extends Controller
             return $historias;
         }
 
-        $conceptos = $this->conceptosParaGuardar($historias, $validated['cantidades'] ?? []);
+        $conceptos = $this->conceptosParaGuardar($historias, $validated['cantidades'] ?? [], $validated['productos'] ?? []);
 
         $notaPago = DB::transaction(function () use ($validated, $conceptos) {
             $notaPago = NotaPago::create([
@@ -273,6 +275,10 @@ class NotasPagoController extends Controller
             // muestra_id. 0 deja la muestra fuera para facturarla en otra nota.
             'cantidades' => ['nullable', 'array'],
             'cantidades.*' => ['required', 'integer', 'min:0', 'max:99999'],
+            // Producto elegido para cada concepto, indexado por muestra_id: sólo
+            // se aceptan los relacionados con el análisis de la muestra.
+            'productos' => ['nullable', 'array'],
+            'productos.*' => ['nullable', 'integer'],
             'concepto' => ['required', 'string', 'in:'.implode(',', NotaPago::CONCEPTOS)],
             'tipo_pago' => ['required', 'string', 'in:'.implode(',', NotaPago::TIPOS_PAGO)],
             'pagada' => ['boolean'],
@@ -323,29 +329,63 @@ class NotasPagoController extends Controller
      *
      * @throws ValidationException
      */
-    private function conceptosParaGuardar(Collection $historias, array $cantidades, ?NotaPago $notaActual = null): Collection
+    private function conceptosParaGuardar(Collection $historias, array $cantidades, array $productos = [], ?NotaPago $notaActual = null): Collection
     {
-        $conceptos = $this->construirConceptosDesdeHistorias($historias, $notaActual?->id)->map(function ($c) use ($cantidades) {
+        $errores = [];
+
+        $conceptos = $this->construirConceptosDesdeHistorias($historias, $notaActual?->id)->map(function ($c) use ($cantidades, $productos, &$errores) {
             $cantidad = (int) ($cantidades[$c['muestra_id']] ?? $c['cantidad']);
+            $concepto = $this->aplicarProductoElegido($c, $productos[$c['muestra_id']] ?? null);
+
+            if ($concepto === null) {
+                $errores["productos.{$c['muestra_id']}"] = 'El producto elegido no corresponde al análisis de la muestra.';
+                $concepto = $c;
+            }
 
             return [
-                'muestra_id' => $c['muestra_id'],
-                'producto_id' => $c['producto_id'],
-                'historia_clinica_id' => $c['historia_clinica_id'],
-                'descripcion' => $c['descripcion'],
+                'muestra_id' => $concepto['muestra_id'],
+                'producto_id' => $concepto['producto_id'],
+                'historia_clinica_id' => $concepto['historia_clinica_id'],
+                'descripcion' => $concepto['descripcion'],
                 'cantidad' => $cantidad,
-                'precio_unitario' => $c['precio_unitario'],
-                'importe' => round($cantidad * $c['precio_unitario'], 2),
+                'precio_unitario' => $concepto['precio_unitario'],
+                'importe' => round($cantidad * $concepto['precio_unitario'], 2),
             ];
         })->filter(fn ($c) => $c['cantidad'] > 0)->values();
 
-        if ($conceptos->isEmpty()) {
-            throw ValidationException::withMessages([
-                'cantidades' => 'La nota de pago debe facturar al menos un concepto.',
-            ]);
+        if ($errores === [] && $conceptos->isEmpty()) {
+            $errores['cantidades'] = 'La nota de pago debe facturar al menos un concepto.';
+        }
+
+        if ($errores !== []) {
+            throw ValidationException::withMessages($errores);
         }
 
         return $conceptos;
+    }
+
+    /**
+     * Cambia el producto de un concepto por otro de los relacionados con el
+     * análisis de su muestra; nombre y precio salen del catálogo, nunca del
+     * navegador. Devuelve null si el producto no es de esa muestra.
+     *
+     * @param  array<string, mixed>  $concepto  como lo arma construirConceptosDesdeHistorias()
+     * @return array<string, mixed>|null
+     */
+    private function aplicarProductoElegido(array $concepto, int|string|null $productoId): ?array
+    {
+        if ($productoId === null || $productoId === '' || (int) $productoId === $concepto['producto_id']) {
+            return $concepto;
+        }
+
+        $producto = $concepto['productos']->firstWhere('id', (int) $productoId);
+
+        return $producto ? [
+            ...$concepto,
+            'producto_id' => $producto['id'],
+            'descripcion' => $producto['nombre'],
+            'precio_unitario' => $producto['precio_unitario'],
+        ] : null;
     }
 
     /**
@@ -635,8 +675,31 @@ class NotasPagoController extends Controller
                     'cantidad_muestra' => (int) $muestra->cantidad,
                     'por_facturar' => $porFacturar,
                     'precio_unitario' => $producto->precio_unitario ?? 0,
+                    'productos' => $this->productosDeLaMuestra($muestra),
                 ];
             })->filter(fn ($c) => $c['por_facturar'] > 0);
         })->values();
+    }
+
+    /**
+     * Productos entre los que se puede elegir para facturar una muestra: los
+     * activos del análisis (servicio) capturado. Si la muestra trae un
+     * producto propio de cuando se elegía en la historia, también se ofrece.
+     *
+     * @return Collection<int, array{id: int, nombre: string, precio_unitario: string}>
+     */
+    private function productosDeLaMuestra($muestra): Collection
+    {
+        $productos = $muestra->servicio?->productos ?? collect();
+
+        if ($muestra->producto && ! $productos->contains('id', $muestra->producto->id)) {
+            $productos = $productos->prepend($muestra->producto);
+        }
+
+        return $productos->map(fn ($p) => [
+            'id' => $p->id,
+            'nombre' => $p->nombre,
+            'precio_unitario' => $p->precio_unitario,
+        ])->values();
     }
 }
