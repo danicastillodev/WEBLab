@@ -21,13 +21,11 @@ class NavegacionTest extends TestCase
     /**
      * Rutas que el sidebar enlaza y que deben responder 200.
      *
-     * historias-clinicas.index queda fuera a propósito: redirige (302) para
-     * añadir el filtro de fecha de hoy, y se comprueba por separado.
-     *
      * @var list<string>
      */
     private const DESTINOS = [
         'dashboard',
+        'historias-clinicas.index',
         'historias-clinicas.create',
         'cuestionario.index',
         'cuestionario.create',
@@ -66,23 +64,5 @@ class NavegacionTest extends TestCase
             array_filter($estados, fn (int $codigo) => $codigo !== 200),
             'Estas rutas del sidebar no respondieron 200: '.json_encode($estados),
         );
-    }
-
-    public function test_el_listado_de_historias_redirige_al_filtro_de_hoy(): void
-    {
-        $admin = User::factory()->create(['es_admin' => true]);
-        $hoy = now()->toDateString();
-
-        $this->actingAs($admin)
-            ->get(route('historias-clinicas.index'))
-            ->assertRedirect(route('historias-clinicas.index', [
-                'fecha_desde' => $hoy,
-                'fecha_hasta' => $hoy,
-                'ejercicio' => now()->year,
-            ]));
-
-        $this->actingAs($admin)
-            ->get(route('historias-clinicas.index', ['fecha_desde' => $hoy, 'fecha_hasta' => $hoy]))
-            ->assertOk();
     }
 }

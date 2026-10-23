@@ -147,16 +147,22 @@ class HistoriasClinicasFiltrosTest extends TestCase
     }
 
     /**
-     * Sin parámetros, la primera visita redirige con los valores por defecto:
-     * hoy, el ejercicio en curso y "No" en impreso.
+     * Sin parámetros se listan las historias de hoy, del ejercicio en curso y
+     * sin imprimir, pero los filtros llegan vacíos para empezar una búsqueda.
      */
-    public function test_la_primera_visita_redirige_con_impreso_no_por_defecto(): void
+    public function test_sin_filtros_lista_las_de_hoy_sin_imprimir_con_los_filtros_vacios(): void
     {
-        $respuesta = $this->actingAs(User::factory()->create(['es_admin' => true]))
-            ->get(route('historias-clinicas.index'));
+        $deHoy = $this->historia(['fecha_recepcion' => now()]);
+        $this->historia(['fecha_recepcion' => now(), 'impreso' => HistoriaClinica::IMPRESO_PARCIAL]);
+        $this->historia(['fecha_recepcion' => now()->subDay()]);
 
-        $respuesta->assertRedirect();
-        parse_str(parse_url($respuesta->headers->get('Location'), PHP_URL_QUERY), $query);
-        $this->assertSame('no', $query['impreso'] ?? null);
+        $respuesta = $this->actingAs(User::factory()->create(['es_admin' => true]))
+            ->get(route('historias-clinicas.index'))
+            ->assertOk();
+
+        $props = $respuesta->viewData('page')['props'];
+        $this->assertSame([$deHoy->id], array_column($props['historias']['data'], 'id'));
+        $this->assertTrue($props['porDefecto']);
+        $this->assertSame([''], array_values(array_unique($props['filtros'])));
     }
 }

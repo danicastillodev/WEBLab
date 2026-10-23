@@ -13,7 +13,7 @@ const IMPRESOS = {
 
 const ejercicioActual = String(new Date().getFullYear());
 
-export default function Index({ historias, filtros, especies }) {
+export default function Index({ historias, filtros, porDefecto = false, especies }) {
     const { flash, auth } = usePage().props;
     const [modalNumeroCaso, setModalNumeroCaso] = useState(flash?.numero_caso ?? null);
     const [modalNotaPago, setModalNotaPago] = useState(false);
@@ -252,6 +252,12 @@ export default function Index({ historias, filtros, especies }) {
                             </button>
                         </div>
                     </form>
+
+                    {porDefecto && !listadoOculto && (
+                        <p className="mb-2 text-sm text-gray-500">
+                            Mostrando las historias clínicas de hoy sin imprimir. Usa los filtros para buscar otras.
+                        </p>
+                    )}
 
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                         <table className="min-w-full divide-y divide-gray-200">

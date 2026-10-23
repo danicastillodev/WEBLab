@@ -7,6 +7,7 @@ use App\Models\Direccion;
 use App\Models\Especie;
 use App\Models\Estado;
 use App\Models\HistoriaClinica;
+use App\Models\Muestra;
 use App\Models\Municipio;
 use App\Models\NotaPago;
 use App\Models\ParametroOperacion;
@@ -937,5 +938,84 @@ class NotasPagoTest extends TestCase
             ->assertSessionHasNoErrors();
 
         $this->assertSame([9, 5], $primera->conceptos()->orderBy('muestra_id')->pluck('cantidad')->map(fn ($c) => (int) $c)->all());
+    }
+
+    /**
+     * Historia con una muestra cuyo análisis tiene dos productos activos y
+     * uno inactivo, más un producto de otro análisis.
+     *
+     * @return array{0: HistoriaClinica, 1: Muestra, 2: Producto, 3: Producto, 4: Producto, 5: Producto}
+     */
+    private function historiaConVariosProductos(): array
+    {
+        [$historia] = $this->historiaConMuestra('Brucela', 2);
+        $muestra = $historia->muestras()->first();
+        $tarjeta = Producto::create(['nombre' => 'BRUCELA TARJETA', 'servicio_id' => $muestra->servicio_id, 'precio_unitario' => 13.79, 'activo' => true]);
+        $tubo = Producto::create(['nombre' => 'BRUCELA TARJETA (TUBO)', 'servicio_id' => $muestra->servicio_id, 'precio_unitario' => 15.52, 'activo' => true]);
+        $inactivo = Producto::create(['nombre' => 'BRUCELA DESCONTINUADO', 'servicio_id' => $muestra->servicio_id, 'precio_unitario' => 1, 'activo' => false]);
+        $otroServicio = Servicio::create(['clave' => 'OTRO1', 'descripcion' => 'Otro análisis']);
+        $ajeno = Producto::create(['nombre' => 'HEMOGRAMA', 'servicio_id' => $otroServicio->id, 'precio_unitario' => 129.31, 'activo' => true]);
+
+        return [$historia, $muestra, $tarjeta, $tubo, $inactivo, $ajeno];
+    }
+
+    public function test_cada_concepto_ofrece_solo_los_productos_activos_del_analisis_de_la_muestra(): void
+    {
+        [$historia, $muestra, $tarjeta, $tubo] = $this->historiaConVariosProductos();
+
+        $concepto = $this->actingAs($this->admin())
+            ->getJson(route('notas-pago.conceptos-de-historias', ['historia_clinica_ids' => [$historia->id]]))
+            ->assertOk()
+            ->json('conceptos.0');
+
+        $this->assertSame($muestra->id, $concepto['muestra_id']);
+        // Por omisión, el primero dado de alta.
+        $this->assertSame($tarjeta->id, $concepto['producto_id']);
+        $this->assertSame([$tarjeta->id, $tubo->id], array_column($concepto['productos'], 'id'));
+    }
+
+    public function test_se_puede_cambiar_el_producto_por_otro_del_mismo_analisis(): void
+    {
+        ParametroOperacion::create(['iva_porcentaje' => 16, 'proximo_folio' => 1]);
+        [$historia, $muestra, , $tubo] = $this->historiaConVariosProductos();
+
+        $nota = $this->crearNota([$historia], ['productos' => [$muestra->id => $tubo->id]]);
+
+        // Nombre y precio salen del catálogo, no del navegador.
+        $this->assertDatabaseHas('nota_pago_conceptos', [
+            'nota_pago_id' => $nota->id,
+            'muestra_id' => $muestra->id,
+            'producto_id' => $tubo->id,
+            'descripcion' => 'BRUCELA TARJETA (TUBO)',
+            'cantidad' => 2,
+            'precio_unitario' => 15.52,
+            'importe' => 31.04,
+        ]);
+
+        // Al editar se precarga el producto elegido.
+        $this->actingAs($this->admin())
+            ->get(route('notas-pago.edit', $nota))
+            ->assertInertia(fn ($page) => $page
+                ->where('nota.conceptos.0.producto_id', $tubo->id)
+                ->where('nota.conceptos.0.descripcion', 'BRUCELA TARJETA (TUBO)'));
+    }
+
+    public function test_rechaza_un_producto_que_no_corresponde_al_analisis_de_la_muestra(): void
+    {
+        [$historia, $muestra, , , $inactivo, $ajeno] = $this->historiaConVariosProductos();
+
+        foreach ([$ajeno, $inactivo] as $producto) {
+            $this->actingAs($this->admin())
+                ->post(route('notas-pago.store'), [
+                    'cliente_id' => $this->cliente()->id,
+                    'concepto' => 'Laboratorios',
+                    'tipo_pago' => 'Contado',
+                    'historia_clinica_ids' => [$historia->id],
+                    'productos' => [$muestra->id => $producto->id],
+                ])
+                ->assertSessionHasErrors("productos.{$muestra->id}");
+        }
+
+        $this->assertDatabaseCount('notas_pago', 0);
     }
 }

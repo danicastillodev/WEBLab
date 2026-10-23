@@ -26,15 +26,15 @@ use Inertia\Response;
 
 class HistoriasClinicasController extends Controller
 {
-    public function index(Request $request): Response|RedirectResponse
+    public function index(Request $request): Response
     {
         $filtroKeys = ['fecha_desde', 'fecha_hasta', 'propietario', 'numero_caso', 'especie_id', 'ejercicio', 'estado', 'impreso'];
 
-        // Primera visita sin parámetros → redirigir con la fecha de hoy y el
-        // ejercicio en curso, que es el valor por defecto de ese filtro.
-        if (! $request->hasAny($filtroKeys)) {
-            return $this->redirectAlIndiceConFiltrosHoy();
-        }
+        // Sin ningún filtro (primera visita, o tras guardar) se listan las
+        // historias de hoy del ejercicio en curso sin imprimir, pero los
+        // filtros del formulario llegan vacíos para empezar una búsqueda.
+        $porDefecto = ! $request->hasAny($filtroKeys);
+        $defecto = $porDefecto ? $this->filtrosPorDefecto() : [];
 
         $fechaDesde = $request->input('fecha_desde', '');
         $fechaHasta = $request->input('fecha_hasta', '');
@@ -51,6 +51,10 @@ class HistoriasClinicasController extends Controller
         $impreso = in_array($impreso, HistoriaClinica::IMPRESOS, true) ? $impreso : '';
 
         $historias = HistoriaClinica::with(['propietario', 'creadoPor'])
+            ->when($porDefecto, fn ($q) => $q
+                ->whereDate('fecha_recepcion', $defecto['fecha_desde'])
+                ->where('ejercicio', $defecto['ejercicio'])
+                ->where('impreso', $defecto['impreso']))
             ->when(filled($fechaDesde), fn ($q) => $q->whereDate('fecha_recepcion', '>=', $fechaDesde))
             ->when(filled($fechaHasta), fn ($q) => $q->whereDate('fecha_recepcion', '<=', $fechaHasta))
             ->when(filled($propietario), fn ($q) => $q->whereHas('propietario', fn ($sq) => $sq->whereRaw("CONCAT(nombre, ' ', apellidos) LIKE ?", ["%{$propietario}%"])
@@ -76,6 +80,7 @@ class HistoriasClinicasController extends Controller
                 'estado' => $estado,
                 'impreso' => $impreso,
             ],
+            'porDefecto' => $porDefecto,
             'especies' => Especie::orderBy('nombre')->get(['id', 'nombre']),
         ]);
     }
@@ -462,11 +467,7 @@ class HistoriasClinicasController extends Controller
 
         $this->guardarRespuestas($historia, $validated['respuestas'] ?? []);
 
-        // El índice redirige a sí mismo con filtros por defecto cuando no
-        // recibe ninguno, lo que consumiría este flash en un salto invisible
-        // para el cliente. Se incluyen los mismos filtros por defecto aquí
-        // para evitar ese salto y que el modal sí llegue a mostrarse.
-        return $this->redirectAlIndiceConFiltrosHoy()
+        return redirect()->route('historias-clinicas.index')
             ->with('success', 'Historia clínica creada.')
             ->with('numero_caso', $historia->numero_caso)
             ->with('historia_id', $historia->id);
@@ -495,7 +496,7 @@ class HistoriasClinicasController extends Controller
     {
         $historiaClinica->update(['estado' => HistoriaClinica::ESTADO_CANCELADA]);
 
-        return $this->redirectAlIndiceConFiltrosHoy()->with('success', 'Historia clínica cancelada.');
+        return redirect()->route('historias-clinicas.index')->with('success', 'Historia clínica cancelada.');
     }
 
     public function ticket(HistoriaClinica $historiaClinica): Response
@@ -546,7 +547,7 @@ class HistoriasClinicasController extends Controller
     public function edit(HistoriaClinica $historiaClinica): Response|RedirectResponse
     {
         if ($historiaClinica->estado === HistoriaClinica::ESTADO_CANCELADA) {
-            return $this->redirectAlIndiceConFiltrosHoy()->with('error', 'Una historia clínica cancelada no se puede editar.');
+            return redirect()->route('historias-clinicas.index')->with('error', 'Una historia clínica cancelada no se puede editar.');
         }
 
         $historiaClinica->load(['muestras', 'respuestas']);
@@ -586,7 +587,7 @@ class HistoriasClinicasController extends Controller
             $this->guardarRespuestas($historiaClinica, $validated['respuestas'] ?? []);
         });
 
-        return $this->redirectAlIndiceConFiltrosHoy()->with('success', "Historia clínica {$historiaClinica->numero_caso} actualizada.");
+        return redirect()->route('historias-clinicas.index')->with('success', "Historia clínica {$historiaClinica->numero_caso} actualizada.");
     }
 
     /**
@@ -630,7 +631,7 @@ class HistoriasClinicasController extends Controller
     {
         $historiaClinica->delete();
 
-        return $this->redirectAlIndiceConFiltrosHoy()->with('success', 'Historia clínica eliminada.');
+        return redirect()->route('historias-clinicas.index')->with('success', 'Historia clínica eliminada.');
     }
 
     /**
@@ -661,19 +662,20 @@ class HistoriasClinicasController extends Controller
     }
 
     /**
-     * Mismos filtros por defecto que aplica el índice cuando no recibe
-     * ninguno. Redirigir ya con ellos evita el salto interno que el índice
-     * haría por su cuenta, el cual perdería cualquier flash adjunto.
+     * Lo que lista el índice cuando no recibe ningún filtro: las historias de
+     * hoy, del ejercicio en curso, sin imprimir.
+     *
+     * @return array{fecha_desde: string, fecha_hasta: string, ejercicio: int, impreso: string}
      */
-    private function redirectAlIndiceConFiltrosHoy(): RedirectResponse
+    private function filtrosPorDefecto(): array
     {
         $hoy = now()->toDateString();
 
-        return redirect()->route('historias-clinicas.index', [
+        return [
             'fecha_desde' => $hoy,
             'fecha_hasta' => $hoy,
             'ejercicio' => now()->year,
             'impreso' => HistoriaClinica::IMPRESO_NO,
-        ]);
+        ];
     }
 }
