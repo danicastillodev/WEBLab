@@ -225,8 +225,8 @@ export default function Imprimir({ nota }) {
 
                     {/* Pie: si ya se pagó y cómo */}
                     <Campo pos={POS.pago} className="nota-pago">
-                        <span className="nota-etiqueta">Pagado</span>
                         <span className="nota-recuadro">{nota.pagada ? 'Sí' : 'No'}</span>
+                        <span className="nota-etiqueta">Pagado</span>
                         <span className="nota-etiqueta" style={{ marginLeft: '8mm' }}>Tipo de pago:</span>
                         <span>{nota.tipo_pago}</span>
                     </Campo>

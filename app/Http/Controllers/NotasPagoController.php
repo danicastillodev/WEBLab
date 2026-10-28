@@ -47,7 +47,7 @@ class NotasPagoController extends Controller
         $fechaDesde = str_replace('/', '-', $filtros['fecha_desde']);
         $fechaHasta = str_replace('/', '-', $filtros['fecha_hasta']);
 
-        $notas = NotaPago::with(['cliente:id,nombre,rfc', 'historiasClinicas:id,numero_caso'])
+        $notas = NotaPago::with(['cliente:id,nombre,rfc', 'creadoPor:id,name'])
             ->when($filtros['buscar'] !== '', function ($query) use ($filtros) {
                 $buscar = $filtros['buscar'];
                 $query->where(fn ($q) => $q
@@ -412,16 +412,21 @@ class NotasPagoController extends Controller
     }
 
     /**
+     * Una nota que no está pagada queda a crédito, sin importar el tipo de
+     * pago que llegue del navegador.
+     *
      * @param  array<string, mixed>  $validated
      * @return array<string, mixed>
      */
     private function datosGenerales(array $validated): array
     {
+        $pagada = (bool) ($validated['pagada'] ?? false);
+
         return [
             'cliente_id' => $validated['cliente_id'],
             'concepto' => $validated['concepto'],
-            'tipo_pago' => $validated['tipo_pago'],
-            'pagada' => $validated['pagada'] ?? false,
+            'tipo_pago' => $pagada ? $validated['tipo_pago'] : NotaPago::TIPO_PAGO_CREDITO,
+            'pagada' => $pagada,
             'notas_adicionales' => $validated['notas_adicionales'] ?? null,
         ];
     }

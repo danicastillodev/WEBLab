@@ -107,8 +107,9 @@ class NotasPagoTest extends TestCase
         $cliente = $this->cliente();
         $base = ['cliente_id' => $cliente->id, 'concepto' => 'Laboratorios', 'tipo_pago' => 'Contado',
             'subtotal' => 100, 'iva_porcentaje' => 16, 'iva_monto' => 16, 'total' => 116];
-        NotaPago::create($base + ['folio' => 7777, 'pagada' => true]);
-        NotaPago::create($base + ['folio' => 8888, 'pagada' => false]);
+        $capturista = User::factory()->create(['name' => 'Ana Capturista']);
+        NotaPago::create($base + ['folio' => 7777, 'pagada' => true, 'created_by' => $capturista->id]);
+        NotaPago::create($base + ['folio' => 8888, 'pagada' => false, 'cancelada' => true, 'motivo_cancelacion' => 'Error de captura']);
 
         $admin = $this->admin();
 
@@ -118,7 +119,10 @@ class NotasPagoTest extends TestCase
                 ->component('NotasPago/Index')
                 ->has('notas.data', 2)
                 ->where('notas.data.0.folio', 8888)
-                ->where('notas.data.0.cliente.nombre', $cliente->nombre));
+                ->where('notas.data.0.cliente.nombre', $cliente->nombre)
+                ->where('notas.data.0.cancelada', true)
+                ->where('notas.data.1.cancelada', false)
+                ->where('notas.data.1.creado_por.name', 'Ana Capturista'));
 
         $this->actingAs($admin)
             ->get(route('notas-pago.index', ['buscar' => '7777']))
@@ -187,6 +191,37 @@ class NotasPagoTest extends TestCase
             ->assertInertia(fn ($page) => $page
                 ->component('NotasPago/Create')
                 ->where('iva_porcentaje', 16));
+    }
+
+    public function test_la_nota_guarda_al_usuario_que_la_genero_y_editarla_no_lo_cambia(): void
+    {
+        ParametroOperacion::create(['iva_porcentaje' => 16, 'proximo_folio' => 1]);
+        [$historia] = $this->historiaConMuestra('Antibiograma');
+        $capturista = $this->usuarioCon('facturacion.agregar_facturas');
+
+        $this->actingAs($capturista)
+            ->post(route('notas-pago.store'), [
+                'cliente_id' => $this->cliente()->id,
+                'concepto' => 'Laboratorios',
+                'tipo_pago' => 'Contado',
+                'historia_clinica_ids' => [$historia->id],
+            ])
+            ->assertRedirect(route('notas-pago.index'));
+
+        $nota = NotaPago::firstOrFail();
+        $this->assertSame($capturista->id, $nota->created_by);
+        $this->assertTrue($nota->creadoPor->is($capturista));
+
+        // Quien la edita después no se vuelve su autor.
+        $this->actingAs($this->admin())
+            ->put(route('notas-pago.update', $nota), [
+                'cliente_id' => $nota->cliente_id,
+                'concepto' => 'Laboratorios',
+                'tipo_pago' => 'Contado',
+                'historia_clinica_ids' => [$historia->id],
+            ])
+            ->assertSessionHasNoErrors();
+        $this->assertSame($capturista->id, $nota->fresh()->created_by);
     }
 
     public function test_crea_una_nota_de_pago_a_partir_de_una_historia_clinica_y_calcula_los_totales(): void
@@ -678,7 +713,7 @@ class NotasPagoTest extends TestCase
         $producto = Producto::create(['nombre' => 'ANTIBIOGRAMA', 'precio_unitario' => 100, 'activo' => true]);
         [$historia] = $this->historiaConMuestra('Antibiograma', 5, $producto->id);
         $muestra = $historia->muestras()->first();
-        $nota = $this->crearNota([$historia], ['tipo_pago' => 'Cheque', 'cantidades' => [$muestra->id => 4]]);
+        $nota = $this->crearNota([$historia], ['tipo_pago' => 'Cheque', 'pagada' => true, 'cantidades' => [$muestra->id => 4]]);
 
         $this->actingAs($this->admin())
             ->get(route('notas-pago.edit', $nota))
@@ -821,11 +856,41 @@ class NotasPagoTest extends TestCase
                 'cliente_id' => $nota->cliente_id,
                 'concepto' => 'Laboratorios',
                 'tipo_pago' => 'Efectivo',
+                'pagada' => true,
                 'historia_clinica_ids' => [$historia->id],
             ])
             ->assertRedirect(route('notas-pago.index'));
 
-        $this->assertSame('Contado', $nota->fresh()->tipo_pago);
+        // Sigue como se guardó (no pagada, por lo tanto a crédito).
+        $this->assertSame('Crédito', $nota->fresh()->tipo_pago);
+        $this->assertFalse($nota->fresh()->pagada);
+    }
+
+    public function test_una_nota_no_pagada_siempre_queda_a_credito(): void
+    {
+        ParametroOperacion::create(['iva_porcentaje' => 16, 'proximo_folio' => 1]);
+        [$historiaUno] = $this->historiaConMuestra('Antibiograma');
+        [$historiaDos] = $this->historiaConMuestra('Antibiograma');
+
+        // Aunque el navegador mande otro tipo de pago, sin pagar es Crédito.
+        $noPagada = $this->crearNota([$historiaUno], ['tipo_pago' => 'Transferencia', 'pagada' => false]);
+        $this->assertSame('Crédito', $noPagada->tipo_pago);
+
+        // Pagada, se respeta el tipo de pago elegido.
+        $pagada = $this->crearNota([$historiaDos], ['tipo_pago' => 'Transferencia', 'pagada' => true]);
+        $this->assertSame('Transferencia', $pagada->tipo_pago);
+
+        // Al editarla y desmarcar "Pagado", vuelve a crédito.
+        $this->actingAs($this->admin())
+            ->put(route('notas-pago.update', $pagada), [
+                'cliente_id' => $pagada->cliente_id,
+                'concepto' => 'Laboratorios',
+                'tipo_pago' => 'Transferencia',
+                'pagada' => false,
+                'historia_clinica_ids' => [$historiaDos->id],
+            ])
+            ->assertSessionHasNoErrors();
+        $this->assertSame('Crédito', $pagada->fresh()->tipo_pago);
     }
 
     public function test_eliminar_borra_la_nota_y_libera_sus_historias_solo_para_administradores(): void

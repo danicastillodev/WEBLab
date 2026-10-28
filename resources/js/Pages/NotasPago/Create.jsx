@@ -14,6 +14,7 @@ import { CLIENTE_VACIO, clienteNuevo, formatDomicilio } from '@/Pages/Catalogos/
 import { formatFechaHora } from '@/utils/fechas';
 
 const selectClass = 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500';
+const TIPO_PAGO_CREDITO = 'Crédito';
 
 function dinero(valor) {
     return `$${Number(valor || 0).toFixed(2)}`;
@@ -52,7 +53,8 @@ export default function Create({
         cliente_id: nota?.cliente_id ?? '',
         historia_clinica_ids: nota?.historias.map((h) => h.id) ?? [],
         concepto: nota?.concepto ?? conceptosOpciones[0] ?? '',
-        tipo_pago: nota?.tipo_pago ?? tiposPago[0] ?? '',
+        // Mientras la nota no esté pagada, el tipo de pago queda en Crédito.
+        tipo_pago: nota?.pagada ? nota.tipo_pago : TIPO_PAGO_CREDITO,
         pagada: nota?.pagada ?? false,
         notas_adicionales: nota?.notas_adicionales ?? '',
     });
@@ -90,6 +92,18 @@ export default function Create({
         setConceptos((prev) => prev.filter((c) => c.historia_clinica_id !== historiaId));
         setHistoriasSeleccionadas((prev) => prev.filter((h) => h.id !== historiaId));
         setData('historia_clinica_ids', data.historia_clinica_ids.filter((id) => id !== historiaId));
+    }
+
+    // Sin pagar, la nota queda a crédito y el tipo de pago no se puede
+    // cambiar; al marcarla pagada se propone el primer tipo que no es crédito.
+    function cambiarPagada(pagada) {
+        setData((prev) => ({
+            ...prev,
+            pagada,
+            tipo_pago: pagada
+                ? (prev.tipo_pago !== TIPO_PAGO_CREDITO ? prev.tipo_pago : tiposPago.find((t) => t !== TIPO_PAGO_CREDITO))
+                : TIPO_PAGO_CREDITO,
+        }));
     }
 
     function cambiarCantidad(muestraId, valor) {
@@ -655,7 +669,7 @@ export default function Create({
                                     <input
                                         type="checkbox"
                                         checked={data.pagada}
-                                        onChange={(e) => setData('pagada', e.target.checked)}
+                                        onChange={(e) => cambiarPagada(e.target.checked)}
                                         className="rounded text-indigo-600 focus:ring-indigo-500"
                                     />
                                     Pagado
@@ -676,7 +690,9 @@ export default function Create({
                                     <select
                                         value={data.tipo_pago}
                                         onChange={(e) => setData('tipo_pago', e.target.value)}
-                                        className={selectClass}
+                                        disabled={!data.pagada}
+                                        title={data.pagada ? undefined : 'Una nota no pagada queda a crédito'}
+                                        className={`${selectClass} disabled:cursor-not-allowed disabled:bg-gray-100`}
                                     >
                                         {tiposPago.map((t) => <option key={t} value={t}>{t}</option>)}
                                     </select>
