@@ -165,11 +165,11 @@ export default function Index({ notas, filtros, puede: permisos }) {
                                     <th className={thClass}>Folio</th>
                                     <th className={thClass}>Fecha</th>
                                     <th className={thClass}>Cliente</th>
-                                    <th className={thClass}>Casos</th>
-                                    <th className={thClass}>Concepto</th>
+                                    <th className={thClass}>Usuario</th>
                                     <th className={thClass}>Tipo de pago</th>
                                     <th className={`${thClass} text-right`}>Total</th>
                                     <th className={thClass}>Pagada</th>
+                                    <th className={thClass}>Status</th>
                                     <th className={thClass}><span className="sr-only">Acciones</span></th>
                                 </tr>
                             </thead>
@@ -183,26 +183,13 @@ export default function Index({ notas, filtros, puede: permisos }) {
                                 )}
                                 {notas.data.map((nota) => (
                                     <tr key={nota.id} className={nota.cancelada ? 'bg-gray-50 text-gray-400' : ''}>
-                                        <td className="px-6 py-4 font-mono text-sm font-medium text-gray-900">
-                                            {nota.folio}
-                                            {nota.cancelada && (
-                                                <div
-                                                    className="mt-1 inline-block cursor-help rounded-full bg-red-100 px-2 py-0.5 font-sans text-xs font-medium text-red-700"
-                                                    title={`Motivo: ${nota.motivo_cancelacion}`}
-                                                >
-                                                    Cancelada
-                                                </div>
-                                            )}
-                                        </td>
+                                        <td className="px-6 py-4 font-mono text-sm font-medium text-gray-900">{nota.folio}</td>
                                         <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">{fecha(nota.created_at)}</td>
                                         <td className="px-6 py-4 text-sm text-gray-900">
                                             {nota.cliente?.nombre ?? '—'}
                                             {nota.cliente?.rfc && <div className="font-mono text-xs text-gray-400">{nota.cliente.rfc}</div>}
                                         </td>
-                                        <td className="px-6 py-4 text-sm text-gray-500">
-                                            {nota.historias_clinicas.map((h) => h.numero_caso).join(', ') || '—'}
-                                        </td>
-                                        <td className="px-6 py-4 text-sm text-gray-500">{nota.concepto}</td>
+                                        <td className="px-6 py-4 text-sm text-gray-500">{nota.creado_por?.name ?? '—'}</td>
                                         <td className="px-6 py-4 text-sm text-gray-500">{nota.tipo_pago}</td>
                                         <td className="whitespace-nowrap px-6 py-4 text-right text-sm font-medium text-gray-900">
                                             {moneda.format(nota.total)}
@@ -212,6 +199,18 @@ export default function Index({ notas, filtros, puede: permisos }) {
                                                 <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">Sí</span>
                                             ) : (
                                                 <span className="rounded-full bg-yellow-100 px-2 py-0.5 text-xs font-medium text-yellow-700">No</span>
+                                            )}
+                                        </td>
+                                        <td className="px-6 py-4 text-sm">
+                                            {nota.cancelada ? (
+                                                <span
+                                                    className="cursor-help rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-700"
+                                                    title={`Motivo: ${nota.motivo_cancelacion}`}
+                                                >
+                                                    Cancelada
+                                                </span>
+                                            ) : (
+                                                <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">Activa</span>
                                             )}
                                         </td>
                                         <td className="whitespace-nowrap px-6 py-4 text-right text-sm">
