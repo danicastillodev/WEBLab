@@ -4,6 +4,9 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
 
 class ProfileTest extends TestCase
@@ -14,86 +17,80 @@ class ProfileTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this
-            ->actingAs($user)
-            ->get('/profile');
-
-        $response->assertOk();
+        $this->actingAs($user)
+            ->get('/profile')
+            ->assertOk()
+            ->assertInertia(fn (Assert $page) => $page
+                ->component('Profile/Edit')
+                ->where('auth.user.avatar_tipo', 'inicial')
+                ->where('esAdmin', false));
     }
 
-    public function test_profile_information_can_be_updated(): void
+    public function test_profile_lists_granted_permissions_by_section(): void
+    {
+        $user = User::factory()->create();
+        $user->permissions()->create(['modulo' => 'especies', 'ver' => true, 'crear' => true]);
+        $user->permisosGranulares()->create(['clave' => 'facturacion.agregar_facturas']);
+
+        $this->actingAs($user)
+            ->get('/profile')
+            ->assertInertia(fn (Assert $page) => $page
+                ->has('secciones', 2)
+                ->where('secciones.0.etiqueta', 'Notas de pago')
+                ->where('secciones.0.granulares', ['Agregar notas de pago'])
+                ->where('secciones.1.etiqueta', 'Catálogos')
+                ->where('secciones.1.modulos', [['etiqueta' => 'Especies', 'acciones' => ['Ver', 'Crear']]]));
+    }
+
+    public function test_account_can_no_longer_be_deleted_or_edited_from_profile(): void
     {
         $user = User::factory()->create();
 
-        $response = $this
-            ->actingAs($user)
-            ->patch('/profile', [
-                'name' => 'Test User',
-                'email' => 'test@example.com',
-            ]);
-
-        $response
-            ->assertSessionHasNoErrors()
-            ->assertRedirect('/profile');
-
-        $user->refresh();
-
-        $this->assertSame('Test User', $user->name);
-        $this->assertSame('test@example.com', $user->email);
-        $this->assertNull($user->email_verified_at);
-    }
-
-    public function test_email_verification_status_is_unchanged_when_the_email_address_is_unchanged(): void
-    {
-        $user = User::factory()->create();
-
-        $response = $this
-            ->actingAs($user)
-            ->patch('/profile', [
-                'name' => 'Test User',
-                'email' => $user->email,
-            ]);
-
-        $response
-            ->assertSessionHasNoErrors()
-            ->assertRedirect('/profile');
-
-        $this->assertNotNull($user->refresh()->email_verified_at);
-    }
-
-    public function test_user_can_delete_their_account(): void
-    {
-        $user = User::factory()->create();
-
-        $response = $this
-            ->actingAs($user)
-            ->delete('/profile', [
-                'password' => 'password',
-            ]);
-
-        $response
-            ->assertSessionHasNoErrors()
-            ->assertRedirect('/');
-
-        $this->assertGuest();
-        $this->assertNull($user->fresh());
-    }
-
-    public function test_correct_password_must_be_provided_to_delete_account(): void
-    {
-        $user = User::factory()->create();
-
-        $response = $this
-            ->actingAs($user)
-            ->from('/profile')
-            ->delete('/profile', [
-                'password' => 'wrong-password',
-            ]);
-
-        $response
-            ->assertSessionHasErrors('password')
-            ->assertRedirect('/profile');
+        $this->actingAs($user)->delete('/profile')->assertMethodNotAllowed();
+        $this->actingAs($user)->patch('/profile', ['name' => 'Otro'])->assertMethodNotAllowed();
 
         $this->assertNotNull($user->fresh());
+    }
+
+    public function test_user_can_choose_initials_avatar(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->post('/profile/avatar', ['avatar_tipo' => 'iniciales'])
+            ->assertSessionHasNoErrors();
+
+        $this->assertSame('iniciales', $user->fresh()->avatar_tipo);
+    }
+
+    public function test_user_can_upload_a_photo(): void
+    {
+        Storage::fake('local');
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->post('/profile/avatar', [
+                'avatar_tipo' => 'foto',
+                'foto' => UploadedFile::fake()->image('yo.jpg', 200, 200),
+            ])
+            ->assertSessionHasNoErrors();
+
+        $user->refresh();
+        $this->assertSame('foto', $user->avatar_tipo);
+        Storage::disk('local')->assertExists($user->avatar_path);
+        $this->assertNotNull($user->avatar_url);
+
+        $this->actingAs($user)->get($user->avatar_url)->assertOk();
+    }
+
+    public function test_photo_is_required_when_choosing_photo_without_one(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->post('/profile/avatar', ['avatar_tipo' => 'foto'])
+            ->assertSessionHasErrors('foto');
+
+        $this->assertSame('inicial', $user->fresh()->avatar_tipo);
     }
 }

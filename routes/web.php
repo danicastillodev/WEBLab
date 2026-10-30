@@ -5,6 +5,7 @@ use App\Http\Controllers\ClientesController;
 use App\Http\Controllers\CuestionarioController;
 use App\Http\Controllers\DatosGeneralesController;
 use App\Http\Controllers\DatosPersonalesController;
+use App\Http\Controllers\DiagnosticosController;
 use App\Http\Controllers\EspeciesController;
 use App\Http\Controllers\EstadosController;
 use App\Http\Controllers\FuncionZootecnicasController;
@@ -39,8 +40,8 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::post('/profile/avatar', [ProfileController::class, 'updateAvatar'])->name('profile.avatar.update');
+    Route::get('/profile/avatar/{user}', [ProfileController::class, 'showAvatar'])->name('profile.avatar.show');
 
     Route::get('seguridad/datos-personales', [DatosPersonalesController::class, 'edit'])->name('datos-personales.edit');
     Route::put('seguridad/datos-personales', [DatosPersonalesController::class, 'update'])->name('datos-personales.update');
@@ -120,6 +121,18 @@ Route::middleware('auth')->group(function () {
             Route::delete('clientes/{cliente}', 'destroyCliente')->name('destroy-cliente');
             Route::get('historias-clinicas', 'buscarHistorias')->name('buscar-historias');
             Route::get('historias-clinicas/conceptos', 'conceptosDeHistorias')->name('conceptos-de-historias');
+        });
+
+    // 'diagnosticos' no es un módulo de config/modulos.php: el permiso
+    // granular se revisa en el controlador.
+    Route::controller(DiagnosticosController::class)
+        ->prefix('diagnosticos')
+        ->name('diagnosticos.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('analisis/{muestra}', 'edit')->whereNumber('muestra')->name('edit');
+            Route::put('analisis/{muestra}', 'guardar')->whereNumber('muestra')->name('guardar');
+            Route::patch('analisis/{muestra}/cancelar', 'cancelar')->whereNumber('muestra')->name('cancelar');
         });
 
     // El catálogo de preguntas se expone bajo 'cuestionario' pero el modelo es Pregunta.

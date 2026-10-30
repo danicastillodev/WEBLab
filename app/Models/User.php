@@ -6,6 +6,7 @@ namespace App\Models;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -15,11 +16,18 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
 
 #[Fillable(['name', 'email', 'password', 'username', 'es_admin', 'rol_id', 'hora_inicio', 'hora_fin', 'dias_permitidos'])]
-#[Hidden(['password', 'remember_token'])]
+#[Hidden(['password', 'remember_token', 'avatar_path'])]
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
+
+    /** Formas de mostrar la imagen de perfil. */
+    public const AVATAR_TIPOS = ['inicial', 'iniciales', 'foto'];
+
+    protected $attributes = ['avatar_tipo' => 'inicial'];
+
+    protected $appends = ['avatar_url'];
 
     protected function casts(): array
     {
@@ -29,6 +37,14 @@ class User extends Authenticatable
             'es_admin' => 'boolean',
             'dias_permitidos' => 'array',
         ];
+    }
+
+    /** URL de la foto de perfil, o null si el usuario no ha subido una. */
+    protected function avatarUrl(): Attribute
+    {
+        return Attribute::get(fn () => $this->avatar_path
+            ? route('profile.avatar.show', ['user' => $this->id, 'v' => md5($this->avatar_path)])
+            : null);
     }
 
     public function areas(): BelongsToMany

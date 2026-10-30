@@ -1,4 +1,5 @@
 import ApplicationLogo from '@/Components/ApplicationLogo';
+import Avatar from '@/Components/Avatar';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import SelectorTema from '@/Components/SelectorTema';
 import { Link, usePage } from '@inertiajs/react';
@@ -117,11 +118,9 @@ export default function AuthenticatedLayout({ header, children }) {
             acento: 'emerald',
             icono: BeakerIcon,
             etiqueta: 'Diagnósticos',
-            activo: false,
-            pendiente: true,
+            activo: actual('diagnosticos.*'),
             enlaces: [
-                pendiente('Nuevo diagnóstico', puedeGranular('diagnosticos.agregar'), DocumentPlusIcon),
-                pendiente('Listado de diagnósticos', puedeAlguno(
+                enlace('Listado de diagnósticos', 'diagnosticos.index', actual('diagnosticos.index'), puedeAlguno(
                     'diagnosticos.agregar', 'diagnosticos.modificar', 'diagnosticos.emitir',
                     'diagnosticos.consultar_de_otros', 'diagnosticos.modificar_emitidos', 'diagnosticos.cancelar',
                 ), DocumentTextIcon),
@@ -345,9 +344,7 @@ export default function AuthenticatedLayout({ header, children }) {
                 {/* User section at bottom */}
                 <div className="border-t border-gray-200 px-3 py-4">
                     <div className="mb-3 flex items-center gap-3 px-1">
-                        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 via-sky-500 to-teal-500 text-sm font-bold uppercase text-white shadow-md" aria-hidden="true">
-                            {user.name?.trim().charAt(0) ?? '?'}
-                        </span>
+                        <Avatar user={user} />
                         <div className="min-w-0">
                             <div className="truncate text-sm font-medium text-gray-800">{user.name}</div>
                             <div className="truncate text-xs text-gray-500">{user.email}</div>
@@ -411,9 +408,12 @@ export default function AuthenticatedLayout({ header, children }) {
                         </div>
 
                         <div className="border-t border-gray-200 pb-1 pt-4">
-                            <div className="px-4">
-                                <div className="text-base font-medium text-gray-800">{user.name}</div>
-                                <div className="text-sm font-medium text-gray-500">{user.email}</div>
+                            <div className="flex items-center gap-3 px-4">
+                                <Avatar user={user} className="h-10 w-10 text-sm" />
+                                <div className="min-w-0">
+                                    <div className="truncate text-base font-medium text-gray-800">{user.name}</div>
+                                    <div className="truncate text-sm font-medium text-gray-500">{user.email}</div>
+                                </div>
                             </div>
                             <SelectorTema className="mx-4 mt-3" />
                             <div className="mt-3 space-y-1">
