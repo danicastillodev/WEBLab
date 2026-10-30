@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Muestra extends Model
 {
@@ -61,5 +62,11 @@ class Muestra extends Model
     public function tipoMuestra(): BelongsTo
     {
         return $this->belongsTo(TipoMuestra::class);
+    }
+
+    /** Sin diagnóstico, el análisis está pendiente. */
+    public function diagnostico(): HasOne
+    {
+        return $this->hasOne(Diagnostico::class);
     }
 }
