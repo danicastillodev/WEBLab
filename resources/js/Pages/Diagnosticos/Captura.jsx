@@ -300,7 +300,7 @@ export default function Captura({ analisis, diagnostico, resultados, maximoResul
                                                 </select>
                                             </td>
                                             <td className="px-3 py-2">
-                                                <input type="text" maxLength={255} value={m.aretes} disabled={!editable}
+                                                <input type="text" maxLength={1000} value={m.aretes} disabled={!editable}
                                                     onChange={(e) => cambiarMuestra(i, 'aretes', e.target.value)} className={celda} />
                                                 {(() => {
                                                     // Si hay aretes, tiene que haber uno por muestra de la fila.

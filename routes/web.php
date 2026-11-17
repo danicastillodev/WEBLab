@@ -20,6 +20,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PropietariosController;
 use App\Http\Controllers\PruebasController;
 use App\Http\Controllers\RazasController;
+use App\Http\Controllers\ReporteResultadosController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\ServiciosController;
 use App\Http\Controllers\TiposMuestraController;
@@ -173,6 +174,11 @@ Route::middleware('auth')->group(function () {
             Route::get('ticket/{historia_clinica}', 'ticket')->name('ticket');
             Route::patch('{historia_clinica}/cancelar', 'cancel')->name('cancelar');
         });
+
+    // Hoja de resultados de los análisis emitidos; requiere el permiso de ver
+    // historias clínicas (ver 'resultados' en config/modulos.php).
+    Route::get('historias-clinicas/{historia_clinica}/resultados', ReporteResultadosController::class)
+        ->name('historias-clinicas.resultados');
 
     // Str::singular('historias-clinicas') da 'historias_clinica', que no coincide
     // con el argumento $historiaClinica del controlador.

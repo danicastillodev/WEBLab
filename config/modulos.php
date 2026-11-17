@@ -106,6 +106,8 @@ return [
         'destroy' => 'eliminar',
         // users.borrar-contrasena: dejar la contraseña en blanco es editar al usuario.
         'borrar-contrasena' => 'editar',
+        // historias-clinicas.resultados: imprimir la hoja de resultados es consultar.
+        'resultados' => 'ver',
     ],
 
     'dias' => [

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Diagnostico;
 use App\Models\Direccion;
 use App\Models\Especie;
 use App\Models\Estado;
@@ -9,6 +10,7 @@ use App\Models\HistoriaClinica;
 use App\Models\Municipio;
 use App\Models\Propietario;
 use App\Models\Raza;
+use App\Models\Servicio;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -58,6 +60,33 @@ class HistoriaClinicaConsultaYCancelacionTest extends TestCase
             ->component('HistoriasClinicas/Show')
             ->where('historia.id', $historia->id)
         );
+    }
+
+    /**
+     * Las fechas de realización y emisión de cada análisis vienen de su
+     * diagnóstico; un análisis sin diagnóstico llega sin ellas.
+     */
+    public function test_consultar_incluye_las_fechas_del_diagnostico_de_cada_analisis(): void
+    {
+        $historia = $this->historia();
+        $servicio = Servicio::create(['clave' => 'COPRO', 'descripcion' => 'Coprológico', 'activo' => true]);
+        $conDiagnostico = $historia->muestras()->create(['servicio_id' => $servicio->id, 'cantidad' => 1]);
+        $historia->muestras()->create(['servicio_id' => $servicio->id, 'cantidad' => 2]);
+        Diagnostico::create([
+            'muestra_id' => $conDiagnostico->id,
+            'fecha_realizacion' => '2026-11-10',
+            'fecha_emision' => '2026-11-11 09:30:00',
+            'estado' => Diagnostico::ESTADO_EMITIDO,
+        ]);
+
+        $this->actingAs(User::factory()->create(['es_admin' => true]))
+            ->get(route('historias-clinicas.show', $historia))
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page
+                ->where('historia.muestras.0.diagnostico.fecha_realizacion', '2026-11-10')
+                ->where('historia.muestras.0.diagnostico.fecha_emision', '2026-11-11 09:30:00')
+                ->where('historia.muestras.1.diagnostico', null)
+            );
     }
 
     public function test_cancelar_cambia_el_estado_en_vez_de_borrar_el_registro(): void

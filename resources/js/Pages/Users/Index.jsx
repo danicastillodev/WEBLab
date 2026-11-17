@@ -1,8 +1,21 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, router, usePage } from '@inertiajs/react';
+import { useState } from 'react';
 
-export default function Index({ users }) {
+export default function Index({ users, filtros }) {
     const { flash } = usePage().props;
+
+    const [buscarTexto, setBuscarTexto] = useState(filtros.buscar ?? '');
+
+    function buscar(e) {
+        e.preventDefault();
+        router.get(route('users.index'), { buscar: buscarTexto }, { preserveState: true, replace: true });
+    }
+
+    function limpiar() {
+        setBuscarTexto('');
+        router.get(route('users.index'), {}, { preserveState: true, replace: true });
+    }
 
     function handleDelete(user) {
         if (confirm(`¿Eliminar el usuario "${user.name}"?`)) {
@@ -36,6 +49,34 @@ export default function Index({ users }) {
                         </div>
                     )}
 
+                    <form onSubmit={buscar} className="mb-4 rounded-lg bg-white p-4 shadow-sm">
+                        <label className="mb-1 block text-xs font-medium text-gray-600">Buscar</label>
+                        <div className="flex flex-col gap-2 sm:flex-row">
+                            <input
+                                type="text"
+                                value={buscarTexto}
+                                onChange={(e) => setBuscarTexto(e.target.value)}
+                                placeholder="Nombre, usuario, correo o área"
+                                className="block w-full rounded-md border border-gray-300 px-3 py-1.5 text-sm shadow-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
+                            />
+                            <div className="flex gap-2">
+                                <button
+                                    type="submit"
+                                    className="rounded-md bg-brand px-4 py-1.5 text-sm font-medium text-white hover:bg-brand-hover"
+                                >
+                                    Buscar
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={limpiar}
+                                    className="rounded-md border border-gray-300 px-4 py-1.5 text-sm font-medium text-gray-600 hover:bg-gray-50"
+                                >
+                                    Limpiar
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                         <table className="min-w-full divide-y divide-gray-200">
                             <thead className="bg-gray-50">
@@ -51,7 +92,9 @@ export default function Index({ users }) {
                                 {users.data.length === 0 && (
                                     <tr>
                                         <td colSpan={5} className="px-6 py-4 text-center text-sm text-gray-500">
-                                            Aún no hay usuarios.
+                                            {filtros.buscar
+                                                ? 'Ningún usuario coincide con la búsqueda.'
+                                                : 'Aún no hay usuarios.'}
                                         </td>
                                     </tr>
                                 )}

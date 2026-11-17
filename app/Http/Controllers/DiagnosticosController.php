@@ -172,9 +172,13 @@ class DiagnosticosController extends Controller
             $diagnostico->muestras()->createMany($validated['muestras']);
         });
 
-        return redirect()
-            ->route('diagnosticos.edit', $muestra)
-            ->with('success', $emitir ? 'Diagnóstico emitido.' : 'Diagnóstico guardado.');
+        // Emitido, el análisis queda terminado y se vuelve al listado; guardado
+        // (en proceso) se sigue en la captura.
+        if ($emitir) {
+            return redirect()->route('diagnosticos.index')->with('success', 'Diagnóstico emitido.');
+        }
+
+        return redirect()->route('diagnosticos.edit', $muestra)->with('success', 'Diagnóstico guardado.');
     }
 
     /**
@@ -221,7 +225,7 @@ class DiagnosticosController extends Controller
             'muestras.*.cantidad' => ['required', 'integer', 'min:1'],
             'muestras.*.identificacion' => ['required', 'string', 'max:150'],
             'muestras.*.resultado' => ['required', Rule::in(Diagnostico::RESULTADOS)],
-            'muestras.*.aretes' => ['nullable', 'string', 'max:255'],
+            'muestras.*.aretes' => ['nullable', 'string', 'max:1000'],
             // Tope del HTML para no guardar basura; el límite real (520) es
             // sobre el texto sin formato y se revisa abajo.
             'resultado' => ['nullable', 'string', 'max:10000'],
