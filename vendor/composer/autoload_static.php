@@ -527,6 +527,7 @@ class ComposerStaticInitc11f150be0732951857d8d4830647cd5
         'App\\Http\\Controllers\\PropietariosController' => __DIR__ . '/../..' . '/app/Http/Controllers/PropietariosController.php',
         'App\\Http\\Controllers\\PruebasController' => __DIR__ . '/../..' . '/app/Http/Controllers/PruebasController.php',
         'App\\Http\\Controllers\\RazasController' => __DIR__ . '/../..' . '/app/Http/Controllers/RazasController.php',
+        'App\\Http\\Controllers\\ReporteResultadosController' => __DIR__ . '/../..' . '/app/Http/Controllers/ReporteResultadosController.php',
         'App\\Http\\Controllers\\RolController' => __DIR__ . '/../..' . '/app/Http/Controllers/RolController.php',
         'App\\Http\\Controllers\\ServiciosController' => __DIR__ . '/../..' . '/app/Http/Controllers/ServiciosController.php',
         'App\\Http\\Controllers\\TiposMuestraController' => __DIR__ . '/../..' . '/app/Http/Controllers/TiposMuestraController.php',

@@ -53,6 +53,8 @@ function Campo({ etiqueta, children }) {
 export default function Show({ historia }) {
     const propietario = [historia.propietario?.nombre, historia.propietario?.apellidos].filter(Boolean).join(' ');
     const muestras = historia.muestras ?? [];
+    // La hoja de resultados se puede generar en cuanto hay algún diagnóstico emitido.
+    const tieneResultados = muestras.some((m) => m.diagnostico?.estado === 'emitido');
     const respuestas = historia.respuestas ?? [];
 
     return (
@@ -64,6 +66,16 @@ export default function Show({ historia }) {
                     </h2>
                     <div className="flex items-center gap-3">
                         <EstadoBadge estado={historia.estado} />
+                        {tieneResultados && (
+                            <a
+                                href={route('historias-clinicas.resultados', historia.id)}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="rounded-md border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                            >
+                                Imprimir resultados
+                            </a>
+                        )}
                         {historia.estado !== 'cancelada' && (
                             <Link
                                 href={route('historias-clinicas.edit', historia.id)}
@@ -142,6 +154,8 @@ export default function Show({ historia }) {
                                             <Campo etiqueta="Análisis">{muestra.servicio?.descripcion}</Campo>
                                             <Campo etiqueta="Cantidad">{muestra.cantidad}</Campo>
                                             <Campo etiqueta="Tipo de muestra">{muestra.tipo_muestra?.nombre}</Campo>
+                                            <Campo etiqueta="Fecha de realización">{formatFecha(muestra.diagnostico?.fecha_realizacion)}</Campo>
+                                            <Campo etiqueta="Fecha de emisión">{formatFechaHora(muestra.diagnostico?.fecha_emision) || '—'}</Campo>
                                             {muestra.notas && (
                                                 <div className="sm:col-span-3">
                                                     <Campo etiqueta="Notas">{muestra.notas}</Campo>

@@ -151,7 +151,8 @@ class DiagnosticoCapturaTest extends TestCase
 
         $this->actingAs($this->analista())
             ->put(route('diagnosticos.guardar', $muestra), $this->datos(['accion' => 'emitir']))
-            ->assertSessionHasNoErrors();
+            ->assertSessionHasNoErrors()
+            ->assertRedirect(route('diagnosticos.index'));
 
         $diagnostico = $muestra->fresh()->diagnostico;
         $this->assertSame(Diagnostico::ESTADO_EMITIDO, $diagnostico->estado);
@@ -310,5 +311,26 @@ class DiagnosticoCapturaTest extends TestCase
         // Sin aretes no se exige nada.
         $this->actingAs($user)->put(route('diagnosticos.guardar', $muestra), $fila(''))
             ->assertSessionHasNoErrors();
+    }
+
+    public function test_los_aretes_admiten_hasta_1000_caracteres(): void
+    {
+        $muestra = $this->analisis(cantidad: 200);
+        $user = $this->analista();
+        // 200 aretes de 4 dígitos separados por espacio: 999 caracteres.
+        $aretes = implode(' ', range(1000, 1199));
+        $fila = fn (string $aretes) => $this->datos([
+            'muestras' => [['cantidad' => 200, 'identificacion' => 'SUERO', 'resultado' => 'negativo', 'aretes' => $aretes]],
+        ]);
+
+        $this->actingAs($user)->put(route('diagnosticos.guardar', $muestra), $fila($aretes))
+            ->assertSessionHasNoErrors();
+        $this->assertSame($aretes, $muestra->fresh()->diagnostico->muestras->first()->aretes);
+
+        // También 200 aretes (así no falla por el conteo), pero de 5 dígitos: 1199 caracteres.
+        $largos = implode(' ', range(10000, 10199));
+        $this->actingAs($user)->put(route('diagnosticos.guardar', $muestra), $fila($largos))
+            ->assertSessionHasErrors('muestras.0.aretes');
+        $this->assertStringContainsString('1000', session('errors')->first('muestras.0.aretes'));
     }
 }

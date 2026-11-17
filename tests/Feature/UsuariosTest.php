@@ -63,6 +63,32 @@ class UsuariosTest extends TestCase
             });
     }
 
+    public function test_el_listado_busca_por_nombre_usuario_correo_y_area(): void
+    {
+        $bacteriologia = Area::create(['nombre' => 'Bacteriología']);
+
+        $ana = User::factory()->create(['name' => 'Ana Ruiz', 'username' => 'aruiz', 'email' => 'ana@lab.test']);
+        $ana->areas()->sync([$bacteriologia->id]);
+        $luis = User::factory()->create(['name' => 'Luis Mora', 'username' => 'lmora', 'email' => 'luis@lab.test']);
+
+        $encontrados = function (string $buscar) {
+            $page = $this->actingAs($this->admin())
+                ->get(route('users.index', ['buscar' => $buscar]))
+                ->assertOk()
+                ->assertInertia(fn ($p) => $p->where('filtros.buscar', $buscar));
+
+            return collect($page->viewData('page')['props']['users']['data'])->pluck('username')->all();
+        };
+
+        $this->assertSame(['aruiz'], $encontrados('ana'));
+        $this->assertSame(['lmora'], $encontrados('lmora'));
+        $this->assertSame(['lmora'], $encontrados('luis@lab'));
+        $this->assertSame(['aruiz'], $encontrados('bacterio'));
+        // Cada palabra debe coincidir con algún campo.
+        $this->assertSame(['aruiz'], $encontrados('ruiz bacterio'));
+        $this->assertSame([], $encontrados('mora bacterio'));
+    }
+
     public function test_el_formulario_de_alta_ofrece_la_matriz_de_permisos(): void
     {
         $this->actingAs($this->admin())

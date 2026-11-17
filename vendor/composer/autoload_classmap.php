@@ -42,6 +42,7 @@ return array(
     'App\\Http\\Controllers\\PropietariosController' => $baseDir . '/app/Http/Controllers/PropietariosController.php',
     'App\\Http\\Controllers\\PruebasController' => $baseDir . '/app/Http/Controllers/PruebasController.php',
     'App\\Http\\Controllers\\RazasController' => $baseDir . '/app/Http/Controllers/RazasController.php',
+    'App\\Http\\Controllers\\ReporteResultadosController' => $baseDir . '/app/Http/Controllers/ReporteResultadosController.php',
     'App\\Http\\Controllers\\RolController' => $baseDir . '/app/Http/Controllers/RolController.php',
     'App\\Http\\Controllers\\ServiciosController' => $baseDir . '/app/Http/Controllers/ServiciosController.php',
     'App\\Http\\Controllers\\TiposMuestraController' => $baseDir . '/app/Http/Controllers/TiposMuestraController.php',

@@ -20,10 +20,30 @@ use Inertia\Response;
  */
 class UserController extends Controller
 {
-    public function index(): Response
+    public function index(Request $request): Response
     {
+        $filtros = $request->only(['buscar']);
+
+        // Cada palabra debe aparecer en algún campo, así "ana bacterio" encuentra
+        // a Ana del área de Bacteriología.
+        $palabras = preg_split('/\s+/', trim($filtros['buscar'] ?? ''), -1, PREG_SPLIT_NO_EMPTY);
+
+        $users = User::with('areas:id,nombre')
+            ->when($palabras, function ($query) use ($palabras) {
+                foreach ($palabras as $palabra) {
+                    $query->where(fn ($q) => $q->where('name', 'like', "%{$palabra}%")
+                        ->orWhere('username', 'like', "%{$palabra}%")
+                        ->orWhere('email', 'like', "%{$palabra}%")
+                        ->orWhereHas('areas', fn ($a) => $a->where('nombre', 'like', "%{$palabra}%")));
+                }
+            })
+            ->orderBy('name')
+            ->paginate(10)
+            ->withQueryString();
+
         return Inertia::render('Users/Index', [
-            'users' => User::with('areas:id,nombre')->orderBy('name')->paginate(10),
+            'users' => $users,
+            'filtros' => $filtros,
         ]);
     }
 
