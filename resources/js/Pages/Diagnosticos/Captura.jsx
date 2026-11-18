@@ -87,6 +87,18 @@ function EditorResultado({ valor, onChange, maximo, deshabilitado }) {
         alEscribir();
     }
 
+    // Pasa todo el texto a mayúsculas o minúsculas nodo por nodo, para no
+    // perder negritas, listas ni saltos de línea.
+    function cambiarMayusculas(mayusculas) {
+        const recorrido = document.createTreeWalker(ref.current, NodeFilter.SHOW_TEXT);
+        for (let nodo = recorrido.nextNode(); nodo; nodo = recorrido.nextNode()) {
+            nodo.nodeValue = mayusculas
+                ? nodo.nodeValue.toLocaleUpperCase('es-MX')
+                : nodo.nodeValue.toLocaleLowerCase('es-MX');
+        }
+        alEscribir();
+    }
+
     const boton = 'rounded px-2 py-1 text-sm text-gray-700 hover:bg-gray-200 disabled:opacity-40';
 
     return (
@@ -98,6 +110,9 @@ function EditorResultado({ valor, onChange, maximo, deshabilitado }) {
                 <span className="mx-1 h-4 w-px bg-gray-300" aria-hidden="true" />
                 <button type="button" disabled={deshabilitado} onMouseDown={(e) => e.preventDefault()} onClick={() => formato('insertUnorderedList')} className={boton} title="Lista con viñetas">• Lista</button>
                 <button type="button" disabled={deshabilitado} onMouseDown={(e) => e.preventDefault()} onClick={() => formato('insertOrderedList')} className={boton} title="Lista numerada">1. Lista</button>
+                <span className="mx-1 h-4 w-px bg-gray-300" aria-hidden="true" />
+                <button type="button" disabled={deshabilitado} onMouseDown={(e) => e.preventDefault()} onClick={() => cambiarMayusculas(true)} className={boton} title="Todo a mayúsculas">AA</button>
+                <button type="button" disabled={deshabilitado} onMouseDown={(e) => e.preventDefault()} onClick={() => cambiarMayusculas(false)} className={boton} title="Todo a minúsculas">aa</button>
                 <span className={`ml-auto text-xs ${largo > maximo ? 'font-semibold text-red-600' : 'text-gray-500'}`}>
                     {largo}/{maximo}
                 </span>
@@ -300,8 +315,8 @@ export default function Captura({ analisis, diagnostico, resultados, maximoResul
                                                 </select>
                                             </td>
                                             <td className="px-3 py-2">
-                                                <input type="text" maxLength={1000} value={m.aretes} disabled={!editable}
-                                                    onChange={(e) => cambiarMuestra(i, 'aretes', e.target.value)} className={celda} />
+                                                <textarea rows={2} maxLength={15000} value={m.aretes} disabled={!editable}
+                                                    onChange={(e) => cambiarMuestra(i, 'aretes', e.target.value)} className={`${celda} min-w-[12rem] resize-y`} />
                                                 {(() => {
                                                     // Si hay aretes, tiene que haber uno por muestra de la fila.
                                                     const aretes = listaAretes(m.aretes).length;
@@ -342,13 +357,11 @@ export default function Captura({ analisis, diagnostico, resultados, maximoResul
                                 <div className="mb-2 flex flex-wrap items-end gap-2">
                                     <div className="min-w-[10rem] flex-1">
                                         <label htmlFor="bacteria" className="mb-1 block text-xs font-medium text-gray-600">Bacteria</label>
-                                        <input id="bacteria" type="text" value={bacteria} onChange={(e) => setBacteria(e.target.value)}
-                                            placeholder="Ej. Brucella abortus" className={celda} />
+                                        <input id="bacteria" type="text" value={bacteria} onChange={(e) => setBacteria(e.target.value)} className={celda} />
                                     </div>
                                     <div className="min-w-[10rem] flex-1">
                                         <label htmlFor="prueba" className="mb-1 block text-xs font-medium text-gray-600">Prueba</label>
-                                        <input id="prueba" type="text" value={prueba} onChange={(e) => setPrueba(e.target.value)}
-                                            placeholder="Ej. Tarjeta" className={celda} />
+                                        <input id="prueba" type="text" value={prueba} onChange={(e) => setPrueba(e.target.value)} className={celda} />
                                     </div>
                                     <button
                                         type="button"

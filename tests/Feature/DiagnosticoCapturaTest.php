@@ -221,17 +221,17 @@ class DiagnosticoCapturaTest extends TestCase
             ->assertSessionHasErrors('muestras.0.resultado');
     }
 
-    public function test_el_resultado_admite_hasta_520_caracteres_sin_contar_el_formato(): void
+    public function test_el_resultado_admite_hasta_16000_caracteres_sin_contar_el_formato(): void
     {
         $muestra = $this->analisis();
         $user = $this->analista();
 
         $this->actingAs($user)
-            ->put(route('diagnosticos.guardar', $muestra), $this->datos(['resultado' => '<b>'.str_repeat('a', 520).'</b>']))
+            ->put(route('diagnosticos.guardar', $muestra), $this->datos(['resultado' => '<b>'.str_repeat('á', 8000).'</b><br>'.str_repeat('a', 8000)]))
             ->assertSessionHasNoErrors();
 
         $this->actingAs($user)
-            ->put(route('diagnosticos.guardar', $muestra), $this->datos(['resultado' => str_repeat('a', 521)]))
+            ->put(route('diagnosticos.guardar', $muestra), $this->datos(['resultado' => str_repeat('a', 16001)]))
             ->assertSessionHasErrors('resultado');
     }
 
@@ -313,24 +313,90 @@ class DiagnosticoCapturaTest extends TestCase
             ->assertSessionHasNoErrors();
     }
 
-    public function test_los_aretes_admiten_hasta_1000_caracteres(): void
+    public function test_los_aretes_admiten_hasta_15000_caracteres(): void
     {
-        $muestra = $this->analisis(cantidad: 200);
+        $muestra = $this->analisis(cantidad: 3000);
         $user = $this->analista();
-        // 200 aretes de 4 dígitos separados por espacio: 999 caracteres.
-        $aretes = implode(' ', range(1000, 1199));
+        // 3000 aretes de 4 dígitos separados por espacio: 14,999 caracteres.
+        $aretes = implode(' ', range(1000, 3999));
         $fila = fn (string $aretes) => $this->datos([
-            'muestras' => [['cantidad' => 200, 'identificacion' => 'SUERO', 'resultado' => 'negativo', 'aretes' => $aretes]],
+            'muestras' => [['cantidad' => 3000, 'identificacion' => 'SUERO', 'resultado' => 'negativo', 'aretes' => $aretes]],
         ]);
 
         $this->actingAs($user)->put(route('diagnosticos.guardar', $muestra), $fila($aretes))
             ->assertSessionHasNoErrors();
         $this->assertSame($aretes, $muestra->fresh()->diagnostico->muestras->first()->aretes);
 
-        // También 200 aretes (así no falla por el conteo), pero de 5 dígitos: 1199 caracteres.
-        $largos = implode(' ', range(10000, 10199));
+        // También 3000 aretes (así no falla por el conteo), pero de 5 dígitos: 17,999 caracteres.
+        $largos = implode(' ', range(10000, 12999));
         $this->actingAs($user)->put(route('diagnosticos.guardar', $muestra), $fila($largos))
             ->assertSessionHasErrors('muestras.0.aretes');
-        $this->assertStringContainsString('1000', session('errors')->first('muestras.0.aretes'));
+        $this->assertStringContainsString('15000', session('errors')->first('muestras.0.aretes'));
+    }
+
+    /** Otro análisis en la misma historia clínica. */
+    private function otroAnalisis(Muestra $muestra): Muestra
+    {
+        return $muestra->historiaClinica->muestras()->create([
+            'servicio_id' => $muestra->servicio_id,
+            'tipo_muestra_id' => $muestra->tipo_muestra_id,
+            'cantidad' => 5,
+        ]);
+    }
+
+    public function test_la_historia_queda_en_resultado_parcial_mientras_no_se_emitan_todos(): void
+    {
+        $primero = $this->analisis();
+        $segundo = $this->otroAnalisis($primero);
+        $user = $this->analista();
+        $estado = fn () => $primero->historiaClinica->fresh()->estado;
+
+        $this->assertSame(HistoriaClinica::ESTADO_PENDIENTE, $estado());
+
+        // Guardado (en proceso), aún sin emitir nada.
+        $this->actingAs($user)->put(route('diagnosticos.guardar', $primero), $this->datos());
+        $this->assertSame(HistoriaClinica::ESTADO_RESULTADO_PARCIAL, $estado());
+
+        // Uno emitido y otro pendiente.
+        $this->actingAs($user)->put(route('diagnosticos.guardar', $primero), $this->datos(['accion' => 'emitir']));
+        $this->assertSame(HistoriaClinica::ESTADO_RESULTADO_PARCIAL, $estado());
+
+        // Todos emitidos.
+        $this->actingAs($user)->put(route('diagnosticos.guardar', $segundo), $this->datos(['accion' => 'emitir']));
+        $this->assertSame(HistoriaClinica::ESTADO_CONCLUIDA, $estado());
+    }
+
+    public function test_volver_a_guardar_un_emitido_regresa_la_historia_a_parcial(): void
+    {
+        $muestra = $this->analisis();
+        $user = $this->analista(['diagnosticos.agregar', 'diagnosticos.modificar', 'diagnosticos.emitir', 'diagnosticos.modificar_emitidos']);
+
+        $this->actingAs($user)->put(route('diagnosticos.guardar', $muestra), $this->datos(['accion' => 'emitir']));
+        $this->assertSame(HistoriaClinica::ESTADO_CONCLUIDA, $muestra->historiaClinica->fresh()->estado);
+
+        $this->actingAs($user)->put(route('diagnosticos.guardar', $muestra), $this->datos());
+        $this->assertSame(HistoriaClinica::ESTADO_RESULTADO_PARCIAL, $muestra->historiaClinica->fresh()->estado);
+    }
+
+    public function test_los_analisis_cancelados_no_impiden_concluir_la_historia(): void
+    {
+        $primero = $this->analisis();
+        $segundo = $this->otroAnalisis($primero);
+        $user = $this->analista();
+
+        $this->actingAs($user)->put(route('diagnosticos.guardar', $primero), $this->datos(['accion' => 'emitir']));
+        $this->actingAs($user)->patch(route('diagnosticos.cancelar', $segundo));
+
+        $this->assertSame(HistoriaClinica::ESTADO_CONCLUIDA, $primero->historiaClinica->fresh()->estado);
+    }
+
+    public function test_cancelar_sin_nada_guardado_no_cambia_la_historia(): void
+    {
+        $primero = $this->analisis();
+        $segundo = $this->otroAnalisis($primero);
+
+        $this->actingAs($this->analista())->patch(route('diagnosticos.cancelar', $segundo));
+
+        $this->assertSame(HistoriaClinica::ESTADO_PENDIENTE, $primero->historiaClinica->fresh()->estado);
     }
 }

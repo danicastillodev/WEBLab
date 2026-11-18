@@ -89,6 +89,34 @@ class HistoriaClinicaConsultaYCancelacionTest extends TestCase
             );
     }
 
+    public function test_consultar_incluye_las_muestras_y_el_resultado_del_diagnostico(): void
+    {
+        $historia = $this->historia();
+        $servicio = Servicio::create(['clave' => 'BRT', 'descripcion' => 'Brucella Tarjeta', 'activo' => true]);
+        $muestra = $historia->muestras()->create(['servicio_id' => $servicio->id, 'cantidad' => 3]);
+        $capturo = User::factory()->create(['name' => 'Analista Uno']);
+        $diagnostico = Diagnostico::create([
+            'muestra_id' => $muestra->id,
+            'fecha_realizacion' => '2026-11-10',
+            'resultado' => '<p>3 sueros negativos</p>',
+            'estado' => Diagnostico::ESTADO_EN_PROCESO,
+            'created_by' => $capturo->id,
+        ]);
+        $diagnostico->muestras()->create([
+            'cantidad' => 3, 'identificacion' => 'SUERO', 'resultado' => 'negativo', 'aretes' => '1 2 3',
+        ]);
+
+        $this->actingAs(User::factory()->create(['es_admin' => true]))
+            ->get(route('historias-clinicas.show', $historia))
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page
+                ->where('historia.muestras.0.diagnostico.estado', Diagnostico::ESTADO_EN_PROCESO)
+                ->where('historia.muestras.0.diagnostico.resultado', '<p>3 sueros negativos</p>')
+                ->where('historia.muestras.0.diagnostico.muestras.0.aretes', '1 2 3')
+                ->where('historia.muestras.0.diagnostico.creado_por.name', 'Analista Uno')
+            );
+    }
+
     public function test_cancelar_cambia_el_estado_en_vez_de_borrar_el_registro(): void
     {
         $historia = $this->historia();
