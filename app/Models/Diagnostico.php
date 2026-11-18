@@ -31,7 +31,7 @@ class Diagnostico extends Model
     public const RESULTADOS = ['negativo', 'positivo', 'sospechoso'];
 
     /** Largo máximo del resultado, contado sobre el texto sin formato. */
-    public const MAXIMO_RESULTADO = 520;
+    public const MAXIMO_RESULTADO = 16000;
 
     protected $fillable = [
         'muestra_id',

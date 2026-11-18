@@ -491,6 +491,7 @@ class ComposerStaticInitc11f150be0732951857d8d4830647cd5
     );
 
     public static $classMap = array (
+        'App\\Console\\Commands\\ActualizarEstadosHistorias' => __DIR__ . '/../..' . '/app/Console/Commands/ActualizarEstadosHistorias.php',
         'App\\Console\\Commands\\CrearAdmin' => __DIR__ . '/../..' . '/app/Console/Commands/CrearAdmin.php',
         'App\\Console\\Commands\\DatosSincronizables' => __DIR__ . '/../..' . '/app/Console/Commands/DatosSincronizables.php',
         'App\\Console\\Commands\\ExportarDatos' => __DIR__ . '/../..' . '/app/Console/Commands/ExportarDatos.php',

@@ -1,6 +1,7 @@
 import EstadoBadge from '@/Components/EstadoBadge';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
+import { EstadoAnalisis } from '../Diagnosticos/_estados';
 import { formatFechaHora } from '@/utils/fechas';
 
 // Etiquetas de "impreso"; el valor guardado es el de la columna del mismo nombre.
@@ -26,6 +27,54 @@ function formatEdad(historia) {
     if (!historia.edad_unidad || historia.edad_unidad === 'NR') return 'No registrada';
     if (historia.edad_unidad === 'NA') return 'No aplica';
     return `${historia.edad_valor ?? '—'} ${historia.edad_unidad}`;
+}
+
+const ETIQUETAS_RESULTADO = { negativo: 'Negativo', positivo: 'Positivo', sospechoso: 'Sospechoso' };
+
+/** Muestras capturadas y texto del resultado de un diagnóstico guardado o emitido. */
+function Diagnostico({ diagnostico }) {
+    const filas = diagnostico.muestras ?? [];
+
+    return (
+        <div className="mt-4 space-y-3 border-t border-gray-200 pt-3">
+            {filas.length > 0 && (
+                <div className="overflow-x-auto rounded-md border border-gray-200 bg-white">
+                    <table className="min-w-full divide-y divide-gray-200 text-sm">
+                        <thead className="bg-gray-50">
+                            <tr>
+                                {['Cantidad', 'Ident.', 'Resultado', 'Aretes'].map((t) => (
+                                    <th key={t} className="px-3 py-2 text-left text-xs font-medium uppercase tracking-wider text-gray-500">{t}</th>
+                                ))}
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-100">
+                            {filas.map((f) => (
+                                <tr key={f.id}>
+                                    <td className="px-3 py-2 text-gray-900">{f.cantidad}</td>
+                                    <td className="px-3 py-2 text-gray-900">{f.identificacion}</td>
+                                    <td className="px-3 py-2 text-gray-900">{ETIQUETAS_RESULTADO[f.resultado] ?? f.resultado}</td>
+                                    <td className="break-all px-3 py-2 text-gray-700">{f.aretes || '—'}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            )}
+            {diagnostico.resultado && (
+                <div>
+                    <p className="text-xs font-medium uppercase tracking-wider text-gray-500">Resultado</p>
+                    <div
+                        className="mt-1 rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 [&_ol]:list-decimal [&_ol]:pl-5 [&_ul]:list-disc [&_ul]:pl-5"
+                        // Se limpia en el servidor al guardar (DiagnosticosController).
+                        dangerouslySetInnerHTML={{ __html: diagnostico.resultado }}
+                    />
+                </div>
+            )}
+            {diagnostico.creado_por && (
+                <p className="text-xs text-gray-500">Capturó: {diagnostico.creado_por.name}</p>
+            )}
+        </div>
+    );
 }
 
 function Seccion({ titulo, children }) {
@@ -150,6 +199,9 @@ export default function Show({ historia }) {
                             <div className="mt-3 space-y-3">
                                 {muestras.map((muestra, i) => (
                                     <div key={muestra.id ?? i} className="rounded-lg border border-gray-200 bg-gray-50 p-4">
+                                        <div className="mb-3 flex justify-end">
+                                            <EstadoAnalisis estado={muestra.diagnostico?.estado} />
+                                        </div>
                                         <dl className="grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-3">
                                             <Campo etiqueta="Análisis">{muestra.servicio?.descripcion}</Campo>
                                             <Campo etiqueta="Cantidad">{muestra.cantidad}</Campo>
@@ -162,6 +214,9 @@ export default function Show({ historia }) {
                                                 </div>
                                             )}
                                         </dl>
+                                        {['en_proceso', 'emitido'].includes(muestra.diagnostico?.estado) && (
+                                            <Diagnostico diagnostico={muestra.diagnostico} />
+                                        )}
                                     </div>
                                 ))}
                             </div>

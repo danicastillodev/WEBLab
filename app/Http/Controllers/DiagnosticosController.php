@@ -170,6 +170,8 @@ class DiagnosticosController extends Controller
 
             $diagnostico->muestras()->delete();
             $diagnostico->muestras()->createMany($validated['muestras']);
+
+            $muestra->historiaClinica->actualizarEstadoPorDiagnosticos();
         });
 
         // Emitido, el análisis queda terminado y se vuelve al listado; guardado
@@ -193,15 +195,20 @@ class DiagnosticosController extends Controller
         $diagnostico = $muestra->diagnostico;
         abort_unless($this->puedeCancelar($user, $diagnostico), 403);
 
-        if ($diagnostico) {
-            $diagnostico->update(['estado' => Diagnostico::ESTADO_CANCELADO]);
-        } else {
-            Diagnostico::create([
-                'muestra_id' => $muestra->id,
-                'estado' => Diagnostico::ESTADO_CANCELADO,
-                'created_by' => $user->id,
-            ]);
-        }
+        DB::transaction(function () use ($muestra, $diagnostico, $user) {
+            if ($diagnostico) {
+                $diagnostico->update(['estado' => Diagnostico::ESTADO_CANCELADO]);
+            } else {
+                Diagnostico::create([
+                    'muestra_id' => $muestra->id,
+                    'estado' => Diagnostico::ESTADO_CANCELADO,
+                    'created_by' => $user->id,
+                ]);
+            }
+
+            // Cancelar el último pendiente puede dejar la historia concluida.
+            $muestra->historiaClinica->actualizarEstadoPorDiagnosticos();
+        });
 
         return redirect()->route('diagnosticos.index')->with('success', 'Análisis cancelado.');
     }
@@ -225,10 +232,10 @@ class DiagnosticosController extends Controller
             'muestras.*.cantidad' => ['required', 'integer', 'min:1'],
             'muestras.*.identificacion' => ['required', 'string', 'max:150'],
             'muestras.*.resultado' => ['required', Rule::in(Diagnostico::RESULTADOS)],
-            'muestras.*.aretes' => ['nullable', 'string', 'max:1000'],
-            // Tope del HTML para no guardar basura; el límite real (520) es
+            'muestras.*.aretes' => ['nullable', 'string', 'max:15000'],
+            // Tope del HTML para no guardar basura; el límite real (16,000) es
             // sobre el texto sin formato y se revisa abajo.
-            'resultado' => ['nullable', 'string', 'max:10000'],
+            'resultado' => ['nullable', 'string', 'max:100000'],
         ], [
             'fecha_realizacion.after_or_equal' => 'La fecha de realización no puede ser anterior a la fecha de toma.',
             'muestras.required' => 'Captura al menos una muestra antes de emitir.',

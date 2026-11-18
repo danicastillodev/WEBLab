@@ -487,9 +487,12 @@ class HistoriasClinicasController extends Controller
                 'creadoPor',
                 'muestras.servicio',
                 'muestras.tipoMuestra',
-                // Las fechas de realización y emisión salen del diagnóstico
-                // de cada análisis; un análisis sin diagnóstico no las tiene.
-                'muestras.diagnostico:id,muestra_id,estado,fecha_realizacion,fecha_emision',
+                // Las fechas de realización y emisión y el resultado salen del
+                // diagnóstico de cada análisis; un análisis sin diagnóstico no
+                // los tiene. El resultado ya se guarda limpio de HTML peligroso.
+                'muestras.diagnostico:id,muestra_id,estado,fecha_realizacion,fecha_emision,resultado,created_by',
+                'muestras.diagnostico.muestras',
+                'muestras.diagnostico.creadoPor:id,name',
                 'respuestas.pregunta',
             ]),
         ]);

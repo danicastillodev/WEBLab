@@ -158,6 +158,33 @@ class HistoriaClinica extends Model
         return $this->hasMany(Muestra::class);
     }
 
+    /**
+     * Ajusta el estado según los diagnósticos de sus análisis (sin contar los
+     * cancelados): todos emitidos → concluida; alguno guardado o emitido pero
+     * no todos emitidos → resultado parcial. Si nada se ha guardado, o la
+     * historia está cancelada, se deja como está.
+     */
+    public function actualizarEstadoPorDiagnosticos(): void
+    {
+        if ($this->estado === self::ESTADO_CANCELADA) {
+            return;
+        }
+
+        $estados = $this->muestras()->with('diagnostico:id,muestra_id,estado')->get()
+            ->map(fn (Muestra $m) => $m->diagnostico?->estado ?? Diagnostico::ESTADO_PENDIENTE)
+            ->reject(fn (string $estado) => $estado === Diagnostico::ESTADO_CANCELADO);
+
+        if ($estados->every(fn (string $estado) => $estado === Diagnostico::ESTADO_PENDIENTE)) {
+            return;
+        }
+
+        $this->update([
+            'estado' => $estados->every(fn (string $estado) => $estado === Diagnostico::ESTADO_EMITIDO)
+                ? self::ESTADO_CONCLUIDA
+                : self::ESTADO_RESULTADO_PARCIAL,
+        ]);
+    }
+
     public function respuestas(): HasMany
     {
         return $this->hasMany(Respuesta::class);

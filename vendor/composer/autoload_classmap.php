@@ -6,6 +6,7 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App\\Console\\Commands\\ActualizarEstadosHistorias' => $baseDir . '/app/Console/Commands/ActualizarEstadosHistorias.php',
     'App\\Console\\Commands\\CrearAdmin' => $baseDir . '/app/Console/Commands/CrearAdmin.php',
     'App\\Console\\Commands\\DatosSincronizables' => $baseDir . '/app/Console/Commands/DatosSincronizables.php',
     'App\\Console\\Commands\\ExportarDatos' => $baseDir . '/app/Console/Commands/ExportarDatos.php',
