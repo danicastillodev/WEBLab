@@ -53,6 +53,9 @@ deployment:
 
     # 4. Base de datos y cachés
     - $PHP "$APP/artisan" migrate --force
+    # Recalcula el estado de las historias según sus diagnósticos; se puede
+    # correr las veces que sea, deja igual las que ya están bien.
+    - $PHP "$APP/artisan" weblab:actualizar-estados-historias
     - $PHP "$APP/artisan" optimize:clear
     - $PHP "$APP/artisan" optimize
     # Sin ":" seguido de espacio: el parser de YAML de cPanel lo tomaría como
